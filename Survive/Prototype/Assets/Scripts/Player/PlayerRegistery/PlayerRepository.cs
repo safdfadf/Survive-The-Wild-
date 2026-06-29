@@ -1,0 +1,93 @@
+﻿using System;
+using UnityEngine;
+
+namespace Player
+{
+    public class PlayerRepository:MonoBehaviour
+    {
+        public static PlayerRepository instance;
+        private PlayerScentEmitter _playerScentEmitter;
+        private PlayerNoiseEmitter _playerNoiseEmitter;
+        private MovementHandler _movementHandler;
+        private PlayerInventory _playerInventory;
+        private PlayerVitalStats _playerVitalStats;
+
+        private void Awake()
+        {
+            if (instance == null)
+            {
+                instance = this;
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
+            _playerScentEmitter = GetComponent<PlayerScentEmitter>();
+            _playerNoiseEmitter = GetComponent<PlayerNoiseEmitter>();
+            _movementHandler = GetComponent<MovementHandler>();
+            _playerInventory = GetComponent<PlayerInventory>();
+            _playerVitalStats = GetComponent<PlayerVitalStats>();
+        }
+
+        private void LateUpdate()
+        {
+            
+        }
+
+        public float GetScentIntensity(Vector3 position)
+        {
+           return _playerScentEmitter.GetIntensityAt(position);
+        }
+
+        public float GetNoiseIntensity(Vector3 position)
+        {
+            
+           return _playerNoiseEmitter.GetNoiseIntensityAt(position);
+        }
+
+        public float GetCurrentNoise()
+        {
+          return _playerNoiseEmitter.GetCurrentNoise();
+        }
+        public Transform GetPlayerTransform()
+        {
+          return _movementHandler.GetPlayerTransform();
+        }
+
+        public bool GetIsSprinting()
+        {
+           return _movementHandler._isSprinting;
+        }
+
+        public bool GetIsCrouching()
+        {
+            return _movementHandler.IsCrouching;
+        }
+
+        public bool GetIsWalking()
+        {
+            return _movementHandler._isWalking;
+        }
+
+        public void RemoveResourceFromInventory(ResourceSo so,GameObject resource)
+        {
+            _playerInventory.RemoveResource(so,resource);
+        }
+        
+        public void ConsumeFood(FoodSo so)
+        {
+            _playerVitalStats.ConsumeFood(so);
+        }
+
+        public bool GetHunterSense()
+        {
+            return _movementHandler.isHuntingSenseActive;
+        }
+
+        public void CanPlayerMove(bool isLocked)
+        {
+            _movementHandler.LockPlayer(isLocked);
+        }
+
+    }
+}

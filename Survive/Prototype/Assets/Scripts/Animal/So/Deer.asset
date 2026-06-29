@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3446d969a603b9741bd8db43b6e9bc7b, type: 3}
+  m_Name: Deer
+  m_EditorClassIdentifier: 
+  specie: 0
+  prefab: {fileID: 8368043525601244960, guid: 3dc3e4ae75503f84d8da4b1de1c1adcf, type: 3}
+  regionType: 0
+  minAmount: 2
+  maxAmount: 4
+  resourceSo: {fileID: 11400000, guid: 632089d7767cb1e46831c69d260859ab, type: 2}
+  TrackMesh:
+  - {fileID: 6128482553316515338, guid: 8cb10271f3165da44b531f6fef55711b, type: 3}
+  - {fileID: 3294912275451329300, guid: 1c83f54ce3bf6e64b85db36037cc7075, type: 3}
