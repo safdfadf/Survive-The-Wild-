@@ -5,7 +5,8 @@ using FoodSystem;
 using Inventory;
 using UnityEngine;
 
-public class PlayerInventory : MonoBehaviour // should this script should be a non monobehavior 
+//Debug: ToDo : remove arrow from this scirpt
+public class PlayerInventory : MonoBehaviour 
 {
     private List<GameObject> arrowPool = new();
     private Dictionary<ResourceSo,int> resourcePool = new();

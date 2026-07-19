@@ -13,40 +13,44 @@ public class MovementHandler : MonoBehaviour
     [SerializeField] private float sprintSpeed = 8f;
     [SerializeField] private float crouchSpeed = 1.5f;
     [SerializeField] private float jumpForce = 5f;
-    
+
 
     [SerializeField] private float mouseSensitivity = 100f;
 
-    [SerializeField] private Transform groundCheck; 
-    [SerializeField] private LayerMask groundLayer; 
+    [SerializeField] private Transform groundCheck;
+    [SerializeField] private LayerMask groundLayer;
     [SerializeField] private float groundCheckRadius = 0.3f;
 
     [SerializeField] private Transform LeftSpwnPoint;
     [SerializeField] private Transform rightSpwnPoint;
-    
+
     [SerializeField] private float hourlyScentInc = 0.01f;
     [SerializeField] private float moveScentInc = 0.005f;
-    public bool isHuntingSenseActive{get;  set;}
-    
-    [SerializeField] private Transform aimTarget;
-    // References //
-     public Camera playerCamera; 
-     private CharacterController characterController; 
-     private PlayerBow playerBow;
-     private PlayerInventory _playerInventory;
-     private PlayerAnimator animator;
-     private PlayerUIHandler _uiHandler;
-     private PlayerScentEmitter _playerScentEmitter;
-     private PlayerNoiseEmitter _noiseEmitter;
-     private PlayerVitalStats _playerVitalStats;
-     
-     
-     private GameObject currentlyHighlighted;
 
-    private PlayerInputs _controls; 
-    public Vector2 MoveInput{get;  set;}
-    public bool isMoving{get; set;}
-    public Vector2 LookInput{get; set; }
+    [Header("Rotation Lock")]
+    //f  private int 
+    public bool isHuntingSenseActive { get; set; }
+
+    [SerializeField] private Transform aimTarget;
+
+    // References //
+    public Camera playerCamera;
+    private CharacterController characterController;
+    private PlayerBow playerBow;
+    private PlayerInventory _playerInventory;
+    private PlayerAnimator animator;
+    private PlayerUIHandler _uiHandler;
+    private PlayerScentEmitter _playerScentEmitter;
+    private PlayerNoiseEmitter _noiseEmitter;
+    private PlayerVitalStats _playerVitalStats;
+
+
+    private GameObject currentlyHighlighted;
+
+    private PlayerInputs _controls;
+    public Vector2 MoveInput { get; set; }
+    public bool isMoving { get; set; }
+    public Vector2 LookInput { get; set; }
 
     public bool _isSprinting { get; set; }
     public bool _isWalking { get; set; }
@@ -57,21 +61,18 @@ public class MovementHandler : MonoBehaviour
 
     private float _xRotation = 0f;
     private Vector3 _velocity;
-    
-    public bool isAttacking{get;set;}
-   
+
+    public bool isAttacking { get; set; }
+
     [SerializeField] private Material outlineMaterial;
     [SerializeField] private GameObject SpineController;
     private Material[] _originalMaterials;
 
-    public BaseWeapon CurrentWeapon{get; private set;}
+    public BaseWeapon CurrentWeapon { get; private set; }
     private GameObject crosshair;
     private float scentTracker;
-
-  
     private Coroutine noiseRoutine;
-    
-   
+
 
     private void Awake()
     {
@@ -89,7 +90,7 @@ public class MovementHandler : MonoBehaviour
 
     public void SetSpineControl(bool isAiming)
     {
-        if(!isAiming)return;
+        if (!isAiming) return;
         float pitch = Camera.main.transform.localEulerAngles.x;
         if (pitch > 180) pitch -= 360;
 
@@ -97,18 +98,20 @@ public class MovementHandler : MonoBehaviour
 
         SpineController.transform.localRotation = Quaternion.Euler(0f, 0, pitch);
     }
+
     private void Start()
     {
         resourceInventory.gameObject.SetActive(false);
         crosshair = _uiHandler.GetCrosshair();
         crosshair.SetActive(false);
     }
+
     private void Update()
     {
         MovePlayer();
         RotatePlayer();
         ExtraGravity();
-        ShootRay();// condition needed 
+        ShootRay(); // condition needed 
         CollectCheck();
     }
 
@@ -119,7 +122,7 @@ public class MovementHandler : MonoBehaviour
 
     private void OnDisable()
     {
-        EventBus.OnHourChanged -=  AddScentHourly;
+        EventBus.OnHourChanged -= AddScentHourly;
     }
 
     public void ToggleHunterSense()
@@ -132,10 +135,12 @@ public class MovementHandler : MonoBehaviour
         {
             isHuntingSenseActive = false;
         }
+
         EventBus.OnHunterSenseToggle?.Invoke(isHuntingSenseActive);
         UIManager.instance.ToggleSoundUI(isHuntingSenseActive);
     }
-    public void ToggleInventory()// currently we are toggling resource inventory i want to toggle the whole inventory 
+
+    public void ToggleInventory() // currently we are toggling resource inventory i want to toggle the whole inventory 
     {
         if (_uiHandler.IsInventoryOpen())
         {
@@ -152,20 +157,21 @@ public class MovementHandler : MonoBehaviour
             Cursor.visible = true;
         }
     }
+
     private void MovePlayer()
     {
-        if (_canMove&&isMoving)
+        if (_canMove && isMoving)
         {
             Vector3 moveDirection = transform.right * MoveInput.x + transform.forward * MoveInput.y;
-            
+
             animator.MovePlayer(MoveInput.y, MoveInput.x);
             float speed = 0;
-            
+
             if (_isSprinting)
             {
                 float dt = Time.deltaTime;
                 _isWalking = false;
-                _noiseEmitter.AddNoise(_noiseEmitter.sprintNoise,_isSprinting);
+                _noiseEmitter.AddNoise(_noiseEmitter.sprintNoise, _isSprinting);
                 speed = sprintSpeed;
                 _playerVitalStats.DrainStamina(dt);
             }
@@ -178,8 +184,9 @@ public class MovementHandler : MonoBehaviour
             {
                 _isWalking = true;
                 speed = walkSpeed;
-                _noiseEmitter.AddNoise(_noiseEmitter.walkNoise,!_isSprinting);
+                _noiseEmitter.AddNoise(_noiseEmitter.walkNoise, !_isSprinting);
             }
+
             characterController.Move(moveDirection * (speed * Time.deltaTime));
             animator.TriggerSprint(_isSprinting);
         }
@@ -187,8 +194,8 @@ public class MovementHandler : MonoBehaviour
         {
             animator.MovePlayer(0, 0);
         }
-       
     }
+
     private void OnMoveStarted()
     {
         if (noiseRoutine == null)
@@ -208,7 +215,7 @@ public class MovementHandler : MonoBehaviour
     {
         while (true)
         {
-            float noiseAmount=0;
+            float noiseAmount = 0;
             float scentAmount = moveScentInc;
             if (_isSprinting)
             {
@@ -219,8 +226,8 @@ public class MovementHandler : MonoBehaviour
             {
                 noiseAmount = _noiseEmitter.walkNoise;
             }
-         
-            
+
+
             _playerScentEmitter.AddScent(scentAmount);
             yield return new WaitForSeconds(0.1f); // configurable interval
         }
@@ -233,14 +240,24 @@ public class MovementHandler : MonoBehaviour
             float mouseX = LookInput.x * mouseSensitivity * Time.deltaTime;
             float mouseY = LookInput.y * mouseSensitivity * Time.deltaTime;
 
+
             _xRotation -= mouseY;
+            if (_xRotation >= 54)
+            {
+                _xRotation = 54;
+            }
+            else if (_xRotation <= -80)
+            {
+                _xRotation = -80;
+            }
+
             _xRotation = Mathf.Clamp(_xRotation, -90f, 90f);
 
             playerCamera.transform.localRotation = Quaternion.Euler(_xRotation, 0f, 0f);
             transform.Rotate(Vector3.up * mouseX);
-            
         }
     }
+
     public void Jump()
     {
         if (_isGrounded)
@@ -248,17 +265,20 @@ public class MovementHandler : MonoBehaviour
             _velocity.y = Mathf.Sqrt(jumpForce * -2f * Physics.gravity.y);
         }
     }
+
     private void ExtraGravity()
     {
         _isGrounded = Physics.CheckSphere(groundCheck.position, groundCheckRadius, groundLayer);
 
         if (_isGrounded && _velocity.y < 0)
         {
-            _velocity.y = -2f; 
+            _velocity.y = -2f;
         }
+
         _velocity.y += Physics.gravity.y * Time.deltaTime;
         characterController.Move(_velocity * Time.deltaTime);
     }
+
     public void ToggleCursor()
     {
         if (Cursor.lockState == CursorLockMode.Locked)
@@ -272,20 +292,22 @@ public class MovementHandler : MonoBehaviour
             Cursor.visible = false;
         }
     }
+
     private void ShootRay()
-    { 
+    {
         Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
-        if (Physics.SphereCast(ray, radius,out RaycastHit hit, maxDistance))
-        {  
+        if (Physics.SphereCast(ray, radius, out RaycastHit hit, maxDistance))
+        {
             BaseStructure structure = hit.collider.GetComponent<BaseStructure>();
-          
-            if (structure != null && structure.isActiveAndEnabled)// ray hits structure which is in ghost mode 
+
+            if (structure != null && structure.isActiveAndEnabled) // ray hits structure which is in ghost mode 
             {
                 //request
                 ResourceSo so = GetRequiredResources(structure);
-                _playerInventory.SetSubmitResource(so,structure);
+                _playerInventory.SetSubmitResource(so, structure);
                 structure.ToggleDescription(true);
             }
+
             ICollectable collectable = hit.collider.GetComponent<ICollectable>();
             MeshRenderer renderer = hit.collider.GetComponent<MeshRenderer>();
 
@@ -294,12 +316,14 @@ public class MovementHandler : MonoBehaviour
                 if (currentlyHighlighted != hit.collider.gameObject)
                 {
                     ClearHighlight();
-                    ApplyOutline(renderer,collectable);
+                    ApplyOutline(renderer, collectable);
                     currentlyHighlighted = hit.collider.gameObject;
                 }
+
                 return;
             }
         }
+
         ClearHighlight();
     }
 
@@ -310,14 +334,14 @@ public class MovementHandler : MonoBehaviour
             ICollectable collectable = currentlyHighlighted.GetComponent<ICollectable>();
             if (collectable != null && collectable.canBeCollected)
             {
-                 collectable.Collect(_playerInventory);
+                collectable.Collect(_playerInventory);
                 ClearHighlight();
             }
         }
     }
+
     private void ApplyOutline(MeshRenderer renderer, ICollectable collectable)
     {
-      
         _originalMaterials = renderer.materials;
         Material[] newMaterials = new Material[_originalMaterials.Length + 1];
         _originalMaterials.CopyTo(newMaterials, 0);
@@ -334,6 +358,7 @@ public class MovementHandler : MonoBehaviour
             {
                 renderer.materials = _originalMaterials;
             }
+
             currentlyHighlighted = null;
             _originalMaterials = null;
         }
@@ -346,6 +371,7 @@ public class MovementHandler : MonoBehaviour
             return so;
         return null;
     }
+
     public void LockPlayer(bool isLocked)
     {
         _canMove = isLocked;
@@ -353,12 +379,11 @@ public class MovementHandler : MonoBehaviour
 
     public void InitializeWeapon(BaseWeapon weapon)
     {
-        weapon.IniTialize(this,_playerInventory,animator,aimTarget,rightSpwnPoint,crosshair);
+        weapon.IniTialize(this, _playerInventory, animator, aimTarget, rightSpwnPoint, crosshair);
     }
 
     public void EquipItem(BaseWeapon weapon)
     {
-        
         CurrentWeapon = weapon;
         if (CurrentWeapon.isLeftHanded)
         {
@@ -368,6 +393,7 @@ public class MovementHandler : MonoBehaviour
         {
             CurrentWeapon.transform.SetParent(rightSpwnPoint);
         }
+
         CurrentWeapon.transform.localPosition = CurrentWeapon.RightHandAngle;
         CurrentWeapon.transform.localRotation = Quaternion.Euler(CurrentWeapon.RightHandRotAngle);
     }
@@ -385,5 +411,5 @@ public class MovementHandler : MonoBehaviour
     public bool IsSprinting()
     {
         return _isSprinting;
-    }//hunter
+    } //hunter
 }

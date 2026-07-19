@@ -7,7 +7,14 @@ using UnityEngine.UI;
 
 public enum ResourceType
 {
-    Wood, Stone , Leaf, Metal, Log,LongWood,Stick,Rope
+    Wood,
+    Stone,
+    Leaf,
+    Metal,
+    Log,
+    LongWood,
+    Stick,
+    Rope
 }
 
 public class BaseResource : Resource<ResourceSo>
@@ -17,30 +24,28 @@ public class BaseResource : Resource<ResourceSo>
 
     protected override void Awake()
     {
-        Gm= gameObject;
+        Gm = gameObject;
         base.Awake();
     }
 
     protected override void CraftMe()
     {
-      
         EventBus.OnResourceAdd.Invoke(this);
     }
-    protected  override void RemoveMeCraftingList()
+
+    protected override void RemoveMeCraftingList()
     {
         _isInCraftingList = false;
-       EventBus.OnResourceRemove.Invoke(this);
+        EventBus.OnResourceRemove.Invoke(this);
     }
 
     protected override void RemoveFromInventory()
     {
-        if(_isInCraftingList)return;
+        if (_isInCraftingList) return;
         PlayerRepository.instance.RemoveResourceFromInventory(So, gameObject);
     }
-    
+
     private void HarvestMe()
     {
-        
     }
- 
 }

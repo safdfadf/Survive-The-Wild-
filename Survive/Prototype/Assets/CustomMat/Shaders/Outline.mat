@@ -8,12 +8,12 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Outline
-  m_Shader: {fileID: -6465566751694194690, guid: 31efc85915863cf4f82782e29adfda01, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 16bbee256a6d4e849b3fac3e73c5d93c, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
   m_InvalidKeywords: []
-  m_LightmapFlags: 2
+  m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
@@ -38,16 +38,15 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _GlowStrength: 1
-    - _PulseSpeed: 1
+    - _OutlineScale: 0
     - _QueueControl: 0
     - _QueueOffset: 0
     m_Colors:
-    - _BaseColoe: {r: 1, g: 1, b: 1, a: 0}
-    - _EmissionColor: {r: 1, g: 0.9201633, b: 0.07861614, a: 0}
+    - _OutlineColor: {r: 1, g: 1, b: 1, a: 0}
+    - _OutlineScale_1: {r: 1.16, g: 1.01, b: 1.09, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
---- !u!114 &2382695349920937551
+--- !u!114 &8535245655622792721
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}

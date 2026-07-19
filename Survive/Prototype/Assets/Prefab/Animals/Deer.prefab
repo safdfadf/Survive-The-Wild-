@@ -550,8 +550,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6580559345571706741}
-  - component: {fileID: 4203618319361620025}
-  - component: {fileID: 3890684332168049436}
   m_Layer: 0
   m_Name: Deer_ROOTSHJnt
   m_TagString: Untagged
@@ -578,40 +576,6 @@ Transform:
   - {fileID: 171637749599620932}
   m_Father: {fileID: 4963698144179152772}
   m_LocalEulerAnglesHint: {x: 0, y: -0, z: 0}
---- !u!65 &4203618319361620025
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3022891001374653521}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.36444947, y: 0.29063648, z: 1.1922091}
-  m_Center: {x: 0.027913496, y: 0.035655767, z: 0.4062348}
---- !u!114 &3890684332168049436
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3022891001374653521}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 43f6ef39e816f2e4e92f05616bf5d78f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  damageMultiplayer: 5
 --- !u!1 &3076655889266589157
 GameObject:
   m_ObjectHideFlags: 0
@@ -686,8 +650,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7874278811402193919}
-  - component: {fileID: 4983391713094672230}
-  - component: {fileID: 8558805354429291915}
   m_Layer: 0
   m_Name: Deer_r_FrontLeg_Knee1SHJnt
   m_TagString: Untagged
@@ -711,40 +673,6 @@ Transform:
   - {fileID: 7484568166595447330}
   m_Father: {fileID: 8664269834514149653}
   m_LocalEulerAnglesHint: {x: 0, y: -0.000008105666, z: 0}
---- !u!65 &4983391713094672230
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3693473902215023604}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.5412511, y: 0.12604298, z: 0.17935687}
-  m_Center: {x: -0.049186807, y: -0.006261527, z: 0.007984347}
---- !u!114 &8558805354429291915
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3693473902215023604}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 43f6ef39e816f2e4e92f05616bf5d78f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  damageMultiplayer: 5
 --- !u!1 &3749171675931717024
 GameObject:
   m_ObjectHideFlags: 0
@@ -819,7 +747,6 @@ GameObject:
   m_Component:
   - component: {fileID: 9217658696901490822}
   - component: {fileID: 916235548234203092}
-  - component: {fileID: 5602917476945723572}
   m_Layer: 0
   m_Name: Deer_Rig
   m_TagString: Untagged
@@ -856,7 +783,7 @@ Animator:
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: efe59de1903c17141bf3a8511eda0c7e, type: 3}
   m_Controller: {fileID: 9100000, guid: b85ec1e302770b642b85403c214e5816, type: 2}
-  m_CullingMode: 1
+  m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
@@ -867,28 +794,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!195 &5602917476945723572
-NavMeshAgent:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3970868096809787602}
-  m_Enabled: 1
-  m_AgentTypeID: 0
-  m_Radius: 0.6
-  m_Speed: 3.5
-  m_Acceleration: 10
-  avoidancePriority: 50
-  m_AngularSpeed: 1500
-  m_StoppingDistance: 0
-  m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
-  m_AutoRepath: 1
-  m_Height: 2
-  m_BaseOffset: 0
-  m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
 --- !u!1 &4066666886995376707
 GameObject:
   m_ObjectHideFlags: 0
@@ -1124,8 +1029,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7604523264875759475}
-  - component: {fileID: 7100523143456300740}
-  - component: {fileID: 7570343988141549426}
   m_Layer: 0
   m_Name: Deer_l_FrontLeg_Knee1SHJnt
   m_TagString: Untagged
@@ -1149,40 +1052,6 @@ Transform:
   - {fileID: 3289161936919956203}
   m_Father: {fileID: 6911902473577457386}
   m_LocalEulerAnglesHint: {x: 0, y: -0.000008105679, z: 0}
---- !u!65 &7100523143456300740
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4821716726033823872}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.55986124, y: 0.13638388, z: 0.12788802}
-  m_Center: {x: -0.034331243, y: 0.007591376, z: 0.020203033}
---- !u!114 &7570343988141549426
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4821716726033823872}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 43f6ef39e816f2e4e92f05616bf5d78f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  damageMultiplayer: 6
 --- !u!1 &4824949200531067413
 GameObject:
   m_ObjectHideFlags: 0
@@ -1351,8 +1220,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8180071556211126552}
-  - component: {fileID: 7468843082026469740}
-  - component: {fileID: 8723699115149034859}
   m_Layer: 0
   m_Name: Deer_l_HindLeg_Knee1SHJnt
   m_TagString: Untagged
@@ -1376,40 +1243,6 @@ Transform:
   - {fileID: 1824655359632856701}
   m_Father: {fileID: 1950649540868086785}
   m_LocalEulerAnglesHint: {x: -7.197248e-10, y: 14.351258, z: 0.000000005251167}
---- !u!65 &7468843082026469740
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5104292993093324018}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.604155, y: 0.16451772, z: 0.16601656}
-  m_Center: {x: -0.11151507, y: -0.0065637697, z: 0.03864483}
---- !u!114 &8723699115149034859
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5104292993093324018}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 43f6ef39e816f2e4e92f05616bf5d78f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  damageMultiplayer: 6
 --- !u!1 &5325641296852677432
 GameObject:
   m_ObjectHideFlags: 0
@@ -1419,6 +1252,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6423940290199843339}
+  - component: {fileID: 2643171255754562124}
+  - component: {fileID: 5116825879223156106}
   m_Layer: 0
   m_Name: Deer_Head_JawSHJnt
   m_TagString: Untagged
@@ -1435,13 +1270,47 @@ Transform:
   m_GameObject: {fileID: 5325641296852677432}
   serializedVersion: 2
   m_LocalRotation: {x: 1.1102232e-16, y: 1.6653347e-16, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: -0.14436595, y: -2.254655e-16, z: 0.21074474}
+  m_LocalPosition: {x: -0.194, y: -0, z: 0.095}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 357622345851245343}
   m_Father: {fileID: 8162095374953874523}
   m_LocalEulerAnglesHint: {x: 0, y: -25.243359, z: 90}
+--- !u!135 &2643171255754562124
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5325641296852677432}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.21693377
+  m_Center: {x: -9.742514e-16, y: -0.000000008784325, z: 0.016933767}
+--- !u!114 &5116825879223156106
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5325641296852677432}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43f6ef39e816f2e4e92f05616bf5d78f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damageMultiplayer: 10
 --- !u!1 &5428487018298220943
 GameObject:
   m_ObjectHideFlags: 0
@@ -1873,8 +1742,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6072598048963914209}
   - component: {fileID: 1908432665674836029}
-  - component: {fileID: 7524218214433464134}
-  - component: {fileID: 3030314809557161181}
+  - component: {fileID: 1111393339059093989}
   m_Layer: 0
   m_Name: Deer
   m_TagString: Untagged
@@ -1916,50 +1784,28 @@ MonoBehaviour:
   runSpeed: 12
   fleeSpeed: 14
   followPoint: {fileID: 4927684963539932423}
---- !u!54 &7524218214433464134
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8368043525601244960}
-  serializedVersion: 4
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
---- !u!114 &3030314809557161181
-MonoBehaviour:
+--- !u!195 &1111393339059093989
+NavMeshAgent:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8368043525601244960}
   m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3640ce8e39cdfc547b2560cdebc5e6bb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ragdollGm:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!1 &8374465719791167992
 GameObject:
   m_ObjectHideFlags: 0
@@ -2032,6 +1878,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1680229461598708520}
+  - component: {fileID: 2471916024221913182}
+  - component: {fileID: 4486675555962426873}
   m_Layer: 0
   m_Name: Deer_Spine_02SHJnt
   m_TagString: Untagged
@@ -2055,6 +1903,40 @@ Transform:
   - {fileID: 2922182448215948974}
   m_Father: {fileID: 1888163339257856922}
   m_LocalEulerAnglesHint: {x: -0.0000000019044422, y: -0.0014960135, z: 0.00000008966189}
+--- !u!65 &2471916024221913182
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8482135296648665221}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 0.41995153, z: 0.44200826}
+  m_Center: {x: -9.672454e-10, y: 0.0010382682, z: -0.015589126}
+--- !u!114 &4486675555962426873
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8482135296648665221}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43f6ef39e816f2e4e92f05616bf5d78f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damageMultiplayer: 5
 --- !u!1 &8544504064978531802
 GameObject:
   m_ObjectHideFlags: 0
@@ -2064,8 +1946,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8313772288999010447}
-  - component: {fileID: 7705394320066716717}
-  - component: {fileID: 6191857897853220361}
   m_Layer: 0
   m_Name: Deer_r_HindLeg_Knee1SHJnt
   m_TagString: Untagged
@@ -2089,40 +1969,6 @@ Transform:
   - {fileID: 6141145065908044534}
   m_Father: {fileID: 2634107445887849996}
   m_LocalEulerAnglesHint: {x: 7.197961e-10, y: 14.351258, z: -0.0000000052510956}
---- !u!114 &7705394320066716717
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8544504064978531802}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 43f6ef39e816f2e4e92f05616bf5d78f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  damageMultiplayer: 6
---- !u!65 &6191857897853220361
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8544504064978531802}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.5778369, y: 0.16502868, z: 0.2045238}
-  m_Center: {x: -0.09951452, y: -0.020192722, z: 0.034091827}
 --- !u!1 &8667158991415377342
 GameObject:
   m_ObjectHideFlags: 0

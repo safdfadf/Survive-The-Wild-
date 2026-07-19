@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6931507913845782961}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WB.down.shoulder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42,7 +42,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3609671069601210625}
   - component: {fileID: 2545128387099011190}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: wooden bow_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -149,7 +149,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1998161430664178931}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WB.top.ik
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -181,7 +181,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8846287154670654982}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WB.down.bone.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -334,7 +334,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2442880704183491989}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WB.top.bone.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -504,7 +504,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8166776055109607864}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WB.top.horn_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -535,7 +535,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8318992419170716529}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WB.down.bone.003
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -567,7 +567,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9090304795421885263}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WB.top.ik_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -598,7 +598,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8482224918200210659}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WB.top.bone.005
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -630,7 +630,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 225042308890040522}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WB.top.bone.002
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -851,7 +851,7 @@ MonoBehaviour:
   maxDrawTime: 1
   arrowPrefab: {fileID: 0}
   _mixArrowSpeed: 0
-  _maxArrowSpeed: 15
+  _maxArrowSpeed: 30
   gravityDuration: 0
   bowString: {fileID: 4110722299673010836}
   pullSpeed: 0
@@ -874,8 +874,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.22721621, y: 0.13293925, z: 1.2583807}
-  m_Center: {x: 0.017320067, y: 0.0020058192, z: -0.005575776}
+  m_Size: {x: 0.22721621, y: 0.05382727, z: 1.2583807}
+  m_Center: {x: 0.017320067, y: 0.007942065, z: -0.005575776}
 --- !u!1 &3179838816740599969
 GameObject:
   m_ObjectHideFlags: 0
@@ -885,7 +885,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4110722299673010836}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WB.string
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -917,7 +917,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8713302485634540449}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WB.top.bone.004
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -949,7 +949,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3620475645574162851}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WB.down.bone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -981,7 +981,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1691614814861771308}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WB.main
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1019,7 +1019,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1705642157257942713}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WB.down.horn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1051,7 +1051,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3807704839048380376}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WB.top.bone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1083,7 +1083,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4816276128945945534}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Wooden Bow_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1115,7 +1115,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2033478642169150501}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WB.top.bone.005_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1146,7 +1146,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8017385830374964049}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WB.string_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1177,7 +1177,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5291499482879124106}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WB.top.shoulder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1209,7 +1209,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1203076838347625189}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WB.top.horn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1278,7 +1278,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3074471459232485234}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: ArrowRestPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1294,7 +1294,7 @@ Transform:
   m_GameObject: {fileID: 6403075537588762447}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0.004, y: 0.034, z: -0.032}
+  m_LocalPosition: {x: 0.004, y: 0.1026, z: -0.032}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1309,7 +1309,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4489446772548832088}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WB.down.ik_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1340,7 +1340,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3916658276887583654}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WB.down.bone.005_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1492,7 +1492,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8933232952779847943}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WB.down.bone.004
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1524,7 +1524,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3109372309419024855}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WB.down.horn_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1555,7 +1555,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5849083145594735746}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WB.down.bone.005
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1587,7 +1587,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3702225217879510196}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WB.down.bone.002
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1619,7 +1619,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3796904716560763821}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WB.top.bone.003
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1651,7 +1651,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4770853945382639652}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WB.down.ik
   m_TagString: Untagged
   m_Icon: {fileID: 0}
