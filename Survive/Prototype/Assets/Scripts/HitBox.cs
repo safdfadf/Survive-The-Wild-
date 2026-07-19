@@ -20,6 +20,7 @@ public class HitBox : MonoBehaviour,IArrowStickable
             Debug.LogError(this.animal.name + " is missing animal");
         }
     }
+    
     public void StickArrow(GameObject arrow, Vector3 point, Vector3 offset, Vector3 normal)
     {
         var rb = arrow.GetComponent<Rigidbody>();

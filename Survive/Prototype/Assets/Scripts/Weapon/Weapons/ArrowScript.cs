@@ -1,84 +1,109 @@
 using System;
 using UnityEngine;
 
-public class ArrowScript : MonoBehaviour,ICollectable   
+public class ArrowScript : MonoBehaviour, ICollectable
 {
     [SerializeField] private GameObject TestHitPoint;
-   [SerializeField] private Vector3 offset;
-   private ResourceType type;
-   public  ResourceSo So { get; set; }
-   public bool canBeCollected { get; set; }
-   public GameObject Gm { get; private set; }
-   private Rigidbody rb;
-   private bool _isStuck;
+    [SerializeField] private Vector3 offset;
+    [SerializeField] private LayerMask mask;
+    [SerializeField] private Transform rayOrigin;
+    private Vector3 _velocity;
+    public float gravity = -9.81f;
+    private ResourceType type;
+    public ResourceSo So { get; set; }
+    public bool canBeCollected { get; set; }
+    public GameObject Gm { get; private set; }
+    public Rigidbody rb;
+    private bool _isStuck;
+    public Quaternion currentRotation;
+    public Vector3 currentPosition;
+    private bool _canMove;
+    private Vector3 lastPosition;
 
-   private void Awake()
-   {
-       Gm = gameObject;
-       canBeCollected = true;
-   }
-
-   private void Start()
-   {
-       if (Display.displays.Length > 1)
-           Display.displays[1].Activate();
-
-   }
-
-   public void Init(Collider PlayerCollider)
-   {
-       Collider arrowCollider = GetComponent<Collider>();
-       Physics.IgnoreCollision(PlayerCollider, arrowCollider);
-
-   }
-   private void FixedUpdate()
-   {
-       rb = gameObject.GetComponent<Rigidbody>();
-       if (rb != null && rb.linearVelocity.sqrMagnitude > 0.01f&& !_isStuck)
-       {
-           transform.forward = rb.linearVelocity.normalized;
-       }
-   }
-   private void OnCollisionEnter(Collision collision)
+    private void Awake()
     {
-        if (_isStuck) return;
-    _isStuck = true;
-    IArrowStickable stickable = collision.collider.GetComponent<IArrowStickable>();
-    if (stickable == null){Debug.Log("Stickable null" + collision.collider.gameObject.name);return;}
-    Debug.Log(collision.gameObject.name);
-    var rb = GetComponent<Rigidbody>();
-    Debug.Log(collision.gameObject.name);
-    rb.linearVelocity = Vector3.zero;
-    rb.angularVelocity = Vector3.zero;
-    rb.isKinematic = true;
-    rb.detectCollisions = false;
-    // Disable collider immediately to prevent bounce
-    var col = GetComponent<Collider>();
-    col.enabled = false;
-    
-    
-    
-   
-   
-    // Use exact physics hit point
-    ContactPoint cp = collision.contacts[0];
-    Instantiate(TestHitPoint, cp.point, Quaternion.identity);
-    // Stick arrow
-    transform.position = cp.point;
-    transform.rotation = Quaternion.LookRotation(-cp.normal);
+        Gm = gameObject;
+        canBeCollected = true;
+    }
 
-    // Slight offset so arrow doesn't clip
-    transform.position += transform.forward * -0.05f;
+    private void Start()
+    {
+        if (Display.displays.Length > 1)
+            Display.displays[1].Activate();
+    }
 
-    // Parent to target
-    transform.SetParent(collision.transform, true);
+    public void Init(Collider PlayerCollider, Collider bowCol)
+    {
+        Collider arrowCollider = GetComponent<Collider>();
+        Physics.IgnoreCollision(PlayerCollider, arrowCollider);
+        Physics.IgnoreCollision(bowCol, arrowCollider);
+    }
 
-    stickable.TakeDamage(cp.point);
-}
+    private void Update()
+    {
+        if (rb != null && rb.linearVelocity.sqrMagnitude > 0.01f && !_isStuck)
+        {
+            currentPosition = transform.position;
+            currentRotation = transform.rotation;
+        }
+
+        if (_isStuck && rb == null)
+        {
+            //  transform.rotation = currentRotation;
+            // transform.position = currentPosition;
+        }
+
+        MoveArrow();
+    }
+
+    private void StickArrow(RaycastHit hit) // use trigger enter 
+    {
+        _canMove = false;
+        Debug.Log(hit.collider.gameObject.name);
+        transform.position = hit.point;
+        transform.rotation = Quaternion.LookRotation(-hit.normal);
+
+        transform.SetParent(hit.collider.transform);
+
+        IArrowStickable stickable = hit.collider.GetComponent<IArrowStickable>();
+        if (stickable != null)
+            stickable.TakeDamage(hit.point);
+    }
+
+    public void ShootArrow(Vector3 shootDirection, float arrowSpeed)
+    {
+        Debug.Log(arrowSpeed + " arrow Speed");
+        _canMove = true;
+        _velocity = shootDirection.normalized * arrowSpeed;
+    }
+
+    private void MoveArrow()
+    {
+        if (!_canMove) return;
+
+        float dt = Time.deltaTime;
 
 
-    
-    public void Collect(PlayerInventory  collector)
+        _velocity.y += gravity * dt;
+
+        lastPosition = transform.position;
+
+        transform.position += _velocity * dt;
+
+        if (_velocity.sqrMagnitude > 0.01f)
+            transform.rotation = Quaternion.LookRotation(_velocity);
+        RaycastHit hit;
+      //  Vector3 rayOrigin = lastPosition + _velocity.normalized * 0.1f;
+      float distance = _velocity.magnitude * Time.deltaTime;
+      Debug.DrawLine(rayOrigin.position, rayOrigin.position + _velocity.normalized * distance, Color.red);
+        if (Physics.Raycast(rayOrigin.position , _velocity.normalized, out hit, _velocity.magnitude * dt))
+        {
+            StickArrow(hit);
+        }
+    }
+
+
+    public void Collect(PlayerInventory collector)
     {
         canBeCollected = false;
         collector.AddResource(this);
@@ -86,6 +111,5 @@ public class ArrowScript : MonoBehaviour,ICollectable
 
     public void ToggleMenu()
     {
-        
     }
 }
