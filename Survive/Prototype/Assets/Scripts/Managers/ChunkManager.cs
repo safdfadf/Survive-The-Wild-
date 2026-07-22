@@ -10,27 +10,27 @@ public struct RegionSeed
     public RegionType regionType;
     public Transform seedPos;
 }
+
 public class ChunkManager : MonoBehaviour
 {
-    [SerializeField] private int chunkSide = 100;// side of the square s*s
+    [SerializeField] private int chunkSide = 100; // side of the square s*s
     [SerializeField] private MovementHandler player;
-    [SerializeField] private List<RegionSeed> seeds; 
-    public Dictionary<Vector2Int, Chunk> AllChunks { get; private set; }=new();
-    public List<Chunk> activeChunks { get; private set; }= new ();
+    [SerializeField] private List<RegionSeed> seeds;
+    public Dictionary<Vector2Int, Chunk> AllChunks { get; private set; } = new();
+    public List<Chunk> activeChunks { get; private set; } = new();
 
-    [Header("CashedPos")]
-    [SerializeField] private int cashedPosCount = 0;
-    
+    [Header("CashedPos")] [SerializeField] private int cashedPosCount = 0;
+
     private Bounds _currentBounds;
     private Dictionary<RegionType, Bounds> regionBounds = new();
-   
+
     private Vector2Int _playerPos;
     private Chunk _currentChunk;
-    [SerializeField]  private float radius =.9f;
-    
+    [SerializeField] private float radius = .9f;
+
     private GlobalPool _globalPool;
-    private RegionType _currentRegion= RegionType.Null;
-   
+    private RegionType _currentRegion = RegionType.Null;
+
     [SerializeField] private float chunkUpdateInterval = 0.5f;
     private Coroutine chunkRoutine;
 
@@ -39,10 +39,12 @@ public class ChunkManager : MonoBehaviour
         if (chunkRoutine != null)
             StopCoroutine(chunkRoutine);
     }
+
     private void Awake()
     {
         GenerateChunks();
     }
+
     private IEnumerator ChunkUpdateRoutine()
     {
         while (true)
@@ -50,31 +52,31 @@ public class ChunkManager : MonoBehaviour
             _playerPos = GetChunkIndex(player.transform.position);
             ActivateNearbyChunks();
             Vector2Int newPos = GetChunkIndex(player.transform.position);
-       
+
             yield return new WaitForSeconds(chunkUpdateInterval);
-          // check if currentChunk has changed if it has activate tracks in that chunk 
+            // check if currentChunk has changed if it has activate tracks in that chunk 
         }
     }
+
     private void Start()
     {
         _currentChunk = GetChunkAtPos(player.transform.position);
         chunkRoutine = StartCoroutine(ChunkUpdateRoutine());
-      
-       
     }
+
     private void GenerateChunks()
     {
         Terrain terrain = Terrain.activeTerrain;
         Vector3 size = terrain.terrainData.size;
 
-        int chunksX = Mathf.CeilToInt(size.x / chunkSide);// no. of chunk on x axis
+        int chunksX = Mathf.CeilToInt(size.x / chunkSide); // no. of chunk on x axis
         int chunksZ = Mathf.CeilToInt(size.z / chunkSide); // no. of chunk on z axis 
 
         for (int x = 0; x < chunksX; x++)
         {
             for (int z = 0; z < chunksZ; z++)
             {
-                Vector3 center = new Vector3(x * chunkSide + chunkSide/2, 0, z * chunkSide + chunkSide/2);
+                Vector3 center = new Vector3(x * chunkSide + chunkSide / 2, 0, z * chunkSide + chunkSide / 2);
                 Bounds bounds = new Bounds(center, new Vector3(chunkSide, 1000f, chunkSide));
 
                 Chunk chunk = new Chunk
@@ -89,11 +91,14 @@ public class ChunkManager : MonoBehaviour
                     Vector3 pos = RetPosOnNv.GetRandomPosOnTerrain(chunk.bounds);
                     chunk.cashedPos.Add(new PosInChunk(pos));
                 }
+
                 AllChunks.Add(chunk.index, chunk);
             }
         }
+
         GenerateRegionBound();
     }
+
     private Vector2Int GetChunkIndex(Vector3 pos)
     {
         int x = Mathf.FloorToInt(pos.x / chunkSide);
@@ -103,7 +108,7 @@ public class ChunkManager : MonoBehaviour
 
     private RegionType GetRegionTypeForChunk(Vector3 chunkCenter)
     {
-        if (seeds.Count == 0) return RegionType.Forest; 
+        if (seeds.Count == 0) return RegionType.Forest;
         float minDist = float.MaxValue;
         RegionType closest = RegionType.Forest;
 
@@ -116,6 +121,7 @@ public class ChunkManager : MonoBehaviour
                 closest = seed.regionType;
             }
         }
+
         return closest;
     }
 
@@ -128,8 +134,10 @@ public class ChunkManager : MonoBehaviour
                 return true;
             }
         }
+
         return false;
     }
+
     private void ActivateNearbyChunks()
     {
         List<Chunk> chunksToActivate = new List<Chunk>();
@@ -178,11 +186,10 @@ public class ChunkManager : MonoBehaviour
                     chunk.isActive = false;
                     activeChunks.Remove(chunk);
                     DespawnChunk(chunk);
-                   
-                   
                 }
             }
         }
+
         GpuInstancing();
     }
 
@@ -190,23 +197,32 @@ public class ChunkManager : MonoBehaviour
     {
         foreach (var chunks in AllChunks.Values)
         {
-            if (!chunks.isActive)
+            if (!chunks.isActive) // all the chunks that are in active are 
             {
                 EventBus.OnGpuActivateInChunk?.Invoke(chunks);
             }
         }
     }
+
     private void SpawnChunk(Chunk chunk)
-    { 
-        if(_currentRegion == RegionType.Null) {  _currentRegion =chunk.regionType;}
+    {
+        if (_currentRegion == RegionType.Null)
+        {
+            _currentRegion = chunk.regionType;
+        }
+
+        if (chunk.isEmptyChunk) return;
+
         switch (chunk.regionType)
-        { 
+        {
             case RegionType.Forest:
                 _currentRegion = RegionType.Forest;
-                EventBus.CreateAnimalData.Invoke(_currentRegion,GetRegionBound(_currentRegion));// create animal data
-                GenericSpawner.Instance.SpawnInChunk<EnvironSo,Environment>(SoProvider.instance.GetEnvironmentSo(chunk.regionType),chunk,chunk.objectInChunk);
-                GenericSpawner.Instance.SpawnInChunk<ResourceSo,BaseResource>(SoProvider.instance.GetResourceSo(),chunk,chunk.objectInChunk);
-               // GenericSpawner.Instance.SpawnInChunk<FoodSo,Food>(SoProvider.instance.GetFoodSo(chunk.regionType),chunk,chunk.objectInChunk);
+                EventBus.CreateAnimalData.Invoke(_currentRegion, GetRegionBound(_currentRegion)); // create animal data
+                GenericSpawner.Instance.SpawnInChunk<EnvironSo, Environment>(
+                    SoProvider.instance.GetEnvironmentSo(chunk.regionType), chunk, chunk.objectInChunk);
+                GenericSpawner.Instance.SpawnInChunk<ResourceSo, BaseResource>(SoProvider.instance.GetResourceSo(),
+                    chunk, chunk.objectInChunk);
+                // GenericSpawner.Instance.SpawnInChunk<FoodSo,Food>(SoProvider.instance.GetFoodSo(chunk.regionType),chunk,chunk.objectInChunk);
                 break;
             case RegionType.Swamp:
                 _currentRegion = RegionType.Swamp;
@@ -216,8 +232,9 @@ public class ChunkManager : MonoBehaviour
                 _currentRegion = RegionType.Sawana;
                 Debug.Log("Spawning Sawana");
                 break;
-        }   
+        }
     }
+
     private void GenerateRegionBound()
     {
         foreach (var kvp in AllChunks)
@@ -235,44 +252,58 @@ public class ChunkManager : MonoBehaviour
             }
         }
     }
+
     private Bounds GetRegionBound(RegionType regionType)
     {
         return regionBounds[regionType];
     }
-    private void DespawnChunk(Chunk chunk)// with current set up we need to deactivate individually 
+
+    private void DespawnChunk(Chunk chunk) // with current set up we need to deactivate individually 
     {
         EventBus.OnDeactiveChunk?.Invoke(chunk); // Deactivate Animal 
         List<GameObject> environ = new();
         List<GameObject> resources = new();
         List<GameObject> food = new();
-      
+
         TrackHandler.instance.ReturnTracks(chunk);
         foreach (var obj in chunk.objectInChunk)
         {
-            if(obj == null){Debug.Log(obj.gameObject.name); continue;}
-            if(obj.TryGetComponent<Environment>(out var envObj))
+            if (obj == null)
+            {
+                Debug.Log(obj.gameObject.name);
+                continue;
+            }
+
+            if (obj.TryGetComponent<Environment>(out var envObj))
                 environ.Add(envObj.gameObject);
-            if(obj.TryGetComponent<BaseResource>(out var resourceObj))
+            if (obj.TryGetComponent<BaseResource>(out var resourceObj))
                 resources.Add(resourceObj.gameObject);
-            if(obj.TryGetComponent<Food>(out var foodObj))
+            if (obj.TryGetComponent<Food>(out var foodObj))
                 food.Add(foodObj.gameObject);
         }
-        GenericSpawner.Instance.DespawnChunk(chunk,environ,GetPrefab);
-        GenericSpawner.Instance.DespawnChunk(chunk,resources,GetPrefab);
-        GenericSpawner.Instance.DespawnChunk(chunk,food,GetPrefab);
+
+        GenericSpawner.Instance.DespawnChunk(chunk, environ, GetPrefab);
+        GenericSpawner.Instance.DespawnChunk(chunk, resources, GetPrefab);
+        GenericSpawner.Instance.DespawnChunk(chunk, food, GetPrefab);
         environ.Clear();
         resources.Clear();
         food.Clear();
     }
+
     private GameObject GetPrefab(GameObject obj)
     {
         if (obj.TryGetComponent<Environment>(out var envObj))
         {
             EnvironSo so = envObj.environSo;
-            if(so == null){Debug.Log("so was null");return null;}
+            if (so == null)
+            {
+                Debug.Log("so was null");
+                return null;
+            }
+
             return so.prefab;
         }
-        else if(obj.TryGetComponent<BaseResource>(out var resObj))
+        else if (obj.TryGetComponent<BaseResource>(out var resObj))
         {
             ResourceSo so = resObj.So;
             return so.prefab;
@@ -285,6 +316,7 @@ public class ChunkManager : MonoBehaviour
 
         return null;
     }
+
     public Chunk GetChunkAtPos(Vector3 pos)
     {
         int x = Mathf.FloorToInt(pos.x / chunkSide);
@@ -296,7 +328,6 @@ public class ChunkManager : MonoBehaviour
             return chunk;
 
         return null;
-
     }
 
     public bool ObjectLiesInActiveChunk(Vector3 pos)
@@ -305,36 +336,37 @@ public class ChunkManager : MonoBehaviour
         {
             if (chunk.bounds.Contains(pos)) return true;
         }
+
         return false;
     }
 
     public void ActivateTracks(Chunk chunk)
     {
         List<TrackData> trackData = chunk.TrackData;
-        
+
         foreach (var data in trackData)
-        { 
+        {
             GameObject so = data.soAnimal.TrackMesh[Random.Range(0, data.soAnimal.TrackMesh.Count)];
             data.prefab = so;
-            SpawnTracksWithDelay(so,data,chunk);
-            GameObject obj = GlobalPool.instance.Get(so,data.pos);
+            SpawnTracksWithDelay(so, data, chunk);
+            GameObject obj = GlobalPool.instance.Get(so, data.pos);
             Tracks track = obj.GetComponent<Tracks>();
             track.Initialize(data);
             chunk.activeTracks.Add(obj);
-          
         }
     }
 
-    private IEnumerator SpawnTracksWithDelay(GameObject so , TrackData data,Chunk chunk)
+    private IEnumerator SpawnTracksWithDelay(GameObject so, TrackData data, Chunk chunk)
     {
         yield return new WaitForSeconds(2f);
-        GameObject obj = GlobalPool.instance.Get(so,data.pos);
+        GameObject obj = GlobalPool.instance.Get(so, data.pos);
         Tracks track = obj.GetComponent<Tracks>();
         track.Initialize(data);
         chunk.activeTracks.Add(obj);
-        Debug.Log(chunk.activeTracks.Count);  
+        Debug.Log(chunk.activeTracks.Count);
     }
-    public Vector3 GetClosestInactiveChunkPosition(Vector3 animalPos)// returns a pos from closest inactive chunk
+
+    public Vector3 GetClosestInactiveChunkPosition(Vector3 animalPos) // returns a pos from closest inactive chunk
     {
         Chunk closest = null;
         float bestDist = float.MaxValue;
@@ -352,20 +384,20 @@ public class ChunkManager : MonoBehaviour
                 closest = chunk;
             }
         }
-        if(closest == null)return animalPos;
+
+        if (closest == null) return animalPos;
         foreach (var posInChunk in closest.cashedPos)
         {
             if (posInChunk.IsAvailable)
                 return posInChunk.Position;
-            
-        } 
+        }
+
         return animalPos;
     }
 
-  
+
     private void OnDrawGizmos()
     {
-        
         if (AllChunks == null || AllChunks.Count == 0)
             return;
 
@@ -382,31 +414,42 @@ public class ChunkManager : MonoBehaviour
                 new Vector3(chunk.bounds.size.x, 1f, chunk.bounds.size.z)
             );
         }
-        
-    /*    if (regionBounds == null || regionBounds.Count == 0)
-            return;
 
-        foreach (var kvp in regionBounds)
-        {
-            RegionType region = kvp.Key;
-            Bounds bounds = kvp.Value;
+        /*    if (regionBounds == null || regionBounds.Count == 0)
+                return;
 
-            Gizmos.color = GetRegionColor(region);
+            foreach (var kvp in regionBounds)
+            {
+                RegionType region = kvp.Key;
+                Bounds bounds = kvp.Value;
 
-            Gizmos.DrawWireCube(
-                bounds.center,
-                new Vector3(bounds.size.x, 2f, bounds.size.z)
-            );*/
+                Gizmos.color = GetRegionColor(region);
+
+                Gizmos.DrawWireCube(
+                    bounds.center,
+                    new Vector3(bounds.size.x, 2f, bounds.size.z)
+                );*/
     }
+
     private Color GetRegionColor(RegionType region)
     {
         return region switch
         {
             RegionType.Forest => Color.green,
-            RegionType.Swamp  => Color.cyan,
+            RegionType.Swamp => Color.cyan,
             RegionType.Sawana => Color.yellow,
             _ => Color.white
         };
     }
-}
 
+    public void SetEmptyChunk(Bounds bounds)
+    {
+        foreach (var chunk in AllChunks.Values)
+        {
+            if (chunk.bounds.SqrDistance(bounds.center) <= bounds.extents.magnitude * bounds.extents.magnitude)
+            {
+                chunk.isEmptyChunk = true;
+            }
+        }
+    }
+}

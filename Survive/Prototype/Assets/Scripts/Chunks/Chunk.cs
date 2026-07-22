@@ -8,6 +8,7 @@ public class Chunk
     public Bounds bounds;          // world bounds
     public RegionType regionType;  // assigned via Voronoi
     public bool isActive;
+    public bool isEmptyChunk;// used by water bodies
 
     public List<GameObject> objectInChunk = new();
     public List<PosInChunk> cashedPos= new();

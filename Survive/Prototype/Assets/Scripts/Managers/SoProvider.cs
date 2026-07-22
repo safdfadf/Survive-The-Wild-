@@ -39,7 +39,7 @@ public class SoProvider : MonoBehaviour // fix duplicate code in this script
   }
   GlobalPool.instance.PreWarm(Tracks,itialTracksCount);
  }
- public List<EnvironSo> GetEnvironmentSo(RegionType type)
+ public List<EnvironSo> GetEnvironmentSo(RegionType type)// this fuction can be a right place check if this chunk is in water bodies 
  {
   List<EnvironSo> result = new();
   foreach (var So in environSo)

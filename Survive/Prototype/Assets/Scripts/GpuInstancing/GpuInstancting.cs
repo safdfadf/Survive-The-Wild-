@@ -78,6 +78,10 @@ public class GpuInstancting : MonoBehaviour
             var renderData = regionLookup[chunk.regionType];
             var matrices = kvp.Value;
             var treeSo = SoProvider.instance.GetTreeSo();
+            if (treeSo == null)
+            {
+                Debug.LogWarning("No Tree So");
+            }
             int Count = Mathf.Min(treeSo.amount, matrices.Count);
             // Unity limit: 1023 per draw call
             for (int i = 0; i <Count; i += Count)

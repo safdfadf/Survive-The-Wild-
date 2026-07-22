@@ -1,7 +1,9 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class ChunkRepo : MonoBehaviour
+// TO Do: This script will be removed and scene root will be added 
+public class ChunkRepo : MonoBehaviour 
 {
     public static ChunkRepo instance;
     private ChunkManager _chunkManager;
@@ -28,5 +30,10 @@ public class ChunkRepo : MonoBehaviour
     public bool CheckPosInActiveChunk(Vector3 pos)
     {
         return _chunkManager.PosLiesInActiveChunk(pos);
+    }
+
+    public void SetEmptyChunk(Bounds bounds)
+    {
+        _chunkManager.SetEmptyChunk(bounds);
     }
 }

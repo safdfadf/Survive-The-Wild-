@@ -8,18 +8,21 @@ using Random = UnityEngine.Random;
 
 public enum WaterBody
 {
-   Null,Lake,River
+    Null,
+    Lake,
+    River
 }
+
 public class Zone : MonoBehaviour
 {
     [SerializeField] public Activity zoneType;
- [SerializeField]   private List<Vector3> zonePosition = new();
-    public WaterBody waterBodyType; 
+    [SerializeField] private List<Vector3> zonePosition = new();
+    public WaterBody waterBodyType;
     private HashSet<Vector3> occupiedPositions = new();
     private SphereCollider collier;
     private int maxPosition = 6;
     private float disBtwPos = 5;
- 
+
     private TextMeshProUGUI TypeText;
     private bool isDrinkingZone;
     private int edgeOffset = 5;
@@ -29,23 +32,26 @@ public class Zone : MonoBehaviour
 
 
     private void Awake()
-    { 
+    {
         collier = gameObject.GetComponent<SphereCollider>();
         if (collier == null)
         {
             collier = gameObject.AddComponent<SphereCollider>();
             collier.isTrigger = true;
         }
+
         GenerateZonePosition();
         TypeText = gameObject.GetComponentInChildren<TextMeshProUGUI>();
     }
 
+    // all the chunks that lies in shape of this game object set it to empty chunk
+    
     public void SetZoneText(Activity zone)
     {
         TypeText.text = zone.ToString();
     }
 
-    private void GenerateZonePosition() // IN THIS FUNCTION WE GENERATE POSITION IN INSIDE THE ZONE AND ADD THEM TO AVAILABLE POSITION 
+    private void GenerateZonePosition()
     {
         switch (waterBodyType)
         {
@@ -58,20 +64,19 @@ public class Zone : MonoBehaviour
             case WaterBody.River:
                 GenerateRiverPos();
                 break;
-
         }
     }
 
     private void GenerateGrndPos()
     {
-        
         int attempts = 0;
         // while (zonePosition.Count < maxPosition && attempts < maxPosition)
-        for(int i =0;i < maxPosition;i++)
-        { 
-            Vector3 randomPosition = transform.position + Random.insideUnitSphere * collier.radius; // now it will incerase from the center
+        for (int i = 0; i < maxPosition; i++)
+        {
+            Vector3 randomPosition =
+                transform.position + Random.insideUnitSphere * collier.radius; // now it will incerase from the center
             randomPosition.y = transform.position.y;
-            
+
             foreach (Vector3 pos in zonePosition)
             {
                 float distance = Vector3.Distance(pos, randomPosition);
@@ -84,7 +89,7 @@ public class Zone : MonoBehaviour
                     // Make sure it’s still inside the sphere radius
                     if (Vector3.Distance(transform.position, randomPosition) > collier.radius)
                     {
-                       // _tooClose = true; // reject this one
+                        // _tooClose = true; // reject this one
                     }
                     else
                     {
@@ -92,16 +97,19 @@ public class Zone : MonoBehaviour
                     }
                 }
             }
+
             if (NavMesh.SamplePosition(randomPosition, out NavMeshHit hit, 2f, NavMesh.AllAreas))
             {
-                if(!IsDuplicate(hit.position))
+                if (!IsDuplicate(hit.position))
                     zonePosition.Add(hit.position);
             }
+
             attempts++;
         }
     }
+
     private void GenerateLakePos()
-    { 
+    {
         MeshCollider _meshCollider = GetComponent<MeshCollider>();
         Bounds bounds = _meshCollider.bounds;
         Vector3 min = bounds.min;
@@ -126,41 +134,40 @@ public class Zone : MonoBehaviour
                 }
             }
         }
-    } 
+    }
+
     public Vector3? RequestPosition()
     {
         foreach (var pos in zonePosition)
         {
             if (!occupiedPositions.Contains(pos))
             {
-                
                 occupiedPositions.Add(pos);
                 _attempts = 0;
                 return pos;
             }
         }
 
-        if (_attempts > 2) return null; 
+        if (_attempts > 2) return null;
         if (zonePosition.Count != maxPosition)
         {
             GenerateZonePosition();
             _attempts++;
-           return RequestPosition();
-           
+            return RequestPosition();
         }
 
-        return null; 
+        return null;
     }
 
     public void ReleasePosition(Vector3 pos)
     {
-    
         occupiedPositions.Remove(pos);
     }
-    void OnDrawGizmos() 
+
+    void OnDrawGizmos()
     {
         Gizmos.color = Color.green;
-        foreach (var pos in zonePosition) 
+        foreach (var pos in zonePosition)
         {
             Gizmos.DrawSphere(pos, 1f);
         }
@@ -176,6 +183,7 @@ public class Zone : MonoBehaviour
                     return false; // conflict
             }
         }
+
         return true;
     }
 
@@ -186,8 +194,10 @@ public class Zone : MonoBehaviour
             hourlyOccupancy[hour] = species;
         }
     }
+
     private void GenerateRiverPos()
-    {        MeshCollider meshCollider = GetComponent<MeshCollider>();
+    {
+        MeshCollider meshCollider = GetComponent<MeshCollider>();
         if (meshCollider == null)
         {
             Debug.LogWarning("MeshCollider missing on river zone.");
@@ -227,6 +237,7 @@ public class Zone : MonoBehaviour
 
 //        Debug.Log($"Generated {zonePosition.Count} edge-biased river positions.");
     }
+
     bool IsDuplicate(Vector3 newPos)
     {
         foreach (var pos in zonePosition)
@@ -234,10 +245,14 @@ public class Zone : MonoBehaviour
             if (Vector3.Distance(pos, newPos) < 1) // or disBtwPos
                 return true;
         }
+
         return false;
     }
 
-
-
+    private void RefuzeEnviornment()
+    {
+        MeshCollider meshCol = GetComponent<MeshCollider>();
+        Bounds zoneBounds = meshCol.bounds;
+        ChunkRepo.instance.SetEmptyChunk(zoneBounds);
+    }
 }
-
