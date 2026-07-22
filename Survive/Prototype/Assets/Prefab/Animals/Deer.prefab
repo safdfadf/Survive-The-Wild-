@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6088569141914385580}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Deer_l_HindLeg_BallSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41,7 +41,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7357488347609004995}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Deer_Tail_01_02SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -73,7 +73,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4020700726847963774}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Deer_Neck_02SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -105,7 +105,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 357622345851245343}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Deer_Head_JawEndSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -136,7 +136,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6171034795522063685}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Deer_r_Clavicle_01_01SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -168,7 +168,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8664269834514149653}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Deer_r_FrontLeg_HipSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -200,7 +200,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2342130305975017322}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Deer_r_HindLeg_BallSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -233,7 +233,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7137850158490693780}
   - component: {fileID: 5791183724781996081}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: deer_horns
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -328,7 +328,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1284740832700212465}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Deer_r_Ear_01_01SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -360,7 +360,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1873087368032692502}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Deer_Spine_04SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -392,7 +392,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1902931631185204132}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Deer_r_FrontLeg_ToeSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -423,7 +423,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7484568166595447330}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Deer_r_FrontLeg_Knee2SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -455,7 +455,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6496932604608082843}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Deer_l_Ear_01_03SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -486,7 +486,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6754918639308629631}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Deer_l_FrontLeg_BallSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -518,7 +518,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3380831370506917286}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Deer_l_HindLeg_AnkleSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -550,7 +550,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6580559345571706741}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Deer_ROOTSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -585,7 +585,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6388005599865433934}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Deer_r_HindLeg_ToeSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -616,7 +616,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8544463934623914992}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Deer_Spine_TopSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -650,7 +650,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7874278811402193919}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Deer_r_FrontLeg_Knee1SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -682,7 +682,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6911902473577457386}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Deer_l_FrontLeg_HipSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -714,7 +714,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2634107445887849996}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Deer_r_HindLeg_HipSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -747,7 +747,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9217658696901490822}
   - component: {fileID: 916235548234203092}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Deer_Rig
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -803,7 +803,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4667480793990837357}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Deer_r_FrontLeg_AnkleSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -835,7 +835,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3729814503316201418}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Deer_Neck_01SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -867,7 +867,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6275340511964095545}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Deer_l_Ear_01_01SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -899,7 +899,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6817306264329728842}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Deer_Head_TopSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -932,7 +932,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2928565326176210412}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Deer_r_Ear_01_02SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -964,7 +964,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4963698144179152772}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Deer_MAINSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -996,7 +996,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8162095374953874523}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Deer_Neck_TopSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1029,7 +1029,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7604523264875759475}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Deer_l_FrontLeg_Knee1SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1061,7 +1061,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1888163339257856922}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Deer_Spine_01SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1093,7 +1093,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3289161936919956203}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Deer_l_FrontLeg_Knee2SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1125,7 +1125,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8904068579265280486}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: FollowPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1156,7 +1156,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8768458529272298135}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Deer_r_FrontLeg_BallSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1188,7 +1188,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2922182448215948974}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Deer_Spine_03SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1220,7 +1220,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8180071556211126552}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Deer_l_HindLeg_Knee1SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1254,7 +1254,7 @@ GameObject:
   - component: {fileID: 6423940290199843339}
   - component: {fileID: 2643171255754562124}
   - component: {fileID: 5116825879223156106}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Deer_Head_JawSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1321,7 +1321,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5188728401027469673}
   - component: {fileID: 4496847031845797015}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: deer_body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1456,7 +1456,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1824655359632856701}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Deer_l_HindLeg_Knee2SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1488,7 +1488,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6141145065908044534}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Deer_r_HindLeg_Knee2SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1520,7 +1520,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5073922868471031043}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Deer_l_FrontLeg_AnkleSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1552,7 +1552,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1950649540868086785}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Deer_l_HindLeg_HipSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1584,7 +1584,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5103627787731680580}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Deer_l_HindLeg_ToeSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1615,7 +1615,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6614706983200733676}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Deer_l_FrontLeg_ToeSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1646,7 +1646,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7312387355895541633}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Deer_Tail_01_03SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1677,7 +1677,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 171637749599620932}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Deer_Tail_01_01SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1709,7 +1709,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6876784431230485895}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Deer_l_Clavicle_01_01SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1743,7 +1743,7 @@ GameObject:
   - component: {fileID: 6072598048963914209}
   - component: {fileID: 1908432665674836029}
   - component: {fileID: 1111393339059093989}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Deer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1815,7 +1815,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4696607167089916849}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Deer_r_Ear_01_03SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1846,7 +1846,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6856877881924955370}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Deer_l_Ear_01_02SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1880,7 +1880,7 @@ GameObject:
   - component: {fileID: 1680229461598708520}
   - component: {fileID: 2471916024221913182}
   - component: {fileID: 4486675555962426873}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Deer_Spine_02SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1946,7 +1946,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8313772288999010447}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Deer_r_HindLeg_Knee1SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1978,7 +1978,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 527776811801163800}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Deer_r_HindLeg_AnkleSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}

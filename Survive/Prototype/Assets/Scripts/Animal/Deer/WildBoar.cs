@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Horse : AnimalBase
+public class WildBoar : AnimalBase
 {
     protected override void Awake()
     {

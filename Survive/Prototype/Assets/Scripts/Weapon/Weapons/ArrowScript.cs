@@ -13,10 +13,7 @@ public class ArrowScript : MonoBehaviour, ICollectable
     public ResourceSo So { get; set; }
     public bool canBeCollected { get; set; }
     public GameObject Gm { get; private set; }
-    public Rigidbody rb;
     private bool _isStuck;
-    public Quaternion currentRotation;
-    public Vector3 currentPosition;
     private bool _canMove;
     private Vector3 lastPosition;
 
@@ -41,18 +38,6 @@ public class ArrowScript : MonoBehaviour, ICollectable
 
     private void Update()
     {
-        if (rb != null && rb.linearVelocity.sqrMagnitude > 0.01f && !_isStuck)
-        {
-            currentPosition = transform.position;
-            currentRotation = transform.rotation;
-        }
-
-        if (_isStuck && rb == null)
-        {
-            //  transform.rotation = currentRotation;
-            // transform.position = currentPosition;
-        }
-
         MoveArrow();
     }
 
@@ -93,10 +78,10 @@ public class ArrowScript : MonoBehaviour, ICollectable
         if (_velocity.sqrMagnitude > 0.01f)
             transform.rotation = Quaternion.LookRotation(_velocity);
         RaycastHit hit;
-      //  Vector3 rayOrigin = lastPosition + _velocity.normalized * 0.1f;
-      float distance = _velocity.magnitude * Time.deltaTime;
-      Debug.DrawLine(rayOrigin.position, rayOrigin.position + _velocity.normalized * distance, Color.red);
-        if (Physics.Raycast(rayOrigin.position , _velocity.normalized, out hit, _velocity.magnitude * dt))
+        //  Vector3 rayOrigin = lastPosition + _velocity.normalized * 0.1f;
+        float distance = _velocity.magnitude * Time.deltaTime;
+        Debug.DrawLine(rayOrigin.position, rayOrigin.position + _velocity.normalized * distance, Color.red);
+        if (Physics.Raycast(rayOrigin.position, _velocity.normalized, out hit, _velocity.magnitude * dt, mask))
         {
             StickArrow(hit);
         }

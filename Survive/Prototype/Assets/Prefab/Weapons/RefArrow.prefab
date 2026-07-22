@@ -127,12 +127,10 @@ MonoBehaviour:
   offset: {x: 0, y: 0, z: 0.2}
   mask:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 256
   rayOrigin: {fileID: 4041982532778661117}
   gravity: -9.81
   rb: {fileID: 0}
-  currentRotation: {x: 0, y: 0, z: 0, w: 0}
-  currentPosition: {x: 0, y: 0, z: 0}
 --- !u!114 &4708759413079466004
 MonoBehaviour:
   m_ObjectHideFlags: 0

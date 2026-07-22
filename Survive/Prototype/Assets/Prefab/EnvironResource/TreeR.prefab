@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5585762545226431087}
   - component: {fileID: 9026891793495140048}
   - component: {fileID: 5567997534377029113}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Mesh3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -97,7 +97,7 @@ GameObject:
   - component: {fileID: 7602741608512564383}
   - component: {fileID: 8818915623856141483}
   - component: {fileID: 8288579837403870297}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Mesh1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -187,7 +187,7 @@ GameObject:
   - component: {fileID: 2647770378863023336}
   - component: {fileID: 3279994752488508085}
   - component: {fileID: 1501127935072042565}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: TreeR
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -306,7 +306,7 @@ GameObject:
   - component: {fileID: 5509752871804221568}
   - component: {fileID: 8248230978421671047}
   - component: {fileID: 5666785631021401837}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -413,7 +413,7 @@ GameObject:
   - component: {fileID: 1807285299236005344}
   - component: {fileID: 4009621855887594935}
   - component: {fileID: 4384903319476087880}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Mesh2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
