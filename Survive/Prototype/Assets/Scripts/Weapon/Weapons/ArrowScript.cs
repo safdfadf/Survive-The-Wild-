@@ -48,7 +48,7 @@ public class ArrowScript : MonoBehaviour, ICollectable
         transform.position = hit.point;
         transform.rotation = Quaternion.LookRotation(-hit.normal);
 
-        transform.SetParent(hit.collider.transform);
+        transform.SetParent(hit.collider.transform,true);
 
         IArrowStickable stickable = hit.collider.GetComponent<IArrowStickable>();
         if (stickable != null)

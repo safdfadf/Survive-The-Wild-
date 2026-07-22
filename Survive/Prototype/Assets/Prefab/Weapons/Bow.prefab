@@ -851,7 +851,7 @@ MonoBehaviour:
   maxDrawTime: 1
   arrowPrefab: {fileID: 0}
   _mixArrowSpeed: 0
-  _maxArrowSpeed: 30
+  _maxArrowSpeed: 50
   gravityDuration: 0
   bowString: {fileID: 4110722299673010836}
   pullSpeed: 0
