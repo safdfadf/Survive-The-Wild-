@@ -25,7 +25,8 @@ public class Hatchet : BaseWeapon // hatchet does not needs to know who it is hi
         ItakeDamage target = other.gameObject.GetComponent<ItakeDamage>();
         if (target != null&& player.isAttacking)
         {
-            target.TakeDamage(CraftingSo.maxDamage);
+            Vector3 contactPoint = other.gameObject.transform.position;
+            target.TakeDamage(CraftingSo.maxDamage,contactPoint);
         }
     }
     protected override void EquipMe()

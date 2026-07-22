@@ -24,7 +24,7 @@ public class Environment : MonoBehaviour,ItakeDamage,IsoInitializer<EnvironSo>
    {
     cashedPosInChunk = casedPos;  
    }
-   public void TakeDamage(int damage)
+   public void TakeDamage(int damage,Vector3 contactPoint)
    { 
       Debug.Log(gameObject.name + " taking damage " + damage);
       currentHealth -= damage;

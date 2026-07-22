@@ -50,9 +50,9 @@ public class ArrowScript : MonoBehaviour, ICollectable
 
         transform.SetParent(hit.collider.transform,true);
 
-        IArrowStickable stickable = hit.collider.GetComponent<IArrowStickable>();
-        if (stickable != null)
-            stickable.TakeDamage(hit.point);
+        ItakeDamage combatant = hit.collider.GetComponent<ItakeDamage>();
+        if (combatant != null)
+            combatant.TakeDamage(0,hit.point);
     }
 
     public void ShootArrow(Vector3 shootDirection, float arrowSpeed)
