@@ -34,7 +34,7 @@ public class PlayerVitalStats : MonoBehaviour
    [SerializeField] private float staminaRegenRate;
    private float _currentStamina;
    
-   private PlayerUIHandler _playerUIHandler;
+   private PlayerUI _playerUI;
    [Header("Dynamic values")]
    private float _currentHealth;
    
@@ -45,7 +45,7 @@ public class PlayerVitalStats : MonoBehaviour
    private void Awake()
    {
       _movementHandler = GetComponent<MovementHandler>();
-      _playerUIHandler = GetComponent<PlayerUIHandler>();
+      _playerUI = GetComponent<PlayerUI>();
       _currentEnergy = maxEnergy;
       _currentHealth = maxHealth;
       _currentStamina = maxStamina;
@@ -92,16 +92,16 @@ public class PlayerVitalStats : MonoBehaviour
              _currentHydration -= hydrationDecayTimer;
              _currentHydration = Mathf.Clamp(_currentHydration, 0f, maxHydration);
             
-             _playerUIHandler.UpdateFoodStats(_currentProtein/maxProtein,_currentCarb/maxCarb,_currentFat/maxFat,_currentHydration/maxHydration);
+             _playerUI.UpdateFoodStats(_currentProtein/maxProtein,_currentCarb/maxCarb,_currentFat/maxFat,_currentHydration/maxHydration);
              
-             _playerUIHandler.EnergySlider(_currentEnergy/maxEnergy);
+             _playerUI.EnergySlider(_currentEnergy/maxEnergy);
              
              energyDecayTimer = 0;
           }
           if (_currentStamina > _currentEnergy)
           {
             _currentStamina = _currentEnergy; // shrink stamina max when energy drops
-            _playerUIHandler.StaminaSlider(_currentStamina/maxStamina);
+            _playerUI.StaminaSlider(_currentStamina/maxStamina);
           }
           if (_currentEnergy <= 0)
           {
@@ -120,7 +120,7 @@ public class PlayerVitalStats : MonoBehaviour
    {
       _currentStamina -= staminaDrainRate * dt;
       _currentStamina = Mathf.Clamp(_currentStamina, 0f, _currentEnergy);
-      _playerUIHandler.StaminaSlider(_currentStamina/maxStamina);
+      _playerUI.StaminaSlider(_currentStamina/maxStamina);
    }
    private void UpdateStamina()
    {
@@ -128,7 +128,7 @@ public class PlayerVitalStats : MonoBehaviour
       {
          _currentStamina += staminaRegenRate;
          _currentStamina = Mathf.Clamp(_currentStamina, 0f, _currentEnergy);
-         _playerUIHandler.StaminaSlider(_currentStamina/maxStamina);
+         _playerUI.StaminaSlider(_currentStamina/maxStamina);
       }
    }
    private void UpdateHealth()// this funcion will update health from nutrient 
@@ -141,7 +141,7 @@ public class PlayerVitalStats : MonoBehaviour
       float avg = (p + c + h + f) / 4;
       _currentHealth = avg * maxHealth;
     
-      _playerUIHandler.HealthSlider(_currentHealth/maxHealth);
+      _playerUI.HealthSlider(_currentHealth/maxHealth);
    }
    public  void ConsumeFood(FoodSo so)
    {
@@ -154,12 +154,12 @@ public class PlayerVitalStats : MonoBehaviour
       _currentHydration = Mathf.Clamp(_currentHydration + so.hydrationCount, 0f, maxHydration);
       
       // Update UI
-      _playerUIHandler.EnergySlider(_currentEnergy / maxEnergy);
-      _playerUIHandler.StaminaSlider(_currentStamina / maxStamina);
+      _playerUI.EnergySlider(_currentEnergy / maxEnergy);
+      _playerUI.StaminaSlider(_currentStamina / maxStamina);
 
       // Recalculate health from nutrients
       UpdateHealth();
-      _playerUIHandler.HealthSlider(_currentHealth / maxHealth);
+      _playerUI.HealthSlider(_currentHealth / maxHealth);
    }
 }
 

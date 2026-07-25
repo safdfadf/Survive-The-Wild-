@@ -39,7 +39,7 @@ public class MovementHandler : MonoBehaviour
     private PlayerBow playerBow;
     private PlayerInventory _playerInventory;
     private PlayerAnimator animator;
-    private PlayerUIHandler _uiHandler;
+    private PlayerUI _ui;
     private PlayerScentEmitter _playerScentEmitter;
     private PlayerNoiseEmitter _noiseEmitter;
     private PlayerVitalStats _playerVitalStats;
@@ -81,7 +81,7 @@ public class MovementHandler : MonoBehaviour
         characterController = GetComponent<CharacterController>();
         _playerInventory = GetComponent<PlayerInventory>();
         animator = GetComponent<PlayerAnimator>();
-        _uiHandler = GetComponent<PlayerUIHandler>();
+        _ui = GetComponent<PlayerUI>();
         _playerScentEmitter = GetComponent<PlayerScentEmitter>();
         _noiseEmitter = GetComponent<PlayerNoiseEmitter>();
         _playerVitalStats = GetComponent<PlayerVitalStats>();
@@ -102,7 +102,7 @@ public class MovementHandler : MonoBehaviour
     private void Start()
     {
         resourceInventory.gameObject.SetActive(false);
-        crosshair = _uiHandler.GetCrosshair();
+        crosshair = _ui.GetCrosshair();
         crosshair.SetActive(false);
     }
 
@@ -142,16 +142,16 @@ public class MovementHandler : MonoBehaviour
 
     public void ToggleInventory() // currently we are toggling resource inventory i want to toggle the whole inventory 
     {
-        if (_uiHandler.IsInventoryOpen())
+        if (_ui.IsInventoryOpen())
         {
-            _uiHandler.ToggleInventory();
+            _ui.ToggleInventory();
             _canMove = true;
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
         }
         else
         {
-            _uiHandler.ToggleInventory();
+            _ui.ToggleInventory();
             _canMove = false;
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;

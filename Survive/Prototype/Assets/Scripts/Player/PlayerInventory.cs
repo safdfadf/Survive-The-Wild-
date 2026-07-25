@@ -81,6 +81,11 @@ public class PlayerInventory : MonoBehaviour
             return;
         }
         ResourceSo so = (collectable as Resource<ResourceSo>)?.So;
+        MeshFilter mf = item.gameObject.GetComponent<MeshFilter>();
+        if (mf != null && so.inventoryItem != null)
+        {
+            mf.mesh = so.inventoryItem;
+        }
         if (so == null)
         {
             so = (collectable as Resource<FoodSo>)?.So;

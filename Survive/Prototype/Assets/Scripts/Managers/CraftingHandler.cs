@@ -22,7 +22,7 @@ public class CraftingHandler : MonoBehaviour
   [SerializeField] private Button craftButton;
   [Header("Recipe Book")]
   [SerializeField] private RBookHandler recipeBook;
-  
+  //TODo: Move recipe Book ui to PlayerUI script 
   public bool enableCrafting { get; set;}
 
   private int _ingredientVisualIndex = 0;
