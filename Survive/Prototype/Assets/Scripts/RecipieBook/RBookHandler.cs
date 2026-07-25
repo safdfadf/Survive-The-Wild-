@@ -59,6 +59,16 @@ public class RBookHandler : MonoBehaviour
         }
     }
 
+    public void EnableRecipeBook()
+    {
+        parentObj.SetActive(true);
+    }
+
+    public void DisableRecipeBook()
+    {
+        parentObj.SetActive(false);
+    }
+
     public void CategorizeRecipes(List<CraftingSO> allRecipes, CraftingHandler craftingHandler)
     {
        

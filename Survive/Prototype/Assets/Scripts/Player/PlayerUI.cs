@@ -102,6 +102,7 @@ public class PlayerUI : MonoBehaviour
             Cursor.visible = true;
             _movementHandler.TogglePlayerLock(false);
             ShowRscInv();
+            EnableCraftingUI();
         }
     }
 

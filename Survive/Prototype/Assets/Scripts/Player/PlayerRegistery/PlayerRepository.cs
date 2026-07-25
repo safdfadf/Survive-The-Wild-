@@ -86,7 +86,7 @@ namespace Player
 
         public void CanPlayerMove(bool isLocked)
         {
-            _movementHandler.LockPlayer(isLocked);
+            _movementHandler.TogglePlayerLock(isLocked);
         }
 
     }
