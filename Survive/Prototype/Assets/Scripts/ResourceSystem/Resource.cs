@@ -9,6 +9,7 @@ public abstract class Resource<TSo> : MonoBehaviour,IsoInitializer<TSo>,ICollect
     [SerializeField] protected Button craftButton;
     [SerializeField] protected Button harvest;
     [SerializeField] protected Button removeButton;
+    protected Mesh OriginalMesh;
     protected PosInChunk CashedPosInChunk;
     public GameObject Gm { get; set; }
     protected bool _isInCraftingList;
@@ -34,7 +35,8 @@ public abstract class Resource<TSo> : MonoBehaviour,IsoInitializer<TSo>,ICollect
             rb = gameObject.AddComponent<Rigidbody>();
             rb.isKinematic = true;
         }
-
+        MeshFilter meshFilter = gameObject.GetComponent<MeshFilter>();
+        OriginalMesh = meshFilter.mesh;
         cam = Camera.main;
     }
 

@@ -17,13 +17,7 @@ public class Trees : Environment
         {
             int damage = weapon.MaxDamage;
             Vector3 contactPoint = other.contacts[0].point;
-         base.TakeDamage(damage,contactPoint);   
+            TakeDamage(damage,contactPoint);   
         }
-    }
-
-
-    public void TakeDamage(Vector3 contact)
-    {
-       
     }
 }

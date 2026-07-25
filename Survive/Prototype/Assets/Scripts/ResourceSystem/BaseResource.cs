@@ -20,12 +20,14 @@ public enum ResourceType
 public class BaseResource : Resource<ResourceSo>
 {
     private float timeCount;
-
+    protected Mesh originalMesh;
+ 
 
     protected override void Awake()
     {
         Gm = gameObject;
         base.Awake();
+      
     }
 
     protected override void CraftMe()
