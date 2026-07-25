@@ -39,19 +39,19 @@ public class PlayerUI : MonoBehaviour
     private readonly float _sprintScale = 0.6f; // max scale when sprinting
     private readonly float _smoothSpeed = 2f; // responsiveness
 
-    [Header("UI Control")] [SerializeField]
-    private Button craftingButton;
+    [Header("SubSytems")] [SerializeField] private Button craftingButton;
 
     [SerializeField] private GameObject craftingUI;
     [SerializeField] private Button bodyStatButton;
 
     [SerializeField] private GameObject bodyStatusUI;
+    [SerializeField] private Button recipeBookUI;
 
     // Script Reference  
     private PlayerNoiseEmitter _playerNoiseEmitter;
     private MovementHandler _movementHandler;
     private float currentScale;
-
+    private RBookHandler _rBookHandler;
 
     private void Awake()
     {
@@ -59,8 +59,9 @@ public class PlayerUI : MonoBehaviour
         _movementHandler = GetComponent<MovementHandler>();
         rscInvButton.onClick.AddListener(ShowRscInv);
         wpnInvButton.onClick.AddListener(ShowWpnInv);
-        craftingButton.onClick.AddListener(ToggleSubSystems);
-        bodyStatButton.onClick.AddListener(ToggleSubSystems);
+        craftingButton.onClick.AddListener(EnableCraftingUI);
+        bodyStatButton.onClick.AddListener(EnableBodyStatusUI);
+        recipeBookUI.onClick.AddListener(EnableRecipeBook);
         InitSliders();
     }
 
@@ -85,32 +86,46 @@ public class PlayerUI : MonoBehaviour
         if (invParent.gameObject.activeInHierarchy)
         {
             invParent.SetActive(false);
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
             rscInvButton.gameObject.SetActive(false);
             wpnInvButton.gameObject.SetActive(false);
+
+            _movementHandler.TogglePlayerLock(true);
         }
         else
         {
             invParent.SetActive(true);
             rscInvButton.gameObject.SetActive(true);
             wpnInvButton.gameObject.SetActive(true);
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            _movementHandler.TogglePlayerLock(false);
             ShowRscInv();
         }
     }
 
-    public void ToggleSubSystems() // toggle crafting or body stats 
+
+    public void EnableCraftingUI()
     {
-        if (craftingButton.gameObject.activeInHierarchy)
-        {
-            craftingUI.SetActive(false);
-            bodyStatusUI.SetActive(true);
-        }
-        else
-        {
-            craftingUI.SetActive(true);
-            bodyStatusUI.SetActive(false);
-        }
+        craftingUI.SetActive(true);
+        bodyStatusUI.SetActive(false);
+        _rBookHandler.DisableRecipeBook();
     }
 
+    public void EnableBodyStatusUI()
+    {
+        bodyStatusUI.SetActive(true);
+        craftingUI.SetActive(false);
+        _rBookHandler.DisableRecipeBook();
+    }
+
+    public void EnableRecipeBook()
+    {
+        _rBookHandler.EnableRecipeBook();
+        craftingUI.SetActive(false);
+        bodyStatusUI.SetActive(false);
+    }
 
     private void LateUpdate()
     {

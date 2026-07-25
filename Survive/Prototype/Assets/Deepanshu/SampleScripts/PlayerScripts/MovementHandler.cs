@@ -142,20 +142,6 @@ public class MovementHandler : MonoBehaviour
 
     public void ToggleInventory() // currently we are toggling resource inventory i want to toggle the whole inventory 
     {
-        if (_ui.IsInventoryOpen())
-        {
-            _ui.ToggleInventory();
-            _canMove = true;
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-        }
-        else
-        {
-            _ui.ToggleInventory();
-            _canMove = false;
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-        }
     }
 
     private void MovePlayer()
@@ -372,7 +358,7 @@ public class MovementHandler : MonoBehaviour
         return null;
     }
 
-    public void LockPlayer(bool isLocked)
+    public void TogglePlayerLock(bool isLocked)
     {
         _canMove = isLocked;
     }

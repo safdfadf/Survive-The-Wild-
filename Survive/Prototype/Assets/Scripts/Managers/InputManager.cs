@@ -6,6 +6,7 @@ public class InputManager : MonoBehaviour
 {
     private MovementHandler _player;
     private PlayerInventory _playerInventory;
+    private PlayerUI _playerUI;
     private PlayerInputs _controls;
     private CraftingHandler _craftingHandler;
     private Camera _camera;
@@ -37,8 +38,10 @@ public class InputManager : MonoBehaviour
         _player = GetComponent<MovementHandler>();
         _playerInventory = GetComponent<PlayerInventory>();
         _craftingHandler = GetComponent<CraftingHandler>();
+        _playerUI = GetComponent<PlayerUI>();
         _controls = new PlayerInputs();
         _phone = GetComponentInChildren<PhoneScript>();
+        
 
         // Initialize all delegates
         _movePerformed = ctx =>
@@ -65,7 +68,8 @@ public class InputManager : MonoBehaviour
 
         _jumpPerformed = ctx => _player.Jump();
         _toggleHuntetSenses = ctx => _player.ToggleHunterSense();
-        _toggleRecipeBook = ctx => _craftingHandler.ToggleRBook();
+        // call player to eable inventory and then ask inventory to open recipe 
+        //    _toggleRecipeBook = ctx => _playerUI.EnableRecipeBook();
 
 
         _aimStarted = ctx =>
@@ -91,7 +95,7 @@ public class InputManager : MonoBehaviour
             }
         };
         _cursorToggle = ctx => _player.ToggleCursor();
-        _inventoryToggle = ctx => { _player.ToggleInventory(); };
+        _inventoryToggle = ctx => { _playerUI.ToggleInventory(); };
         _resourceMenuToggle = ctx => ToggleCollectableMenu();
         _toggleTarckMenu = ctx => ToggleTracksMenu();
     }
