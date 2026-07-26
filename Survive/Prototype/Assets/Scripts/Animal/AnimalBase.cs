@@ -9,34 +9,30 @@ public class AnimalBase : MonoBehaviour
     [SerializeField] protected float alertSpeed;
     [SerializeField] protected float runSpeed;
     [SerializeField] protected float fleeSpeed;
-    [SerializeField] protected GameObject followPoint;
+    [SerializeField] public GameObject followPoint;
+
     protected NavMeshAgent agent;
     protected Animator animator;
-    private Activity _currentActivity;
     private int _maxhealth = 100;
-    private int _currentHealth;
-    private int baseDamage = 10;
+    protected int _currentHealth;
+    protected int baseDamage = 10;
     protected Species myspecie { get; set; }
+    protected HitBox[] hitBoxes;
+    public bool isMoving { get; private set; }
+    private GameObject _bloodVfx;
 
-    private Schedule currentSchedule;
-    public Zone currentZone { get; private set; }
-    public Vector3? currentPos { get; private set; }
-
-    protected AnimalData AnimalData;
     protected AnimalSo AnimalSo;
 
+    //Todo: State manager should handle the states 
     private AnimalStateManager _stateManager;
     protected AnimalState CalmState;
     protected AnimalState AlertState;
     protected AnimalState AlarmState;
     protected AnimalState CurrentState;
-    protected HitBox[] hitBoxes;
-    public bool isMoving { get; private set; }
-    private GameObject _bloodVfx;
-
 
     protected virtual void Awake()
     {
+        myspecie = AnimalSo.specie;
         _currentHealth = _maxhealth;
         agent = GetComponentInChildren<NavMeshAgent>();
         animator = GetComponentInChildren<Animator>();
@@ -49,30 +45,9 @@ public class AnimalBase : MonoBehaviour
         }
     }
 
-    public void Initialize(AnimalData animalData)
-    {
-        AnimalData = animalData;
-        AnimalSo = animalData.AnimalSo;
-        CurrentState = animalData.GetCurrentState();
-        CalmState = animalData.GetCalmState();
-        AlertState = animalData.GetAlertState();
-        AlarmState = animalData.GetAlarmState();
-        currentZone = animalData.GetCurrentZone();
-        currentPos = animalData.GetCurrentPosition();
-        ActivateState(CurrentState);
-    }
-
     protected virtual void Update()
     {
         animator.SetFloat("Velocity", agent.velocity.magnitude);
-    }
-
-    private void LateUpdate()
-    {
-        if (CurrentState != null)
-        {
-            CurrentState.UpdateState();
-        }
     }
 
     public void TakeDamage(int damage, Vector3 contact)
@@ -102,7 +77,7 @@ public class AnimalBase : MonoBehaviour
         GlobalPool.instance.Return(_bloodVfx, obj);
     }
 
-    private void Death() // use generic spawner to spawn  
+    protected virtual void Death()
     {
         animator.SetBool("Death", true);
         agent.enabled = false;
@@ -126,13 +101,6 @@ public class AnimalBase : MonoBehaviour
                 collider.isTrigger = true;
             }
         }
-    }
-
-    private IEnumerator ActivateRagdoll()
-    {
-        yield return new WaitForSeconds(1f);
-        RagdollToggle Rt = GetComponent<RagdollToggle>();
-        Rt.RagdollActive(true);
     }
 
     public virtual void MoveTo(Vector3 destination, Action onArrived = null, float? speedOverride = null)
@@ -166,7 +134,7 @@ public class AnimalBase : MonoBehaviour
         return NavMesh.SamplePosition(pos, out _, radius, NavMesh.AllAreas);
     }
 
-    private IEnumerator MonitorArrival(Action onArrived)
+    protected virtual IEnumerator MonitorArrival(Action onArrived)
     {
         if (agent.isOnNavMesh)
         {
@@ -177,37 +145,8 @@ public class AnimalBase : MonoBehaviour
 
             onArrived?.Invoke();
             isMoving = false;
-            AnimalData.isZoneTraveling = false;
-            Debug.Log("Reached the destination");
             if (agent.isOnNavMesh)
                 agent.ResetPath();
         }
-    }
-
-    public void AnimalWrap(Vector3 position)
-    {
-        agent.Warp(position);
-    }
-
-    public void ActivateState(AnimalState newState)
-    {
-        CurrentState.ExitState();
-        CurrentState = newState;
-        CurrentState.EnterState();
-    }
-
-    public void SetIsMoving(bool value)
-    {
-        isMoving = value;
-    }
-
-    public GameObject GetFollowPoint()
-    {
-        return followPoint;
-    }
-
-    public void ToglleEatAnim(bool toggle)
-    {
-        animator.SetBool("Eat", toggle);
     }
 }

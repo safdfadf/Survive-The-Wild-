@@ -4,15 +4,14 @@ namespace Animal.States
 {
     public class AlarmState:AnimalState
     {
-        private AnimalBase _animal;
         public AlarmState(AnimalData animalData) : base(animalData)
         {
             
         }
 
-        public override void EnterState()
+        public override void EnterState(AnimalBase animal)
         {
-            _animal = data.AnimalInstance.GetComponent<AnimalBase>();
+            Animal = animal;
            RunOutOfActiveChunk();
         }
 
@@ -27,7 +26,7 @@ namespace Animal.States
         private void RunOutOfActiveChunk()
         {
             Vector3 pos =data.GetOutofActiveChunkPos();
-            _animal.MoveTo(pos,()=> DeActivateAnimal());
+            Animal.MoveTo(pos,()=> DeActivateAnimal());
         }
         private void DeActivateAnimal()
         {

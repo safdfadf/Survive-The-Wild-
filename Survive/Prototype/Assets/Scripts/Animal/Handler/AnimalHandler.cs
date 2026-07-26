@@ -16,8 +16,7 @@ public class AnimalHandler : MonoBehaviour// this script will be responsible for
     private List<AnimalSo> _animalSo;
     private readonly Dictionary<AnimalData, GameObject> _soundUI = new();
     private AnimalStateManager _animalStateManager;
-    // for every animal data, when player is close or both animal and player is in same 
-    // active chunk start the ui 
+    // for every animal data, when player is close or both animal and player is in same active chunk start the ui 
 
     public void OnEnable()
     {
@@ -72,7 +71,8 @@ public class AnimalHandler : MonoBehaviour// this script will be responsible for
         {
             if (so.regionType == regionType)
             {
-                //create an animal data for this animal
+                if(!so.isScheduled)continue;// is its a non scheculed animal no need for data 
+                
                 int num = Random.Range(so.maxAmount, so.minAmount);
                 for (int i = 0; i < num; i++)
                 {
@@ -113,6 +113,8 @@ public class AnimalHandler : MonoBehaviour// this script will be responsible for
                 ActivateAnimal(data);
             }
          }
+         // check probability in chunk for non scheduled animals 
+         
     }
     private void ActivateAnimal(AnimalData data) // activates the animal and initializes it 
     {
@@ -126,9 +128,9 @@ public class AnimalHandler : MonoBehaviour// this script will be responsible for
                data.AnimalInstance = obj;
                 data.IsSpawned = true;
             //    data.AnimalSo = So;
-                AnimalBase animal = obj.GetComponent<AnimalBase>();
-                animal.Initialize(data);
-                animal.AnimalWrap(data.CurrentPos.Value);
+                ScheduledAnimal scheduledAnimal = obj.GetComponent<ScheduledAnimal>();
+                scheduledAnimal.InitializeByData(data);
+                scheduledAnimal.AnimalWrap(data.CurrentPos.Value);
             }
         }
         ActivateSound(data,_soundUI[data]);
@@ -145,7 +147,6 @@ public class AnimalHandler : MonoBehaviour// this script will be responsible for
     private void DeactivateAnimalUI(AnimalData data)
     {
       GlobalPool.instance.Return(UiMarker,data.AnimalUI);
-        // we deactivate it when we deactivate the animal
     }
     private void CheckToDeactivate(Chunk chunk)
     {

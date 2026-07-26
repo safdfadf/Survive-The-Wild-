@@ -7,18 +7,16 @@ namespace Animal.States
         private float nextActionTime;
         private float minIntervalTime = 5f;
         private float maxIntervalTime = 20f;
-        private AnimalBase animal;
         public AlertState(AnimalData data) : base(data)
         {
         }
 
-        public override void EnterState()
+        public override void EnterState(AnimalBase animal)
         {
             ScheduleNextAction();
             if (!data.IsSpawned)return;
             // Start idle feeding/drinking animation
-            animal = data.AnimalInstance.GetComponent<AnimalBase>();
-            
+            Animal =animal;
         }
 
         public override void UpdateState()
@@ -44,10 +42,10 @@ namespace Animal.States
         {
             
             // in the radius of .5f move to any pos 
-            Vector3 origin = animal.transform.position;
+            Vector3 origin = Animal.transform.position;
             Vector3  offset = Random.insideUnitSphere * .5f;
             Vector3 destination = origin + new Vector3(offset.x, 0, offset.z);
-            animal.MoveTo(destination);
+            Animal.MoveTo(destination);
              
         }
 
