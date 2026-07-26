@@ -14,4 +14,5 @@ public class AnimalSo : ScriptableObject
     public int maxAmount;
     public ResourceSo resourceSo;// drop the resource 
     public List<GameObject> TrackMesh;
+    public float spawnProbability;
 }

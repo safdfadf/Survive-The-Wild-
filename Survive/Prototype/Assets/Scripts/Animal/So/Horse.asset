@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Horse
   m_EditorClassIdentifier: 
   specie: 4
+  isScheduled: 1
   prefab: {fileID: 4970729551493521049, guid: 87b7635260b802a4d9cff6dded095899, type: 3}
   regionType: 0
   minAmount: 1

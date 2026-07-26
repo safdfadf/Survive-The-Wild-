@@ -32,7 +32,6 @@ public class AnimalBase : MonoBehaviour
 
     protected virtual void Awake()
     {
-        myspecie = AnimalSo.specie;
         _currentHealth = _maxhealth;
         agent = GetComponentInChildren<NavMeshAgent>();
         animator = GetComponentInChildren<Animator>();
@@ -148,5 +147,10 @@ public class AnimalBase : MonoBehaviour
             if (agent.isOnNavMesh)
                 agent.ResetPath();
         }
+    }
+
+    public void CreateNewState()
+    {
+        // create new state 
     }
 }

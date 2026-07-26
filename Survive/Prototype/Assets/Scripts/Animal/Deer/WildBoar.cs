@@ -1,6 +1,7 @@
 using UnityEngine;
 
-public class WildBoar : AnimalBase
+//ToDo : Remove this class 
+public class WildBoar : ScheduledAnimal
 {
     protected override void Awake()
     {

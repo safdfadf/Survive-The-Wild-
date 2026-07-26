@@ -1,17 +1,19 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
-public class AnimalHandler : MonoBehaviour// this script will be responsible for creating new Animal data every time chunks in new regions are activated
+public class
+    AnimalHandler : MonoBehaviour // this script will be responsible for creating new Animal data every time chunks in new regions are activated
 {
     public GameObject UiMarker;
     public GameObject outOfBoundsZonePos;
     private List<AnimalSo> Sos;
-    private readonly List<AnimalData> _activeData= new();
-    private RegionType _currentRegion= RegionType.Null;
+    private readonly List<AnimalData> _activeData = new();
+    private RegionType _currentRegion = RegionType.Null;
     private ScheduleManager _scheduleManager;
     private List<AnimalSo> _animalSo;
     private readonly Dictionary<AnimalData, GameObject> _soundUI = new();
@@ -23,7 +25,7 @@ public class AnimalHandler : MonoBehaviour// this script will be responsible for
         EventBus.OnHourChanged += UpdateAnimalPos; // update animal current position
         EventBus.CreateAnimalData += CreateAnimalData; // Based on region create animal data
         EventBus.OnChunkChanged += CheckAnimalToSpawn; // check if any animal lies in chunk bounds
-        EventBus.OnDeactiveChunk += CheckToDeactivate;// Deactivate animal
+        EventBus.OnDeactiveChunk += CheckToDeactivate; // Deactivate animal
     }
 
     private void OnDisable()
@@ -40,20 +42,23 @@ public class AnimalHandler : MonoBehaviour// this script will be responsible for
         _scheduleManager = new ScheduleManager();
         _scheduleManager.GenerateSchedule();
     }
+
     private void Start()
     {
         _animalSo = SoProvider.instance.GetAnimalSo();
     }
-    private void CreateAnimalData(RegionType regionType,Bounds regionBounds)
+
+    private void CreateAnimalData(RegionType regionType, Bounds regionBounds)
     {
         if (Sos == null)
         {
             Sos = SoProvider.instance.GetAnimalSo();
         }
-        if (_currentRegion ==  RegionType.Null)
+
+        if (_currentRegion == RegionType.Null)
         {
             _currentRegion = regionType;
-            GenerateAnimal(_currentRegion,regionBounds);
+            GenerateAnimal(_currentRegion, regionBounds);
         }
         // new Region Entered 
         else if (_currentRegion != regionType)
@@ -61,23 +66,28 @@ public class AnimalHandler : MonoBehaviour// this script will be responsible for
             Debug.Log("new region");
             _activeData.Clear();
             _currentRegion = regionType;
-            GenerateAnimal(_currentRegion,regionBounds);
+            GenerateAnimal(_currentRegion, regionBounds);
         }
     }
 
-    private void GenerateAnimal(RegionType regionType,Bounds regionBounds)
+    private void GenerateAnimal(RegionType regionType, Bounds regionBounds)
     {
         foreach (var so in Sos)
         {
             if (so.regionType == regionType)
             {
-                if(!so.isScheduled)continue;// is its a non scheculed animal no need for data 
-                
+                if (!so.isScheduled) continue; // is its a non scheculed animal no need for data 
+
                 int num = Random.Range(so.maxAmount, so.minAmount);
                 for (int i = 0; i < num; i++)
                 {
-                    if(so == null){ Debug.Log(_activeData.Count);return;}
-                    AnimalData data = new AnimalData(so,regionBounds,_scheduleManager,this);
+                    if (so == null)
+                    {
+                        Debug.Log(_activeData.Count);
+                        return;
+                    }
+
+                    AnimalData data = new AnimalData(so, regionBounds, _scheduleManager, this);
                     _activeData.Add(data);
                     _animalStateManager.AddActiveData(data);
                     data.AnimalSo = so;
@@ -86,15 +96,16 @@ public class AnimalHandler : MonoBehaviour// this script will be responsible for
                     {
                         GameObject marker = GlobalPool.instance.Get(UiMarker, Vector3.zero);
                         marker.SetActive(false);
-                       data.AnimalUI = marker;
+                        data.AnimalUI = marker;
                         _soundUI[data] = marker;
                     }
-
                 }
             }
         }
     }
-    private void UpdateAnimalPos(int hour)// every hour check if position of the animal needs to be changed based on schedule
+
+    private void
+        UpdateAnimalPos(int hour) // every hour check if position of the animal needs to be changed based on schedule
     {
         foreach (var data in _activeData)
         {
@@ -103,56 +114,85 @@ public class AnimalHandler : MonoBehaviour// this script will be responsible for
                 continue;
         }
     }
-    private void CheckAnimalToSpawn(Chunk chunk)// if animal lies in active chunk spawn it   
+
+    private void CheckAnimalToSpawn(Chunk chunk) // if animal lies in active chunk spawn it   
     {
-         foreach (var data in _activeData) 
-         {
-           if(!data.CurrentPos.HasValue)Debug.Log("currentPOs issue");
+        foreach (var data in _activeData)
+        {
+            if (!data.CurrentPos.HasValue) Debug.Log("currentPOs issue");
             if (data.CurrentPos.HasValue && chunk.bounds.Contains(data.CurrentPos.Value))
             {
                 ActivateAnimal(data);
             }
-         }
-         // check probability in chunk for non scheduled animals 
-         
+        }
+        SpawnUnScheduledAnimal(chunk);
     }
+
+    private void SpawnUnScheduledAnimal(Chunk chunk)
+    {
+        foreach (var animalSo in Sos)
+        {
+            if (Random.value <= animalSo.spawnProbability && !animalSo.isScheduled)
+            {
+                PosInChunk pos = chunk.cashedPos.FirstOrDefault(p => p.IsAvailable);
+
+                if (pos == null)
+                    continue;
+
+                pos.IsAvailable = false;
+
+                // Spawn the animal
+                GameObject obj = GlobalPool.instance.Get(animalSo.prefab, pos.Position);
+
+                // Initialize the animal
+                UnScheduleAnimal unScheduleAnimal = obj.GetComponent<UnScheduleAnimal>();
+                unScheduleAnimal.Initialize(animalSo);
+                
+                chunk.objectInChunk.Add(obj);// recheck this 
+            }
+        }
+    }
+
     private void ActivateAnimal(AnimalData data) // activates the animal and initializes it 
     {
         foreach (var So in _animalSo)
         {
-            if(data.IsSpawned)continue;
+            if (data.IsSpawned) continue;
             if (So.specie == data.Specie)
             {
                 Debug.Log("Activate animal");
-               GameObject obj= GlobalPool.instance.Get(So.prefab, data.CurrentPos.Value);
-               data.AnimalInstance = obj;
+                GameObject obj = GlobalPool.instance.Get(So.prefab, data.CurrentPos.Value);
+                data.AnimalInstance = obj;
                 data.IsSpawned = true;
-            //    data.AnimalSo = So;
+                //    data.AnimalSo = So;
                 ScheduledAnimal scheduledAnimal = obj.GetComponent<ScheduledAnimal>();
                 scheduledAnimal.InitializeByData(data);
                 scheduledAnimal.AnimalWrap(data.CurrentPos.Value);
             }
         }
-        ActivateSound(data,_soundUI[data]);
+
+        ActivateSound(data, _soundUI[data]);
     }
-    private void ActivateSound(AnimalData data,GameObject obj)
+
+    private void ActivateSound(AnimalData data, GameObject obj)
     {
         if (obj.TryGetComponent<AnimalUi>(out var animalUi))
         {
-           
             UIManager.instance.SetAnimalUI(obj);
             animalUi.Initialize(data);
         }
     }
+
     private void DeactivateAnimalUI(AnimalData data)
     {
-      GlobalPool.instance.Return(UiMarker,data.AnimalUI);
+        GlobalPool.instance.Return(UiMarker, data.AnimalUI);
     }
+
     private void CheckToDeactivate(Chunk chunk)
     {
         foreach (var data in _activeData)
         {
-            if(!data.IsSpawned)return;
+            if (!data.IsSpawned) return;
             Vector3 pos = data.AnimalInstance.transform.position;
             if (chunk.bounds.Contains(pos))
             {
@@ -160,17 +200,18 @@ public class AnimalHandler : MonoBehaviour// this script will be responsible for
             }
         }
     }
+
     public void DeactivateAnimal(AnimalData data)
     {
-      Debug.Log("Deactivate animal");
+        Debug.Log("Deactivate animal");
         data.IsSpawned = false;
-        GlobalPool.instance.Return(data.AnimalSo.prefab,data.AnimalInstance);
+        GlobalPool.instance.Return(data.AnimalSo.prefab, data.AnimalInstance);
         DeactivateAnimalUI(data);
     }
 
     public void RemoveAnimalData(AnimalData data)
     {
-        if(!_activeData.Contains(data))return;
+        if (!_activeData.Contains(data)) return;
         _activeData.Remove(data);
     }
 }

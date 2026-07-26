@@ -4,13 +4,11 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Deer : AnimalBase
+public class Deer : ScheduledAnimal
 {
   
     protected override void Awake()
     {
-        // get all the objets with hit b
-        
         myspecie = Species.Deer;
         base.Awake();
        

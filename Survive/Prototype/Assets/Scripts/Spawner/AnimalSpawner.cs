@@ -51,7 +51,7 @@ public class AnimalSpawner : MonoBehaviour // dynamic animal spawner, which will
       GameObject prefab = _animalsPool[entry.species];
       GameObject animal = Instantiate(prefab, pos, Quaternion.identity);
 
-      AnimalBase animalScript = animal.GetComponent<AnimalBase>();
+      ScheduledAnimal scheduledAnimalScript = animal.GetComponent<ScheduledAnimal>();
      // animalScript.Initialize(entry.species,_activeSchedules[entry.species],zone,pos);
    }
    bool IsHourInRange(int currentHour, int startHour, int endHour)

@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Deer
   m_EditorClassIdentifier: 
   specie: 0
+  isScheduled: 1
   prefab: {fileID: 8368043525601244960, guid: 3dc3e4ae75503f84d8da4b1de1c1adcf, type: 3}
   regionType: 0
   minAmount: 2

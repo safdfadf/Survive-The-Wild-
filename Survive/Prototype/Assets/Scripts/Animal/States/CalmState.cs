@@ -12,6 +12,7 @@ namespace Animal.States
         {
         }
 
+        // when entering state choose the behaviour 
         public override void EnterState(AnimalBase animal)
         {
             ScheduleNextAction();
