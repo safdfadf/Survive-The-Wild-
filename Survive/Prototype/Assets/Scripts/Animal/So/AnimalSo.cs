@@ -5,7 +5,9 @@ using UnityEngine.Serialization;
 [CreateAssetMenu(fileName = "AnimalSo", menuName = "Scriptable Objects/AnimalSo")]
 public class AnimalSo : ScriptableObject
 {
+    //ToDo Remove use of specie 
     public Species specie;
+    public bool isScheduled;
     public GameObject prefab;
     public RegionType regionType;
     public int minAmount;
