@@ -2,9 +2,8 @@ using Player;
 using UnityEngine;
 using UnityEngine.UI;
 
-public abstract class Resource<TSo> : MonoBehaviour,IsoInitializer<TSo>,ICollectable
+public abstract class Resource<TSo> : MonoBehaviour, IsoInitializer<TSo>, ICollectable
 {
-  
     [SerializeField] protected GameObject menu;
     [SerializeField] protected Button craftButton;
     [SerializeField] protected Button harvest;
@@ -16,7 +15,7 @@ public abstract class Resource<TSo> : MonoBehaviour,IsoInitializer<TSo>,ICollect
     protected Rigidbody rb;
     protected Camera cam;
 
-    public bool canBeCollected { get;  set; }
+    public bool canBeCollected { get; set; }
     public TSo So { get; protected set; }
 
     protected virtual void Awake()
@@ -35,6 +34,7 @@ public abstract class Resource<TSo> : MonoBehaviour,IsoInitializer<TSo>,ICollect
             rb = gameObject.AddComponent<Rigidbody>();
             rb.isKinematic = true;
         }
+
         MeshFilter meshFilter = gameObject.GetComponent<MeshFilter>();
         OriginalMesh = meshFilter.mesh;
         cam = Camera.main;
@@ -47,8 +47,9 @@ public abstract class Resource<TSo> : MonoBehaviour,IsoInitializer<TSo>,ICollect
 
     public void SeCashedPos(PosInChunk casedPos)
     {
-        CashedPosInChunk   = casedPos; 
+        CashedPosInChunk = casedPos;
     }
+
     public virtual void Collect(PlayerInventory collector)
     {
         canBeCollected = false;
@@ -62,7 +63,7 @@ public abstract class Resource<TSo> : MonoBehaviour,IsoInitializer<TSo>,ICollect
     {
         Debug.Log("Crafting");
         if (So == null) return;
-         Debug.Log("So null");   
+        Debug.Log("So null");
         _isInCraftingList = true;
         UpdateRemoveButton();
     }
@@ -79,7 +80,6 @@ public abstract class Resource<TSo> : MonoBehaviour,IsoInitializer<TSo>,ICollect
 
     protected virtual void RemoveMeCraftingList()
     {
-
     }
 
     protected virtual void RemoveFromInventory()
