@@ -10,12 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1d05360676185cb47b7b6275576162c5, type: 3}
-  m_Name: Bandage
+  m_Name: ArrowRecipe
   m_EditorClassIdentifier: 
-  logo: {fileID: 0}
   ingredients:
-  - resourceSo: {fileID: 11400000, guid: 99b4fa9569c655b4ba09a5d674e287d4, type: 2}
+  - resourceSo: {fileID: 11400000, guid: a139dfa28208d0842a55488f2a319a42, type: 2}
     amount: 1
-  resultPrefab: {fileID: 0}
+  resultPrefab: {fileID: 3455081496832569727, guid: e60e977434d1baa47b7d1342559c3b7a, type: 3}
   maxDamage: 0
   maxBlock: 0

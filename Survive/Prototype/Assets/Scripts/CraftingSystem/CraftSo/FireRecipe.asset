@@ -10,13 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1d05360676185cb47b7b6275576162c5, type: 3}
-  m_Name: PickAxe
+  m_Name: FireRecipe
   m_EditorClassIdentifier: 
+  logo: {fileID: 21300000, guid: b802986347428bf4faff66bd9068e223, type: 3}
   ingredients:
-  - resourceSo: {fileID: 11400000, guid: b7215a070f1ca7b459087577a8b803e1, type: 2}
+  - resourceSo: {fileID: 11400000, guid: 496f4571bf45f3546a94b0b5e615c915, type: 2}
     amount: 1
-  - resourceSo: {fileID: 11400000, guid: 27e2c7e41bc250641915060a71bb3246, type: 2}
-    amount: 2
-  resultPrefab: {fileID: 0}
+  - resourceSo: {fileID: 11400000, guid: a139dfa28208d0842a55488f2a319a42, type: 2}
+    amount: 1
+  resultPrefab: {fileID: 3151341399998811539, guid: 1196f1edd9c44774ca8ba84dc04cf95a, type: 3}
   maxDamage: 0
   maxBlock: 0
