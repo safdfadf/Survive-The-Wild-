@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3446d969a603b9741bd8db43b6e9bc7b, type: 3}
+  m_Name: Snake
+  m_EditorClassIdentifier: 
+  specie: 0
+  isScheduled: 0
+  prefab: {fileID: 3253494446645128198, guid: 6fda65b5306004540a22f2ed6e420d9b, type: 3}
+  regionType: 0
+  minAmount: 1
+  maxAmount: 1
+  resourceSo: {fileID: 11400000, guid: 632089d7767cb1e46831c69d260859ab, type: 2}
+  TrackMesh: []
+  spawnProbability: 6
+  isAggresive: 1
+  damage: 30
