@@ -16,7 +16,7 @@ public class ChunkManager : MonoBehaviour
     [SerializeField] private int chunkSide = 100; // side of the square s*s
     [SerializeField] private MovementHandler player;
     [SerializeField] private List<RegionSeed> seeds;
-    [SerializeField] private GameObject objTestBounds; 
+    [SerializeField] private GameObject objTestBounds;
     public Dictionary<Vector2Int, Chunk> AllChunks { get; private set; } = new();
     public List<Chunk> activeChunks { get; private set; } = new();
 
@@ -217,9 +217,9 @@ public class ChunkManager : MonoBehaviour
         {
             case RegionType.Forest:
                 _currentRegion = RegionType.Forest;
-               
+
                 EventBus.CreateAnimalData.Invoke(_currentRegion, GetTestBounds()); // create animal data
-               
+
                 GenericSpawner.Instance.SpawnInChunk<EnvironSo, Environment>(
                     SoProvider.instance.GetEnvironmentSo(chunk.regionType), chunk, chunk.objectInChunk);
                 GenericSpawner.Instance.SpawnInChunk<ResourceSo, BaseResource>(SoProvider.instance.GetResourceSo(),
@@ -444,7 +444,7 @@ public class ChunkManager : MonoBehaviour
         };
     }
 
-    private Bounds GetTestBounds()// used to spawn animal and its zone in limited space in a 
+    private Bounds GetTestBounds() // used to spawn animal and its zone in limited space in a 
     {
         Collider col = objTestBounds.GetComponent<Collider>();
         return col.bounds;
