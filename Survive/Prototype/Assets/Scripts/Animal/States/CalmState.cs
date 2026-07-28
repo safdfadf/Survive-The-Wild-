@@ -15,8 +15,7 @@ namespace Animal.States
         public override void EnterState(AnimalBase animal)
         {
             ScheduleNextAction();
-            if (!data.IsSpawned) return;
-            Animal = animal;
+           Animal = animal;
             UpdateState();
         }
 

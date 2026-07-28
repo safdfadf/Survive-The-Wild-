@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using Animal.States;
+using Player;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -20,6 +21,8 @@ public class AnimalBase : MonoBehaviour
     [SerializeField] protected bool isFire;
     [SerializeField] protected bool isStun;
 
+    [Header("Choose Attack Behavior")] [SerializeField]
+    private AttackType attackType;
 
     protected NavMeshAgent agent;
     protected Animator animator;
@@ -31,7 +34,7 @@ public class AnimalBase : MonoBehaviour
     public bool isMoving { get; private set; }
     private GameObject _bloodVfx;
 
-    public AnimalSo AnimalSo;
+    [HideInInspector] public AnimalSo AnimalSo;
 
     //Todo: State manager should handle the states 
     private AnimalStateManager _stateManager;
@@ -59,15 +62,15 @@ public class AnimalBase : MonoBehaviour
 
     protected virtual void Update()
     {
-        animator.SetFloat("Velocity", agent.velocity.magnitude);
+       
     }
 
     private void LateUpdate()
     {
-        if (CurrentState != null)
-        {
-            CurrentState.UpdateState();
-        }
+        if (isMoving)
+            animator.SetFloat("Velocity", agent.velocity.magnitude);
+        IsPlayerAround();
+        if(CurrentState == null)return;
     }
 
     public void TakeDamage(int damage, Vector3 contact)
@@ -150,7 +153,15 @@ public class AnimalBase : MonoBehaviour
 
         agent.SetDestination(destination);
         isMoving = true;
+        animator.SetFloat("Velocity", agent.desiredVelocity.magnitude);
         StartCoroutine(MonitorArrival(onArrived));
+    }
+
+    public void MoveToPlayerForAttack()
+    {
+        Debug.Log("Moving To Player");
+        // keep running after the player until you attack 
+        MoveTo(PlayerRepository.instance.GetApproachPos().position, () => Attack());
     }
 
     public virtual void MoveInBounds() // this function can be shared by all the animals to move in zone/chunk 
@@ -167,6 +178,7 @@ public class AnimalBase : MonoBehaviour
 
     protected virtual IEnumerator MonitorArrival(Action onArrived)
     {
+        
         if (agent.isOnNavMesh)
         {
             while (agent.pathPending || agent.remainingDistance > agent.stoppingDistance)
@@ -175,17 +187,17 @@ public class AnimalBase : MonoBehaviour
             }
 
             onArrived?.Invoke();
+            Debug.Log("Arrived");
             isMoving = false;
             if (agent.isOnNavMesh)
                 agent.ResetPath();
         }
     }
 
-    private void CheckPlayerPresence() // who should call this funcion update 
+    private void CheckPlayerPresence() // how should we stop the function fro 
     {
-        if (!IsPlayerAround()) return;
-        CurrentState = AlarmState;
-        CurrentState.EnterState(this);
+      
+       
     }
 
     protected virtual bool IsPlayerAround()
@@ -193,7 +205,7 @@ public class AnimalBase : MonoBehaviour
         return false;
     }
 
-    protected virtual void Attack()
+    public virtual void Attack()
     {
     }
 
@@ -205,4 +217,25 @@ public class AnimalBase : MonoBehaviour
         AlarmState = new AlarmState();
         CurrentState = CalmState;
     }
+
+    public void TriggerAlertAnim()
+    {
+        LookAtPlayer();   
+        animator.SetTrigger("Alert");
+    }
+    protected void LookAtPlayer()
+    {
+        // 1. Face the player
+        Transform player = PlayerRepository.instance.GetPlayerTransform(); // or however you reference player
+        Vector3 dir = (player.position - transform.position).normalized;
+        dir.y = 0f; // prevent tilting
+        transform.rotation = Quaternion.LookRotation(dir);
+    }
+}
+
+[System.Serializable]
+public enum AttackType
+{
+    OneTimeAttack,
+    MultiAttack
 }

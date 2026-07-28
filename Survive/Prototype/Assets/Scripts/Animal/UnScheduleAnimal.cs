@@ -3,10 +3,12 @@ using UnityEngine;
 
 public class UnScheduleAnimal : AnimalBase // these animals do not have a schedule and spawned around the player
 {
-    [SerializeField] private float alertRadius = 10f;
+    [SerializeField] private float alertRadius = 1;
     [SerializeField] private LayerMask playerMask;
     [SerializeField] private LayerMask obstructionMask;
-
+    [SerializeField] private float alarmRadius = .5f;
+    // select Attack Behviour 
+    
     protected override void Awake()
     {
         IsUnscheduled = true;
@@ -23,6 +25,7 @@ public class UnScheduleAnimal : AnimalBase // these animals do not have a schedu
 
     protected override bool IsPlayerAround()
     {
+        // here based on distance first alert mode and then attack 
         Collider[] hits = Physics.OverlapSphere(transform.position, alertRadius, playerMask);
 
         if (hits.Length == 0)
@@ -35,15 +38,39 @@ public class UnScheduleAnimal : AnimalBase // these animals do not have a schedu
 
         if (Physics.Raycast(transform.position, dir, dist, obstructionMask))
             return false;
-
+        if (dist <= alarmRadius)
+        {
+            if (CurrentState == null || CurrentState == AlarmState) return false;
+            CurrentState = AlarmState;
+            CurrentState.EnterState(this);
+            Debug.Log("Change to " +CurrentState.ToString());
+        }
+        else
+        {
+            if (CurrentState == null || CurrentState == AlertState) return false;
+            CurrentState = AlertState;   
+            CurrentState.EnterState(this);
+            Debug.Log("Change to " +CurrentState.ToString());
+        }
         return true;
+    }
+    public override void Attack()
+    {
+        Debug.Log("Attacking Player");
+        animator.SetTrigger("attack");
+        LookAtPlayer();
+        AnimalAttack attack = new AnimalAttack(AnimalSo.damage, isPoison, isStun, isFire);
+        PlayerRepository.instance.ApplyDamage(attack);
+        
     }
 
     
-    protected override void Attack()
+    private void OnDrawGizmosSelected()
     {
-        AnimalAttack attack = new AnimalAttack(AnimalSo.damage, isPoison, isStun, isFire);
-        PlayerRepository.instance.ApplyDamage(attack);
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, alertRadius);
 
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, alarmRadius);
     }
 }

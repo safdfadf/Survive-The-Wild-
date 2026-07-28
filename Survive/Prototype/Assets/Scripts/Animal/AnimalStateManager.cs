@@ -149,7 +149,7 @@ public class AnimalStateManager:MonoBehaviour //ToDo : Change script name to pla
    }
    private void ChangeToAlertState(AnimalData data)
    {
-      Debug.Log("ChangeToAlertState");
+      Debug.Log("ChangeToAlertState" +data.AnimalSo.prefab.name);
       data.ChangeState(data.GetAlertState());
    }
 

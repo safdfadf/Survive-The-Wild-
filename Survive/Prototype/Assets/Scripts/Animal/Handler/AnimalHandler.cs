@@ -199,6 +199,7 @@ public class
                 DeactivateAnimal(data);
             }
         }
+        // add a list of unecheduled animals and deactivate them 
     }
 
     public void DeactivateAnimal(AnimalData data)
