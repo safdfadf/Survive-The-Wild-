@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Player;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class PlayerUI : MonoBehaviour
@@ -45,7 +46,8 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] private Button bodyStatButton;
 
     [SerializeField] private GameObject bodyStatusUI;
-    [SerializeField] private Button recipeBookUI;
+    [FormerlySerializedAs("recipeBookUI")] [SerializeField] private Button recipeBookButton;
+    [SerializeField] private GameObject recipeBookUI;
 
     // Script Reference  
     private PlayerNoiseEmitter _playerNoiseEmitter;
@@ -61,7 +63,8 @@ public class PlayerUI : MonoBehaviour
         wpnInvButton.onClick.AddListener(ShowWpnInv);
         craftingButton.onClick.AddListener(EnableCraftingUI);
         bodyStatButton.onClick.AddListener(EnableBodyStatusUI);
-        recipeBookUI.onClick.AddListener(EnableRecipeBook);
+        recipeBookButton.onClick.AddListener(EnableRecipeBook);
+        _rBookHandler = recipeBookUI.GetComponent<RBookHandler>();
         InitSliders();
     }
 
@@ -70,7 +73,7 @@ public class PlayerUI : MonoBehaviour
     {
         rscInvButton.gameObject.SetActive(false);
         wpnInvButton.gameObject.SetActive(false);
-        invParent.SetActive(false);
+        SetUIVisible(false);
     }
 
     private void InitSliders()
@@ -85,19 +88,14 @@ public class PlayerUI : MonoBehaviour
     {
         if (invParent.gameObject.activeInHierarchy)
         {
-            invParent.SetActive(false);
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
-            rscInvButton.gameObject.SetActive(false);
-            wpnInvButton.gameObject.SetActive(false);
-
+            SetUIVisible(false);
             _movementHandler.TogglePlayerLock(true);
         }
         else
         {
-            invParent.SetActive(true);
-            rscInvButton.gameObject.SetActive(true);
-            wpnInvButton.gameObject.SetActive(true);
+            SetUIVisible(true);
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
             _movementHandler.TogglePlayerLock(false);
@@ -106,11 +104,21 @@ public class PlayerUI : MonoBehaviour
         }
     }
 
+    private void SetUIVisible(bool visible)
+    {
+        invParent.SetActive(visible);
+        rscInvButton.gameObject.SetActive(visible);
+        wpnInvButton.gameObject.SetActive(visible);
+        craftingButton.gameObject.SetActive(visible);
+        bodyStatButton.gameObject.SetActive(visible);
+        recipeBookButton.gameObject.SetActive(visible);
+    }
 
     public void EnableCraftingUI()
     {
         craftingUI.SetActive(true);
         bodyStatusUI.SetActive(false);
+
         _rBookHandler.DisableRecipeBook();
     }
 

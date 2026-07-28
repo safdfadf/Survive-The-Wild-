@@ -95,5 +95,10 @@ namespace Player
             _playerBody.TakeDamage(attack);
         }
 
+        public Transform GetApproachPos()
+        {
+            return _movementHandler.animalApproachPos;
+        }
+
     }
 }

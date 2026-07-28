@@ -161,5 +161,16 @@ public class PlayerVitalStats : MonoBehaviour
       UpdateHealth();
       _playerUI.HealthSlider(_currentHealth / maxHealth);
    }
+
+   public void DamageToHealth(float amount)
+   {
+      _currentHealth -= amount;
+      _playerUI.HealthSlider(_currentHealth/maxHealth);
+   }
+
+   public void KillPlayer()
+   {
+      // Game Over
+   }
 }
 
