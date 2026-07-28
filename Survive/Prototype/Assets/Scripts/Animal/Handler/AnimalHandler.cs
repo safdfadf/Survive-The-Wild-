@@ -146,7 +146,7 @@ public class
 
                 // Initialize the animal
                 UnScheduleAnimal unScheduleAnimal = obj.GetComponent<UnScheduleAnimal>();
-                unScheduleAnimal.Initialize(animalSo);
+                unScheduleAnimal.Initialize(animalSo,chunk.bounds);
                 
                 chunk.objectInChunk.Add(obj);// recheck this 
             }

@@ -15,4 +15,6 @@ public class AnimalSo : ScriptableObject
     public ResourceSo resourceSo;// drop the resource 
     public List<GameObject> TrackMesh;
     public float spawnProbability;
+    public bool isAggresive;
+    public int damage;
 }

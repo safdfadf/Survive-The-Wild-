@@ -1,15 +1,25 @@
 using System;
 using System.Collections;
+using Animal.States;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class AnimalBase : MonoBehaviour
 {
-    [SerializeField] protected float walkSpeed;
+    [Header("Movement Info")] [SerializeField]
+    protected float walkSpeed;
+
     [SerializeField] protected float alertSpeed;
     [SerializeField] protected float runSpeed;
     [SerializeField] protected float fleeSpeed;
     [SerializeField] public GameObject followPoint;
+
+    [Header("ChooseAttackType")] [SerializeField]
+    protected bool isPoison;
+
+    [SerializeField] protected bool isFire;
+    [SerializeField] protected bool isStun;
+
 
     protected NavMeshAgent agent;
     protected Animator animator;
@@ -21,7 +31,7 @@ public class AnimalBase : MonoBehaviour
     public bool isMoving { get; private set; }
     private GameObject _bloodVfx;
 
-    protected AnimalSo AnimalSo;
+    public AnimalSo AnimalSo;
 
     //Todo: State manager should handle the states 
     private AnimalStateManager _stateManager;
@@ -29,6 +39,9 @@ public class AnimalBase : MonoBehaviour
     protected AnimalState AlertState;
     protected AnimalState AlarmState;
     protected AnimalState CurrentState;
+
+    protected Bounds Bounds;
+    public bool IsUnscheduled { get; protected set; } = false;
 
     protected virtual void Awake()
     {
@@ -49,6 +62,14 @@ public class AnimalBase : MonoBehaviour
         animator.SetFloat("Velocity", agent.velocity.magnitude);
     }
 
+    private void LateUpdate()
+    {
+        if (CurrentState != null)
+        {
+            CurrentState.UpdateState();
+        }
+    }
+
     public void TakeDamage(int damage, Vector3 contact)
     {
         if (_currentHealth <= 0) return;
@@ -59,6 +80,10 @@ public class AnimalBase : MonoBehaviour
         if (_currentHealth <= 0)
         {
             Death();
+        }
+        else
+        {
+            // change to alert state 
         }
     }
 
@@ -128,6 +153,13 @@ public class AnimalBase : MonoBehaviour
         StartCoroutine(MonitorArrival(onArrived));
     }
 
+    public virtual void MoveInBounds() // this function can be shared by all the animals to move in zone/chunk 
+    {
+        if (Bounds.size == Vector3.zero) return;
+        Vector3 randomPoint = RetPosOnNv.ReturnRandomNavMeshPos(Bounds);
+        MoveTo(randomPoint);
+    }
+
     bool IsValidNavMeshPosition(Vector3 pos, float radius = 1f)
     {
         return NavMesh.SamplePosition(pos, out _, radius, NavMesh.AllAreas);
@@ -149,8 +181,28 @@ public class AnimalBase : MonoBehaviour
         }
     }
 
+    private void CheckPlayerPresence() // who should call this funcion update 
+    {
+        if (!IsPlayerAround()) return;
+        CurrentState = AlarmState;
+        CurrentState.EnterState(this);
+    }
+
+    protected virtual bool IsPlayerAround()
+    {
+        return false;
+    }
+
+    protected virtual void Attack()
+    {
+    }
+
     public void CreateNewState()
     {
         // create new state 
+        CalmState = new CalmState();
+        AlertState = new AlertState();
+        AlarmState = new AlarmState();
+        CurrentState = CalmState;
     }
 }

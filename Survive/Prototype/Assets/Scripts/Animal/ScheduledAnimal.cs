@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Player;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -12,10 +13,11 @@ public class ScheduledAnimal : AnimalBase
 
     protected AnimalData AnimalData;
 
-    protected override void Awake()
-    {
-        base.Awake();
-    }
+    [SerializeField] private Transform leftEye;
+    [SerializeField] private Transform rightEye;
+    [SerializeField] private float eyeSightDistance = 20f;
+    [SerializeField] private float eyeSightAngle = 45f; // half-angle of cone
+    [SerializeField] private LayerMask obstructionMask;
 
     public void InitializeByData(AnimalData animalData)
     {
@@ -29,17 +31,42 @@ public class ScheduledAnimal : AnimalBase
         currentPos = animalData.GetCurrentPosition();
         ActivateState(CurrentState);
     }
-    private void LateUpdate()
-    {
-        if (CurrentState != null)
-        {
-            CurrentState.UpdateState();
-        }
-    }
-
     public override void MoveTo(Vector3 destination, Action onArrived = null, float? speedOverride = null)
     {
         base.MoveTo(destination, onArrived, speedOverride);
+    }
+
+    protected override bool IsPlayerAround()
+    {
+        if (leftEye == null || rightEye == null)
+            return false;
+
+        Vector3 playerPos = PlayerRepository.instance.GetPlayerTransform().position;
+
+        // Eye midpoint
+        Vector3 eyeCenter = (leftEye.position + rightEye.position) * 0.5f;
+
+        // Forward direction from eyes
+        Vector3 forward = transform.forward;
+
+        // Direction to player
+        Vector3 dirToPlayer = (playerPos - eyeCenter).normalized;
+
+        // Check angle
+        float angle = Vector3.Angle(forward, dirToPlayer);
+        if (angle > eyeSightAngle)
+            return false;
+
+        // Check distance
+        float dist = Vector3.Distance(eyeCenter, playerPos);
+        if (dist > eyeSightDistance)
+            return false;
+
+        // Check line of sight
+        if (Physics.Raycast(eyeCenter, dirToPlayer, dist, obstructionMask))
+            return false;
+
+        return true;
     }
 
     public void AnimalWrap(Vector3 position)

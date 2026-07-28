@@ -8,6 +8,8 @@ public abstract class AnimalState
     {
         data = animalData;
     }
+
+    public AnimalState(){}
     public abstract void EnterState(AnimalBase animal);
     public abstract void UpdateState();
     public abstract void ExitState();

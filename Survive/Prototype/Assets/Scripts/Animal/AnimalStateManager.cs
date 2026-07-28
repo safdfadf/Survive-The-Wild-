@@ -4,9 +4,9 @@ using Animal.States;
 using Player;
 using UnityEngine;
 
-public class AnimalStateManager:MonoBehaviour 
+public class AnimalStateManager:MonoBehaviour //ToDo : Change script name to player Detection System
 {
-   private List<AnimalData> _activeAnimals = new();
+   private List<AnimalData> _activeAnimalsData = new();
    private PlayerRepository _playerRepository;
    [Header("Scent Intensity Threshold")]
     public float calmThreshold = 0.05f;
@@ -23,7 +23,7 @@ public class AnimalStateManager:MonoBehaviour
    private AnimalHandler _animalHandler;
    public void AddActiveData(AnimalData activeAnimals)
    {
-      _activeAnimals.Add(activeAnimals);
+      _activeAnimalsData.Add(activeAnimals);
    }
 
    private void Awake()
@@ -53,12 +53,12 @@ public class AnimalStateManager:MonoBehaviour
 
    private void CheckPlayerScent(Vector3 windDirection,float windSpeed)
    {
-      for (int i = _activeAnimals.Count - 1; i >= 0; i--)
+      for (int i = _activeAnimalsData.Count - 1; i >= 0; i--)
       {
-         var data = _activeAnimals[i];
+         var data = _activeAnimalsData[i];
          Vector3? pos = data.CurrentPos;
          if (pos == null)return;
-         if(_activeAnimals.Count <1){Debug.Log("active animal count zero");return;}
+         if(_activeAnimalsData.Count <1){Debug.Log("active animal count zero");return;}
         float intensity = _playerRepository.GetScentIntensity(pos.Value);
         
      
@@ -86,9 +86,9 @@ public class AnimalStateManager:MonoBehaviour
 
       Vector2 p = new Vector2(playerPos.x, playerPos.z);
 
-      for (int i = _activeAnimals.Count - 1; i >= 0; i--)
+      for (int i = _activeAnimalsData.Count - 1; i >= 0; i--)
       {
-         AnimalData data = _activeAnimals[i];
+         AnimalData data = _activeAnimalsData[i];
          if (!data.CurrentPos.HasValue) continue;
 
          Vector2 a = new Vector2(data.CurrentPos.Value.x, data.CurrentPos.Value.z);
@@ -158,7 +158,7 @@ public class AnimalStateManager:MonoBehaviour
       Debug.Log("ChangeToAlarmState");
      data.ChangeState(data.GetAlarmState());
      if(data.IsSpawned)return;
-     _activeAnimals.Remove(data);
+     _activeAnimalsData.Remove(data);
      _animalHandler.RemoveAnimalData(data);
    }
 }

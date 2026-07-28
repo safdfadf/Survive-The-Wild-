@@ -36,8 +36,8 @@ public class AnimalUi : MonoBehaviour
     private void FollowAnimalInstance()
     {
         if(!_canFollow)return;
-        AnimalBase animal = animalInstance.GetComponent<AnimalBase>();
-        Vector3 worldPos = animal.GetFollowPoint().transform.position;
+        ScheduledAnimal scheduledAnimal = animalInstance.GetComponent<ScheduledAnimal>();
+        Vector3 worldPos = scheduledAnimal.GetFollowPoint().transform.position;
         Vector3 screenPos = cam.WorldToScreenPoint(worldPos);
         Vector3 dirToAnimal = (worldPos - cam.transform.position).normalized;
         bool isBehind = Vector3.Dot(cam.transform.forward, dirToAnimal) <= 0f;
@@ -57,4 +57,5 @@ public class AnimalUi : MonoBehaviour
 
         rectTransform.anchoredPosition = anchoredPos;
     }
+    
 }

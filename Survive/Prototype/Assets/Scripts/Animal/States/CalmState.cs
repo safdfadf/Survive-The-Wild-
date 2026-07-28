@@ -11,8 +11,7 @@ namespace Animal.States
         public CalmState(AnimalData data) : base(data)
         {
         }
-
-        // when entering state choose the behaviour 
+        public CalmState(){}
         public override void EnterState(AnimalBase animal)
         {
             ScheduleNextAction();
@@ -23,11 +22,12 @@ namespace Animal.States
 
         public override void UpdateState()
         {
-            if (!data.IsSpawned || data.isZoneTraveling) return;
-
+            if(data != null && data.isZoneTraveling ) return;
             if (Time.time >= nextActionTime)
             {
-                MoveToNextPosition();
+                if(Random.value > 0.5f)
+                    MoveToNextPosition();
+                // if random change that  it will move stay at pos  
             }
         }
 
@@ -39,7 +39,7 @@ namespace Animal.States
         {
             nextActionTime = Time.time + Random.Range(minIntervalTime, maxIntervalTime);
         }
-
+        
         private void MoveToNextPosition()
         { 
             // Add calm behaviour

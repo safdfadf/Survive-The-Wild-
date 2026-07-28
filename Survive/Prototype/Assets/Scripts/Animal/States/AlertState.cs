@@ -10,7 +10,7 @@ namespace Animal.States
         public AlertState(AnimalData data) : base(data)
         {
         }
-
+        public AlertState(){}
         public override void EnterState(AnimalBase animal)
         {
             ScheduleNextAction();
@@ -21,12 +21,7 @@ namespace Animal.States
 
         public override void UpdateState()
         {
-            if(!data.IsSpawned || data.isZoneTraveling)return;
-            // we need agents reference we do the math and call move function 
-            if (Time.time >= nextActionTime)
-            {
-                MoveToNextPosition(); 
-            }
+        
         }
 
         public override void ExitState()

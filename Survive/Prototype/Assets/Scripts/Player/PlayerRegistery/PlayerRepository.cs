@@ -11,6 +11,7 @@ namespace Player
         private MovementHandler _movementHandler;
         private PlayerInventory _playerInventory;
         private PlayerVitalStats _playerVitalStats;
+        private PlayerBody _playerBody;
 
         private void Awake()
         {
@@ -27,6 +28,7 @@ namespace Player
             _movementHandler = GetComponent<MovementHandler>();
             _playerInventory = GetComponent<PlayerInventory>();
             _playerVitalStats = GetComponent<PlayerVitalStats>();
+            _playerBody = GetComponent<PlayerBody>();
         }
 
         private void LateUpdate()
@@ -83,10 +85,14 @@ namespace Player
         {
             return _movementHandler.isHuntingSenseActive;
         }
-
         public void CanPlayerMove(bool isLocked)
         {
             _movementHandler.TogglePlayerLock(isLocked);
+        }
+
+        public void ApplyDamage(IAttack attack)
+        {
+            _playerBody.TakeDamage(attack);
         }
 
     }
