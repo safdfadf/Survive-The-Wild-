@@ -15,14 +15,9 @@ public class AnimalBase : MonoBehaviour
     [SerializeField] protected float fleeSpeed;
     [SerializeField] public GameObject followPoint;
 
-    [Header("ChooseAttackType")] [SerializeField]
-    protected bool isPoison;
 
-    [SerializeField] protected bool isFire;
-    [SerializeField] protected bool isStun;
-
-    [Header("Choose Attack Behavior")] [SerializeField]
-    private AttackType attackType;
+    [Header("Choose Attack Behavior")] 
+    [SerializeField] protected AnimalAttack _animalAttack;
 
     protected NavMeshAgent agent;
     protected Animator animator;

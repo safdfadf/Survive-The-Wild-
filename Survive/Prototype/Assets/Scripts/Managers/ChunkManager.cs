@@ -220,10 +220,10 @@ public class ChunkManager : MonoBehaviour
 
                 EventBus.CreateAnimalData.Invoke(_currentRegion, GetTestBounds()); // create animal data
 
-                GenericSpawner.Instance.SpawnInChunk<EnvironSo, Environment>(
-                    SoProvider.instance.GetEnvironmentSo(chunk.regionType), chunk, chunk.objectInChunk);
-                GenericSpawner.Instance.SpawnInChunk<ResourceSo, BaseResource>(SoProvider.instance.GetResourceSo(),
-                    chunk, chunk.objectInChunk);
+           //     GenericSpawner.Instance.SpawnInChunk<EnvironSo, Environment>(
+                //    SoProvider.instance.GetEnvironmentSo(chunk.regionType), chunk, chunk.objectInChunk);
+            //    GenericSpawner.Instance.SpawnInChunk<ResourceSo, BaseResource>(SoProvider.instance.GetResourceSo(),
+              //      chunk, chunk.objectInChunk);
                 // GenericSpawner.Instance.SpawnInChunk<FoodSo,Food>(SoProvider.instance.GetFoodSo(chunk.regionType),chunk,chunk.objectInChunk);
                 break;
             case RegionType.Swamp:

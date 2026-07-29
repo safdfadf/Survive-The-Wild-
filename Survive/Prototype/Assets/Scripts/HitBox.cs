@@ -4,28 +4,28 @@ using UnityEngine;
 public class HitBox : MonoBehaviour, ItakeDamage
 {
     private TargetPractice mainBody;
-    private AnimalBase animal;
+    private AnimalBase _animal;
 
     [SerializeField] private int damageMultiplayer;
 
     private void Awake()
     {
-        animal = GetComponentInParent<AnimalBase>();
+        _animal = GetComponentInParent<AnimalBase>();
     }
 
-    public void Initialize(AnimalBase animal)
+    public void Initialize(AnimalBase scheduledAnimal)
     {
-        this.animal = animal;
-        if (this.animal == null)
+        _animal = scheduledAnimal;
+        if (_animal == null)
         {
-            Debug.LogError(this.animal.name + " is missing animal");
+            Debug.LogError(_animal.name + " is missing animal");
         }
     }
 
 
     public void TakeDamage(int damage, Vector3 contactPoint)
     {
-        if (animal != null)
-            animal.TakeDamage(damageMultiplayer, contactPoint);
+        if (_animal != null)
+            _animal.TakeDamage(damageMultiplayer, contactPoint);
     }
 }

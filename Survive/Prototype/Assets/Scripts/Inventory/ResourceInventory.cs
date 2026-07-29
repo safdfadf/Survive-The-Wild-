@@ -158,6 +158,7 @@ public class ResourceInventory : MonoBehaviour
                 occuppiedCount++;
             }
         }
+        // add a functionality to place the item at Body Status ui 
     }
 
     private void ClearArea(Vector2Int origin, Vector2Int size, InventoryItem item)

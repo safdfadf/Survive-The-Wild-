@@ -1,5 +1,8 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using Effect;
+using Effect.Symptoms;
 using UnityEngine;
 
 //ToDo : Fire damage and Poison damage is a shared Behaviour find solution for that 
@@ -8,35 +11,18 @@ public class PlayerBody : MonoBehaviour
     // this script will keep track of player body status  
     [SerializeField] private GameObject bodyParent;
 
-    public bool isPoisoned;
-    public bool isInfected;
-    public bool isOnFire;
     private bool _isWounded;
     private PlayerUI _playerUI;
     private PlayerVitalStats _playerVitalStats;
+    private List<ActiveEffect> _activeEffects;
 
-    [Header("Poison Effect")] [SerializeField]
-    private float poisonDamagePerHour = 5f;
-
-    [SerializeField] private int maxPoisonHours = 12;
-
-    private int poisonHoursPassed = 0;
-
+    private List<ActiveSymptom> _activeSymptoms;
     private void Awake()
     {
         _playerUI = GetComponent<PlayerUI>();
         _playerVitalStats = GetComponent<PlayerVitalStats>();
     }
 
-    private void OnEnable()
-    {
-        EventBus.OnHourChanged += HandlePoisonDamage;
-    }
-
-    private void OnDisable()
-    {
-        EventBus.OnHourChanged -= HandlePoisonDamage;
-    }
 
     public void HealPlayer()
     {
@@ -56,32 +42,95 @@ public class PlayerBody : MonoBehaviour
 
     private void ApplyDamage()
     {
-        if(isPoisoned)
-            HandlePoisonDamage(-1);
     }
 
-    private void HandlePoisonDamage(int hour)
+    public void AddSymptom(Symptom symptom)
     {
-        if (!isPoisoned)
-            return;
-
-        poisonHoursPassed++;
-
-        _playerVitalStats.DamageToHealth(poisonDamagePerHour);
-
-        if (poisonHoursPassed >= maxPoisonHours)
-        {
-            Debug.Log("Player died from poison.");
-            _playerVitalStats.KillPlayer();
-        }
-        // add further effects like Vomit/Dizziness
-        // and effect on Body UI 
     }
 
     public void TakeDamage(IAttack attack)
     {
-        isPoisoned = attack.IsPoison;
-        isOnFire = attack.IsFire;
-        ApplyDamage();
+        foreach (var effect in attack.Effects)
+        {
+            foreach (var type in effect.symptoms)
+            {
+                ActiveSymptom s = new ActiveSymptom();
+                s.activeSymptom = CreateSymptom(type);
+                s.Type = type;
+                _activeSymptoms.Add(s);
+            }
+
+            ActiveEffect active = new ActiveEffect(effect);
+            active.damageRoutine = StartCoroutine(HandleEffectDamage(active));
+
+            _activeEffects.Add(active);
+        }
     }
+
+    private Symptom CreateSymptom(BaseSymptomType type)
+    {
+        return type switch
+        {
+            BaseSymptomType.Dizziness => new DizzinessSymptom(this),
+            BaseSymptomType.Vomit => new VomitSymptom(this),
+            BaseSymptomType.Hallucination => new HallucinationSymptom(this),
+            BaseSymptomType.Unconscious => new UnconsciousSymptom(this),
+            _ => null
+        };
+    }
+
+    private IEnumerator HandleEffectDamage(ActiveEffect active)
+    {
+        EffectsSo data = active.data;
+
+        while (active.elapsedTime < data.MaxTime)
+        {
+            // Wait for the time frame
+            yield return new WaitForSeconds(data.timeFrame * 60f);
+
+            // Apply damage
+            //    _playerVitalStats.DecreaseHealth(data.damage);
+
+            active.elapsedTime += data.timeFrame;
+        }
+
+        RemoveEffect(active);
+    }
+
+    private void RemoveEffect(ActiveEffect active)
+    {
+        if (active.damageRoutine != null)
+            StopCoroutine(active.damageRoutine);
+        foreach (var type in active.data.symptoms)
+        {
+            // 
+            ActiveSymptom activeSymptom = _activeSymptoms.Find(s => s.Type == type);
+            if (activeSymptom != null)
+            {
+                activeSymptom.activeSymptom.StopSymptom();
+                _activeSymptoms.Remove(activeSymptom);
+            }
+        }
+
+        _activeEffects.Remove(active);
+    }
+}
+
+public class ActiveEffect
+{
+    public EffectsSo data;
+    public float elapsedTime;
+    public Coroutine damageRoutine;
+
+    public ActiveEffect(EffectsSo data)
+    {
+        this.data = data;
+        elapsedTime = 0f;
+    }
+}
+
+public class ActiveSymptom
+{
+    public Symptom activeSymptom;
+    public BaseSymptomType Type;
 }

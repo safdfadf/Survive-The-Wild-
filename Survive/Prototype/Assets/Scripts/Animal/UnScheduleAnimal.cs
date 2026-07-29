@@ -3,12 +3,16 @@ using UnityEngine;
 
 public class UnScheduleAnimal : AnimalBase // these animals do not have a schedule and spawned around the player
 {
-    [SerializeField] private float alertRadius = 1;
+    [Header("Detection Setting")] [SerializeField]
+    private float alertRadius = 1;
+
     [SerializeField] private LayerMask playerMask;
     [SerializeField] private LayerMask obstructionMask;
+
     [SerializeField] private float alarmRadius = .5f;
+
     // select Attack Behviour 
-    
+    // public animalAttack we choose attack type and its effects ? 
     protected override void Awake()
     {
         IsUnscheduled = true;
@@ -43,28 +47,28 @@ public class UnScheduleAnimal : AnimalBase // these animals do not have a schedu
             if (CurrentState == null || CurrentState == AlarmState) return false;
             CurrentState = AlarmState;
             CurrentState.EnterState(this);
-            Debug.Log("Change to " +CurrentState.ToString());
+            Debug.Log("Change to " + CurrentState.ToString());
         }
         else
         {
             if (CurrentState == null || CurrentState == AlertState) return false;
-            CurrentState = AlertState;   
+            CurrentState = AlertState;
             CurrentState.EnterState(this);
-            Debug.Log("Change to " +CurrentState.ToString());
+            Debug.Log("Change to " + CurrentState.ToString());
         }
+
         return true;
     }
+
     public override void Attack()
     {
         Debug.Log("Attacking Player");
         animator.SetTrigger("attack");
         LookAtPlayer();
-        AnimalAttack attack = new AnimalAttack(AnimalSo.damage, isPoison, isStun, isFire);
-        PlayerRepository.instance.ApplyDamage(attack);
-        
+        PlayerRepository.instance.ApplyDamage(_animalAttack);
     }
 
-    
+
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.yellow;
