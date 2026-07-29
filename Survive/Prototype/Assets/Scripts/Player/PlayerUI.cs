@@ -8,6 +8,14 @@ using UnityEngine.UI;
 public class PlayerUI : MonoBehaviour
 {
     [SerializeField] private GameObject crosshair;
+    [Header("BodyUI")] [SerializeField] private Transform rightHand;
+    [SerializeField] private Transform leftHand;
+    [SerializeField] private Transform head;
+    [SerializeField] private Transform leftLeg;
+    [SerializeField] private Transform rightLeg;
+    [SerializeField] private List<GameObject> bodyParts;
+
+    [Header("BodyMat")] [SerializeField] private Material OrigMat;
     [Header("Inventory")] [SerializeField] private GameObject invParent;
     [SerializeField] private Button rscInvButton;
     [SerializeField] private Button wpnInvButton;
@@ -25,7 +33,6 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] private Slider hydroBar;
 
 
-    private List<GameObject> activeSoundUI = new();
     [SerializeField] private Image noiseImage;
 
 
@@ -46,7 +53,10 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] private Button bodyStatButton;
 
     [SerializeField] private GameObject bodyStatusUI;
-    [FormerlySerializedAs("recipeBookUI")] [SerializeField] private Button recipeBookButton;
+
+    [FormerlySerializedAs("recipeBookUI")] [SerializeField]
+    private Button recipeBookButton;
+
     [SerializeField] private GameObject recipeBookUI;
 
     // Script Reference  
@@ -220,5 +230,28 @@ public class PlayerUI : MonoBehaviour
         carbBar.value = carb;
         fatBar.value = fat;
         hydroBar.value = hydro;
+    }
+
+    public void ApplyBandageUi(GameObject prefab)
+    {
+    }
+
+    public void ApplyWoundUI(Material mat)
+    {
+        foreach (var gm in bodyParts)
+        {
+            SkinnedMeshRenderer smr = gm.GetComponent<SkinnedMeshRenderer>();
+            smr.material = mat;
+        }
+    }
+
+
+    public void ApplyOriginalUI()
+    {
+        foreach (var gm in bodyParts)
+        {
+            SkinnedMeshRenderer smr = gm.GetComponent<SkinnedMeshRenderer>();
+            smr.material = OrigMat;
+        }
     }
 }

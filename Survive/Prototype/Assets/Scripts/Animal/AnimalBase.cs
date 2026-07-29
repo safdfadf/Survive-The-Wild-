@@ -182,7 +182,6 @@ public class AnimalBase : MonoBehaviour
             }
 
             onArrived?.Invoke();
-            Debug.Log("Arrived");
             isMoving = false;
             if (agent.isOnNavMesh)
                 agent.ResetPath();
@@ -195,9 +194,9 @@ public class AnimalBase : MonoBehaviour
        
     }
 
-    protected virtual bool IsPlayerAround()
+    protected virtual void IsPlayerAround()
     {
-        return false;
+        
     }
 
     public virtual void Attack()

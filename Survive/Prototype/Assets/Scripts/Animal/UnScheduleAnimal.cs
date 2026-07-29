@@ -9,10 +9,8 @@ public class UnScheduleAnimal : AnimalBase // these animals do not have a schedu
     [SerializeField] private LayerMask playerMask;
     [SerializeField] private LayerMask obstructionMask;
 
-    [SerializeField] private float alarmRadius = .5f;
+    [SerializeField] private float alarmRadius = .8f;
 
-    // select Attack Behviour 
-    // public animalAttack we choose attack type and its effects ? 
     protected override void Awake()
     {
         IsUnscheduled = true;
@@ -27,13 +25,13 @@ public class UnScheduleAnimal : AnimalBase // these animals do not have a schedu
         CalmState.EnterState(this);
     }
 
-    protected override bool IsPlayerAround()
+    protected override void IsPlayerAround()
     {
         // here based on distance first alert mode and then attack 
         Collider[] hits = Physics.OverlapSphere(transform.position, alertRadius, playerMask);
 
         if (hits.Length == 0)
-            return false;
+            return;
 
         Transform player = hits[0].transform;
 
@@ -41,28 +39,36 @@ public class UnScheduleAnimal : AnimalBase // these animals do not have a schedu
         float dist = Vector3.Distance(transform.position, player.position);
 
         if (Physics.Raycast(transform.position, dir, dist, obstructionMask))
-            return false;
+        {
+            Debug.Log(" i am returning");
+            return;
+        }
         if (dist <= alarmRadius)
         {
-            if (CurrentState == null || CurrentState == AlarmState) return false;
-            CurrentState = AlarmState;
-            CurrentState.EnterState(this);
-            Debug.Log("Change to " + CurrentState.ToString());
+            Debug.Log("Player too close");
+
+            if (CurrentState != AlarmState)
+            {
+                CurrentState = AlarmState;
+                CurrentState.EnterState(this);
+                Debug.Log("Switched to AlarmState");
+            }
+
+            return;
         }
-        else
+
+        // ALERT ZONE
+        if (CurrentState != AlertState)
         {
-            if (CurrentState == null || CurrentState == AlertState) return false;
             CurrentState = AlertState;
             CurrentState.EnterState(this);
-            Debug.Log("Change to " + CurrentState.ToString());
+            Debug.Log("Switched to AlertState");
         }
 
-        return true;
+        return;
     }
-
     public override void Attack()
     {
-        Debug.Log("Attacking Player");
         animator.SetTrigger("attack");
         LookAtPlayer();
         PlayerRepository.instance.ApplyDamage(_animalAttack);

@@ -36,10 +36,10 @@ public class ScheduledAnimal : AnimalBase
         base.MoveTo(destination, onArrived, speedOverride);
     }
 
-    protected override bool IsPlayerAround()
+    protected override void IsPlayerAround()
     {
         if (leftEye == null || rightEye == null)
-            return false;
+            return;
 
         Vector3 playerPos = PlayerRepository.instance.GetPlayerTransform().position;
 
@@ -55,18 +55,18 @@ public class ScheduledAnimal : AnimalBase
         // Check angle
         float angle = Vector3.Angle(forward, dirToPlayer);
         if (angle > eyeSightAngle)
-            return false;
+            return;
 
         // Check distance
         float dist = Vector3.Distance(eyeCenter, playerPos);
         if (dist > eyeSightDistance)
-            return false;
+            return ;
 
         // Check line of sight
         if (Physics.Raycast(eyeCenter, dirToPlayer, dist, obstructionMask))
-            return false;
+            return;
 
-        return true;
+        return;
     }
 
     public void AnimalWrap(Vector3 position)

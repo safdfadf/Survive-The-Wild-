@@ -18,6 +18,7 @@
 }
 public enum BaseSymptomType
 {
+    None,
     Dizziness,
     Vomit,
     Hallucination,

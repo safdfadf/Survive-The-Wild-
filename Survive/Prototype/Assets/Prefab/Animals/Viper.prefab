@@ -337,17 +337,19 @@ MonoBehaviour:
   runSpeed: 10
   fleeSpeed: 11
   followPoint: {fileID: 0}
-  isPoison: 1
-  isFire: 0
-  isStun: 0
+  _animalAttack:
+    damage: 0
+    effects:
+    - {fileID: 11400000, guid: ae274ab7ccf10ca4280230e4fee8b818, type: 2}
   AnimalSo: {fileID: 0}
-  alertRadius: 10
+  alertRadius: 1.5
   playerMask:
     serializedVersion: 2
     m_Bits: 64
   obstructionMask:
     serializedVersion: 2
     m_Bits: 447
+  alarmRadius: 1
 --- !u!195 &2422056669718269046
 NavMeshAgent:
   m_ObjectHideFlags: 0

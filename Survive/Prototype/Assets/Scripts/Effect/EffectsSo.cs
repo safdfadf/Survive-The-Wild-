@@ -11,6 +11,7 @@ namespace Effect
         public float damage;
         public float timeFrame;
         public float MaxTime;
+        public Material woundMaterial;// temp
         // wound type 
     }
 }

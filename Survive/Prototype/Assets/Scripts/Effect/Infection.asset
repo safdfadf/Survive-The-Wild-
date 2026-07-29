@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 47bfb8fec6adf8a4eaec7050e0502b1c, type: 3}
-  m_Name: Poison
+  m_Name: Infection
   m_EditorClassIdentifier: 
-  symptoms: 020000000100000003000000
-  damage: 10
+  symptoms: 0100000002000000
+  damage: 5
   timeFrame: 60
   MaxTime: 12
-  woundMaterial: {fileID: 2100000, guid: 00a3f1174317fb24f97e0320192a4fbb, type: 2}
+  woundMaterial: {fileID: 2100000, guid: b78d2ab6bd5d2bc4b8740e8482b545a0, type: 2}

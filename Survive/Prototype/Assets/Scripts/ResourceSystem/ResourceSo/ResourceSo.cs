@@ -5,7 +5,7 @@ public class ResourceSo : ScriptableObject,ISpawnedItem
 {
    
     public GameObject prefab;
-    public Mesh inventoryItem;
+    public Mesh inventoryItem;// maybe use a gameObject
     public int amount;
     public Vector2Int size;
     public float appearanceProb;

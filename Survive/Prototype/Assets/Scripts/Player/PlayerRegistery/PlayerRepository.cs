@@ -1,4 +1,5 @@
 ﻿using System;
+using Effect;
 using UnityEngine;
 
 namespace Player
@@ -95,6 +96,10 @@ namespace Player
             _playerBody.TakeDamage(attack);
         }
 
+        public void HealPlayer(EffectsSo effect)
+        {
+            _playerBody.HealPlayer(effect);
+        }
         public Transform GetApproachPos()
         {
             return _movementHandler.animalApproachPos;
