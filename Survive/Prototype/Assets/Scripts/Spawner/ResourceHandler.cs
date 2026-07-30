@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class ResourceHandler : MonoBehaviour // in every spawner need a 
+public class ResourceHandler : MonoBehaviour //ToDo: remove this script 
 {
     // this will responsible for spawining variour resources like wood, stone, metal, tree, boulder 
     public void SpawnResourcesInChunk(List<ResourceSo> resourceList, Chunk chunk)
