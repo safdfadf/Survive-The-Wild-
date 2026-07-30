@@ -7,7 +7,10 @@ using UnityEngine.UI;
 public class CraftingHandler : MonoBehaviour
 {
     [SerializeField] private List<CraftingSO> craftingSo;
-    [FormerlySerializedAs("craftingUI")] [SerializeField] private GameObject craftingUITransform; // game object on which crafting will happen
+
+    [FormerlySerializedAs("craftingUI")] [SerializeField]
+    private GameObject craftingUITransform; // game object on which crafting will happen
+
     [Header("Testing")] [SerializeField] private CraftingSO testingSo;
 
 
@@ -61,7 +64,8 @@ public class CraftingHandler : MonoBehaviour
     private void AddTestingWeapon(CraftingSO so)
     {
         GameObject prefab = so.resultPrefab;
-        GameObject result = Instantiate(prefab, craftingUITransform.transform.position + Vector3.up * 0.2f, Quaternion.identity);
+        GameObject result = Instantiate(prefab, craftingUITransform.transform.position + Vector3.up * 0.2f,
+            Quaternion.identity);
         if (result.TryGetComponent<BaseWeapon>(out var weapon))
         {
             weapon.SetCraftingSo(so);
@@ -191,13 +195,18 @@ public class CraftingHandler : MonoBehaviour
 
         // add  it to inventory 
         GameObject prefab = so.resultPrefab;
-        GameObject result = Instantiate(prefab, craftingUITransform.transform.position + Vector3.up * 0.2f, Quaternion.identity);
+        GameObject result = Instantiate(prefab, craftingUITransform.transform.position + Vector3.up * 0.2f,
+            Quaternion.identity);
         if (result.TryGetComponent<BaseWeapon>(out var weapon))
         {
             weapon.SetCraftingSo(so);
             _movementHandler.InitializeWeapon(weapon);
         }
-
+        BaseResource baseResource = result.GetComponent<BaseResource>();
+        if (baseResource != null)
+        {
+            baseResource.So = SoProvider.instance.GetSoForPrefab(so.resultPrefab);
+        }
         ICollectable collectable = result.GetComponent<ICollectable>();
         AddToInventory(collectable);
         _currentIngredients.RemoveAll(i => i.amount <= 0);

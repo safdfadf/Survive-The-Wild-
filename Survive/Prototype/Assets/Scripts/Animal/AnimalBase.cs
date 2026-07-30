@@ -214,7 +214,7 @@ public class AnimalBase : MonoBehaviour
 
     public void TriggerAlertAnim()
     {
-        LookAtPlayer();   
+      //  LookAtPlayer();   
         animator.SetTrigger("Alert");
     }
     protected void LookAtPlayer()

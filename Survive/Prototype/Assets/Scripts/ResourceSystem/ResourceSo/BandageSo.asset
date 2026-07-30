@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 14a65b5c5010fd148872814fb6b3e439, type: 3}
-  m_Name: Bandage
+  m_Name: BandageSo
   m_EditorClassIdentifier: 
   prefab: {fileID: 7427983377439106926, guid: 729d5d443c537244da32d167a4e08506, type: 3}
   inventoryItem: {fileID: 0}

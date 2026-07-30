@@ -1,13 +1,14 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Environment : MonoBehaviour,ItakeDamage,IsoInitializer<EnvironSo>
 {
+   [FormerlySerializedAs("ResourceDropCount")] [SerializeField] protected int resourceDropCount;
+   [SerializeField] protected Vector3 dropOffset;
    public  EnvironSo environSo{get;private set;}
    protected int currentHealth;
-   [SerializeField] protected int ResourceDropCount;
-   [SerializeField] protected Vector3 dropOffset;
    protected PosInChunk cashedPosInChunk;
- 
+
 
    public void Initialize(EnvironSo so)
    {
@@ -24,6 +25,16 @@ public class Environment : MonoBehaviour,ItakeDamage,IsoInitializer<EnvironSo>
    {
     cashedPosInChunk = casedPos;  
    }
+   private void OnCollisionEnter(Collision other)
+   {
+      BaseWeapon weapon = other.gameObject.GetComponent<BaseWeapon>();
+      if (weapon != null)
+      {
+         int damage = weapon.MaxDamage;
+         Vector3 contactPoint = other.contacts[0].point;
+         TakeDamage(damage,contactPoint);   
+      }
+   }
    public void TakeDamage(int damage,Vector3 contactPoint)
    { 
       Debug.Log(gameObject.name + " taking damage " + damage);
@@ -35,7 +46,7 @@ public class Environment : MonoBehaviour,ItakeDamage,IsoInitializer<EnvironSo>
    }
    protected virtual void Break()
    {
-      for (int i = 0; i < ResourceDropCount; i++)
+      for (int i = 0; i < resourceDropCount; i++)
       {
          Debug.Log("i am breaking");
          // call spawner
@@ -50,6 +61,7 @@ public class Environment : MonoBehaviour,ItakeDamage,IsoInitializer<EnvironSo>
            if (collider != null)
            {
               collider.enabled = true;
+              
            }
            else
            {

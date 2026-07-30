@@ -16,7 +16,7 @@ public abstract class Resource<TSo> : MonoBehaviour, IsoInitializer<TSo>, IColle
     protected Camera cam;
 
     public bool canBeCollected { get; set; }
-    public TSo So { get; protected set; }
+    public TSo So { get; set; }
 
     protected virtual void Awake()
     {
@@ -54,6 +54,7 @@ public abstract class Resource<TSo> : MonoBehaviour, IsoInitializer<TSo>, IColle
     {
         canBeCollected = false;
         collector.AddResource(this);
+        if(CashedPosInChunk == null)return;
         CashedPosInChunk.IsAvailable = true;
         CashedPosInChunk.LastSpawnedSo = null;
         CashedPosInChunk.IsPersistent = false;
