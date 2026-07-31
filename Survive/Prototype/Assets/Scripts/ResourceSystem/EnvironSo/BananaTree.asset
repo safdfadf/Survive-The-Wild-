@@ -15,7 +15,9 @@ MonoBehaviour:
   id: BananaTree
   prefab: {fileID: 9101267996860703775, guid: 59cb809e756769a46ba7197fc767c724, type: 3}
   amount: 10
-  health: 30
+  canBreak: 1
+  breakableData:
+    Health: 30
+    resourceSo: {fileID: 11400000, guid: 99b4fa9569c655b4ba09a5d674e287d4, type: 2}
   regionType: 0
-  resourceSo: {fileID: 11400000, guid: 99b4fa9569c655b4ba09a5d674e287d4, type: 2}
   appearanceProb: 0

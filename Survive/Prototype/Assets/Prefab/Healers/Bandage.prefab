@@ -888,10 +888,10 @@ GameObject:
   - component: {fileID: 4946621861964405069}
   - component: {fileID: 6091882063329091804}
   - component: {fileID: 3850792754903592905}
-  - component: {fileID: -8060006898673189360}
   - component: {fileID: -7080896222566540981}
   - component: {fileID: 3986609982292252204}
   - component: {fileID: 9200226644946861492}
+  - component: {fileID: 803040266843175523}
   m_Layer: 7
   m_Name: Bandage
   m_TagString: Untagged
@@ -991,22 +991,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.16855648, y: 0.4290381, z: 0.1765565}
   m_Center: {x: 0.000021900982, y: 0.21784389, z: 0.013525829}
---- !u!114 &-8060006898673189360
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7427983377439106926}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 923861d195e106741a2c2f0447411a4a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  menu: {fileID: 5822230120454537338}
-  craftButton: {fileID: 2058653907809644148}
-  harvest: {fileID: 1572945324960398686}
-  removeButton: {fileID: 8426271428313376015}
 --- !u!54 &-7080896222566540981
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1073,6 +1057,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f836798e4f4cbd74995479cbd00c581c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &803040266843175523
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7427983377439106926}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dee520b27554bfc489dba9830b552004, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  menu: {fileID: 5822230120454537338}
+  craftButton: {fileID: 2058653907809644148}
+  harvest: {fileID: 1572945324960398686}
+  removeButton: {fileID: 8426271428313376015}
+  useMeButton: {fileID: 6558019259838225267}
 --- !u!1 &7613360484356326196
 GameObject:
   m_ObjectHideFlags: 0

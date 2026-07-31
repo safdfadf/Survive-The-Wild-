@@ -9,18 +9,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62df55132cbfbec469527465c09f5352, type: 3}
-  m_Name: Rasberry
+  m_Script: {fileID: 11500000, guid: 717ee1b6075e99d4198864d02c4f3538, type: 3}
+  m_Name: MushroomLog
   m_EditorClassIdentifier: 
-  prefab: {fileID: 0}
-  inventoryItem: {fileID: 0}
-  amount: 0
-  size: {x: 0, y: 0}
-  appearanceProb: 0
-  maxHealth: 0
-  calories: 0
-  proteinCount: 0
-  carbonCount: 0
-  fatCount: 0
-  hydrationCount: 0
+  id: MushroomLog
+  prefab: {fileID: 40843603368111300, guid: 1b80fc38643e13945aa28d2118fd4b42, type: 3}
+  amount: 3
+  canBreak: 0
+  breakableData:
+    Health: 0
+    resourceSo: {fileID: 0}
   regionType: 0
+  appearanceProb: 0

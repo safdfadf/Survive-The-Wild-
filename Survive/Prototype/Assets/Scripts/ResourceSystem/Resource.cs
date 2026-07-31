@@ -35,8 +35,8 @@ public abstract class Resource<TSo> : MonoBehaviour, IsoInitializer<TSo>, IColle
             rb.isKinematic = true;
         }
 
-        MeshFilter meshFilter = gameObject.GetComponent<MeshFilter>();
-        OriginalMesh = meshFilter.mesh;
+      //  MeshFilter meshFilter = gameObject.GetComponent<MeshFilter>();
+     //   OriginalMesh = meshFilter.mesh;
         cam = Camera.main;
     }
 

@@ -1,11 +1,10 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "ResourceData", menuName = "Scriptable Objects/ResourceData")]
-public class ResourceSo : ScriptableObject,ISpawnedItem
+public class ResourceSo : ScriptableObject, ISpawnedItem
 {
-   
     public GameObject prefab;
-    public Mesh inventoryItem;// maybe use a gameObject
+    public Mesh inventoryItem;
     public int amount;
     public Vector2Int size;
     public float appearanceProb;
