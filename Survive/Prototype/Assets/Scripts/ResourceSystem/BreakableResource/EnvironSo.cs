@@ -10,11 +10,11 @@ public class EnvironSo : ScriptableObject, ISpawnedItem
     public bool canBreak;
     public BreakableObjects breakableData;
     public RegionType regionType;
-    public float appearanceProb;
+    [FormerlySerializedAs("appearanceProb")] public float spawnProb;
     public int Amount => amount;
 
     public GameObject Prefab => prefab;
-    public float SpawningProbability => appearanceProb;
+    public float SpawningProbability => spawnProb;
 }
 
 [System.Serializable]

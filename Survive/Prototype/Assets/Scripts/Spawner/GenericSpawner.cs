@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -18,16 +17,19 @@ public class GenericSpawner : MonoBehaviour
         }
     }
 
-    public void SpawnInChunk<TSo,Tcomponent>(List<TSo> soList, Chunk chunk, List<GameObject> targetList)
-    where Tcomponent : MonoBehaviour,IsoInitializer<TSo>
-    where TSo : ISpawnedItem
+    public void SpawnInChunk<TSo, Tcomponent>(List<TSo> soList, Chunk chunk, List<GameObject> targetList)
+        where Tcomponent : MonoBehaviour, IsoInitializer<TSo>
+        where TSo : ISpawnedItem
     {
         foreach (var so in soList)
         {
+            bool canSpawn = Random.value <= so.SpawningProbability;
+            Debug.Log(canSpawn);
+            if (!canSpawn) continue;
             int alreadyPresent = 0;
             foreach (var pos in chunk.cashedPos)
             {
-                if(pos.LastSpawnedSo == null)continue;
+                if (pos.LastSpawnedSo == null) continue;
                 if (pos.LastSpawnedSo.Prefab == so.Prefab && !pos.IsAvailable && pos.IsPersistent)
                 {
                     alreadyPresent++;
@@ -35,19 +37,18 @@ public class GenericSpawner : MonoBehaviour
                     pos.IsAvailable = false;
                     targetList.Add(go);
                 }
-                
-            }   
-            
+            }
+
             int spawned = so.Amount - alreadyPresent;
-            
+
             foreach (var pos in chunk.cashedPos)
             {
-                if(spawned<=0)break;
+                if (spawned <= 0) break;
                 if (!pos.IsAvailable || pos.LastSpawnedSo != null)
                     continue;
-                
+
                 GameObject obj = GlobalPool.instance.Get(so.Prefab, pos.Position);
-              
+
                 var component = obj.GetComponent<Tcomponent>();
                 component.Initialize(so);
                 component.SeCashedPos(pos);
@@ -57,10 +58,11 @@ public class GenericSpawner : MonoBehaviour
                 targetList.Add(obj);
                 spawned--;
             }
-        } 
+        }
     }
-   
-    public void DespawnChunk(Chunk chunk, List<GameObject> objList,System.Func<GameObject,GameObject>getPrefab)// if we dont have single list for all objects this wont work 
+
+    public void DespawnChunk(Chunk chunk, List<GameObject> objList,
+        System.Func<GameObject, GameObject> getPrefab) // if we dont have single list for all objects this wont work 
     {
         foreach (var obj in objList)
         {
@@ -68,7 +70,7 @@ public class GenericSpawner : MonoBehaviour
             chunk.objectInChunk.Remove(obj);
             GlobalPool.instance.Return(getPrefab(obj), obj);
         }
-        
+
         objList.Clear();
     }
 }
