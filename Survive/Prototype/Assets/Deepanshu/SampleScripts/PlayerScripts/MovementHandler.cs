@@ -3,6 +3,7 @@ using System.Collections;
 using Player;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
+using UnityEngine.Serialization;
 
 public class MovementHandler : MonoBehaviour
 {
@@ -26,6 +27,9 @@ public class MovementHandler : MonoBehaviour
 
     [SerializeField] private float hourlyScentInc = 0.01f;
     [SerializeField] private float moveScentInc = 0.005f;
+
+    [FormerlySerializedAs("animalApproachPoint")]
+    public Transform animalApproachPos;
 
     [Header("Rotation Lock")]
     //f  private int 
@@ -285,10 +289,8 @@ public class MovementHandler : MonoBehaviour
         if (Physics.SphereCast(ray, radius, out RaycastHit hit, maxDistance))
         {
             BaseStructure structure = hit.collider.GetComponent<BaseStructure>();
-
             if (structure != null && structure.isActiveAndEnabled) // ray hits structure which is in ghost mode 
             {
-                //request
                 ResourceSo so = GetRequiredResources(structure);
                 _playerInventory.SetSubmitResource(so, structure);
                 structure.ToggleDescription(true);
@@ -296,6 +298,10 @@ public class MovementHandler : MonoBehaviour
 
             ICollectable collectable = hit.collider.GetComponent<ICollectable>();
             MeshRenderer renderer = hit.collider.GetComponent<MeshRenderer>();
+            if (renderer == null)
+            {
+                renderer = hit.collider.GetComponentInChildren<MeshRenderer>();
+            }
 
             if (collectable != null && renderer != null)
             {
@@ -340,6 +346,11 @@ public class MovementHandler : MonoBehaviour
         if (currentlyHighlighted != null)
         {
             MeshRenderer renderer = currentlyHighlighted.GetComponent<MeshRenderer>();
+            if (renderer == null)
+            {
+                renderer = currentlyHighlighted.GetComponentInChildren<MeshRenderer>();
+            }
+
             if (renderer != null && _originalMaterials != null)
             {
                 renderer.materials = _originalMaterials;

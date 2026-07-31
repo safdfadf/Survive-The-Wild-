@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using FoodSystem;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -30,6 +31,8 @@ public class Environment : MonoBehaviour, ItakeDamage, IsoInitializer<EnvironSo>
                 Vector3 pos = GetPosition();
                 if (pos == Vector3.zero) continue;
                 GameObject food = Instantiate(so.prefab, gameObject.transform, true);
+                Food foodScript = food.GetComponent<Food>();
+                foodScript.Initialize(so);
                 food.transform.position = pos;
             }
         }

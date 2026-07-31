@@ -3830,7 +3830,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   radius: 1.5
-  maxDistance: 10
+  maxDistance: 15
   resourceInventory: {fileID: 1513836112}
   walkSpeed: 5
   sprintSpeed: 8

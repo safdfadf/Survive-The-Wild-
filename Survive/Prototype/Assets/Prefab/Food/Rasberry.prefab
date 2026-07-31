@@ -235,7 +235,7 @@ GameObject:
   - component: {fileID: 9113718938050249045}
   - component: {fileID: 8084283397407035528}
   - component: {fileID: 2563374683248219416}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Rasberry (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -619,7 +619,7 @@ GameObject:
   - component: {fileID: 2618927008631566699}
   - component: {fileID: 3448023721986967791}
   - component: {fileID: 634228558942343423}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Rasberry (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -729,7 +729,7 @@ GameObject:
   - component: {fileID: -5484565130946174037}
   - component: {fileID: -8249529305365497011}
   - component: {fileID: -5118984641835096297}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Rasberry
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -785,7 +785,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -813,7 +813,7 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 0
+  m_UseGravity: 1
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
@@ -1125,7 +1125,7 @@ GameObject:
   - component: {fileID: 1016386182779789656}
   - component: {fileID: 8159055458723526491}
   - component: {fileID: 4536771255367180331}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Rasberry
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1689,7 +1689,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1525968761640464306}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1727,7 +1727,7 @@ GameObject:
   - component: {fileID: 3244658678746015594}
   - component: {fileID: 3156917574420610449}
   - component: {fileID: 3394929100651775454}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Rasberry (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
