@@ -9,7 +9,7 @@ public class CraftingHandler : MonoBehaviour
     [SerializeField] private List<CraftingSO> craftingSo;
 
     [FormerlySerializedAs("craftingUI")] [SerializeField]
-    private GameObject craftingUITransform; // game object on which crafting will happen
+    private RectTransform craftingUITransform;
 
     [Header("Testing")] [SerializeField] private CraftingSO testingSo;
 
@@ -51,14 +51,14 @@ public class CraftingHandler : MonoBehaviour
         craftButton.gameObject.SetActive(false);
         _playerInventory = GetComponent<PlayerInventory>();
         _movementHandler = GetComponent<MovementHandler>();
-        _resourceInventory = GetComponentInChildren<ResourceInventory>();
+        _resourceInventory = FindAnyObjectByType<ResourceInventory>();
         recipeBook.CategorizeRecipes(craftingSo, this);
         _buildingHandler = GetComponent<BuildingHandler>();
     }
 
     private void Start()
     {
-        AddTestingWeapon(testingSo);
+        //    AddTestingWeapon(testingSo);
     }
 
     private void AddTestingWeapon(CraftingSO so)
@@ -79,18 +79,11 @@ public class CraftingHandler : MonoBehaviour
     }
 
 
-    private void AddIngredient(Resource<ResourceSo> baseResource)
+    private void AddIngredient(ResourceSo So, InventoryItem uiPrefab)
     {
-        if (baseResource.So == null)
-        {
-            Debug.Log("resource so is  null");
-        }
-
-        ResourceSo So = baseResource.So;
         if (!_ingredientVisuals.ContainsKey(So))
             _ingredientVisuals[So] = new List<GameObject>();
 
-        _ingredientVisuals[So].Add(baseResource.gameObject);
 
         var existing = _currentIngredients.Find(i => i.resourceSo == So);
         if (existing != null)
@@ -102,19 +95,16 @@ public class CraftingHandler : MonoBehaviour
         {
             Debug.Log("new ingi");
             _currentIngredients.Add(new Ingredient { resourceSo = So, amount = 1 });
-            // here i also need to change the position of the ingredient 
-            baseResource.gameObject.transform.SetParent(craftingUITransform.transform);
-            baseResource.transform.SetParent(craftingUITransform.transform, false);
-            baseResource.transform.localPosition = GetNextIngredientSlotPosition() + tableOffset;
-            baseResource.transform.localRotation = Quaternion.identity;
+            // move ui to that craft position 
+            RectTransform rectTransform = uiPrefab.GetComponent<RectTransform>();
+            rectTransform.position = craftingUITransform.position;
         }
 
         CheckForRecipe();
     }
 
-    private void RemoveResource(Resource<ResourceSo> baseResource)
+    private void RemoveResource(ResourceSo So, InventoryItem item)
     {
-        ResourceSo So = baseResource.So;
         // remove from ingredient list and remove from ingredient visual 
         if (_ingredientVisuals.ContainsKey(So))
         {
@@ -128,8 +118,8 @@ public class CraftingHandler : MonoBehaviour
                 _currentIngredients.RemoveAt(i);
             }
         }
-
-        _resourceInventory.TryPlaceItem(So, baseResource.gameObject); // get back to inventory 
+      
+        _resourceInventory.TryPlaceItem(So,item); // issue here  is Inventory item 
     }
 
     private void CheckForRecipe()
@@ -202,11 +192,13 @@ public class CraftingHandler : MonoBehaviour
             weapon.SetCraftingSo(so);
             _movementHandler.InitializeWeapon(weapon);
         }
+
         BaseResource baseResource = result.GetComponent<BaseResource>();
         if (baseResource != null)
         {
             baseResource.So = SoProvider.instance.GetSoForPrefab(so.resultPrefab);
         }
+
         ICollectable collectable = result.GetComponent<ICollectable>();
         AddToInventory(collectable);
         _currentIngredients.RemoveAll(i => i.amount <= 0);

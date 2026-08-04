@@ -168,7 +168,7 @@ public class InputManager : MonoBehaviour
             ICollectable collectable = hit.collider.GetComponent<ICollectable>();
             if (collectable != null)
             {
-                collectable.ToggleMenu();
+                collectable.ToggleMenu();// this wont work for inventory item anymore
             }
         }
     }

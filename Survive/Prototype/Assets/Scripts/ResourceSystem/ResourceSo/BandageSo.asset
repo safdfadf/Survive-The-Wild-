@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: BandageSo
   m_EditorClassIdentifier: 
   prefab: {fileID: 7427983377439106926, guid: 729d5d443c537244da32d167a4e08506, type: 3}
-  inventoryItem: {fileID: 0}
+  sprite: {fileID: 21300000, guid: b802986347428bf4faff66bd9068e223, type: 3}
   amount: 0
   size: {x: 1, y: 1}
   appearanceProb: 0

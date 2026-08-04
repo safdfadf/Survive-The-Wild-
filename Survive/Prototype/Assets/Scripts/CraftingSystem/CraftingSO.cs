@@ -3,7 +3,7 @@ using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 [CreateAssetMenu(fileName = "CraftingSO", menuName = "Scriptable Objects/CraftingSO")]
-public class CraftingSO : ScriptableObject // we will craft either tools/wepons
+public class CraftingSO : ScriptableObject 
 {
     public Sprite logo; 
     public Ingredient[] ingredients;

@@ -1,35 +1,51 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
+
 public class ResourceInventory : MonoBehaviour
 {
+    //ToDo convert 3d to 2d inventory 
     private int width = 8;
     private int height = 8;
-    private int occuppiedCount = 0;
+    private RectTransform inventoryRect;
 
-    [SerializeField] private float spacingBtwSlots;
+    [FormerlySerializedAs("spacingBtwSlots")] [SerializeField]
+    private float spacingBtwSlotsX;
+
+    [SerializeField] private float spacingBtwSlotsY;
 
     private InventoryItem heldItem = null;
 
     [SerializeField] private Slot slotPrefab;
 
-    private Slot[,] slots;
-    private Dictionary<ResourceSo, List<GameObject>> resources = new();
 
+    private Slot[,] slots;
+    private Dictionary<ResourceSo, List<InventoryItem>> resources = new();
 
     private void Awake()
     {
         slots = new Slot[width, height];
+        inventoryRect = GetComponent<RectTransform>();
         for (int x = 0; x < width; x++)
         {
             for (int y = 0; y < height; y++)
             {
-                var slot = Instantiate(slotPrefab, transform);
+                Slot slot = Instantiate(slotPrefab, transform);
+                if (slot == null)
+
+                {
+                    Debug.LogWarning("Slot is null");
+                    return;
+                }
+
                 slot.gridPosition = new Vector2Int(x, y);
-                slot.transform.localPosition = new Vector3(x * spacingBtwSlots, y * spacingBtwSlots, 0);
+                slot.rect = slot.gameObject.GetComponent<RectTransform>();
+                slot.rect.anchoredPosition = new Vector2(
+                    x * spacingBtwSlotsX,
+                    y * spacingBtwSlotsY
+                );
                 slots[x, y] = slot;
             }
         }
@@ -44,33 +60,37 @@ public class ResourceInventory : MonoBehaviour
     private void UpdateHeldItemPos()
     {
         ClearPreviewColors();
-        float depth = Camera.main.WorldToScreenPoint(transform.position).z;
-
-        Vector3 worldPos = Camera.main.ScreenToWorldPoint(
-            new Vector3(Input.mousePosition.x, Input.mousePosition.y, depth)
+        Vector2 localPos;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            (RectTransform)transform,
+            Input.mousePosition,
+            null,
+            out localPos
         );
-        Vector3 localPos = transform.InverseTransformPoint(worldPos);
 
+        // Clamp inside inventory UI
         float minX = 0;
-        float maxX = (width - 1) * spacingBtwSlots;
+        float maxX = (width - 1) * spacingBtwSlotsX;
         float minY = 0;
-        float maxY = (height - 1) * spacingBtwSlots;
+        float maxY = (height - 1) * spacingBtwSlotsX;
 
         localPos.x = Mathf.Clamp(localPos.x, minX, maxX);
         localPos.y = Mathf.Clamp(localPos.y, minY, maxY);
 
-        heldItem.transform.localPosition = localPos;
-    
+        heldItem.rect.anchoredPosition = localPos;
+
         Slot slot = SlotAtCurrentPos(localPos);
         if (slot == null) return;
 
         PreviewPlacement(heldItem, slot.gridPosition);
     }
+
     private void ClearPreviewColors()
     {
         foreach (var slot in slots)
             slot.SetRegularColor();
     }
+
     private void PreviewPlacement(InventoryItem item, Vector2Int origin)
     {
         Vector2Int size = item.size;
@@ -84,13 +104,14 @@ public class ResourceInventory : MonoBehaviour
                 Slot s = slots[origin.x + x, origin.y + y];
 
                 if (canPlace)
-                    s.Valid();     // turn green
+                    s.Valid(); // turn green
                 else
-                    s.Invalid();   // turn red
+                    s.Invalid(); // turn red
             }
         }
     }
-    public void TryPlaceItem(ResourceSo So, GameObject itemPrefab) // called by player inventory
+
+    public void TryPlaceItem(ResourceSo So, InventoryItem itemPrefab) // called by player inventory
     {
         Vector2Int size = So.size;
         for (int x = 0; x < width; x++)
@@ -100,9 +121,10 @@ public class ResourceInventory : MonoBehaviour
                 var slot = slots[x, y];
                 if (IsAreaFree(x, y, size))
                 {
+                    
                     PlaceItemAt(itemPrefab, new Vector2Int(x, y), size);
                     if (!resources.ContainsKey(So))
-                        resources[So] = new List<GameObject>();
+                        resources[So] = new List<InventoryItem>();
 
                     resources[So].Add(itemPrefab);
                     return;
@@ -129,36 +151,20 @@ public class ResourceInventory : MonoBehaviour
         return true;
     }
 
-    private void PlaceItemAt(GameObject prefab, Vector2Int position, Vector2Int size)
+    private void PlaceItemAt(InventoryItem item, Vector2Int position, Vector2Int size)
     {
-        if (prefab == null)
-        {
-            Debug.Log("item is null");
-        }
+        item.rect.SetParent(slots[position.x, position.y].rect);
+        item.rect.anchoredPosition = Vector2.zero;
+        item.rect.localRotation = Quaternion.identity;
 
-        InventoryItem item = prefab.GetComponent<InventoryItem>();
+        item.origin = position;
 
-        occuppiedCount = 0;
-        prefab.transform.SetParent(slots[position.x, position.y].transform);
-        prefab.transform.localPosition = Vector3.zero;
-        prefab.transform.localRotation = Quaternion.identity;
-        prefab.GetComponent<InventoryItem>().origin = position;
-        prefab.GetComponent<InventoryItem>().size = size;
-
-
-        slots[position.x, position.y].PlaceItem(prefab);
-
-        // Mark all occupied slots
         for (int x = 0; x < size.x; x++)
+        for (int y = 0; y < size.y; y++)
         {
-            for (int y = 0; y < size.y; y++)
-            {
-                slots[position.x + x, position.y + y].isOccupied = true;
-                slots[position.x + x, position.y + y].occupiedItem = item;
-                occuppiedCount++;
-            }
+            slots[position.x + x, position.y + y].isOccupied = true;
+            slots[position.x + x, position.y + y].occupiedItem = item;
         }
-        // add a functionality to place the item at Body Status ui 
     }
 
     private void ClearArea(Vector2Int origin, Vector2Int size, InventoryItem item)
@@ -202,59 +208,53 @@ public class ResourceInventory : MonoBehaviour
         Debug.Log("on slot clicked");
         Vector2Int pos = slot.gridPosition;
 
+        // PICK UP ITEM
         if (heldItem == null)
         {
-            Debug.Log("heldItem is null");
             heldItem = PickUpItem(pos);
             if (heldItem == null) return;
-            Collider collider = heldItem.gameObject.GetComponent<Collider>();
-            if (collider != null)
-                collider.enabled = false;
-            heldItem.transform.SetParent(transform); // follow mouse
+
+            // UI: parent to inventory root so it follows the mouse
+            heldItem.rect.SetParent(inventoryRect);
+            heldItem.rect.SetAsLastSibling(); // keep on top
+            return;
+        }
+
+        // PLACE ITEM
+        if (CanPlaceItem(heldItem, pos))
+        {
+            PlaceItemAt(heldItem, pos, heldItem.size);
+            heldItem.origin = pos;
+            heldItem = null;
+            ClearPreviewColors();
         }
         else
         {
-            if (CanPlaceItem(heldItem, pos))
-            {
-                Collider collider = heldItem.GetComponent<Collider>();
-                collider.enabled = true;
-                PlaceItemAt(heldItem.gameObject, pos, heldItem.size);
-                heldItem.origin = pos;
-                heldItem = null;
-                ClearPreviewColors();
-            }
-            else
-            {
-                Debug.Log("Cannot place item here");
-            }
+            Debug.Log("Cannot place item here");
         }
     }
 
     private Slot SlotAtCurrentPos(Vector3 localPos)
     {
-        int x = Mathf.RoundToInt(localPos.x / spacingBtwSlots);
-        int y = Mathf.RoundToInt(localPos.y / spacingBtwSlots);
+        int x = Mathf.RoundToInt(localPos.x / spacingBtwSlotsX);
+        int y = Mathf.RoundToInt(localPos.y / spacingBtwSlotsX);
 
         if (x < 0 || y < 0 || x >= width || y >= height)
             return null;
 
         return slots[x, y];
     }
+
     public void RemoveResourse(ResourceSo so)
     {
         if (!resources.ContainsKey(so)) return;
         if (resources[so].Count == 0) return;
 
-        // Get the first item of this type
-        GameObject item = resources[so][0];
-
-        // Remove from list
+        InventoryItem item = resources[so][0];
         resources[so].RemoveAt(0);
 
-        // Destroy the physical object
-        GlobalPool.instance.Return(so.prefab, item);
+        // drop the object in the real world
 
-        // If list is empty, remove key
         if (resources[so].Count == 0)
             resources.Remove(so);
     }

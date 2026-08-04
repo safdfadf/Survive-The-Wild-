@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14a65b5c5010fd148872814fb6b3e439, type: 3}
   m_Name: Wood
   m_EditorClassIdentifier: 
-  resourceType: 0
   prefab: {fileID: 7427983377439106926, guid: a3ad719e4bb9ffe4582573f9515c2f63, type: 3}
+  sprite: {fileID: 21300000, guid: 2ce614dce6cedc047a36e4083bc6780b, type: 3}
   amount: 10
   size: {x: 1, y: 3}
+  appearanceProb: 1

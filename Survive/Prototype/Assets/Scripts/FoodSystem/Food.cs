@@ -8,21 +8,22 @@ namespace FoodSystem
 {
     public class Food : Resource<FoodSo>
     {
-        [SerializeField] private Button eatButton;
         private int _health;
 
         protected override void Awake()
         {
+            canBeCollected = true;
             Gm = gameObject;
-            eatButton.onClick.AddListener(EatMe);
+           
             base.Awake();
+            
         }
 
-        private void EatMe()
+        public override void UseMe()
         {
             PlayerRepository.instance.ConsumeFood(So);
             PlayerRepository.instance.RemoveResourceFromInventory(So, gameObject);
-            // remove it from the inventory   
         }
+
     }
 }

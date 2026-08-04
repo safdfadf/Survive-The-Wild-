@@ -4,7 +4,7 @@ using UnityEngine;
 public class ResourceSo : ScriptableObject, ISpawnedItem
 {
     public GameObject prefab;
-    public Mesh inventoryItem;
+    public Sprite sprite;
     public int amount;
     public Vector2Int size;
     public float appearanceProb;

@@ -7,8 +7,8 @@ public class EventBus
  public static Action OnActivateChunk;
  
  //crafting system 
- public static Action<Resource<ResourceSo>> OnResourceAdd;
- public static Action<Resource<ResourceSo>> OnResourceRemove;
+ public static Action<ResourceSo,InventoryItem> OnResourceAdd;// Invoker: BaseResource subscribed by Crafting Handler
+ public static Action<ResourceSo,InventoryItem> OnResourceRemove;
  
  public static Action onAttack;
  

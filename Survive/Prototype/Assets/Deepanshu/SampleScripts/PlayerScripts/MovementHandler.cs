@@ -9,7 +9,7 @@ public class MovementHandler : MonoBehaviour
 {
     public float radius;
     public float maxDistance;
-    [SerializeField] private ResourceInventory resourceInventory;
+
     [SerializeField] private float walkSpeed = 5f;
     [SerializeField] private float sprintSpeed = 8f;
     [SerializeField] private float crouchSpeed = 1.5f;
@@ -105,7 +105,7 @@ public class MovementHandler : MonoBehaviour
 
     private void Start()
     {
-        resourceInventory.gameObject.SetActive(false);
+//        resourceInventory.gameObject.SetActive(false);
         crosshair = _ui.GetCrosshair();
         crosshair.SetActive(false);
     }

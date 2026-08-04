@@ -8,10 +8,12 @@ public class Slot : MonoBehaviour, IPointerClickHandler
     public Vector2Int gridPosition { get; set; }
     public bool isOccupied { get; set; }
     private Transform itemAnchor;
-    public InventoryItem occupiedItem{get; set;}
+    public InventoryItem occupiedItem { get; set; }
 
     private Image _img;
     private Color _regularColor;
+    public RectTransform rect { get; set; }
+    private Sprite _currentSprite;
     //ToDo : Function for valid and invalid spots 
 
     private void Awake()
@@ -21,18 +23,18 @@ public class Slot : MonoBehaviour, IPointerClickHandler
         _regularColor = _img.color;
     }
 
-    public void PlaceItem(GameObject item)
+    public void PlaceItem(InventoryItem item)
     {
-        Debug.Log(" place item");
-        item.transform.SetParent(transform);
-        item.transform.localPosition = Vector3.zero;
-        item.transform.localRotation = Quaternion.identity;
+        item.rect.SetParent(rect);
+        item.rect.anchoredPosition = Vector2.zero;
+        item.rect.localRotation = Quaternion.identity;
+
         isOccupied = true;
+        occupiedItem = item;
     }
 
     public void Valid()
     {
-        Debug.Log("Valid");
         _img.color = Color.green;
     }
 

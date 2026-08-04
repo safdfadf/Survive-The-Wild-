@@ -21,7 +21,7 @@ public class BaseResource : Resource<ResourceSo>
 {
     private float timeCount;
     protected Mesh originalMesh;
- 
+    
 
     protected override void Awake()
     {
@@ -30,24 +30,4 @@ public class BaseResource : Resource<ResourceSo>
       
     }
 
-    protected override void CraftMe()
-    {
-        EventBus.OnResourceAdd.Invoke(this);
-    }
-
-    protected override void RemoveMeCraftingList()
-    {
-        _isInCraftingList = false;
-        EventBus.OnResourceRemove.Invoke(this);
-    }
-
-    protected override void RemoveFromInventory()
-    {
-        if (_isInCraftingList) return;
-        PlayerRepository.instance.RemoveResourceFromInventory(So, gameObject);
-    }
-
-    private void HarvestMe()
-    {
-    }
 }

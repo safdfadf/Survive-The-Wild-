@@ -10,18 +10,16 @@ public class Bandage : BaseResource, IHeal // this is a resourse and an imventor
 
     protected override void Awake()
     {
-        useMeButton.onClick.AddListener(HealPlayer);
+        canUseButton = true;
         base.Awake();
     }
 
-    private void UseMe()
+    public override void UseMe()
     {
         PlayerRepository.instance.HealPlayer(EffectsSo);
         // Apply Bandage on Body UI
         // get Player body Reference 
     }
-
-
     public void HealPlayer()
     {
     }
