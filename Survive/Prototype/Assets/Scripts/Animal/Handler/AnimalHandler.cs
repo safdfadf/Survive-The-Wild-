@@ -125,6 +125,7 @@ public class
                 ActivateAnimal(data);
             }
         }
+
         SpawnUnScheduledAnimal(chunk);
     }
 
@@ -146,9 +147,9 @@ public class
 
                 // Initialize the animal
                 UnScheduleAnimal unScheduleAnimal = obj.GetComponent<UnScheduleAnimal>();
-                unScheduleAnimal.Initialize(animalSo,chunk.bounds);
-                
-                chunk.objectInChunk.Add(obj);// recheck this 
+                unScheduleAnimal.Initialize(animalSo, chunk.bounds);
+
+                chunk.objectInChunk.Add(obj); // recheck this 
             }
         }
     }
@@ -160,7 +161,6 @@ public class
             if (data.IsSpawned) continue;
             if (So.specie == data.Specie)
             {
-                Debug.Log("Activate animal");
                 GameObject obj = GlobalPool.instance.Get(So.prefab, data.CurrentPos.Value);
                 data.AnimalInstance = obj;
                 data.IsSpawned = true;

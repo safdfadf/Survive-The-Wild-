@@ -4,11 +4,9 @@ using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-public class BaseWeapon : MonoBehaviour, ICollectable
+
+public class BaseWeapon : Obj<ResourceSo>
 {
-    [SerializeField] private GameObject menu;
-    [SerializeField] private Button equipButton;
-    [SerializeField] private Button dstroyButton;
     [SerializeField] protected Transform arrowRestPoint;
 
     protected CraftingSO CraftingSo;
@@ -35,12 +33,7 @@ public class BaseWeapon : MonoBehaviour, ICollectable
 
     private Transform cameraTransform;
     private Vector3 crossHairPoint;
-
-
-    public bool canBeCollected { get; set; }
-    public GameObject Gm { get; protected set; }
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-
+    
     private void OnEnable()
     {
         EventBus.onAttack += TryAttack;
@@ -51,12 +44,12 @@ public class BaseWeapon : MonoBehaviour, ICollectable
         EventBus.onAttack -= TryAttack;
     }
 
-    protected virtual void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+        canUseButton = true;
         playerInventory = GetComponentInParent<PlayerInventory>();
-        equipButton.onClick.AddListener(EquipMe);
-        dstroyButton.onClick.AddListener(DestroyMe);
-        menu.SetActive(false);
+        rb = null; // ToDo : remove this 
     }
 
     public void SetCraftingSo(CraftingSO weaponSo)
@@ -164,29 +157,10 @@ public class BaseWeapon : MonoBehaviour, ICollectable
     protected virtual void Block(int damage)
     {
     }
-
-    public void DestroyMe()
+    public override void UseMe()
     {
-        Destroy(gameObject);
-    }
-
-    protected virtual void EquipMe()
-    {
-        menu.SetActive(false);
         player.EquipItem(this);
     }
-
-    public void Collect(PlayerInventory collector)
-    {
-        collector.AddResource(this);
-    }
-
-    public void ToggleMenu()
-    {
-        Debug.Log("toggle weapon  menu");
-        menu.SetActive(!menu.activeSelf);
-    }
-
     private void TryAttack()
     {
         if (isAimable)

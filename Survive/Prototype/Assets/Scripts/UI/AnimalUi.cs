@@ -12,10 +12,8 @@ public class AnimalUi : MonoBehaviour
     private Image image;
     private Color _color;
 
-    // this scirpt can hold refrence to other text and stuff which can be activated by player as it progresses 
     public void Initialize(AnimalData animalData)
     {
-        Debug.Log("Initialize");
         data = animalData;
         cam = Camera.main;
         animalInstance = data.AnimalInstance;

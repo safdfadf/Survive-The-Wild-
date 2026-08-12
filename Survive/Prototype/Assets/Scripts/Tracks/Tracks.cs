@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class Tracks : MonoBehaviour,ICollectable
+public class Tracks : MonoBehaviour,ICollectable// tracks are not collectable 
 {
     [SerializeField] private GameObject[] meshs;
     private GameObject _prefab;

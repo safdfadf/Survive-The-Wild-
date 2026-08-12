@@ -86,14 +86,6 @@ public class ArrowScript : MonoBehaviour, ICollectable
             StickArrow(hit);
         }
     }
-
-
-    public void Collect(PlayerInventory collector)
-    {
-        canBeCollected = false;
-        collector.AddResource(this);
-    }
-
     public void ToggleMenu()
     {
     }

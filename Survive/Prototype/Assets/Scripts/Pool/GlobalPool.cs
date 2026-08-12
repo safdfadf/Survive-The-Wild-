@@ -64,7 +64,7 @@ public class GlobalPool:MonoBehaviour
         {
             obj.transform.SetParent(environmentParent,false);
         }
-        else if (obj.TryGetComponent<BaseResource>(out _))
+        else if (obj.TryGetComponent<BaseObj>(out _))
         {
             obj.transform.SetParent(resourceParent,false);
         }

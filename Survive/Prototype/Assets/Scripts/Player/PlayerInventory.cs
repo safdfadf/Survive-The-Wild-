@@ -10,24 +10,29 @@ using UnityEngine.UI;
 //Debug: ToDo : remove arrow from this scirpt
 public class PlayerInventory : MonoBehaviour
 {
+    private MovementHandler _movementHandler;
     private List<GameObject> arrowPool = new();
     [SerializeField] private GameObject uiItemPrefab;
     private Dictionary<ResourceSo, int> resourcePool = new();
     [SerializeField] private ResourceInventory _resourceInventory;
     [SerializeField] private WeaponInventory _weaponInventory;
+    [SerializeField] private GameObject worldStorage;
     [Header("testing")] [SerializeField] private ResourceSo ArrowSo; // testing purpose
     [SerializeField] private List<ResourceSo> testResource;
-
     private ResourceSo _requestedResource;
     private BaseStructure _currentStructure;
 
-    private void Start()
+    private void Awake()
     {
-        //    MAkeArrowForTesting();
-        //   AddTEstResourse();
+        _movementHandler = GetComponent<MovementHandler>();
     }
 
-    private void MAkeArrowForTesting()
+    private void Start()
+    {
+         AddTEstResourse();
+    }
+
+    private void MakeArrowForTesting()
     {
         for (int i = 0; i <= 100; i++)
         {
@@ -41,10 +46,10 @@ public class PlayerInventory : MonoBehaviour
         foreach (ResourceSo so in testResource)
         {
             GameObject obj = Instantiate(so.prefab, transform.position, Quaternion.identity);
-            ICollectable collectable = obj.GetComponent<ICollectable>();
-            BaseResource res = obj.GetComponentInParent<BaseResource>();
+            BaseObj res = obj.GetComponentInParent<BaseObj>();
             res.Initialize(so);
-            AddResource(collectable);
+            //   AddCollectable(collectable);
+            AddWorldItem(obj);
         }
     }
 
@@ -60,104 +65,62 @@ public class PlayerInventory : MonoBehaviour
         arrow.transform.SetParent(null);
         arrowPool.Add(arrow);
     }
-
-    public void
-        AddResource(ICollectable collectable) // collects the highlighted object and adds it to the respective inventory
+    public void AddWorldItem(GameObject worldObj)
     {
-        if (collectable == null)
+        MoveTo(worldObj);
+        if (worldObj.TryGetComponent<BaseWeapon>(out var weapon))
         {
-            Debug.Log("collector is null" + collectable.canBeCollected);
+            WeaponSo weaponSo = weapon.So as WeaponSo;
+           
+            AddToInventory(weaponSo,weapon);
             return;
         }
-
-        collectable.canBeCollected = false;
-        GameObject item = collectable.Gm;
-
-        if (item == null)
+        if (worldObj.TryGetComponent<BaseObj>(out var baseRes))
         {
-            Debug.Log("item is null");
+            ResourceSo so = baseRes.So;
+            AddToInventory(so, baseRes);
             return;
         }
+        Debug.LogWarning("Unknown world item type picked up.");
+    }
 
-        if (item.TryGetComponent<ArrowScript>(out var arrowScript))
+    private void AddToInventory(ResourceSo so, Obj<ResourceSo> res)
+    {
+        GameObject uiObj = Instantiate(uiItemPrefab);
+        InventoryItem item = uiObj.GetComponent<InventoryItem>();
+        SetInventoryItem(res, so, item);
+        if (res.TryGetComponent<BaseWeapon>(out var weapon))
         {
-            CollectArrow(arrowScript.gameObject);
+            _movementHandler.InitializeWeapon(weapon);// maybe this is not the best place to init it 
+            _weaponInventory.AddWeapon(so as WeaponSo,item);
             return;
         }
-
-        if (item.TryGetComponent<BaseWeapon>(out var weapon))
-        {
-            _weaponInventory.AddWeapon(weapon);
-            return;
-        }
-
-        ResourceSo so = (collectable as Resource<ResourceSo>)?.So;
-
-        if (so == null)
-        {
-            so = (collectable as Resource<FoodSo>)?.So;
-            Debug.Log("so is null");
-        }
-
-        if (resourcePool.ContainsKey(so))
-        {
-            resourcePool[so]++;
-        }
-        else
-        {
-            resourcePool[so] = 1;
-        }
-
-        if (item == null)
-        {
-            Debug.Log("resource is null");
-            return;
-        }
-
-        AddToInventory(so, item);
+        _resourceInventory.TryPlaceItem(so, item);
+    }
+    private void MoveTo(GameObject obj)
+    {
+        obj.transform.position = worldStorage.transform.position;
+        obj.transform.SetParent(worldStorage.transform);
+        obj.SetActive(false);
     }
 
     public void RemoveArrow(GameObject arrow)
     {
         arrowPool.Remove(arrow);
     }
-
-    private void AddToInventory(ResourceSo So, GameObject resource)
+    private void SetInventoryItem(Obj<ResourceSo> res, ResourceSo So, InventoryItem item)
     {
-        Resource<ResourceSo> res = resource.GetComponent<BaseResource>();
-        if (_resourceInventory == null)
-        {
-            Debug.Log("_resourceInventory is null");
-            return;
-        }
-
-        if (So == null)
-        {
-            Debug.Log("So is null");
-            return;
-        }
-
-        GlobalPool.instance.Return(So.prefab, resource); // return physical body 
-    
-        GameObject uiObj = Instantiate(uiItemPrefab, transform);
-        InventoryItem item = uiObj.GetComponent<InventoryItem>();
-        SetInventoryItem(res,So,item);
-        _resourceInventory.TryPlaceItem(So, item);
-    }
-
-    private void SetInventoryItem(Resource<ResourceSo> res, ResourceSo So,InventoryItem item)
-    {
-        item.SetUseMe(res.canUseButton);// is there anything that needs to set
+        item.SetUseMe(res.canUseButton); // is there anything that needs to set
         item.size = So.size;
         RectTransform rect = item.GetComponent<RectTransform>();
         item.rect = rect;
         Image image = item.GetComponent<Image>();
         item.icon = image;
         item.so = So;
-        item.SetSprite(So.sprite);
-        // item. SetFunctionality of use button ? 
+        item.SetItem(So.sprite,res.gameObject);
         item.UseMeFunctionality(res.UseMe);
     }
+
     public void RemoveResource(ResourceSo So, GameObject resource)
     {
         if (resourcePool.ContainsKey(So))
@@ -177,7 +140,7 @@ public class PlayerInventory : MonoBehaviour
         }
 
         GlobalPool.instance.Get(So.prefab, Vector3.forward); // ToDo: correct Position
-        Resource<ResourceSo> res = resource.GetComponent<BaseResource>();
+        Obj<ResourceSo> res = resource.GetComponent<BaseObj>();
         res.Initialize(So);
         // spawn the real world in 
     }

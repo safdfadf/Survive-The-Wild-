@@ -13,7 +13,7 @@ public struct RegionSeed
 
 public class ChunkManager : MonoBehaviour
 {
-    [SerializeField] private int chunkSide = 100; // side of the square s*s
+    [SerializeField] private int chunkSide = 100; 
     [SerializeField] private MovementHandler player;
     [SerializeField] private List<RegionSeed> seeds;
     [SerializeField] private GameObject objTestBounds;
@@ -29,7 +29,7 @@ public class ChunkManager : MonoBehaviour
     private Chunk _currentChunk;
     [SerializeField] private float radius = .9f;
 
-    private GlobalPool _globalPool;
+
     private RegionType _currentRegion = RegionType.Null;
 
     [SerializeField] private float chunkUpdateInterval = 0.5f;
@@ -220,9 +220,9 @@ public class ChunkManager : MonoBehaviour
 
                 EventBus.CreateAnimalData.Invoke(_currentRegion, GetTestBounds()); // create animal data
 
-                GenericSpawner.Instance.SpawnInChunk<EnvironSo, Environment>(
-                    SoProvider.instance.GetEnvironmentSo(chunk.regionType), chunk, chunk.objectInChunk);
-                GenericSpawner.Instance.SpawnInChunk<ResourceSo, BaseResource>(SoProvider.instance.GetResourceSo(),
+              //  GenericSpawner.Instance.SpawnInChunk<EnvironSo, Environment>(
+                 //   SoProvider.instance.GetEnvironmentSo(chunk.regionType), chunk, chunk.objectInChunk);
+                GenericSpawner.Instance.SpawnInChunk<ResourceSo, Obj<ResourceSo>>(SoProvider.instance.GetResourceSo(),
                     chunk, chunk.objectInChunk);
                 break;
             case RegionType.Swamp:
@@ -277,7 +277,7 @@ public class ChunkManager : MonoBehaviour
 
             if (obj.TryGetComponent<Environment>(out var envObj))
                 environ.Add(envObj.gameObject);
-            if (obj.TryGetComponent<BaseResource>(out var resourceObj))
+            if (obj.TryGetComponent<BaseObj>(out var resourceObj))
                 resources.Add(resourceObj.gameObject);
             if (obj.TryGetComponent<Food>(out var foodObj))
                 food.Add(foodObj.gameObject);
@@ -304,7 +304,7 @@ public class ChunkManager : MonoBehaviour
 
             return so.prefab;
         }
-        else if (obj.TryGetComponent<BaseResource>(out var resObj))
+        else if (obj.TryGetComponent<BaseObj>(out var resObj))
         {
             ResourceSo so = resObj.So;
             return so.prefab;

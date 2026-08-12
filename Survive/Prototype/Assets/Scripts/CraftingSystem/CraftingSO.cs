@@ -8,6 +8,5 @@ public class CraftingSO : ScriptableObject
     public Sprite logo; 
     public Ingredient[] ingredients;
     public GameObject resultPrefab;
-   public int maxDamage;
-    public int maxBlock;
+    public ResourceSo So;
 }

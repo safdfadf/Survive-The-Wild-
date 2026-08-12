@@ -5,38 +5,64 @@ namespace Inventory
 {
     public class WeaponInventory : MonoBehaviour
     {
-        [SerializeField] private readonly int _maxSlots = 4;
-        [SerializeField] private float spacing = .5f;
-        private List<BaseWeapon> _availableWeapons = new();
+        [SerializeField] private int maxSlots = 4;
+        [SerializeField] private float spacing = 80f;
+        [SerializeField] private GameObject uiWeaponPrefab;
 
-        public void AddWeapon(BaseWeapon weapon)
+        private RectTransform rect;
+        private List<WeaponSo> storedWeapons = new();
+        private List<InventoryItem> uiItems = new();
+
+        private void Awake()
         {
-            if (_availableWeapons.Count > _maxSlots)
-            {
-                Debug.Log("inventory limit reached");
+            rect = GetComponent<RectTransform>();
+        }
 
+        public void AddWeapon(WeaponSo so, InventoryItem item)
+        {
+            if (storedWeapons.Count >= maxSlots)
+            {
+                Debug.Log("Weapon inventory full");
                 return;
             }
-
-            _availableWeapons.Add(weapon);
-            weapon.transform.SetParent(transform, true);
-            AlignWeapons(weapon);
+            item.rect.SetParent(transform);
+            storedWeapons.Add(so);
+            uiItems.Add(item);
+            AlignUIItems();
         }
 
-        private void AlignWeapons(BaseWeapon weapon)
+        private void AlignUIItems()
         {
-            for (int i = 0; i < transform.childCount; i++)
+            for (int i = 0; i < uiItems.Count; i++)
             {
-                Transform child = transform.GetChild(i);
-                child.localPosition = new Vector3(i * spacing, 0, 0);
-                child.localRotation = Quaternion.Euler(weapon.inventoryRotAngle, 0, 0);
+                RectTransform itemRect = uiItems[i].rect;
+                itemRect.anchoredPosition = new Vector2(i * spacing, 0);
+                itemRect.localRotation = Quaternion.identity;
             }
         }
 
-        public void RemoveWeapon(BaseWeapon weapon)
+        public void RemoveWeapon(WeaponSo so)
         {
-            _availableWeapons.Remove(weapon);
-            weapon.DestroyMe();
+            int index = storedWeapons.IndexOf(so);
+            if (index < 0) return;
+
+            storedWeapons.RemoveAt(index);
+
+            Destroy(uiItems[index].gameObject);
+            uiItems.RemoveAt(index);
+
+            AlignUIItems();
+        }
+
+        public BaseWeapon SpawnEquippedWeapon(WeaponSo so)
+        {
+            GameObject prefab = so.prefab;
+            GameObject instance = Instantiate(prefab);
+
+            BaseWeapon weapon = instance.GetComponent<BaseWeapon>();
+            //  weapon.SetWeaponSo(so);
+
+            return weapon;
         }
     }
 }

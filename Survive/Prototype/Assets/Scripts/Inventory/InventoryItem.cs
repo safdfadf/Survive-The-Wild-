@@ -6,11 +6,13 @@ using UnityEngine.UI;
 
 public class InventoryItem : MonoBehaviour
 {
+    // in ths inventory item how can i make it call toggle menu 
     public Vector2Int origin { get; set; }
     public Vector2Int size { get; set; }
     public RectTransform rect { get; set; }
     public Image icon { get; set; }
     public ResourceSo so { get; set; }
+    public GameObject obj { get; set; }
     public bool IsInCraftingList { get; set; }
     [SerializeField] protected GameObject menu;
     [SerializeField] protected Button craftButton;
@@ -19,7 +21,6 @@ public class InventoryItem : MonoBehaviour
     public Button useMe; 
     bool canUseMe = false;
     
-    // this script will also hold the function for craft and remove 
     private void Awake()
     {
         rect = GetComponent<RectTransform>();
@@ -30,9 +31,10 @@ public class InventoryItem : MonoBehaviour
         Toggle();
     }
 
-    public void SetSprite(Sprite sprite)
+    public void SetItem(Sprite sprite,GameObject Obj)
     {
         icon.sprite = sprite;
+        obj = Obj;
     }
 
     public void Craft()
@@ -46,7 +48,7 @@ public class InventoryItem : MonoBehaviour
         
     }
 
-    public void Remove()
+    private void Remove()
     {
       if (IsInCraftingList)
       {
@@ -73,6 +75,17 @@ public class InventoryItem : MonoBehaviour
 
     public void UseMeFunctionality(UnityAction call)
     {
-        useMe.onClick.AddListener(call);
-    }  
+        useMe.onClick.AddListener(()=> UseMe(call));
+    }
+
+    private void UseMe(UnityAction call)
+    {
+        if (obj != null && !obj.activeSelf)
+        {
+            obj.SetActive(true);
+        }
+        Toggle();
+        call?.Invoke();
+    }
+    // probably should remove it from the inventory 
 }

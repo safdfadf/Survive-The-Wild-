@@ -4,6 +4,7 @@ using FoodSystem;
 using UnityEngine;
 using UnityEngine.Serialization;
 
+//ToDo: add growth script 
 public class Environment : MonoBehaviour, ItakeDamage, IsoInitializer<EnvironSo>
 {
     [SerializeField] protected int resourceDropCount;
@@ -85,10 +86,10 @@ public class Environment : MonoBehaviour, ItakeDamage, IsoInitializer<EnvironSo>
             // call spawner
             GameObject result = Instantiate(environSo.breakableData.resourceSo.prefab,
                 transform.position + Random.insideUnitSphere * 0.5f + dropOffset, Quaternion.identity);
-            BaseResource baseResource = result.GetComponent<BaseResource>();
-            if (baseResource != null)
+            BaseObj baseObj = result.GetComponent<BaseObj>();
+            if (baseObj != null)
             {
-                baseResource.Initialize(environSo.breakableData.resourceSo);
+                baseObj.Initialize(environSo.breakableData.resourceSo);
                 Rigidbody rb = result.GetComponent<Rigidbody>();
                 rb.isKinematic = false;
                 Collider collider = result.GetComponent<Collider>();

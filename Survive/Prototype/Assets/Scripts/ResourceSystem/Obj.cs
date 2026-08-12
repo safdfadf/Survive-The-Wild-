@@ -2,7 +2,7 @@ using Player;
 using UnityEngine;
 using UnityEngine.UI;
 
-public abstract class Resource<TSo> : MonoBehaviour, IsoInitializer<TSo>, ICollectable
+public abstract class Obj<TSo> : MonoBehaviour, IsoInitializer<TSo>, ICollectable
 {
     protected PosInChunk CashedPosInChunk;
     public GameObject Gm { get; set; }
@@ -34,17 +34,7 @@ public abstract class Resource<TSo> : MonoBehaviour, IsoInitializer<TSo>, IColle
     {
         CashedPosInChunk = casedPos;
     }
-
-    public virtual void Collect(PlayerInventory collector)
-    {
-        canBeCollected = false;
-        collector.AddResource(this);
-        if (CashedPosInChunk == null) return;
-        CashedPosInChunk.IsAvailable = true;
-        CashedPosInChunk.LastSpawnedSo = null;
-        CashedPosInChunk.IsPersistent = false;
-    }
-
+    
     public virtual void UseMe()
     {
         

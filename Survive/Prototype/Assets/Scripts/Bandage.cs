@@ -3,7 +3,7 @@ using Player;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Bandage : BaseResource, IHeal // this is a resourse and an imventory intem 
+public class Bandage : BaseObj, IHeal // this is a resourse and an imventory intem 
 {
     [SerializeField] private Button useMeButton;
     public EffectsSo EffectsSo { get; }

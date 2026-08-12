@@ -109,11 +109,11 @@ public class AnimalBase : MonoBehaviour
             ResourceSo resourceSo = AnimalSo.resourceSo;
             GameObject obj = Instantiate(resourceSo.prefab, transform.position + new Vector3(0, .5f, 0),
                 Quaternion.identity);
-            BaseResource baseResource = obj.GetComponent<BaseResource>();
-            if (baseResource != null)
+            BaseObj baseObj = obj.GetComponent<BaseObj>();
+            if (baseObj != null)
             {
-                baseResource.Initialize(resourceSo);
-                baseResource.SetKinematic(false);
+                baseObj.Initialize(resourceSo);
+                baseObj.rb.isKinematic = false;
             }
 
             Collider collider = obj.GetComponent<Collider>();

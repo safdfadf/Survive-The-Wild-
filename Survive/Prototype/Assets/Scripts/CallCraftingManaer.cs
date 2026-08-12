@@ -3,10 +3,10 @@ using UnityEngine.UI;
 
 public class CallCraftingManaer : MonoBehaviour
 {
-    private BaseResource _baseResource;
+    private BaseObj _baseObj;
     public void Awake()
     {
-        _baseResource = GetComponentInParent<BaseResource>();
+        _baseObj = GetComponentInParent<BaseObj>();
         
     }
     private void HarvestMe()

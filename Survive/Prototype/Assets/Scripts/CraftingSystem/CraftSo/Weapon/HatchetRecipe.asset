@@ -19,5 +19,4 @@ MonoBehaviour:
   - resourceSo: {fileID: 11400000, guid: 27e2c7e41bc250641915060a71bb3246, type: 2}
     amount: 1
   resultPrefab: {fileID: 8679677764685016200, guid: 3e3cdb758d337024d823c17ef70f4f3b, type: 3}
-  maxDamage: 20
-  maxBlock: 0
+  So: {fileID: 11400000, guid: abc92296cd6774842a1f0e6844cf558e, type: 2}

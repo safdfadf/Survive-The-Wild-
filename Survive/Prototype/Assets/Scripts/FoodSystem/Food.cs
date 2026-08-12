@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace FoodSystem
 {
-    public class Food : Resource<FoodSo>
+    public class Food : Obj<FoodSo>
     {
         private int _health;
 

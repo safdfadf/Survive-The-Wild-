@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 717ee1b6075e99d4198864d02c4f3538, type: 3}
-  m_Name: BananaTree
+  m_Name: Thistle
   m_EditorClassIdentifier: 
-  id: BananaTree
-  prefab: {fileID: 9101267996860703775, guid: 59cb809e756769a46ba7197fc767c724, type: 3}
-  amount: 10
-  canBreak: 1
+  id: Thistle
+  prefab: {fileID: 7174772885725299950, guid: 7bbb175fed69f1b40a93f90d122ce783, type: 3}
+  amount: 1
+  canBreak: 0
   breakableData:
-    Health: 30
-    resourceSo: {fileID: 11400000, guid: 99b4fa9569c655b4ba09a5d674e287d4, type: 2}
+    Health: 0
+    resourceSo: {fileID: 0}
   regionType: 0
-  spawnProb: 0
+  spawnProb: 0.2

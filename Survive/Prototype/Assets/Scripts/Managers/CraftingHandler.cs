@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Inventory;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -19,6 +20,7 @@ public class CraftingHandler : MonoBehaviour
     private PlayerInventory _playerInventory;
     private MovementHandler _movementHandler;
     private ResourceInventory _resourceInventory;
+    private WeaponInventory _weaponInventory;
     [SerializeField] private Vector3 tableOffset;
 
     [SerializeField] private Button craftButton;
@@ -52,30 +54,19 @@ public class CraftingHandler : MonoBehaviour
         _playerInventory = GetComponent<PlayerInventory>();
         _movementHandler = GetComponent<MovementHandler>();
         _resourceInventory = FindAnyObjectByType<ResourceInventory>();
+        _weaponInventory = FindAnyObjectByType<WeaponInventory>();
         recipeBook.CategorizeRecipes(craftingSo, this);
         _buildingHandler = GetComponent<BuildingHandler>();
     }
 
     private void Start()
     {
-        //    AddTestingWeapon(testingSo);
+        AddTestingWeapon(testingSo);
     }
 
     private void AddTestingWeapon(CraftingSO so)
     {
-        GameObject prefab = so.resultPrefab;
-        GameObject result = Instantiate(prefab, craftingUITransform.transform.position + Vector3.up * 0.2f,
-            Quaternion.identity);
-        if (result.TryGetComponent<BaseWeapon>(out var weapon))
-        {
-            weapon.SetCraftingSo(so);
-            _movementHandler.InitializeWeapon(weapon);
-        }
-
-        ICollectable collectable = result.GetComponent<ICollectable>();
-        AddToInventory(collectable);
-        _currentIngredients.RemoveAll(i => i.amount <= 0);
-        craftButton.gameObject.SetActive(false); // should be handled by ui manager
+        Craft(testingSo);
     }
 
 
@@ -105,7 +96,6 @@ public class CraftingHandler : MonoBehaviour
 
     private void RemoveResource(ResourceSo So, InventoryItem item)
     {
-        // remove from ingredient list and remove from ingredient visual 
         if (_ingredientVisuals.ContainsKey(So))
         {
             _ingredientVisuals.Remove(So); // remove the key and value 
@@ -118,8 +108,8 @@ public class CraftingHandler : MonoBehaviour
                 _currentIngredients.RemoveAt(i);
             }
         }
-      
-        _resourceInventory.TryPlaceItem(So,item); // issue here  is Inventory item 
+
+        _resourceInventory.TryPlaceItem(So, item); // issue here  is Inventory item 
     }
 
     private void CheckForRecipe()
@@ -157,67 +147,49 @@ public class CraftingHandler : MonoBehaviour
 
     public void Craft(CraftingSO so)
     {
-        if (so.resultPrefab.TryGetComponent<BaseStructure>(out var baseStructure))
+        if (so.resultPrefab.TryGetComponent<BaseStructure>(out var structure))
         {
             SpawnStructure(so);
             recipeBook.ToggleRBook();
+            ConsumeIngredients();
             return;
         }
 
+        GameObject prefab = so.resultPrefab;
+        GameObject result = Instantiate(prefab, new Vector3(0, 0, 0), Quaternion.identity);
+        Obj<ResourceSo> obj = result.GetComponent<Obj<ResourceSo>>();
+        if(obj == null){Debug.Log(" obj is null ");}
+        obj.So = so.So;
+        _playerInventory.AddWorldItem(result);
+//        ConsumeIngredients();
+        craftButton.gameObject.SetActive(false);
+    }
+
+    private void ConsumeIngredients()
+    {
         foreach (var req in _currentSo.ingredients)
         {
             var match = _currentIngredients.Find(i => i.resourceSo == req.resourceSo);
             if (match != null)
             {
                 match.amount -= req.amount;
+
                 if (_ingredientVisuals.TryGetValue(req.resourceSo, out var visuals))
                 {
                     for (int i = 0; i < req.amount && i < visuals.Count; i++)
-                    {
-                        GameObject resGO = visuals[i];
-                        Destroy(resGO);
-                    }
+                        Destroy(visuals[i]);
 
                     visuals.RemoveRange(0, Mathf.Min(req.amount, visuals.Count));
                 }
             }
         }
 
-        // add  it to inventory 
-        GameObject prefab = so.resultPrefab;
-        GameObject result = Instantiate(prefab, craftingUITransform.transform.position + Vector3.up * 0.2f,
-            Quaternion.identity);
-        if (result.TryGetComponent<BaseWeapon>(out var weapon))
-        {
-            weapon.SetCraftingSo(so);
-            _movementHandler.InitializeWeapon(weapon);
-        }
-
-        BaseResource baseResource = result.GetComponent<BaseResource>();
-        if (baseResource != null)
-        {
-            baseResource.So = SoProvider.instance.GetSoForPrefab(so.resultPrefab);
-        }
-
-        ICollectable collectable = result.GetComponent<ICollectable>();
-        AddToInventory(collectable);
         _currentIngredients.RemoveAll(i => i.amount <= 0);
-        craftButton.gameObject.SetActive(false); // should be handled by ui manager
     }
 
     private void SpawnStructure(CraftingSO so) // spawns structure and lets base builder handle placement 
     {
         _buildingHandler.SetGHostObject(so);
-    }
-
-    public void ToggleRBook()
-    {
-        recipeBook.ToggleRBook();
-    }
-
-    private void AddToInventory(ICollectable collectable)
-    {
-        _playerInventory.AddResource(collectable);
     }
 
     private Vector3 GetNextIngredientSlotPosition()

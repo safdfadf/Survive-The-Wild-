@@ -28,7 +28,7 @@ public class ResourceHandler : MonoBehaviour //ToDo: remove this script
             chunk.objectInChunk.Add(obj);
             
 
-            var resource = obj.GetComponent<BaseResource>();
+            var resource = obj.GetComponent<BaseObj>();
             resource.Initialize(so);
 
             spawned++;
@@ -40,7 +40,7 @@ public class ResourceHandler : MonoBehaviour //ToDo: remove this script
         foreach (var obj in chunk.objectInChunk)
         {
             if (obj == null)continue;
-         var so = obj.GetComponent<BaseResource>().So;
+         var so = obj.GetComponent<BaseObj>().So;
          GlobalPool.instance.Return(so.prefab,obj);
         }
         foreach (var cashedPo in chunk.cashedPos)

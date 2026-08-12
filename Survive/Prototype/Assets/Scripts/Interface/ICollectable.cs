@@ -4,6 +4,5 @@ public interface ICollectable
 {
      public  bool canBeCollected { get; set; }
      public GameObject Gm{get;}
-     public void Collect(PlayerInventory collector);
      public void ToggleMenu();
 }

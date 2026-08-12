@@ -24,7 +24,6 @@ public class GenericSpawner : MonoBehaviour
         foreach (var so in soList)
         {
             bool canSpawn = Random.value <= so.SpawningProbability;
-            Debug.Log(canSpawn);
             if (!canSpawn) continue;
             int alreadyPresent = 0;
             foreach (var pos in chunk.cashedPos)

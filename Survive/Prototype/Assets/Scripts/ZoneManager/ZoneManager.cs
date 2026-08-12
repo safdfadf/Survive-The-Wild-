@@ -75,7 +75,7 @@ public class ZoneManager : MonoBehaviour
         origin.y = 0f;
 
         Vector3 newPos = RetPosOnNv.ReturnRandomNavMeshPos(regionBounds);
-        //  if (!regionBounds.Contains(newPos)) {Debug.Log(" zone position is outside region bounds: {newPos}\"");return null;}
+         if (!regionBounds.Contains(newPos)) {Debug.Log(" zone position is outside region bounds: {newPos}\"");return null;}
 
         CreateZone(type, newPos);
         Zone newZone = _zoneByType[type].Last();

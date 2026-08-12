@@ -20,4 +20,4 @@ MonoBehaviour:
     Health: 0
     resourceSo: {fileID: 0}
   regionType: 0
-  appearanceProb: 0
+  spawnProb: 10

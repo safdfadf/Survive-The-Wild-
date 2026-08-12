@@ -1,9 +1,13 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class InputManager : MonoBehaviour
 {
+    public GraphicRaycaster graphicRaycaster;
     private MovementHandler _player;
     private PlayerInventory _playerInventory;
     private PlayerUI _playerUI;
@@ -161,14 +165,21 @@ public class InputManager : MonoBehaviour
 
     private void ToggleCollectableMenu()
     {
-        Ray ray = _camera.ScreenPointToRay(Mouse.current.position.ReadValue());
-        int mask = LayerMask.GetMask("Resources");
-        if (Physics.SphereCast(ray, .5f, out RaycastHit hit, 3f, mask))
+        
+        PointerEventData eventData = new PointerEventData(EventSystem.current);
+        eventData.position = Mouse.current.position.ReadValue();
+
+        List<RaycastResult> results = new List<RaycastResult>();
+        
+        graphicRaycaster.Raycast(eventData, results);
+
+        foreach (var result in results)
         {
-            ICollectable collectable = hit.collider.GetComponent<ICollectable>();
-            if (collectable != null)
+            InventoryItem item = result.gameObject.GetComponentInParent<InventoryItem>();
+            if (item != null)
             {
-                collectable.ToggleMenu();// this wont work for inventory item anymore
+                item.Toggle();
+                return;
             }
         }
     }

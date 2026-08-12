@@ -17,7 +17,8 @@ public enum ResourceType
     Rope
 }
 
-public class BaseResource : Resource<ResourceSo>
+//ToDo: remove this class 
+public class BaseObj : Obj<ResourceSo>
 {
     private float timeCount;
     protected Mesh originalMesh;

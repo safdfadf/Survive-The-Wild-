@@ -122,6 +122,7 @@ public class PlayerUI : MonoBehaviour
         craftingButton.gameObject.SetActive(visible);
         bodyStatButton.gameObject.SetActive(visible);
         recipeBookButton.gameObject.SetActive(visible);
+        bodyStatusUI.gameObject.SetActive(visible);
     }
 
     public void EnableCraftingUI()
