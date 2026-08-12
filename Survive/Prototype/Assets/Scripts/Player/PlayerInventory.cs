@@ -47,8 +47,10 @@ public class PlayerInventory : MonoBehaviour
     public GameObject GetNextArrow()
     {
         if (resourcePool.ContainsKey(ArrowSo) && resourcePool[ArrowSo].Count > 0)
-        {
-          return resourcePool[ArrowSo][0];
+        { 
+            GameObject obj = resourcePool[ArrowSo][0];
+            resourcePool[ArrowSo].RemoveAt(0);
+            return obj;
         }
         Debug.Log(resourcePool[ArrowSo].Count);
         return null;
