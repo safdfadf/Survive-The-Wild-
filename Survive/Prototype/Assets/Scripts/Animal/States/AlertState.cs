@@ -25,10 +25,7 @@ namespace Animal.States
 
         public override void UpdateState()
         {
-            if (Time.time >= nextActionTime)
-            {
-                AnimalAlert();
-            }
+            // in alert state what is the behaviour needed : 1: search radius can increase 
         }
 
         public override void ExitState()
@@ -39,16 +36,6 @@ namespace Animal.States
         {
             nextActionTime = Time.time + Random.Range(minIntervalTime, maxIntervalTime);
         }
-
-        private void MoveToNextPosition()
-        {
-            // in the radius of .5f move to any pos 
-            Vector3 origin = Animal.transform.position;
-            Vector3 offset = Random.insideUnitSphere * .5f;
-            Vector3 destination = origin + new Vector3(offset.x, 0, offset.z);
-            Animal.MoveTo(destination);
-        }
-
         private void AnimalAlert()
         {
             if (Animal == null) return;

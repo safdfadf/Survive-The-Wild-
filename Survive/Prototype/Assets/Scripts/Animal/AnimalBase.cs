@@ -55,19 +55,24 @@ public class AnimalBase : MonoBehaviour
         }
     }
 
-    protected virtual void Update()
-    {
-       
-    }
 
+    private void OnEnable()
+    {
+        EventBus.On5SecondsPassed += UpdateCalmState;
+    }
+    
     private void LateUpdate()
     {
         if (isMoving)
             animator.SetFloat("Velocity", agent.velocity.magnitude);
         IsPlayerAround();
-        if(CurrentState == null)return;
     }
 
+    private void UpdateCalmState()
+    {
+        if(CurrentState != CalmState)return;
+        CurrentState.UpdateState();
+    } 
     public void TakeDamage(int damage, Vector3 contact)
     {
         if (_currentHealth <= 0) return;

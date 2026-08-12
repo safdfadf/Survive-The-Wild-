@@ -13,6 +13,7 @@ public struct RegionSeed
 
 public class ChunkManager : MonoBehaviour
 {
+    public static ChunkManager Instance;
     [SerializeField] private int chunkSide = 100; 
     [SerializeField] private MovementHandler player;
     [SerializeField] private List<RegionSeed> seeds;
@@ -43,6 +44,14 @@ public class ChunkManager : MonoBehaviour
 
     private void Awake()
     {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
         GenerateChunks();
     }
 
@@ -331,6 +340,14 @@ public class ChunkManager : MonoBehaviour
         return null;
     }
 
+    public bool IsInPlayerChunk(Vector3 pos)
+    {
+        Chunk chunk = GetChunkAtPos(player.transform.position);
+        if(chunk.bounds.Contains(pos))
+            return true;
+        return false;
+    }
+
     public bool ObjectLiesInActiveChunk(Vector3 pos)
     {
         foreach (var chunk in activeChunks)
@@ -432,6 +449,16 @@ public class ChunkManager : MonoBehaviour
                 );*/
     }
 
+    public Vector3 GetAvailablePosinChunk(Chunk chunk)
+    {
+        foreach (var pos in chunk.cashedPos)
+        {
+            if(pos.IsAvailable)
+                return pos.Position;
+        }
+
+        return new Vector3(0,0,0);
+    }
     private Color GetRegionColor(RegionType region)
     {
         return region switch

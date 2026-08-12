@@ -234,8 +234,6 @@ public class Zone : MonoBehaviour
                 }
             }
         }
-
-//        Debug.Log($"Generated {zonePosition.Count} edge-biased river positions.");
     }
 
     bool IsDuplicate(Vector3 newPos)

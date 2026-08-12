@@ -36,4 +36,9 @@ public class ChunkRepo : MonoBehaviour
     {
         _chunkManager.SetEmptyChunk(bounds);
     }
+
+    public Chunk GetChunkAt(Vector3 pos)
+    {
+        return _chunkManager.GetChunkAtPos(pos);
+    }
 }

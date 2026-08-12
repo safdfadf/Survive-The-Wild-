@@ -2,6 +2,7 @@
 
 namespace Animal.States
 {
+    // depending on the animal it goes to the attacks n no. of times 
     public class AlarmState:AnimalState
     {
         private bool _isAggresive = false;
@@ -28,9 +29,7 @@ namespace Animal.States
 
         public override void UpdateState()
         {
-            // and  this function will control it , keep approaching the player and change behavior once attack is delivered 
         }
-
         public override void ExitState()
         {
         }
@@ -49,8 +48,7 @@ namespace Animal.States
         {
             if(data!=null)
                 data.AnimalHandler.DeactivateAnimal(data);
-            
-            // here how do we deactivate animal we dont have data 
+                   
         }
     }
 }
