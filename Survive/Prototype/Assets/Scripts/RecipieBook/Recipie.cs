@@ -19,7 +19,7 @@ public class Recipie : MonoBehaviour
         Button button = GetComponent<Button>();
         button.onClick.AddListener(SpawnRecipie);
         _image = GetComponent<Image>();
-        BaseWeapon weapon = _craftingSo.resultPrefab.GetComponent<BaseWeapon>();
+        BaseWeapon weapon = _craftingSo.resSo.prefab.GetComponent<BaseWeapon>();
         if (weapon != null)
         {
             button.interactable = false;
@@ -34,7 +34,7 @@ public class Recipie : MonoBehaviour
     }
     private void ShowRecipe()
     {
-        _image.sprite = _craftingSo.logo;
+        _image.sprite = _craftingSo.resSo.sprite;
         foreach (Transform child in transform)
             Destroy(child.gameObject);
         foreach (var ing in _craftingSo.ingredients)

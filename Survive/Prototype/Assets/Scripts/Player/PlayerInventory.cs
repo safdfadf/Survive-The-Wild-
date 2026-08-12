@@ -11,9 +11,9 @@ using UnityEngine.UI;
 public class PlayerInventory : MonoBehaviour
 {
     private MovementHandler _movementHandler;
-    private List<GameObject> arrowPool = new();
+    private Dictionary<ResourceSo, List<GameObject>> resourcePool = new();
+
     [SerializeField] private GameObject uiItemPrefab;
-    private Dictionary<ResourceSo, int> resourcePool = new();
     [SerializeField] private ResourceInventory _resourceInventory;
     [SerializeField] private WeaponInventory _weaponInventory;
     [SerializeField] private GameObject worldStorage;
@@ -29,17 +29,9 @@ public class PlayerInventory : MonoBehaviour
 
     private void Start()
     {
-         AddTEstResourse();
+        AddTEstResourse();
     }
 
-    private void MakeArrowForTesting()
-    {
-        for (int i = 0; i <= 100; i++)
-        {
-            GameObject obj = Instantiate(ArrowSo.prefab, transform.position, Quaternion.identity);
-            CollectArrow(obj);
-        }
-    }
 
     private void AddTEstResourse()
     {
@@ -48,65 +40,74 @@ public class PlayerInventory : MonoBehaviour
             GameObject obj = Instantiate(so.prefab, transform.position, Quaternion.identity);
             BaseObj res = obj.GetComponentInParent<BaseObj>();
             res.Initialize(so);
-            //   AddCollectable(collectable);
             AddWorldItem(obj);
         }
     }
 
     public GameObject GetNextArrow()
     {
-        var arrow = arrowPool.FirstOrDefault(a => !a.activeInHierarchy);
-        return arrow;
+        if (resourcePool.ContainsKey(ArrowSo) && resourcePool[ArrowSo].Count > 0)
+        {
+          return resourcePool[ArrowSo][0];
+        }
+        Debug.Log(resourcePool[ArrowSo].Count);
+        return null;
     }
 
-    private void CollectArrow(GameObject arrow)
-    {
-        arrow.SetActive(false);
-        arrow.transform.SetParent(null);
-        arrowPool.Add(arrow);
-    }
     public void AddWorldItem(GameObject worldObj)
     {
         MoveTo(worldObj);
         if (worldObj.TryGetComponent<BaseWeapon>(out var weapon))
         {
             WeaponSo weaponSo = weapon.So as WeaponSo;
-           
-            AddToInventory(weaponSo,weapon);
+            AddToResPool(weaponSo, worldObj);
+            MakeUI(weaponSo, weapon);
             return;
         }
-        if (worldObj.TryGetComponent<BaseObj>(out var baseRes))
+
+        if (worldObj.TryGetComponent<Obj<ResourceSo>>(out var baseRes))
         {
             ResourceSo so = baseRes.So;
-            AddToInventory(so, baseRes);
+            AddToResPool(so, worldObj);
+            MakeUI(so, baseRes);
             return;
         }
+
         Debug.LogWarning("Unknown world item type picked up.");
     }
 
-    private void AddToInventory(ResourceSo so, Obj<ResourceSo> res)
+    private void AddToResPool(ResourceSo resourceSo, GameObject obj)
+    {
+        if (resourcePool.ContainsKey(resourceSo))
+        {
+            resourcePool[resourceSo].Add(obj);
+            return;
+        }
+
+        resourcePool.Add(resourceSo, new List<GameObject> { obj });
+    }
+
+    private void MakeUI(ResourceSo so, Obj<ResourceSo> res)
     {
         GameObject uiObj = Instantiate(uiItemPrefab);
         InventoryItem item = uiObj.GetComponent<InventoryItem>();
         SetInventoryItem(res, so, item);
         if (res.TryGetComponent<BaseWeapon>(out var weapon))
         {
-            _movementHandler.InitializeWeapon(weapon);// maybe this is not the best place to init it 
-            _weaponInventory.AddWeapon(so as WeaponSo,item);
+            _movementHandler.InitializeWeapon(weapon); // maybe this is not the best place to init it 
+            _weaponInventory.AddWeapon(so as WeaponSo, item);
             return;
         }
+
         _resourceInventory.TryPlaceItem(so, item);
     }
-    private void MoveTo(GameObject obj)
+
+    private void MoveTo(GameObject obj) // we are moving physical objs here they should be in a list 
     {
+        // someList.Add(Objs), instead of int dictionary should simpley store objs 
         obj.transform.position = worldStorage.transform.position;
         obj.transform.SetParent(worldStorage.transform);
         obj.SetActive(false);
-    }
-
-    public void RemoveArrow(GameObject arrow)
-    {
-        arrowPool.Remove(arrow);
     }
     private void SetInventoryItem(Obj<ResourceSo> res, ResourceSo So, InventoryItem item)
     {
@@ -117,7 +118,7 @@ public class PlayerInventory : MonoBehaviour
         Image image = item.GetComponent<Image>();
         item.icon = image;
         item.so = So;
-        item.SetItem(So.sprite,res.gameObject);
+        item.SetItem(So.sprite, res.gameObject);
         item.UseMeFunctionality(res.UseMe);
     }
 
@@ -125,9 +126,9 @@ public class PlayerInventory : MonoBehaviour
     {
         if (resourcePool.ContainsKey(So))
         {
-            if (resourcePool[So] > 0)
+            if (resourcePool[So].Count > 0)
             {
-                resourcePool[So]--;
+                GlobalPool.instance.Return(So.prefab, resourcePool[So][0]);
             }
             else
             {
@@ -156,9 +157,9 @@ public class PlayerInventory : MonoBehaviour
         if (_requestedResource == null || _currentStructure == null) return;
         if (resourcePool.ContainsKey(_requestedResource))
         {
-            if (resourcePool[_requestedResource] > 0)
+            if (resourcePool[_requestedResource].Count > 0)
             {
-                resourcePool[_requestedResource]--;
+                //    resourcePool[_requestedResource]--; Correct this 
             }
             else
             {

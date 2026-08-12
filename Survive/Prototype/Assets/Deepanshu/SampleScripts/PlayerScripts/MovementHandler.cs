@@ -40,7 +40,7 @@ public class MovementHandler : MonoBehaviour
     // References //
     public Camera playerCamera;
     private CharacterController characterController;
-    private PlayerBow playerBow;
+    private Bow _bow;
     private PlayerInventory _playerInventory;
     private PlayerAnimator animator;
     private PlayerUI _ui;
@@ -326,7 +326,8 @@ public class MovementHandler : MonoBehaviour
             ICollectable collectable = currentlyHighlighted.GetComponent<ICollectable>();
             if (collectable != null && collectable.canBeCollected)
             {
-                collectable.Collect(_playerInventory);
+              //  collectable.Collect(_playerInventory);
+                _playerInventory.AddWorldItem(collectable.Gm);
                 ClearHighlight();
             }
         }
@@ -376,6 +377,7 @@ public class MovementHandler : MonoBehaviour
 
     public void InitializeWeapon(BaseWeapon weapon)
     {
+        Debug.Log("initialize weapon");
         weapon.IniTialize(this, _playerInventory, animator, aimTarget, rightSpwnPoint, crosshair);
     }
 

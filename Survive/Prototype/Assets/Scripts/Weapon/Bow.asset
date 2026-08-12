@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Bow
   m_EditorClassIdentifier: 
   prefab: {fileID: 2810370539657348168, guid: 13025a44a07e4cd449a466a507f0764b, type: 3}
-  sprite: {fileID: 0}
-  amount: 0
+  sprite: {fileID: 21300000, guid: 53a7e39f9dff38d4eb970ad6f8f3da68, type: 3}
+  amount: 1
   size: {x: 0, y: 0}
   appearanceProb: 0
   maxDamage: 0

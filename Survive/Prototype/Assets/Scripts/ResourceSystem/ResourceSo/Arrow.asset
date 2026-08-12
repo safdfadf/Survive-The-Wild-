@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Arrow
   m_EditorClassIdentifier: 
   prefab: {fileID: 3455081496832569727, guid: e60e977434d1baa47b7d1342559c3b7a, type: 3}
+  sprite: {fileID: 21300000, guid: cfc233c30a99cd64f89b3100ee03fd8c, type: 3}
   amount: 10
   size: {x: 1, y: 1}
   appearanceProb: 0

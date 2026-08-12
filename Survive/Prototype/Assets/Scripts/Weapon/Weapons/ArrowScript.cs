@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class ArrowScript : MonoBehaviour, ICollectable
+public class ArrowScript : Obj<ResourceSo>, ICollectable
 {
     [SerializeField] private GameObject TestHitPoint;
     [SerializeField] private Vector3 offset;
@@ -10,14 +10,12 @@ public class ArrowScript : MonoBehaviour, ICollectable
     private Vector3 _velocity;
     public float gravity = -9.81f;
     private ResourceType type;
-    public ResourceSo So { get; set; }
-    public bool canBeCollected { get; set; }
-    public GameObject Gm { get; private set; }
+
     private bool _isStuck;
     private bool _canMove;
-    private Vector3 lastPosition;
 
-    private void Awake()
+
+    protected override void Awake()
     {
         Gm = gameObject;
         canBeCollected = true;
@@ -48,11 +46,11 @@ public class ArrowScript : MonoBehaviour, ICollectable
         transform.position = hit.point;
         transform.rotation = Quaternion.LookRotation(-hit.normal);
 
-        transform.SetParent(hit.collider.transform,true);
+        transform.SetParent(hit.collider.transform, true);
 
         ItakeDamage combatant = hit.collider.GetComponent<ItakeDamage>();
         if (combatant != null)
-            combatant.TakeDamage(0,hit.point);
+            combatant.TakeDamage(0, hit.point);
     }
 
     public void ShootArrow(Vector3 shootDirection, float arrowSpeed)
@@ -71,22 +69,17 @@ public class ArrowScript : MonoBehaviour, ICollectable
 
         _velocity.y += gravity * dt;
 
-        lastPosition = transform.position;
 
         transform.position += _velocity * dt;
 
         if (_velocity.sqrMagnitude > 0.01f)
             transform.rotation = Quaternion.LookRotation(_velocity);
         RaycastHit hit;
-        //  Vector3 rayOrigin = lastPosition + _velocity.normalized * 0.1f;
         float distance = _velocity.magnitude * Time.deltaTime;
         Debug.DrawLine(rayOrigin.position, rayOrigin.position + _velocity.normalized * distance, Color.red);
         if (Physics.Raycast(rayOrigin.position, _velocity.normalized, out hit, _velocity.magnitude * dt, mask))
         {
             StickArrow(hit);
         }
-    }
-    public void ToggleMenu()
-    {
     }
 }

@@ -6,10 +6,10 @@ public class BaseStructure : MonoBehaviour
 {
     protected bool IsAssembled;
     protected CraftingSO CraftingSo;
-    public bool IsPlayerInRange { get;private set; }
+    public bool IsPlayerInRange { get; private set; }
     private Ingredient[] _requiredIngredients = new Ingredient[0];
     private StructureUI _structureUI;
-    
+
     private Material _originalMaterial;
     private Material _ghostMaterial;
     private Material _invalidMat;
@@ -19,24 +19,25 @@ public class BaseStructure : MonoBehaviour
     private void Awake()
     {
         _structureUI = GetComponent<StructureUI>();
-         _meshRenderer = GetComponentInChildren<MeshRenderer>();
-         if (_meshRenderer == null)
-         {
-             Debug.LogError($"{name} has no MeshRenderer");
-         }
+        _meshRenderer = GetComponentInChildren<MeshRenderer>();
+        if (_meshRenderer == null)
+        {
+            Debug.LogError($"{name} has no MeshRenderer");
+        }
+
         _currentMaterial = _meshRenderer.material;
         _originalMaterial = _meshRenderer.material;
         _structureUI.ToggleDescription(false);
     }
+
     private void Assemble()
     {
-       
         IsAssembled = true;
         _currentMaterial = _originalMaterial;
         _meshRenderer.material = _currentMaterial;
         _structureUI.ToggleDescription(false);
-
     }
+
     public void Initialize(CraftingSO so)
     {
         CraftingSo = so;
@@ -57,6 +58,7 @@ public class BaseStructure : MonoBehaviour
             };
         }
     }
+
     private void OnCollisionEnter(Collision other)
     {
         if (other.collider.CompareTag("Player"))
@@ -65,23 +67,24 @@ public class BaseStructure : MonoBehaviour
         }
     }
 
-    public void SubmitResource(ResourceSo resourceSo)// ingredient is a data type contains resource and amount 
+    public void SubmitResource(ResourceSo resourceSo) // ingredient is a data type contains resource and amount 
     {
-       if(!CheckSubmitResource(resourceSo))
-          return; 
-       
-       
-       Ingredient ing = GetIngredient(resourceSo);
-       if(ing == null)return;
-       Debug.Log("sumit resource");
-       ing.amount--;
-       if (CheckSubmited())
-       {
-           Debug.Log("submitted");
-           Assemble();
-       }
+        if (!CheckSubmitResource(resourceSo))
+            return;
+
+
+        Ingredient ing = GetIngredient(resourceSo);
+        if (ing == null) return;
+        Debug.Log("sumit resource");
+        ing.amount--;
+        if (CheckSubmited())
+        {
+            Debug.Log("submitted");
+            Assemble();
+        }
     }
-    private bool CheckSubmitResource(ResourceSo resourceSo)// check if submited resource is valid 
+
+    private bool CheckSubmitResource(ResourceSo resourceSo) // check if submited resource is valid 
     {
         foreach (var ing in _requiredIngredients)
         {
@@ -94,6 +97,7 @@ public class BaseStructure : MonoBehaviour
                 return true;
             }
         }
+
         return false;
     }
 
@@ -103,16 +107,18 @@ public class BaseStructure : MonoBehaviour
         {
             if (ing.resourceSo == resourceSo)
             {
-               return ing;
+                return ing;
             }
         }
+
         return null;
     }
+
     private bool CheckSubmited()
     {
         foreach (var ing in _requiredIngredients)
         {
-            if (ing.amount ==0)
+            if (ing.amount == 0)
             {
                 continue;
             }
@@ -121,6 +127,7 @@ public class BaseStructure : MonoBehaviour
                 return false;
             }
         }
+
         return true;
     }
 
@@ -134,7 +141,8 @@ public class BaseStructure : MonoBehaviour
                 return ing.resourceSo;
             }
         }
-        return null; 
+
+        return null;
     }
 
     public void ToggleMat(bool valid)
@@ -152,6 +160,7 @@ public class BaseStructure : MonoBehaviour
         {
             _meshRenderer = GetComponentInChildren<MeshRenderer>();
         }
+
         _meshRenderer.material = _currentMaterial;
     }
 
@@ -167,7 +176,7 @@ public class BaseStructure : MonoBehaviour
 
     public void ToggleDescription(bool valid)
     {
-        if(IsAssembled)return;
+        if (IsAssembled) return;
         _structureUI.ToggleDescription(valid);
     }
 }

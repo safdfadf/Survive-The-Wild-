@@ -79,7 +79,7 @@ public class RBookHandler : MonoBehaviour
 
         foreach (var so in allRecipes)
         {
-            GameObject prefab = so.resultPrefab;
+            GameObject prefab = so.resSo.prefab;
 
             if (prefab.TryGetComponent<BaseWeapon>(out _))
             {

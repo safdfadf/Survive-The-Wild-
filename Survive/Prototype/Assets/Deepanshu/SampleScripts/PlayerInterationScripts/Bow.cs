@@ -3,12 +3,14 @@ using System.Collections;
 using UnityEngine;
 
 
-public class PlayerBow : BaseWeapon
+public class Bow : BaseWeapon
 {
     [SerializeField] private GameObject arrowPrefab;
     [SerializeField] private float _mixArrowSpeed = 0f;
     [SerializeField] private float _maxArrowSpeed = 50;
     [SerializeField] private float gravityDuration;
+
+    [SerializeField] private ResourceSo arrowSo;
 
     // [SerializeField] private Transform arrowRestPoint;
     [SerializeField] private Transform bowString;
@@ -56,30 +58,23 @@ public class PlayerBow : BaseWeapon
         CurrentArrow.transform.localPosition = new Vector3(0f, 0f, drawOffset);
     }
 
+    // here we need  arrow that is crafted and added to the inventory 
     private void PrepareNextArrow() // this function should be here 
     {
         animator.DrawArrow();
         CurrentArrow = playerInventory.GetNextArrow();
-
-        if (CurrentArrow == null)
+      if (CurrentArrow == null) return;
+        ArrowScript Arrow = CurrentArrow.GetComponent<ArrowScript>();
+        if (Arrow == null)
         {
             Debug.Log("no arrow found");
         }
 
-        if (CurrentArrow != null)
-        {
-            ArrowScript Arrow = CurrentArrow.GetComponent<ArrowScript>();
-            if (Arrow == null)
-            {
-                Debug.Log("no arrow found");
-            }
-
-            Arrow.canBeCollected = false;
-            CurrentArrow.transform.SetParent(arrowRestPoint, false);
-            CurrentArrow.transform.localPosition = Vector3.zero;
-            CurrentArrow.transform.localRotation = Quaternion.identity;
-            CurrentArrow.SetActive(true);
-        }
+        Arrow.canBeCollected = false;
+        CurrentArrow.transform.SetParent(arrowRestPoint, false);
+        CurrentArrow.transform.localPosition = Vector3.zero;
+        CurrentArrow.transform.localRotation = Quaternion.identity;
+        CurrentArrow.SetActive(true);
     }
 
     public override void StartAiming()
@@ -102,7 +97,6 @@ public class PlayerBow : BaseWeapon
     protected override void Shoot()
     {
         animator.FireArrow(true);
-        playerInventory.RemoveArrow(this.gameObject);
         CharacterController playerConytoller = playerInventory.GetComponent<CharacterController>();
 
         if (!isAimable) return;
@@ -111,7 +105,7 @@ public class PlayerBow : BaseWeapon
             return;
         }
 
-      
+
         ArrowScript arrowScript = CurrentArrow.GetComponent<ArrowScript>();
         if (arrowScript != null)
         {
@@ -121,7 +115,7 @@ public class PlayerBow : BaseWeapon
 
         if (playerConytoller != null)
         {
-            arrowScript.Init(playerConytoller,_bowCollider );
+            arrowScript.Init(playerConytoller, _bowCollider);
         }
 
 
@@ -164,11 +158,12 @@ public class PlayerBow : BaseWeapon
         obj.position = end;
     }
 
-    protected override void EquipMe()
+    public override void UseMe()
     {
-        base.EquipMe();
+        base.UseMe();
         _bowCollider.enabled = false;
     }
+
     IEnumerator EnableGravity(Rigidbody rb)
     {
         yield return new WaitForSeconds(gravityDuration);

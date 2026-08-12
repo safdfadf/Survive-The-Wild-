@@ -12,10 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d05360676185cb47b7b6275576162c5, type: 3}
   m_Name: BowRecipe
   m_EditorClassIdentifier: 
-  logo: {fileID: 21300000, guid: 53a7e39f9dff38d4eb970ad6f8f3da68, type: 3}
   ingredients:
   - resourceSo: {fileID: 11400000, guid: 496f4571bf45f3546a94b0b5e615c915, type: 2}
     amount: 2
-  resultPrefab: {fileID: 2810370539657348168, guid: 13025a44a07e4cd449a466a507f0764b, type: 3}
-  maxDamage: 20
-  maxBlock: 0
+  resSo: {fileID: 11400000, guid: af6418bc7ac8fce45825be06e93ea814, type: 2}

@@ -12,7 +12,7 @@ public class CraftingHandler : MonoBehaviour
     [FormerlySerializedAs("craftingUI")] [SerializeField]
     private RectTransform craftingUITransform;
 
-    [Header("Testing")] [SerializeField] private CraftingSO testingSo;
+    [Header("Testing")] [SerializeField] private List<CraftingSO> testingSo;
 
 
     private List<Ingredient> _currentIngredients = new();
@@ -61,13 +61,16 @@ public class CraftingHandler : MonoBehaviour
 
     private void Start()
     {
-        AddTestingWeapon(testingSo);
+        foreach (var so in testingSo)
+        {
+            for (int i = 0; i <= so.resSo.Amount; i++)
+            {
+                Craft(so);
+            }
+        }
     }
 
-    private void AddTestingWeapon(CraftingSO so)
-    {
-        Craft(testingSo);
-    }
+
 
 
     private void AddIngredient(ResourceSo So, InventoryItem uiPrefab)
@@ -147,7 +150,7 @@ public class CraftingHandler : MonoBehaviour
 
     public void Craft(CraftingSO so)
     {
-        if (so.resultPrefab.TryGetComponent<BaseStructure>(out var structure))
+        if (so.resSo.prefab.TryGetComponent<BaseStructure>(out var structure))
         {
             SpawnStructure(so);
             recipeBook.ToggleRBook();
@@ -155,13 +158,13 @@ public class CraftingHandler : MonoBehaviour
             return;
         }
 
-        GameObject prefab = so.resultPrefab;
+        GameObject prefab = so.resSo.prefab;
         GameObject result = Instantiate(prefab, new Vector3(0, 0, 0), Quaternion.identity);
         Obj<ResourceSo> obj = result.GetComponent<Obj<ResourceSo>>();
         if(obj == null){Debug.Log(" obj is null ");}
-        obj.So = so.So;
+        obj.So = so.resSo;
         _playerInventory.AddWorldItem(result);
-//        ConsumeIngredients();
+//        ConsumeIngredients();// enable this 
         craftButton.gameObject.SetActive(false);
     }
 

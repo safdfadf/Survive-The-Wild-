@@ -38,7 +38,7 @@ public class BuildingHandler : MonoBehaviour
 
    public void SetGHostObject(CraftingSO so)
    {
-      GameObject obj = Instantiate(so.resultPrefab);
+      GameObject obj = Instantiate(so.resSo.prefab);
       _currentStructure = obj.GetComponent<BaseStructure>();
       _currentStructure.Initialize(so);
       _currentStructure.SetValidMat(validMat);

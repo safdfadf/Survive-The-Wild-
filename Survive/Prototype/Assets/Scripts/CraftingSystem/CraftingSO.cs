@@ -5,8 +5,6 @@ using UnityEngine.UI;
 [CreateAssetMenu(fileName = "CraftingSO", menuName = "Scriptable Objects/CraftingSO")]
 public class CraftingSO : ScriptableObject 
 {
-    public Sprite logo; 
     public Ingredient[] ingredients;
-    public GameObject resultPrefab;
-    public ResourceSo So;
+    [FormerlySerializedAs("So")] public ResourceSo resSo;
 }
