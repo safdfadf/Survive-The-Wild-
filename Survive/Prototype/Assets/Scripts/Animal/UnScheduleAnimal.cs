@@ -25,9 +25,8 @@ public class UnScheduleAnimal : AnimalBase // these animals do not have a schedu
         CalmState.EnterState(this);
     }
 
-    protected override void IsPlayerAround()
+    protected override void IsPlayerAround()// alternative for update use a collider whe
     {
-        // here based on distance first alert mode and then attack 
         Collider[] hits = Physics.OverlapSphere(transform.position, alertRadius, playerMask);
 
         if (hits.Length == 0)
@@ -43,6 +42,7 @@ public class UnScheduleAnimal : AnimalBase // these animals do not have a schedu
             Debug.Log(" i am returning");
             return;
         }
+
         if (dist <= alarmRadius)
         {
             Debug.Log("Player too close");
@@ -67,11 +67,11 @@ public class UnScheduleAnimal : AnimalBase // these animals do not have a schedu
 
         return;
     }
-    public override void Attack()
+
+    public override void DoDamage() // here we might need no. of times 
     {
-        animator.SetTrigger("attack");
         LookAtPlayer();
-        PlayerRepository.instance.ApplyDamage(_animalAttack);
+        base.DoDamage();
     }
 
 

@@ -48,7 +48,6 @@ namespace Animal.States
         {
             Chunk chunk = ChunkManager.Instance.GetChunkAtPos(Animal.transform.position);
             Vector3 pos = RetPosOnNv.ReturnRandomNavMeshPos(chunk.bounds);
-            Debug.Log(" moving in zone ");
             Animal.MoveTo(pos);
             ScheduleNextAction();
         }

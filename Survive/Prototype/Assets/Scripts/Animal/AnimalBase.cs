@@ -16,8 +16,8 @@ public class AnimalBase : MonoBehaviour
     [SerializeField] public GameObject followPoint;
 
 
-    [Header("Choose Attack Behavior")] 
-    [SerializeField] protected AnimalAttack _animalAttack;
+    [Header("Choose Attack Behavior")] [SerializeField]
+    protected AnimalAttack _animalAttack;
 
     protected NavMeshAgent agent;
     protected Animator animator;
@@ -28,7 +28,7 @@ public class AnimalBase : MonoBehaviour
     protected HitBox[] hitBoxes;
     public bool isMoving { get; private set; }
     private GameObject _bloodVfx;
-
+    private bool _isAttackComplete;
     [HideInInspector] public AnimalSo AnimalSo;
 
     //Todo: State manager should handle the states 
@@ -60,7 +60,7 @@ public class AnimalBase : MonoBehaviour
     {
         EventBus.On5SecondsPassed += UpdateCalmState;
     }
-    
+
     private void LateUpdate()
     {
         if (isMoving)
@@ -70,9 +70,10 @@ public class AnimalBase : MonoBehaviour
 
     private void UpdateCalmState()
     {
-        if(CurrentState != CalmState)return;
+        if (CurrentState != CalmState) return;
         CurrentState.UpdateState();
-    } 
+    }
+
     public void TakeDamage(int damage, Vector3 contact)
     {
         if (_currentHealth <= 0) return;
@@ -132,7 +133,13 @@ public class AnimalBase : MonoBehaviour
 
     public virtual void MoveTo(Vector3 destination, Action onArrived = null, float? speedOverride = null)
     {
-        if (isMoving) return;
+        Debug.Log("Move");
+        if (isMoving)
+        {
+            Debug.Log("already moving" + gameObject.name);
+            return;
+        }
+
         agent.stoppingDistance = .1f;
         if (agent == null)
         {
@@ -148,7 +155,8 @@ public class AnimalBase : MonoBehaviour
 
         if (!IsValidNavMeshPosition(destination))
         {
-            Debug.Log("Destination is invalid");
+            RetPosOnNv.TryGetNavMeshPoint(destination, out Vector3 navMeshHit);
+            destination = navMeshHit;
         }
 
         agent.SetDestination(destination);
@@ -161,7 +169,7 @@ public class AnimalBase : MonoBehaviour
     {
         Debug.Log("Moving To Player");
         // keep running after the player until you attack 
-        MoveTo(PlayerRepository.instance.GetApproachPos().position, () => Attack());
+        MoveTo(PlayerRepository.instance.GetApproachPos().position, () => DoDamage());
     }
 
     public virtual void MoveInBounds() // this function can be shared by all the animals to move in zone/chunk 
@@ -178,7 +186,6 @@ public class AnimalBase : MonoBehaviour
 
     protected virtual IEnumerator MonitorArrival(Action onArrived)
     {
-        
         if (agent.isOnNavMesh)
         {
             while (agent.pathPending || agent.remainingDistance > agent.stoppingDistance)
@@ -195,13 +202,16 @@ public class AnimalBase : MonoBehaviour
 
     private void CheckPlayerPresence() // how should we stop the function fro 
     {
-      
-       
     }
 
     protected virtual void IsPlayerAround()
     {
-        
+    }
+
+    public virtual void DoDamage()
+    {
+        animator.SetTrigger("attack");
+        PlayerRepository.instance.ApplyDamage(_animalAttack);
     }
 
     public virtual void Attack()
@@ -219,9 +229,10 @@ public class AnimalBase : MonoBehaviour
 
     public void TriggerAlertAnim()
     {
-      //  LookAtPlayer();   
-        animator.SetTrigger("Alert");
+        //  LookAtPlayer();   
+//        animator.SetTrigger("Alert");
     }
+
     protected void LookAtPlayer()
     {
         // 1. Face the player
@@ -230,6 +241,89 @@ public class AnimalBase : MonoBehaviour
         dir.y = 0f; // prevent tilting
         transform.rotation = Quaternion.LookRotation(dir);
     }
+
+    public IEnumerator RamAttack()
+    {
+        float warningRadius = 10f;
+        float stopOffset = 1.5f;
+        float waitBeforeNextRam = 1f;
+
+        Transform player = PlayerRepository.instance.GetPlayerTransform();
+        bool hasAttackedOnce = false;
+
+        while (_currentHealth > _maxhealth * 0.10f)
+        {
+            Vector3 dirToPlayer = (player.position - transform.position).normalized;
+            Vector3 stopPoint = player.position - dirToPlayer * stopOffset;
+
+            if (!RetPosOnNv.TryGetNavMeshPoint(stopPoint, out Vector3 navStopPoint))
+                yield break;
+
+            bool reached = false;
+            MoveTo(navStopPoint, () => reached = true, runSpeed);
+
+            while (!reached)
+                yield return null;
+
+            //   transform.forward = (player.position - transform.position).normalized;
+
+            DoDamage();
+            yield return new WaitForSeconds(.5f); // anim delay
+            hasAttackedOnce = true;
+
+            if (hasAttackedOnce)
+            {
+                float dist = Vector3.Distance(transform.position, player.position);
+                if (dist > warningRadius)
+                    yield break;
+            }
+
+            Vector3 circlePoint = GetRandomPointOnCircle(player.position, warningRadius);
+
+            if (!RetPosOnNv.TryGetNavMeshPoint(circlePoint, out Vector3 navCirclePoint))
+            {
+                Debug.Log("pos failed");
+                Vector3 pos = ChunkManager.Instance.GetClosestInactiveChunkPosition(transform.position);
+                MoveTo(pos, () => RemoveAnimal());
+                yield break;
+            }
+
+            bool arrivedCircle = false;
+            MoveTo(navCirclePoint, () => arrivedCircle = true, runSpeed);
+
+            while (!arrivedCircle)
+            {
+                float dist = Vector3.Distance(transform.position, player.position);
+                if (dist > warningRadius)
+                {
+                    Debug.Log("dis tance greter ");
+                    yield break;
+                }
+
+                yield return null;
+            }
+
+            yield return new WaitForSeconds(waitBeforeNextRam);
+            Debug.Log("wait before next");
+        }
+    }
+    
+    protected virtual void RemoveAnimal()
+    {
+        GlobalPool.instance.Return(AnimalSo.prefab, gameObject);
+    }
+
+    private Vector3 GetRandomPointOnCircle(Vector3 center, float radius)
+    {
+        float angle = UnityEngine.Random.Range(0f, 360f);
+        float rad = angle * Mathf.Deg2Rad;
+
+        return new Vector3(
+            center.x + Mathf.Cos(rad) * radius,
+            center.y,
+            center.z + Mathf.Sin(rad) * radius
+        );
+    }
 }
 
 [System.Serializable]
@@ -237,4 +331,9 @@ public enum AttackType
 {
     OneTimeAttack,
     MultiAttack
+}
+
+public class AnimalAtkBehaviour
+{
+    
 }

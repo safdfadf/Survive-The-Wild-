@@ -14,7 +14,7 @@ namespace Animal.States
         public AlarmState(){}
         public override void EnterState(AnimalBase animal)
         {
-            Debug.Log("enterState");
+            // for alert state when running some animals like small game will only run in active zone
             Animal = animal;
             _isAggresive = Animal.AnimalSo.isAggresive;
             if (_isAggresive)
@@ -36,13 +36,15 @@ namespace Animal.States
 
         private void RunOutOfActiveChunk()
         {
+            Debug.Log("Run out of active chunk");
             Vector3 pos =data.GetOutofActiveChunkPos();
             Animal.MoveTo(pos,()=> DeActivateAnimal());
         }
 
         private void AttackPlayer()
         {
-            Animal.Attack();
+            Debug.Log("attack" + Animal.AnimalSo.name);
+           Animal.Attack();
         }
         private void DeActivateAnimal()
         {

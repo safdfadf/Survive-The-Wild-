@@ -31,6 +31,7 @@ public class ScheduledAnimal : AnimalBase
         currentPos = animalData.GetCurrentPosition();
         ActivateState(CurrentState);
     }
+
     public override void MoveTo(Vector3 destination, Action onArrived = null, float? speedOverride = null)
     {
         base.MoveTo(destination, onArrived, speedOverride);
@@ -43,26 +44,20 @@ public class ScheduledAnimal : AnimalBase
 
         Vector3 playerPos = PlayerRepository.instance.GetPlayerTransform().position;
 
-        // Eye midpoint
         Vector3 eyeCenter = (leftEye.position + rightEye.position) * 0.5f;
 
-        // Forward direction from eyes
         Vector3 forward = transform.forward;
 
-        // Direction to player
         Vector3 dirToPlayer = (playerPos - eyeCenter).normalized;
 
-        // Check angle
         float angle = Vector3.Angle(forward, dirToPlayer);
         if (angle > eyeSightAngle)
             return;
 
-        // Check distance
         float dist = Vector3.Distance(eyeCenter, playerPos);
         if (dist > eyeSightDistance)
-            return ;
+            return;
 
-        // Check line of sight
         if (Physics.Raycast(eyeCenter, dirToPlayer, dist, obstructionMask))
             return;
 
@@ -84,5 +79,10 @@ public class ScheduledAnimal : AnimalBase
     public GameObject GetFollowPoint()
     {
         return followPoint;
+    }
+
+    protected override void RemoveAnimal()
+    {
+        AnimalData.AnimalHandler.DeactivateAnimal(AnimalData);
     }
 }

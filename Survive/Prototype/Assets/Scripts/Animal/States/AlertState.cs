@@ -25,7 +25,7 @@ namespace Animal.States
 
         public override void UpdateState()
         {
-            // in alert state what is the behaviour needed : 1: search radius can increase 
+            // will different animal behave differently in different states or we can add a couple beh and use them for example 
         }
 
         public override void ExitState()
