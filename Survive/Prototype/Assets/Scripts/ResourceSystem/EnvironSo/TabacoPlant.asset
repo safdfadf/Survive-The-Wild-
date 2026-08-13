@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 717ee1b6075e99d4198864d02c4f3538, type: 3}
   m_Name: TabacoPlant
   m_EditorClassIdentifier: 
-  id: 
+  id: TabacoPlant
   prefab: {fileID: 0}
   amount: 0
-  canBreak: 0
+  canBreak: 1
   breakableData:
-    Health: 0
-    resourceSo: {fileID: 0}
+    Health: 100
+    resourceSo: {fileID: 11400000, guid: 99b4fa9569c655b4ba09a5d674e287d4, type: 2}
   regionType: 0
   spawnProb: 0

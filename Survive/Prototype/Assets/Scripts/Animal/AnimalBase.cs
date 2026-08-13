@@ -15,6 +15,8 @@ public class AnimalBase : MonoBehaviour
     [SerializeField] protected float fleeSpeed;
     [SerializeField] public GameObject followPoint;
 
+    [Header("ChooseAttack")] [SerializeField]
+    private AnimalAtkBehaviour animalAtkBehaviour;
 
     [Header("Choose Attack Behavior")] [SerializeField]
     protected AnimalAttack _animalAttack;
@@ -39,8 +41,10 @@ public class AnimalBase : MonoBehaviour
     protected AnimalState CurrentState;
 
     protected Bounds Bounds;
+
     public bool IsUnscheduled { get; protected set; } = false;
 
+    // a serialized field through which we can decide through the inspector which behavior to choose 
     protected virtual void Awake()
     {
         _currentHealth = _maxhealth;
@@ -216,6 +220,7 @@ public class AnimalBase : MonoBehaviour
 
     public virtual void Attack()
     {
+        StartCoroutine(animalAtkBehaviour.Execute(this));
     }
 
     public void CreateNewState()
@@ -229,7 +234,6 @@ public class AnimalBase : MonoBehaviour
 
     public void TriggerAlertAnim()
     {
-        //  LookAtPlayer();   
 //        animator.SetTrigger("Alert");
     }
 
@@ -242,7 +246,7 @@ public class AnimalBase : MonoBehaviour
         transform.rotation = Quaternion.LookRotation(dir);
     }
 
-    public IEnumerator RamAttack()
+    public IEnumerator RamAttack() 
     {
         float warningRadius = 10f;
         float stopOffset = 1.5f;
@@ -253,22 +257,24 @@ public class AnimalBase : MonoBehaviour
 
         while (_currentHealth > _maxhealth * 0.10f)
         {
-            Vector3 dirToPlayer = (player.position - transform.position).normalized;
-            Vector3 stopPoint = player.position - dirToPlayer * stopOffset;
-
-            if (!RetPosOnNv.TryGetNavMeshPoint(stopPoint, out Vector3 navStopPoint))
-                yield break;
-
             bool reached = false;
-            MoveTo(navStopPoint, () => reached = true, runSpeed);
 
             while (!reached)
-                yield return null;
+            {
+                Vector3 dirToPlayer = (player.position - transform.position).normalized;
+                Vector3 stopPoint = player.position - dirToPlayer * stopOffset;
 
-            //   transform.forward = (player.position - transform.position).normalized;
+                if (RetPosOnNv.TryGetNavMeshPoint(stopPoint, out Vector3 navStopPoint))
+                    agent.SetDestination(navStopPoint);
+                
+                if (Vector3.Distance(transform.position, navStopPoint) <= agent.stoppingDistance + 0.2f)
+                    reached = true;
+
+                yield return null;
+            }
 
             DoDamage();
-            yield return new WaitForSeconds(.5f); // anim delay
+            yield return new WaitForSeconds(1f); 
             hasAttackedOnce = true;
 
             if (hasAttackedOnce)
@@ -297,6 +303,7 @@ public class AnimalBase : MonoBehaviour
                 if (dist > warningRadius)
                 {
                     Debug.Log("dis tance greter ");
+                    RemoveAnimal();
                     yield break;
                 }
 
@@ -307,7 +314,7 @@ public class AnimalBase : MonoBehaviour
             Debug.Log("wait before next");
         }
     }
-    
+
     protected virtual void RemoveAnimal()
     {
         GlobalPool.instance.Return(AnimalSo.prefab, gameObject);
@@ -333,7 +340,7 @@ public enum AttackType
     MultiAttack
 }
 
-public class AnimalAtkBehaviour
+public abstract class AnimalAtkBehaviour : ScriptableObject
 {
-    
+    public abstract IEnumerator Execute(AnimalBase animal);
 }

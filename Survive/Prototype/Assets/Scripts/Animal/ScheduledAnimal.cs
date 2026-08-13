@@ -83,6 +83,8 @@ public class ScheduledAnimal : AnimalBase
 
     protected override void RemoveAnimal()
     {
-        AnimalData.AnimalHandler.DeactivateAnimal(AnimalData);
+        Vector3 pos = ChunkManager.Instance.GetClosestInactiveChunkPosition(transform.position);
+        MoveTo(pos, () => AnimalData.AnimalHandler.DeactivateAnimal(AnimalData)
+        );
     }
 }

@@ -1,6 +1,5 @@
 ﻿namespace Effect.Symptoms
 {
-    
     public abstract class Symptom
     {
         protected PlayerBody playerBody;
@@ -16,6 +15,7 @@
         public abstract void StopSymptom();
     }
 }
+
 public enum BaseSymptomType
 {
     None,

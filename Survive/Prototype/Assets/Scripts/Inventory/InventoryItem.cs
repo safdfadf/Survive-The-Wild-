@@ -18,9 +18,9 @@ public class InventoryItem : MonoBehaviour
     [SerializeField] protected Button craftButton;
     [SerializeField] protected Button harvest;
     [SerializeField] protected Button removeButton;
-    public Button useMe; 
+    public Button useMe;
     bool canUseMe = false;
-    
+
     private void Awake()
     {
         rect = GetComponent<RectTransform>();
@@ -31,7 +31,7 @@ public class InventoryItem : MonoBehaviour
         Toggle();
     }
 
-    public void SetItem(Sprite sprite,GameObject Obj)
+    public void SetItem(Sprite sprite, GameObject Obj)
     {
         icon.sprite = sprite;
         obj = Obj;
@@ -40,34 +40,33 @@ public class InventoryItem : MonoBehaviour
     public void Craft()
     {
         IsInCraftingList = true;
-       EventBus.OnResourceAdd.Invoke(so,this);
+        EventBus.OnResourceAdd.Invoke(so, this);
     }
 
     public void Harvest()
     {
-        
     }
 
     private void Remove()
     {
-      if (IsInCraftingList)
-      {
-          IsInCraftingList = false;
-          EventBus.OnResourceRemove.Invoke(so, this);
-      }
-      else
-      {
-          PlayerRepository.instance.RemoveResourceFromInventory(so,this.gameObject);
-      }
-      
+        if (IsInCraftingList)
+        {
+            IsInCraftingList = false;
+            EventBus.OnResourceRemove.Invoke(so, this);
+        }
+        else
+        {
+            PlayerRepository.instance.RemoveResourceFromInventory(so, this.gameObject);
+        }
     }
+
     public void Toggle()
     {
         menu?.SetActive(!menu.activeSelf);
         SetUseMe(canUseMe);
     }
 
-    public void SetUseMe(bool value)// alternative when enabled make it child of option 
+    public void SetUseMe(bool value) // alternative when enabled make it child of option 
     {
         canUseMe = value;
         useMe.gameObject.SetActive(value);
@@ -75,7 +74,7 @@ public class InventoryItem : MonoBehaviour
 
     public void UseMeFunctionality(UnityAction call)
     {
-        useMe.onClick.AddListener(()=> UseMe(call));
+        useMe.onClick.AddListener(() => UseMe(call));
     }
 
     private void UseMe(UnityAction call)
@@ -84,8 +83,8 @@ public class InventoryItem : MonoBehaviour
         {
             obj.SetActive(true);
         }
+
         Toggle();
         call?.Invoke();
     }
-    // probably should remove it from the inventory 
 }

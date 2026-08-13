@@ -15,7 +15,7 @@ MonoBehaviour:
   id: Thistle
   prefab: {fileID: 7174772885725299950, guid: 7bbb175fed69f1b40a93f90d122ce783, type: 3}
   amount: 1
-  canBreak: 0
+  canBreak: 1
   breakableData:
     Health: 0
     resourceSo: {fileID: 0}
