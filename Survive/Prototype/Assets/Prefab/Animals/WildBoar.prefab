@@ -151,9 +151,10 @@ MonoBehaviour:
   runSpeed: 12
   fleeSpeed: 15
   followPoint: {fileID: 2259642533415108932}
-  isPoison: 0
-  isFire: 0
-  isStun: 0
+  _animalAttack:
+    damage: 10
+    effects:
+    - {fileID: 11400000, guid: e1547f690d3ccd143b21ab9c12a3bd70, type: 2}
   AnimalSo: {fileID: 0}
   leftEye: {fileID: 5138556661773915582}
   rightEye: {fileID: 7774264339398966666}

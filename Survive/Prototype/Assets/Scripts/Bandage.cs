@@ -3,13 +3,14 @@ using Player;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Bandage : BaseObj, IHeal // this is a resourse and an imventory intem 
+public class Bandage : BaseObj, IHeal
 {
     [SerializeField] private Button useMeButton;
-    public EffectsSo EffectsSo { get; }
-
+    [SerializeField] private EffectsSo effectsSo;
+    public EffectsSo EffectsSo { get; set; } 
     protected override void Awake()
     {
+        EffectsSo = effectsSo;
         canUseButton = true;
         base.Awake();
     }
@@ -17,8 +18,6 @@ public class Bandage : BaseObj, IHeal // this is a resourse and an imventory int
     public override void UseMe()
     {
         PlayerRepository.instance.HealPlayer(EffectsSo);
-        // Apply Bandage on Body UI
-        // get Player body Reference 
     }
     public void HealPlayer()
     {

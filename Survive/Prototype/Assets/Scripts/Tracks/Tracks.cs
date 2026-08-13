@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class Tracks : MonoBehaviour,ICollectable// tracks are not collectable 
+public class Tracks : MonoBehaviour, ICollectable // tracks are not collectable 
 {
     [SerializeField] private GameObject[] meshs;
     private GameObject _prefab;
@@ -15,22 +15,21 @@ public class Tracks : MonoBehaviour,ICollectable// tracks are not collectable
     [SerializeField] private TextMeshProUGUI TimeStamp;
     [SerializeField] private TextMeshProUGUI state;
     private AnimalSo _animalSo;
-    
+
     public bool playerInRange;
-    
-    
+
+
     [SerializeField] private Material glowMaterial;
-  
-    
+
+
     private MeshRenderer[] _meshRenderer;
-    
+
     private int _maxTrackAge;
     private bool _isMenuActive;
     private Camera cam;
-    
-    [Header("Tracks data info")]
-    private TrackData trackData = new();
-   
+
+    [Header("Tracks data info")] private TrackData trackData = new();
+
     public bool canBeCollected { get; set; }
     public GameObject Gm { get; }
     private Material _originalMaterial;
@@ -42,8 +41,8 @@ public class Tracks : MonoBehaviour,ICollectable// tracks are not collectable
         _originalMaterial = GetComponentInChildren<MeshRenderer>().material;
         menu.SetActive(false);
         RenderGlowMaterial();
-        
     }
+
     private void OnEnable()
     {
         EventBus.OnToggleTracksMenu += ToggleTracksMenu;
@@ -63,22 +62,23 @@ public class Tracks : MonoBehaviour,ICollectable// tracks are not collectable
             FaceCamera();
         }
     }
+
     private void ToggleTracksMenu()
     {
         Debug.Log(" player in range" + playerInRange);
-        if (!playerInRange)return;
-        menu.SetActive(true); 
+        if (!playerInRange) return;
+        menu.SetActive(true);
         RenderOriginalMat();
     }
 
     public void Initialize(TrackData data)
     {
-       trackData = data;
-       _animalSo = data.soAnimal;
-       _prefab = data.prefab;
-       DisplayTarackData();
-       
+        trackData = data;
+        _animalSo = data.soAnimal;
+        _prefab = data.prefab;
+        DisplayTarackData();
     }
+
     private void DisplayTarackData()
     {
         animalDirec.text = trackData.Dir;
@@ -89,25 +89,26 @@ public class Tracks : MonoBehaviour,ICollectable// tracks are not collectable
 
     private void OnHourChanged(int hours)
     {
-        trackData.TimeStamp ++;
+        trackData.TimeStamp++;
         if (trackData.TimeStamp <= trackData.maxTrackAge)
         {
-           DisplayTarackData(); // maybe update tracks if needed 
+            DisplayTarackData(); // maybe update tracks if needed 
         }
         else
         {
-          GlobalPool.instance.Return(_prefab,gameObject);
+            GlobalPool.instance.Return(_prefab, gameObject);
         }
     }
+
     public void Collect(PlayerInventory collector)
     {
-        
     }
+
     public void ToggleMenu()
     {
         menu.gameObject.SetActive(!menu.gameObject.activeSelf);
-       
     }
+
     void FaceCamera()
     {
         Vector3 dir = cam.transform.position - menu.transform.position;
@@ -116,19 +117,21 @@ public class Tracks : MonoBehaviour,ICollectable// tracks are not collectable
 
         menu.transform.rotation = Quaternion.LookRotation(-dir);
     }
+
     private void OnTriggerEnter(Collider other)
     {
         Debug.Log(other.gameObject.name);
-       if (other.CompareTag( "Player"))
-       {
-           playerInRange = true;
-           // ask ui to display interact button and when E pressed 
-           UIManager.instance.ToggleInteractButton(true);
-       }
+        if (other.CompareTag("Player"))
+        {
+            playerInRange = true;
+            // ask ui to display interact button and when E pressed 
+            UIManager.instance.ToggleInteractButton(true);
+        }
     }
+
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag( "Player"))
+        if (other.CompareTag("Player"))
         {
             playerInRange = false;
             ToggleMenu();

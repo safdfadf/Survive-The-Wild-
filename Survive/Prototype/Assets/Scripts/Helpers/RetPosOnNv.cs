@@ -49,7 +49,18 @@ public static class RetPosOnNv
       //  Debug.Log($"Failed to find valid NavMesh position inside bounds: {regionBounds}");
         return regionBounds.center;
     }
+    public static bool TryGetNavMeshPoint(Vector3 target, out Vector3 navPoint)
+    {
+        NavMeshHit hit;
+        if (NavMesh.SamplePosition(target, out hit, 2f, NavMesh.AllAreas))
+        {
+            navPoint = hit.position;
+            return true;
+        }
 
+        navPoint = Vector3.zero;
+        return false;
+    }
     public static Vector3 GetRandomPosOnTerrain(Bounds regionBounds)
     {
         float x = Random.Range(regionBounds.min.x, regionBounds.max.x);

@@ -36,6 +36,7 @@ public class PlayerBody : MonoBehaviour
     }
     public void TakeDamage(IAttack attack)
     {
+        Debug.Log("did Damage");
         foreach (var effect in attack.Effects)
         {
             if (effect.symptoms.Contains(BaseSymptomType.None))
@@ -141,7 +142,7 @@ public class PlayerBody : MonoBehaviour
         _activeEffects.Remove(active);
     }
 
-    public void ApplyWound(Material mat)// temp 
+    private void ApplyWound(Material mat)// temp 
     {
         Debug.Log("Applying Wound");
      _playerUI.ApplyWoundUI(mat);    

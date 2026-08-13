@@ -102,7 +102,7 @@ GameObject:
   - component: {fileID: 3986609982292252204}
   - component: {fileID: 803040266843175523}
   m_Layer: 7
-  m_Name: Bandage
+  m_Name: RegularBandage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
