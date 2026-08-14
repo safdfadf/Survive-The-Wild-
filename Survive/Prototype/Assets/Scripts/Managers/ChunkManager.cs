@@ -14,7 +14,7 @@ public struct RegionSeed
 public class ChunkManager : MonoBehaviour
 {
     public static ChunkManager Instance;
-    [SerializeField] private int chunkSide = 100; 
+    [SerializeField] private int chunkSide = 100;
     [SerializeField] private MovementHandler player;
     [SerializeField] private List<RegionSeed> seeds;
     [SerializeField] private GameObject objTestBounds;
@@ -52,6 +52,7 @@ public class ChunkManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
         GenerateChunks();
     }
 
@@ -229,8 +230,8 @@ public class ChunkManager : MonoBehaviour
 
                 EventBus.CreateAnimalData.Invoke(_currentRegion, GetTestBounds()); // create animal data
 
-              //  GenericSpawner.Instance.SpawnInChunk<EnvironSo, Environment>(
-                 //   SoProvider.instance.GetEnvironmentSo(chunk.regionType), chunk, chunk.objectInChunk);
+                GenericSpawner.Instance.SpawnInChunk<EnvironSo, Environment>(
+                    SoProvider.instance.GetEnvironmentSo(chunk.regionType), chunk, chunk.objectInChunk);
                 GenericSpawner.Instance.SpawnInChunk<ResourceSo, Obj<ResourceSo>>(SoProvider.instance.GetResourceSo(),
                     chunk, chunk.objectInChunk);
                 break;
@@ -343,7 +344,7 @@ public class ChunkManager : MonoBehaviour
     public bool IsInPlayerChunk(Vector3 pos)
     {
         Chunk chunk = GetChunkAtPos(player.transform.position);
-        if(chunk.bounds.Contains(pos))
+        if (chunk.bounds.Contains(pos))
             return true;
         return false;
     }
@@ -453,12 +454,13 @@ public class ChunkManager : MonoBehaviour
     {
         foreach (var pos in chunk.cashedPos)
         {
-            if(pos.IsAvailable)
+            if (pos.IsAvailable)
                 return pos.Position;
         }
 
-        return new Vector3(0,0,0);
+        return new Vector3(0, 0, 0);
     }
+
     private Color GetRegionColor(RegionType region)
     {
         return region switch

@@ -15,5 +15,5 @@ MonoBehaviour:
   symptoms: 00000000
   damage: 20
   timeFrame: 0
-  MaxTime: 0
+  MaxTime: 12
   woundMaterial: {fileID: 2100000, guid: e6b0da57cb4df6a4fb92a2c88f73a04a, type: 2}

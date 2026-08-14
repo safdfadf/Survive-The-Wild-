@@ -5,9 +5,9 @@ using UnityEngine.UI;
 
 public class Bandage : BaseObj, IHeal
 {
-    [SerializeField] private Button useMeButton;
     [SerializeField] private EffectsSo effectsSo;
-    public EffectsSo EffectsSo { get; set; } 
+    public EffectsSo EffectsSo { get; set; }
+
     protected override void Awake()
     {
         EffectsSo = effectsSo;
@@ -19,6 +19,7 @@ public class Bandage : BaseObj, IHeal
     {
         PlayerRepository.instance.HealPlayer(EffectsSo);
     }
+
     public void HealPlayer()
     {
     }

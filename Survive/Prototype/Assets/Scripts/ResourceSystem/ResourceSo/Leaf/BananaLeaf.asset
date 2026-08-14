@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: BananaLeaf
   m_EditorClassIdentifier: 
   prefab: {fileID: 7427983377439106926, guid: 6be79172ae6d0434fbe6c3cfffaa89a6, type: 3}
-  sprite: {fileID: 21300000, guid: 53a7e39f9dff38d4eb970ad6f8f3da68, type: 3}
+  sprite: {fileID: 21300000, guid: 8a998447e4aa3744c84223e02a30baf5, type: 3}
   amount: 2
   size: {x: 2, y: 2}
   appearanceProb: 0

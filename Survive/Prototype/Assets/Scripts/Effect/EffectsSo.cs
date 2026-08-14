@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Effect.Symptoms;
+
 using UnityEngine;
 
 namespace Effect
@@ -7,11 +7,11 @@ namespace Effect
     [CreateAssetMenu(fileName = "EffectSo", menuName = "Scriptable Objects/EffectSo")]
     public class EffectsSo : ScriptableObject
     {
-        public List<BaseSymptomType> symptoms;
+        public DamageType damageType;
         public float damage;
         public float timeFrame;
         public float MaxTime;
         public Material woundMaterial;// temp
-        // wound type 
+       
     }
 }
