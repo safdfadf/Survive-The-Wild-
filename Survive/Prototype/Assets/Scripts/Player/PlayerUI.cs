@@ -54,8 +54,10 @@ public class PlayerUI : MonoBehaviour
 
     [SerializeField] private GameObject bodyStatusUI;
 
-    [FormerlySerializedAs("recipeBookUI")] [SerializeField]
-    private Button recipeBookButton;
+    [SerializeField] private Button recipeBookButton;
+
+    [Header("BlurScreen")] [SerializeField]
+    private GameObject blurScreen;
 
     [SerializeField] private GameObject recipeBookUI;
 

@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class ArrowScript : Obj<ResourceSo>, ICollectable
+public class ArrowScript : Obj<ResourceSo>
 {
     [SerializeField] private GameObject TestHitPoint;
     [SerializeField] private Vector3 offset;
@@ -49,7 +49,7 @@ public class ArrowScript : Obj<ResourceSo>, ICollectable
         transform.SetParent(hit.collider.transform, true);
 
         ItakeDamage combatant = hit.collider.GetComponent<ItakeDamage>();
-        if (combatant != null)
+        if (combatant != null&& !combatant.IsEnvironment)
             combatant.TakeDamage(0, hit.point);
     }
 

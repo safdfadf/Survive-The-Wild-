@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class Hatchet : BaseWeapon // hatchet does not needs to know who it is hitting 
 {
+    private ItakeDamage _currentTarget;
+
     protected override void Awake()
     {
         inventoryRotAngle = 0;
@@ -15,7 +17,7 @@ public class Hatchet : BaseWeapon // hatchet does not needs to know who it is hi
 
     protected override void Attack()
     {
-        animator.SwordAttack();
+        animator.SwordAttack(); // make it a trigger 
         StartCoroutine(StartAttacking());
     }
 
@@ -23,14 +25,12 @@ public class Hatchet : BaseWeapon // hatchet does not needs to know who it is hi
     {
         animator.SwordBlock();
     }
-
-    private void OnTriggerEnter(Collider other)
+   private void OnTriggerEnter(Collider other)
     {
         ItakeDamage target = other.gameObject.GetComponent<ItakeDamage>();
         if (target != null && player.isAttacking)
         {
             Vector3 contactPoint = other.gameObject.transform.position;
-            //    target.TakeDamage(CraftingSo.maxDamage,contactPoint);
         }
     }
 
@@ -38,6 +38,5 @@ public class Hatchet : BaseWeapon // hatchet does not needs to know who it is hi
     {
         base.UseMe();
         animator.SwordEquipped(true);
-       
     }
 }

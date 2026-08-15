@@ -33,7 +33,7 @@ public class BaseWeapon : Obj<ResourceSo>
 
     private Transform cameraTransform;
     private Vector3 crossHairPoint;
-    
+
     private void OnEnable()
     {
         EventBus.onAttack += TryAttack;
@@ -157,10 +157,12 @@ public class BaseWeapon : Obj<ResourceSo>
     protected virtual void Block(int damage)
     {
     }
+
     public override void UseMe()
     {
         player.EquipItem(this);
     }
+
     private void TryAttack()
     {
         if (isAimable)
@@ -173,20 +175,47 @@ public class BaseWeapon : Obj<ResourceSo>
         }
     }
 
-    private void AttackAnimStart()
+
+    protected virtual GameObject
+        IsInRange() // this works for swinging motion need , need a different function for weapons like spere
     {
-        player.isAttacking = true;
+        float radius = .8f;
+        float maxAngle = 60f;
+
+        Collider[] hits = Physics.OverlapSphere(player.transform.position, radius);
+
+        foreach (Collider col in hits)
+        {
+            if (col.TryGetComponent<ItakeDamage>(out var damageable))
+            {
+                Vector3 dirToTarget = (col.transform.position - player.transform.position).normalized;
+                float angle = Vector3.Angle(player.transform.forward, dirToTarget);
+
+                if (angle <= maxAngle)
+                {
+                    return col.gameObject;
+                }
+            }
+        }
+
+        return null;
     }
 
-    private void AttackAnimStop()
+    public void DeliverDamage()
     {
-        player.isAttacking = false;
+        GameObject obj = IsInRange();
+        if (obj == null) return;
+        ItakeDamage dmgObj = obj.GetComponent<ItakeDamage>();
+        if (dmgObj != null)
+        {
+            dmgObj.TakeDamage(MaxDamage, Vector3.zero);
+        }
     }
 
     protected IEnumerator StartAttacking()
     {
-        AttackAnimStart();
+        player.isAttacking = true;
         yield return new WaitForSeconds(1f);
-        AttackAnimStop();
+        player.isAttacking = false;
     }
 }

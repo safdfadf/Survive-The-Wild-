@@ -5,6 +5,8 @@ public class HitBox : MonoBehaviour, ItakeDamage
 {
     private TargetPractice mainBody;
     private AnimalBase _animal;
+    public bool IsEnvironment { get; set; }
+
 
     [SerializeField] private int damageMultiplayer;
 
@@ -23,6 +25,7 @@ public class HitBox : MonoBehaviour, ItakeDamage
     }
 
 
+   
     public void TakeDamage(int damage, Vector3 contactPoint)
     {
         if (_animal != null)

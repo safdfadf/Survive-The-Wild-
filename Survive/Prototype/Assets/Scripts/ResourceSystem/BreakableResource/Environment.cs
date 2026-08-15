@@ -15,10 +15,11 @@ public class Environment : MonoBehaviour, ItakeDamage, IsoInitializer<EnvironSo>
     [Header("Dropables")] [SerializeField] private List<FoodSo> foodSos;
 
     [SerializeField] private List<PosInEnvironment> pos;
-
+    public bool IsEnvironment { get; set; }
     public void Initialize(EnvironSo so)
     {
         environSo = so;
+        IsEnvironment = true;
         SpawnFood();
         if (environSo == null) return;
     }
@@ -54,6 +55,8 @@ public class Environment : MonoBehaviour, ItakeDamage, IsoInitializer<EnvironSo>
             TakeDamage(damage, contactPoint);
         }
     }
+
+   
 
     public void TakeDamage(int damage, Vector3 contactPoint)
     {

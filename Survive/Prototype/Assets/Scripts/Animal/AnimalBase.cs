@@ -81,6 +81,11 @@ public class AnimalBase : MonoBehaviour
     public void TakeDamage(int damage, Vector3 contact)
     {
         if (_currentHealth <= 0) return;
+        if (contact == Vector3.zero)
+        {
+            contact = transform.position;
+        }
+
         PlayBloodVfx(contact);
         int totalDamage = baseDamage * damage; // health = 100, 10 * 8
         _currentHealth -= totalDamage;
@@ -246,7 +251,7 @@ public class AnimalBase : MonoBehaviour
         transform.rotation = Quaternion.LookRotation(dir);
     }
 
-    public IEnumerator RamAttack() 
+    public IEnumerator RamAttack()
     {
         float warningRadius = 10f;
         float stopOffset = 1.5f;
@@ -266,7 +271,7 @@ public class AnimalBase : MonoBehaviour
 
                 if (RetPosOnNv.TryGetNavMeshPoint(stopPoint, out Vector3 navStopPoint))
                     agent.SetDestination(navStopPoint);
-                
+
                 if (Vector3.Distance(transform.position, navStopPoint) <= agent.stoppingDistance + 0.2f)
                     reached = true;
 
@@ -274,7 +279,7 @@ public class AnimalBase : MonoBehaviour
             }
 
             DoDamage();
-            yield return new WaitForSeconds(1f); 
+            yield return new WaitForSeconds(1f);
             hasAttackedOnce = true;
 
             if (hasAttackedOnce)
@@ -303,7 +308,7 @@ public class AnimalBase : MonoBehaviour
                 if (dist > warningRadius)
                 {
                     Debug.Log("dis tance greter ");
-                    RemoveAnimal();
+                    //  RemoveAnimal();
                     yield break;
                 }
 
