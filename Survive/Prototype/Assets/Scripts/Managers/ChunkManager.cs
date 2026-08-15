@@ -230,10 +230,10 @@ public class ChunkManager : MonoBehaviour
 
                 EventBus.CreateAnimalData.Invoke(_currentRegion, GetTestBounds()); // create animal data
 
-                GenericSpawner.Instance.SpawnInChunk<EnvironSo, Environment>(
-                    SoProvider.instance.GetEnvironmentSo(chunk.regionType), chunk, chunk.objectInChunk);
-                GenericSpawner.Instance.SpawnInChunk<ResourceSo, Obj<ResourceSo>>(SoProvider.instance.GetResourceSo(),
-                    chunk, chunk.objectInChunk);
+                //    GenericSpawner.Instance.SpawnInChunk<EnvironSo, Environment>(
+                //      SoProvider.instance.GetEnvironmentSo(chunk.regionType), chunk, chunk.objectInChunk);
+                //  GenericSpawner.Instance.SpawnInChunk<ResourceSo, Obj<ResourceSo>>(SoProvider.instance.GetResourceSo(),
+                //    chunk, chunk.objectInChunk);
                 break;
             case RegionType.Swamp:
                 _currentRegion = RegionType.Swamp;
@@ -341,12 +341,17 @@ public class ChunkManager : MonoBehaviour
         return null;
     }
 
-    public bool IsInPlayerChunk(Vector3 pos)
+    public bool IsPosInPlayerChunk(Vector3 pos)
     {
         Chunk chunk = GetChunkAtPos(player.transform.position);
         if (chunk.bounds.Contains(pos))
             return true;
         return false;
+    }
+
+    public bool IsPlayerInChunk(Chunk chunk)
+    {
+        return chunk.bounds.Contains(player.transform.position);
     }
 
     public bool ObjectLiesInActiveChunk(Vector3 pos)

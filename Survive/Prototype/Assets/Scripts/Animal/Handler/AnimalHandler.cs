@@ -126,7 +126,8 @@ public class
             }
         }
 
-        SpawnUnScheduledAnimal(chunk);
+        if (ChunkManager.Instance.IsPlayerInChunk(chunk))
+            SpawnUnScheduledAnimal(chunk); // only spawn animals in which player is currently present
     }
 
     private void SpawnUnScheduledAnimal(Chunk chunk)
@@ -142,10 +143,9 @@ public class
 
                 pos.IsAvailable = false;
 
-                // Spawn the animal
                 GameObject obj = GlobalPool.instance.Get(animalSo.prefab, pos.Position);
 
-                // Initialize the animal
+
                 UnScheduleAnimal unScheduleAnimal = obj.GetComponent<UnScheduleAnimal>();
                 unScheduleAnimal.Initialize(animalSo, chunk.bounds);
 

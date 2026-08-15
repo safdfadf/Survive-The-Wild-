@@ -26,11 +26,11 @@ namespace Animal.States
         public override void UpdateState() // for now updating every 5 secs
         {
             if (data != null && data.isZoneTraveling) return;
-            if (!ChunkManager.Instance.IsInPlayerChunk(Animal.transform.position))
+            if (!ChunkManager.Instance.IsPosInPlayerChunk(Animal.transform.position))
                 return;
             if (Time.time >= nextActionTime)
             {
-                if (Random.value > 0.5f)// replace .5 with a field
+                if (Random.value > 0.5f)
                     MoveToNextPosition();
             }
         }
@@ -48,7 +48,7 @@ namespace Animal.States
         {
             Chunk chunk = ChunkManager.Instance.GetChunkAtPos(Animal.transform.position);
             Vector3 pos = RetPosOnNv.ReturnRandomNavMeshPos(chunk.bounds);
-            Animal.MoveTo(pos);
+          //  Animal.MoveTo(pos);
             ScheduleNextAction();
         }
     }

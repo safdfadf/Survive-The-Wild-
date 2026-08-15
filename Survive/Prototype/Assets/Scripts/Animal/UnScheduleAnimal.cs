@@ -25,7 +25,7 @@ public class UnScheduleAnimal : AnimalBase // these animals do not have a schedu
         CalmState.EnterState(this);
     }
 
-    protected override void IsPlayerAround()// alternative for update use a collider whe
+    protected override void IsPlayerAround()
     {
         Collider[] hits = Physics.OverlapSphere(transform.position, alertRadius, playerMask);
 
@@ -68,7 +68,7 @@ public class UnScheduleAnimal : AnimalBase // these animals do not have a schedu
         return;
     }
 
-    public override void DoDamage() // here we might need no. of times 
+    public override void DoDamage() 
     {
         LookAtPlayer();
         base.DoDamage();

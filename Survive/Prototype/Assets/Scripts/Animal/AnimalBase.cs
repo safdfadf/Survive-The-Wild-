@@ -15,11 +15,11 @@ public class AnimalBase : MonoBehaviour
     [SerializeField] protected float fleeSpeed;
     [SerializeField] public GameObject followPoint;
 
-    [Header("ChooseAttack")] [SerializeField]
-    private AnimalAtkBehaviour animalAtkBehaviour;
-
-    [Header("Choose Attack Behavior")] [SerializeField]
+    [Header("ChooseAttack")] [Header("Choose Attack Behavior")] [SerializeField]
     protected AnimalAttack _animalAttack;
+
+    [SerializeField] private AnimalAtkBehaviour animalAtkBehaviour;
+
 
     protected NavMeshAgent agent;
     protected Animator animator;
@@ -116,27 +116,31 @@ public class AnimalBase : MonoBehaviour
 
     protected virtual void Death()
     {
+        Debug.Log("Death");
         animator.SetBool("Death", true);
         agent.enabled = false;
         agent.speed = 0;
-        if (AnimalSo != null)
-        {
-            ResourceSo resourceSo = AnimalSo.resourceSo;
-            GameObject obj = Instantiate(resourceSo.prefab, transform.position + new Vector3(0, .5f, 0),
-                Quaternion.identity);
-            BaseObj baseObj = obj.GetComponent<BaseObj>();
-            if (baseObj != null)
-            {
-                baseObj.Initialize(resourceSo);
-                baseObj.rb.isKinematic = false;
-            }
+        if (AnimalSo == null) return;
+        DropResource();
+    }
 
-            Collider collider = obj.GetComponent<Collider>();
-            if (collider != null)
-            {
-                collider.enabled = true;
-                collider.isTrigger = true;
-            }
+    private void DropResource()
+    {
+        ResourceSo resourceSo = AnimalSo.resourceSo;
+        GameObject obj = Instantiate(resourceSo.prefab, transform.position + new Vector3(0, .5f, 0),
+            Quaternion.identity);
+        BaseObj baseObj = obj.GetComponent<BaseObj>();
+        if (baseObj != null)
+        {
+            baseObj.Initialize(resourceSo);
+            baseObj.rb.isKinematic = false;
+        }
+
+        Collider collider = obj.GetComponent<Collider>();
+        if (collider != null)
+        {
+            collider.enabled = true;
+            collider.isTrigger = true;
         }
     }
 
