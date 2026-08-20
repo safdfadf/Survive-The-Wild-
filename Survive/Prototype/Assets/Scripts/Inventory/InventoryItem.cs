@@ -13,6 +13,7 @@ public class InventoryItem : MonoBehaviour
     public Image icon { get; set; }
     public ResourceSo so { get; set; }
     public GameObject obj { get; set; }
+    
     public bool IsInCraftingList { get; set; }
     [SerializeField] protected GameObject menu;
     [SerializeField] protected Button craftButton;
@@ -57,6 +58,7 @@ public class InventoryItem : MonoBehaviour
         else
         {
             PlayerRepository.instance.RemoveResourceFromInventory(so, this.gameObject);
+            Destroy(gameObject);// destroy inventory item 
         }
     }
 

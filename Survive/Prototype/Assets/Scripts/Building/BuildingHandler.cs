@@ -40,7 +40,7 @@ public class BuildingHandler : MonoBehaviour
    {
       GameObject obj = Instantiate(so.resSo.prefab);
       _currentStructure = obj.GetComponent<BaseStructure>();
-      _currentStructure.Initialize(so);
+      _currentStructure.InitializeStructure(so);
       _currentStructure.SetValidMat(validMat);
       _currentStructure.SetInvalidMat(invalidMat);
       _currentStructure.ToggleMat(true);

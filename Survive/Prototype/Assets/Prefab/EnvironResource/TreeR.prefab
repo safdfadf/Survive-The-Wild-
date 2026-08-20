@@ -271,7 +271,7 @@ CapsuleCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -293,6 +293,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   resourceDropCount: 4
   dropOffset: {x: 0, y: 0.5, z: 0}
+  foodSos: []
+  pos: []
 --- !u!1 &7382164028152246429
 GameObject:
   m_ObjectHideFlags: 0

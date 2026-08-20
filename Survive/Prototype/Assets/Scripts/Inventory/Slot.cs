@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class Slot : MonoBehaviour, IPointerClickHandler
+public class Slot : MonoBehaviour, IPointerClickHandler // i can customize this script to handle food selection 
 {
     public Vector2Int gridPosition { get; set; }
     public bool isOccupied { get; set; }
@@ -13,11 +13,17 @@ public class Slot : MonoBehaviour, IPointerClickHandler
     private Image _img;
     private Color _regularColor;
     public RectTransform rect { get; set; }
+
     private Sprite _currentSprite;
+
     //ToDo : Function for valid and invalid spots 
+    public Vector3 worldPosition { get; set; }
+    public CookingData cookingData { get; set; }
+    public int cookingSpotIndex = -1; // index in CampFire.cookingSpots
 
     private void Awake()
     {
+        rect = GetComponent<RectTransform>();
         isOccupied = false;
         _img = GetComponentInChildren<Image>();
         _regularColor = _img.color;
@@ -57,8 +63,7 @@ public class Slot : MonoBehaviour, IPointerClickHandler
         ResourceInventory inventory = GetComponentInParent<ResourceInventory>();
         if (inventory == null)
         {
-            Debug.Log("Cant find inventory");
-            return;
+            inventory = FindAnyObjectByType<ResourceInventory>();
         }
 
         inventory.OnSlotClicked(this);
@@ -67,5 +72,23 @@ public class Slot : MonoBehaviour, IPointerClickHandler
     public void SetRegularColor()
     {
         _img.color = _regularColor;
+    }
+}
+
+public enum SlotType
+{
+    Inventory,
+    CookingSpot
+}
+
+public class CookingData
+{
+    public SlotType slotType;
+    public GameObject handler;
+
+    public CookingData(SlotType SlotType, GameObject Handler)
+    {
+        slotType = SlotType;
+        handler = Handler;
     }
 }

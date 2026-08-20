@@ -186,8 +186,8 @@ public class InputManager : MonoBehaviour
 
     private void ToggleTracksMenu()
     {
-        EventBus.OnToggleTracksMenu?.Invoke();
-        _playerInventory.SubmitResource();
+        EventBus.OnToggleTracksMenu?.Invoke();// interaction
+        _playerInventory.SubmitResource();// Intercation
     }
 
     private void OnDestroy()

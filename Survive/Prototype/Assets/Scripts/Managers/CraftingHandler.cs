@@ -71,8 +71,6 @@ public class CraftingHandler : MonoBehaviour
     }
 
 
-
-
     private void AddIngredient(ResourceSo So, InventoryItem uiPrefab)
     {
         if (!_ingredientVisuals.ContainsKey(So))
@@ -89,7 +87,6 @@ public class CraftingHandler : MonoBehaviour
         {
             Debug.Log("new ingi");
             _currentIngredients.Add(new Ingredient { resourceSo = So, amount = 1 });
-            // move ui to that craft position 
             RectTransform rectTransform = uiPrefab.GetComponent<RectTransform>();
             rectTransform.position = craftingUITransform.position;
         }
@@ -154,14 +151,17 @@ public class CraftingHandler : MonoBehaviour
         {
             SpawnStructure(so);
             recipeBook.ToggleRBook();
-            ConsumeIngredients();
             return;
         }
 
         GameObject prefab = so.resSo.prefab;
         GameObject result = Instantiate(prefab, new Vector3(0, 0, 0), Quaternion.identity);
         Obj<ResourceSo> obj = result.GetComponent<Obj<ResourceSo>>();
-        if(obj == null){Debug.Log(" obj is null ");}
+        if (obj == null)
+        {
+            Debug.Log(" obj is null ");
+        }
+
         obj.So = so.resSo;
         _playerInventory.AddWorldItem(result);
 //        ConsumeIngredients();// enable this 

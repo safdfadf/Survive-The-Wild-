@@ -2,13 +2,14 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BaseStructure : MonoBehaviour
+public class
+    BaseStructure : Environment
 {
     protected bool IsAssembled;
     protected CraftingSO CraftingSo;
-    public bool IsPlayerInRange { get; private set; }
-    private Ingredient[] _requiredIngredients = new Ingredient[0];
-    private StructureUI _structureUI;
+
+    protected  Ingredient[] _requiredIngredients = new Ingredient[0];
+    protected StructureUI _structureUI;
 
     private Material _originalMaterial;
     private Material _ghostMaterial;
@@ -16,7 +17,7 @@ public class BaseStructure : MonoBehaviour
     private Material _currentMaterial;
     private MeshRenderer _meshRenderer;
 
-    private void Awake()
+    protected override void Awake()
     {
         _structureUI = GetComponent<StructureUI>();
         _meshRenderer = GetComponentInChildren<MeshRenderer>();
@@ -28,6 +29,7 @@ public class BaseStructure : MonoBehaviour
         _currentMaterial = _meshRenderer.material;
         _originalMaterial = _meshRenderer.material;
         _structureUI.ToggleDescription(false);
+        base.Awake();
     }
 
     private void Assemble()
@@ -36,9 +38,15 @@ public class BaseStructure : MonoBehaviour
         _currentMaterial = _originalMaterial;
         _meshRenderer.material = _currentMaterial;
         _structureUI.ToggleDescription(false);
+        _requiredIngredients = new Ingredient[0];
+        OnStructureAssembled();
     }
 
-    public void Initialize(CraftingSO so)
+    protected virtual void OnStructureAssembled()
+    {
+        
+    }
+    public void InitializeStructure(CraftingSO so)
     {
         CraftingSo = so;
         SetRequiredIngredients(CraftingSo.ingredients);
@@ -47,8 +55,7 @@ public class BaseStructure : MonoBehaviour
     private void SetRequiredIngredients(Ingredient[] original)
     {
         _requiredIngredients = new Ingredient[original.Length];
-
-        // Deep copy each ingredient
+        
         for (int i = 0; i < original.Length; i++)
         {
             _requiredIngredients[i] = new Ingredient
@@ -58,16 +65,7 @@ public class BaseStructure : MonoBehaviour
             };
         }
     }
-
-    private void OnCollisionEnter(Collision other)
-    {
-        if (other.collider.CompareTag("Player"))
-        {
-            IsPlayerInRange = true;
-        }
-    }
-
-    public void SubmitResource(ResourceSo resourceSo) // ingredient is a data type contains resource and amount 
+    public virtual void SubmitResource(ResourceSo resourceSo) // ingredient is a data type contains resource and amount 
     {
         if (!CheckSubmitResource(resourceSo))
             return;
@@ -84,7 +82,7 @@ public class BaseStructure : MonoBehaviour
         }
     }
 
-    private bool CheckSubmitResource(ResourceSo resourceSo) // check if submited resource is valid 
+    protected bool CheckSubmitResource(ResourceSo resourceSo) // check if submited resource is valid 
     {
         foreach (var ing in _requiredIngredients)
         {

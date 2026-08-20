@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using FoodSystem;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -46,6 +47,7 @@ public class ResourceInventory : MonoBehaviour
                     x * spacingBtwSlotsX,
                     y * spacingBtwSlotsY
                 );
+                slot.cookingData = null;
                 slots[x, y] = slot;
             }
         }
@@ -67,15 +69,6 @@ public class ResourceInventory : MonoBehaviour
             null,
             out localPos
         );
-
-        // Clamp inside inventory UI
-        float minX = 0;
-        float maxX = (width - 1) * spacingBtwSlotsX;
-        float minY = 0;
-        float maxY = (height - 1) * spacingBtwSlotsX;
-
-        localPos.x = Mathf.Clamp(localPos.x, minX, maxX);
-        localPos.y = Mathf.Clamp(localPos.y, minY, maxY);
 
         heldItem.rect.anchoredPosition = localPos;
 
@@ -121,13 +114,11 @@ public class ResourceInventory : MonoBehaviour
                 var slot = slots[x, y];
                 if (IsAreaFree(x, y, size))
                 {
-                    
                     PlaceItemAt(itemPrefab, new Vector2Int(x, y), size);
                     if (!resources.ContainsKey(So))
                         resources[So] = new List<InventoryItem>();
 
                     resources[So].Add(itemPrefab);
-                    return;
                 }
             }
         }
@@ -135,7 +126,6 @@ public class ResourceInventory : MonoBehaviour
 
     private bool IsAreaFree(int startX, int startY, Vector2Int size)
     {
-        // Prevent overflow outside grid
         if (startX + size.x > width) return false;
         if (startY + size.y > height) return false;
 
@@ -149,6 +139,13 @@ public class ResourceInventory : MonoBehaviour
         }
 
         return true;
+    }
+
+    private bool IsOutOFBounds(int startX, int startY, Vector2Int size)
+    {
+        if (startX + size.x > width) return true;
+        if (startY + size.y > height) return true;
+        return false;
     }
 
     private void PlaceItemAt(InventoryItem item, Vector2Int position, Vector2Int size)
@@ -203,30 +200,35 @@ public class ResourceInventory : MonoBehaviour
         return true;
     }
 
-    public void OnSlotClicked(Slot slot)
+    public void OnSlotClicked(Slot slot) // here we can check if the clicked slot is a cokking slot 
     {
-        Debug.Log("on slot clicked");
         Vector2Int pos = slot.gridPosition;
 
-        // PICK UP ITEM
         if (heldItem == null)
         {
             heldItem = PickUpItem(pos);
             if (heldItem == null) return;
 
-            // UI: parent to inventory root so it follows the mouse
             heldItem.rect.SetParent(inventoryRect);
             heldItem.rect.SetAsLastSibling(); // keep on top
             return;
         }
 
-        // PLACE ITEM
         if (CanPlaceItem(heldItem, pos))
         {
             PlaceItemAt(heldItem, pos, heldItem.size);
             heldItem.origin = pos;
             heldItem = null;
             ClearPreviewColors();
+        }
+        else if (slot.cookingData != null)
+        {
+            Debug.Log("slot is cooking slot");
+            GameObject obj = Instantiate(heldItem.so.prefab, slot.worldPosition, Quaternion.identity);
+            Obj<ResourceSo> food = obj.GetComponent<Obj<ResourceSo>>();
+            food.So = heldItem.so;
+            ICook cook = slot.cookingData.handler.GetComponent<ICook>();
+            cook.ExecuteCooking(food as Food);
         }
         else
         {

@@ -47,17 +47,19 @@ public class PlayerInventory : MonoBehaviour
     public GameObject GetNextArrow()
     {
         if (resourcePool.ContainsKey(ArrowSo) && resourcePool[ArrowSo].Count > 0)
-        { 
+        {
             GameObject obj = resourcePool[ArrowSo][0];
             resourcePool[ArrowSo].RemoveAt(0);
             return obj;
         }
+
         Debug.Log(resourcePool[ArrowSo].Count);
         return null;
     }
 
     public void AddWorldItem(GameObject worldObj)
     {
+        Debug.Log(worldObj);
         MoveTo(worldObj);
         if (worldObj.TryGetComponent<BaseWeapon>(out var weapon))
         {
@@ -65,6 +67,13 @@ public class PlayerInventory : MonoBehaviour
             AddToResPool(weaponSo, worldObj);
             MakeUI(weaponSo, weapon);
             return;
+        }
+
+        if (worldObj.TryGetComponent<Food>(out var food))
+        {
+            FoodSo foodSo = food.So as FoodSo;
+            AddToResPool(foodSo, worldObj);
+            MakeUI(foodSo, food);
         }
 
         if (worldObj.TryGetComponent<Obj<ResourceSo>>(out var baseRes))
@@ -111,6 +120,7 @@ public class PlayerInventory : MonoBehaviour
         obj.transform.SetParent(worldStorage.transform);
         obj.SetActive(false);
     }
+
     private void SetInventoryItem(Obj<ResourceSo> res, ResourceSo So, InventoryItem item)
     {
         item.SetUseMe(res.canUseButton); // is there anything that needs to set
@@ -154,7 +164,7 @@ public class PlayerInventory : MonoBehaviour
         _currentStructure = structure;
     }
 
-    public void SubmitResource()
+    public void SubmitResource() // function is used to assemble structures 
     {
         if (_requestedResource == null || _currentStructure == null) return;
         if (resourcePool.ContainsKey(_requestedResource))

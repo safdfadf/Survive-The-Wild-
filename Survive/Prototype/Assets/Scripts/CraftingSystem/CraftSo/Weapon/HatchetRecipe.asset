@@ -12,11 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d05360676185cb47b7b6275576162c5, type: 3}
   m_Name: HatchetRecipe
   m_EditorClassIdentifier: 
-  logo: {fileID: 21300000, guid: 9d1cf762c9bc77c47a9e634688baef16, type: 3}
   ingredients:
   - resourceSo: {fileID: 11400000, guid: b7215a070f1ca7b459087577a8b803e1, type: 2}
     amount: 1
   - resourceSo: {fileID: 11400000, guid: 27e2c7e41bc250641915060a71bb3246, type: 2}
     amount: 1
-  resultPrefab: {fileID: 8679677764685016200, guid: 3e3cdb758d337024d823c17ef70f4f3b, type: 3}
-  So: {fileID: 11400000, guid: abc92296cd6774842a1f0e6844cf558e, type: 2}
+  resSo: {fileID: 11400000, guid: abc92296cd6774842a1f0e6844cf558e, type: 2}

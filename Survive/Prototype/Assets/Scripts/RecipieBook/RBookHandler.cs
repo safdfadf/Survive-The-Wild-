@@ -6,32 +6,32 @@ using UnityEngine.UI;
 
 public class RBookHandler : MonoBehaviour
 {
-    [Header("Tags")]
-    [SerializeField] private Button weaponTag;
+    [Header("Tags")] [SerializeField] private Button weaponTag;
     [SerializeField] private Button baseBuildTage;
     [SerializeField] private Button trapsTag;
     [SerializeField] private Button fireTag;
-    
+
     [SerializeField] private Transform page1;
     [SerializeField] private Transform page2;
-    
-    [Header("Arrows")]    
-    [SerializeField] private GameObject nextButton;
+
+    [Header("Arrows")] [SerializeField] private GameObject nextButton;
     [SerializeField] private GameObject previousButton;
-    [Header("RecipePrefab")]
-    [SerializeField] private GameObject recipiePrefab;
-    [Header("ParentObj")]
-    [SerializeField]private GameObject parentObj;
+
+    [Header("RecipePrefab")] [SerializeField]
+    private GameObject recipiePrefab;
+
+    [Header("ParentObj")] [SerializeField] private GameObject parentObj;
 
     private List<CraftingSO> _weaponRecipes;
-   // private List<CraftingSO> trapRecipes;
+
+    // private List<CraftingSO> trapRecipes;
     private List<CraftingSO> _baseRecipes;
-    [Header("Crafting Handler")]
-    private CraftingHandler _craftingHandler;
-    
+    [Header("Crafting Handler")] private CraftingHandler _craftingHandler;
+
     private List<CraftingSO> activeList;
     private int currentIndex = 0;
     private List<GameObject> spawnedSlots = new();
+
     private void Awake()
     {
         weaponTag.onClick.AddListener(ShowWeaponRecipe);
@@ -46,10 +46,9 @@ public class RBookHandler : MonoBehaviour
         if (parentObj.activeSelf)
         {
             PlayerRepository.instance.CanPlayerMove(false);
-            ShowWeaponRecipe();// or jorney so far 
+            ShowWeaponRecipe(); // or jorney so far 
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
-            
         }
         else
         {
@@ -71,38 +70,36 @@ public class RBookHandler : MonoBehaviour
 
     public void CategorizeRecipes(List<CraftingSO> allRecipes, CraftingHandler craftingHandler)
     {
-       
-        _craftingHandler= craftingHandler;
+        _craftingHandler = craftingHandler;
         _weaponRecipes = new List<CraftingSO>();
-  //      trapRecipes = new List<CraftingSO>();
+        //      trapRecipes = new List<CraftingSO>();
         _baseRecipes = new List<CraftingSO>();
 
         foreach (var so in allRecipes)
         {
+            if(so == null){Debug.Log("so is nul");}
+            if( so.resSo == null ){Debug.Log("res so is null" + so);}
+            if(so.resSo.prefab == null){Debug.Log("resSo.prefab is null" + so.resSo);}
             GameObject prefab = so.resSo.prefab;
-
+            if(prefab == null){Debug.Log("prefab is null");}        
             if (prefab.TryGetComponent<BaseWeapon>(out _))
             {
                 _weaponRecipes.Add(so);
-               
-            } 
+            }
             //   else if (prefab.TryGetComponent<Trap>(out _))
-  //              trapRecipes.Add(so);
+            //              trapRecipes.Add(so);
             else if (prefab.TryGetComponent<BaseStructure>(out _))
                 _baseRecipes.Add(so);
-         
         }
-
-       
     }
+
     private void ShowPage()
     {
-      
         // Clear old slots
         foreach (var slot in spawnedSlots)
             Destroy(slot);
         spawnedSlots.Clear();
-      
+
         Transform currentTransform;
         // Show 4 recipes starting from currentIndex
         for (int i = 0; i < 4; i++)
@@ -112,13 +109,15 @@ public class RBookHandler : MonoBehaviour
             if (index >= activeList.Count) break;
 
             GameObject r = Instantiate(recipiePrefab, currentTransform);
-            r.GetComponent<Recipie>().Initialize(activeList[index],_craftingHandler );
+            r.GetComponent<Recipie>().Initialize(activeList[index], _craftingHandler);
             spawnedSlots.Add(r);
         }
+
         // Update buttons
         previousButton.SetActive(currentIndex > 0);
         nextButton.SetActive(currentIndex + 4 < activeList.Count);
     }
+
     public void NextPage()
     {
         if (currentIndex + 4 < activeList.Count)
@@ -146,19 +145,17 @@ public class RBookHandler : MonoBehaviour
 
     private void ShowBaseBuildRecipe()
     {
-        activeList =_baseRecipes;
+        Debug.Log("Show Base Build Recipe");
+        activeList = _baseRecipes;
         currentIndex = 0;
         ShowPage();
     }
 
     private void ShowTrapsRecipe()
     {
-        
     }
 
     private void ShowFireRecipe()
     {
-     
     }
 }
-
