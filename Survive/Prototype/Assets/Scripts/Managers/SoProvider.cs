@@ -8,7 +8,7 @@ public class SoProvider : MonoBehaviour // fix duplicate code in this script
  public static SoProvider instance;
 
  [Header("Sos")] [SerializeField] private List<EnvironSo> environSo = new();
- [SerializeField] private List<ResourceSo> resourceSo = new();
+ [SerializeField] private List<ObjSo> resourceSo = new();
  [SerializeField] private List<AnimalSo> animalSos = new();
  [SerializeField] private List<FoodSo> foodSo = new();
 
@@ -80,9 +80,9 @@ public class SoProvider : MonoBehaviour // fix duplicate code in this script
   return result;
  }
 
- public List<ResourceSo> GetResourceSo()
+ public List<ObjSo> GetResourceSo()
  {
-  List<ResourceSo> result = new();
+  List<ObjSo> result = new();
   // are reources region based, to some extent yes and region like 
   foreach (var so in resourceSo)
   {
@@ -107,7 +107,7 @@ public class SoProvider : MonoBehaviour // fix duplicate code in this script
   return foodSo;
  }
 
- public ResourceSo GetSoForPrefab(GameObject prefab)
+ public ObjSo GetSoForPrefab(GameObject prefab)
  {
   foreach (var so in resourceSo)
   {

@@ -126,13 +126,13 @@ public class AnimalBase : MonoBehaviour
 
     private void DropResource()
     {
-        ResourceSo resourceSo = AnimalSo.resourceSo;
-        GameObject obj = Instantiate(resourceSo.prefab, transform.position + new Vector3(0, .5f, 0),
+        ObjSo objSo = AnimalSo.objSo;
+        GameObject obj = Instantiate(objSo.prefab, transform.position + new Vector3(0, .5f, 0),
             Quaternion.identity);
         BaseObj baseObj = obj.GetComponent<BaseObj>();
         if (baseObj != null)
         {
-            baseObj.Initialize(resourceSo);
+            baseObj.Initialize(objSo);
             baseObj.rb.isKinematic = false;
         }
 

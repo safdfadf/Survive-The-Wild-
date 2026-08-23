@@ -21,5 +21,5 @@ public class EnvironSo : ScriptableObject, ISpawnedItem
 public class BreakableObjects
 {
     public int Health;
-    public ResourceSo resourceSo;
+    [FormerlySerializedAs("resourceSo")] public ObjSo objSo;
 }

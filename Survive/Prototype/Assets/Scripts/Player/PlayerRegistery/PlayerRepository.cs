@@ -72,7 +72,7 @@ namespace Player
             return _movementHandler._isWalking;
         }
 
-        public void RemoveResourceFromInventory(ResourceSo so,GameObject resource)
+        public void RemoveResourceFromInventory(ObjSo so,GameObject resource)
         {
             _playerInventory.RemoveResource(so,resource);
         }

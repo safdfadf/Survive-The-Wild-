@@ -10,7 +10,7 @@ public class Bow : BaseWeapon
     [SerializeField] private float _maxArrowSpeed = 50;
     [SerializeField] private float gravityDuration;
 
-    [SerializeField] private ResourceSo arrowSo;
+    [SerializeField] private ObjSo arrowSo;
 
     // [SerializeField] private Transform arrowRestPoint;
     [SerializeField] private Transform bowString;

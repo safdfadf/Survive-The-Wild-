@@ -11,15 +11,15 @@ using UnityEngine.UI;
 public class PlayerInventory : MonoBehaviour
 {
     private MovementHandler _movementHandler;
-    private Dictionary<ResourceSo, List<GameObject>> resourcePool = new();
+    private Dictionary<ObjSo, List<GameObject>> resourcePool = new();
 
     [SerializeField] private GameObject uiItemPrefab;
     [SerializeField] private ResourceInventory _resourceInventory;
     [SerializeField] private WeaponInventory _weaponInventory;
     [SerializeField] private GameObject worldStorage;
-    [Header("testing")] [SerializeField] private ResourceSo ArrowSo; // testing purpose
-    [SerializeField] private List<ResourceSo> testResource;
-    private ResourceSo _requestedResource;
+    [Header("testing")] [SerializeField] private ObjSo ArrowSo; // testing purpose
+    [SerializeField] private List<ObjSo> testResource;
+    private ObjSo _requestedObj;
     private BaseStructure _currentStructure;
 
     private void Awake()
@@ -35,7 +35,7 @@ public class PlayerInventory : MonoBehaviour
 
     private void AddTEstResourse()
     {
-        foreach (ResourceSo so in testResource)
+        foreach (ObjSo so in testResource)
         {
             GameObject obj = Instantiate(so.prefab, transform.position, Quaternion.identity);
             BaseObj res = obj.GetComponentInParent<BaseObj>();
@@ -59,7 +59,6 @@ public class PlayerInventory : MonoBehaviour
 
     public void AddWorldItem(GameObject worldObj)
     {
-        Debug.Log(worldObj);
         MoveTo(worldObj);
         if (worldObj.TryGetComponent<BaseWeapon>(out var weapon))
         {
@@ -76,9 +75,9 @@ public class PlayerInventory : MonoBehaviour
             MakeUI(foodSo, food);
         }
 
-        if (worldObj.TryGetComponent<Obj<ResourceSo>>(out var baseRes))
+        if (worldObj.TryGetComponent<Obj<ObjSo>>(out var baseRes))
         {
-            ResourceSo so = baseRes.So;
+            ObjSo so = baseRes.So;
             AddToResPool(so, worldObj);
             MakeUI(so, baseRes);
             return;
@@ -87,18 +86,18 @@ public class PlayerInventory : MonoBehaviour
         Debug.LogWarning("Unknown world item type picked up.");
     }
 
-    private void AddToResPool(ResourceSo resourceSo, GameObject obj)
+    private void AddToResPool(ObjSo objSo, GameObject obj)
     {
-        if (resourcePool.ContainsKey(resourceSo))
+        if (resourcePool.ContainsKey(objSo))
         {
-            resourcePool[resourceSo].Add(obj);
+            resourcePool[objSo].Add(obj);
             return;
         }
 
-        resourcePool.Add(resourceSo, new List<GameObject> { obj });
+        resourcePool.Add(objSo, new List<GameObject> { obj });
     }
 
-    private void MakeUI(ResourceSo so, Obj<ResourceSo> res)
+    private void MakeUI(ObjSo so, Obj<ObjSo> res)
     {
         GameObject uiObj = Instantiate(uiItemPrefab);
         InventoryItem item = uiObj.GetComponent<InventoryItem>();
@@ -121,7 +120,7 @@ public class PlayerInventory : MonoBehaviour
         obj.SetActive(false);
     }
 
-    private void SetInventoryItem(Obj<ResourceSo> res, ResourceSo So, InventoryItem item)
+    private void SetInventoryItem(Obj<ObjSo> res, ObjSo So, InventoryItem item)
     {
         item.SetUseMe(res.canUseButton); // is there anything that needs to set
         item.size = So.size;
@@ -134,7 +133,7 @@ public class PlayerInventory : MonoBehaviour
         item.UseMeFunctionality(res.UseMe);
     }
 
-    public void RemoveResource(ResourceSo So, GameObject resource)
+    public void RemoveResource(ObjSo So, GameObject resource)
     {
         if (resourcePool.ContainsKey(So))
         {
@@ -153,33 +152,33 @@ public class PlayerInventory : MonoBehaviour
         }
 
         GlobalPool.instance.Get(So.prefab, Vector3.forward); // ToDo: correct Position
-        Obj<ResourceSo> res = resource.GetComponent<BaseObj>();
+        Obj<ObjSo> res = resource.GetComponent<BaseObj>();
         res.Initialize(So);
         // spawn the real world in 
     }
 
-    public void SetSubmitResource(ResourceSo So, BaseStructure structure)
+    public void SetSubmitResource(ObjSo So, BaseStructure structure)
     {
-        _requestedResource = So;
+        _requestedObj = So;
         _currentStructure = structure;
     }
 
     public void SubmitResource() // function is used to assemble structures 
     {
-        if (_requestedResource == null || _currentStructure == null) return;
-        if (resourcePool.ContainsKey(_requestedResource))
+        if (_requestedObj == null || _currentStructure == null) return;
+        if (resourcePool.ContainsKey(_requestedObj))
         {
-            if (resourcePool[_requestedResource].Count > 0)
+            if (resourcePool[_requestedObj].Count > 0)
             {
                 //    resourcePool[_requestedResource]--; Correct this 
             }
             else
             {
-                resourcePool.Remove(_requestedResource);
+                resourcePool.Remove(_requestedObj);
             }
 
-            _resourceInventory.RemoveResourse(_requestedResource);
-            _currentStructure.SubmitResource(_requestedResource);
+            _resourceInventory.RemoveResourse(_requestedObj);
+            _currentStructure.SubmitResource(_requestedObj);
         }
     }
 }

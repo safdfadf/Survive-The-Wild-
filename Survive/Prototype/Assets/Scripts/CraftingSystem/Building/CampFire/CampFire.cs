@@ -39,26 +39,26 @@ public class CampFire : BaseStructure, ICook // this will be base class for all 
         {
             _requiredIngredients[i] = new Ingredient
             {
-                resourceSo = _combustibleIngredients[i].resourceSo,
+                objSo = _combustibleIngredients[i].objSo,
                 amount = _combustibleIngredients[i].amount
             };
         }
 
         Debug.Log("Campfire assembled. Combustible phase started." + _requiredIngredients.Length);
 
-        _structureUI.SetDescription(_requiredIngredients[0].resourceSo.name, _requiredIngredients[0].amount);
+        _structureUI.SetDescription(_requiredIngredients[0].objSo.name, _requiredIngredients[0].amount);
         _structureUI.ToggleDescription(true);
     }
 
-    public override void SubmitResource(ResourceSo resourceSo)
+    public override void SubmitResource(ObjSo objSo)
     {
         if (!IsAssembled)
         {
-            base.SubmitResource(resourceSo);
+            base.SubmitResource(objSo);
             return;
         }
 
-        Ingredient ing = GetCombustibleIngredient(resourceSo);
+        Ingredient ing = GetCombustibleIngredient(objSo);
         if (ing == null) return;
 
         ing.amount--;
@@ -74,11 +74,11 @@ public class CampFire : BaseStructure, ICook // this will be base class for all 
         }
     }
 
-    private Ingredient GetCombustibleIngredient(ResourceSo resourceSo)
+    private Ingredient GetCombustibleIngredient(ObjSo objSo)
     {
         foreach (var ing in _requiredIngredients)
         {
-            if (ing.resourceSo == resourceSo)
+            if (ing.objSo == objSo)
                 return ing;
         }
 

@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class ArrowScript : Obj<ResourceSo>
+public class ArrowScript : Obj<ObjSo>
 {
     [SerializeField] private GameObject TestHitPoint;
     [SerializeField] private Vector3 offset;

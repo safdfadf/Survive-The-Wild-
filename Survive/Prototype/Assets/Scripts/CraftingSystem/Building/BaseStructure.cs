@@ -1,14 +1,15 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class
     BaseStructure : Environment
 {
     protected bool IsAssembled;
-    protected CraftingSO CraftingSo;
+    public BuildingRecipe craftingRecipe { get; private set; }
 
-    protected  Ingredient[] _requiredIngredients = new Ingredient[0];
+    protected Ingredient[] _requiredIngredients = new Ingredient[0];
     protected StructureUI _structureUI;
 
     private Material _originalMaterial;
@@ -16,6 +17,9 @@ public class
     private Material _invalidMat;
     private Material _currentMaterial;
     private MeshRenderer _meshRenderer;
+
+    protected List<BaseStructure> childStructures = new();
+    private Collider[] col;
 
     protected override void Awake()
     {
@@ -29,6 +33,7 @@ public class
         _currentMaterial = _meshRenderer.material;
         _originalMaterial = _meshRenderer.material;
         _structureUI.ToggleDescription(false);
+        col = GetComponentsInChildren<Collider>();
         base.Awake();
     }
 
@@ -44,34 +49,40 @@ public class
 
     protected virtual void OnStructureAssembled()
     {
-        
     }
+
     public void InitializeStructure(CraftingSO so)
     {
-        CraftingSo = so;
-        SetRequiredIngredients(CraftingSo.ingredients);
+        craftingRecipe = so as BuildingRecipe;
+        if (craftingRecipe == null)
+        {
+            Debug.Log("recipe is null");
+        }
+
+        SetRequiredIngredients(craftingRecipe.ingredients);
     }
 
     private void SetRequiredIngredients(Ingredient[] original)
     {
         _requiredIngredients = new Ingredient[original.Length];
-        
+
         for (int i = 0; i < original.Length; i++)
         {
             _requiredIngredients[i] = new Ingredient
             {
-                resourceSo = original[i].resourceSo,
+                objSo = original[i].objSo,
                 amount = original[i].amount
             };
         }
     }
-    public virtual void SubmitResource(ResourceSo resourceSo) // ingredient is a data type contains resource and amount 
+
+    public virtual void SubmitResource(ObjSo objSo) // ingredient is a data type contains resource and amount 
     {
-        if (!CheckSubmitResource(resourceSo))
+        if (!CheckSubmitResource(objSo))
             return;
 
 
-        Ingredient ing = GetIngredient(resourceSo);
+        Ingredient ing = GetIngredient(objSo);
         if (ing == null) return;
         Debug.Log("sumit resource");
         ing.amount--;
@@ -82,11 +93,13 @@ public class
         }
     }
 
-    protected bool CheckSubmitResource(ResourceSo resourceSo) // check if submited resource is valid 
+    protected bool
+        CheckSubmitResource(
+            ObjSo objSo) // check if submited resource is valid we need to check wheather it is frame or we are trying to place a child 
     {
         foreach (var ing in _requiredIngredients)
         {
-            if (ing.resourceSo != resourceSo)
+            if (ing.objSo != objSo)
             {
                 continue;
             }
@@ -99,11 +112,11 @@ public class
         return false;
     }
 
-    private Ingredient GetIngredient(ResourceSo resourceSo)
+    private Ingredient GetIngredient(ObjSo objSo)
     {
         foreach (var ing in _requiredIngredients)
         {
-            if (ing.resourceSo == resourceSo)
+            if (ing.objSo == objSo)
             {
                 return ing;
             }
@@ -129,14 +142,14 @@ public class
         return true;
     }
 
-    public ResourceSo GetNextRequiredResource()
+    public ObjSo GetNextRequiredResource()
     {
         foreach (var ing in _requiredIngredients)
         {
             if (ing.amount > 0)
             {
-                _structureUI.SetDescription(ing.resourceSo.name, ing.amount);
-                return ing.resourceSo;
+                _structureUI.SetDescription(ing.objSo.name, ing.amount);
+                return ing.objSo;
             }
         }
 
@@ -177,4 +190,39 @@ public class
         if (IsAssembled) return;
         _structureUI.ToggleDescription(valid);
     }
+
+    public void DisabelAllColliders()
+    {
+        foreach (var c in col)
+        {
+            c.enabled = false;
+        }
+    }
+
+    public void EnableAllColliders()
+    {
+        foreach (var VARIABLE in col)
+        {
+            VARIABLE.enabled = true;
+        }
+    }
+
+
+    public void UnregisterChild(BaseStructure child)
+    {
+        childStructures.Remove(child);
+    }
+}
+
+
+public enum StructureType
+{
+    Frame,
+    Wall,
+    WindowWall,
+    DoorWall,
+    Floor,
+    Roof,
+    Stairs,
+    Pillar
 }

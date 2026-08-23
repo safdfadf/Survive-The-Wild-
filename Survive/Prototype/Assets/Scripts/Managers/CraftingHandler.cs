@@ -16,7 +16,7 @@ public class CraftingHandler : MonoBehaviour
 
 
     private List<Ingredient> _currentIngredients = new();
-    private Dictionary<ResourceSo, List<GameObject>> _ingredientVisuals = new();
+    private Dictionary<ObjSo, List<GameObject>> _ingredientVisuals = new();
     private PlayerInventory _playerInventory;
     private MovementHandler _movementHandler;
     private ResourceInventory _resourceInventory;
@@ -71,13 +71,13 @@ public class CraftingHandler : MonoBehaviour
     }
 
 
-    private void AddIngredient(ResourceSo So, InventoryItem uiPrefab)
+    private void AddIngredient(ObjSo So, InventoryItem uiPrefab)
     {
         if (!_ingredientVisuals.ContainsKey(So))
             _ingredientVisuals[So] = new List<GameObject>();
 
 
-        var existing = _currentIngredients.Find(i => i.resourceSo == So);
+        var existing = _currentIngredients.Find(i => i.objSo == So);
         if (existing != null)
         {
             Debug.Log("old ingi");
@@ -86,7 +86,7 @@ public class CraftingHandler : MonoBehaviour
         else
         {
             Debug.Log("new ingi");
-            _currentIngredients.Add(new Ingredient { resourceSo = So, amount = 1 });
+            _currentIngredients.Add(new Ingredient { objSo = So, amount = 1 });
             RectTransform rectTransform = uiPrefab.GetComponent<RectTransform>();
             rectTransform.position = craftingUITransform.position;
         }
@@ -94,7 +94,7 @@ public class CraftingHandler : MonoBehaviour
         CheckForRecipe();
     }
 
-    private void RemoveResource(ResourceSo So, InventoryItem item)
+    private void RemoveResource(ObjSo So, InventoryItem item)
     {
         if (_ingredientVisuals.ContainsKey(So))
         {
@@ -103,7 +103,7 @@ public class CraftingHandler : MonoBehaviour
 
         for (int i = _currentIngredients.Count - 1; i >= 0; i--)
         {
-            if (_currentIngredients[i].resourceSo == So)
+            if (_currentIngredients[i].objSo == So)
             {
                 _currentIngredients.RemoveAt(i);
             }
@@ -137,7 +137,7 @@ public class CraftingHandler : MonoBehaviour
 
         foreach (var rec in recipeIngredient)
         {
-            var match = current.Find(i => i.resourceSo == rec.resourceSo);
+            var match = current.Find(i => i.objSo == rec.objSo);
             if (match == null || match.amount < rec.amount)
                 return false;
         }
@@ -156,7 +156,7 @@ public class CraftingHandler : MonoBehaviour
 
         GameObject prefab = so.resSo.prefab;
         GameObject result = Instantiate(prefab, new Vector3(0, 0, 0), Quaternion.identity);
-        Obj<ResourceSo> obj = result.GetComponent<Obj<ResourceSo>>();
+        Obj<ObjSo> obj = result.GetComponent<Obj<ObjSo>>();
         if (obj == null)
         {
             Debug.Log(" obj is null ");
@@ -172,12 +172,12 @@ public class CraftingHandler : MonoBehaviour
     {
         foreach (var req in _currentSo.ingredients)
         {
-            var match = _currentIngredients.Find(i => i.resourceSo == req.resourceSo);
+            var match = _currentIngredients.Find(i => i.objSo == req.objSo);
             if (match != null)
             {
                 match.amount -= req.amount;
 
-                if (_ingredientVisuals.TryGetValue(req.resourceSo, out var visuals))
+                if (_ingredientVisuals.TryGetValue(req.objSo, out var visuals))
                 {
                     for (int i = 0; i < req.amount && i < visuals.Count; i++)
                         Destroy(visuals[i]);
@@ -192,7 +192,7 @@ public class CraftingHandler : MonoBehaviour
 
     private void SpawnStructure(CraftingSO so) // spawns structure and lets base builder handle placement 
     {
-        _buildingHandler.SetGHostObject(so);
+        _buildingHandler.SetGHostObject(so );
     }
 
     private Vector3 GetNextIngredientSlotPosition()

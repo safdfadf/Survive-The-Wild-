@@ -1115,9 +1115,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69c20456de6397b40928f7db8a832103, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  menu: {fileID: 6186834242361121989}
-  equipButton: {fileID: 162671644524639464}
-  dstroyButton: {fileID: 210001021668060297}
   arrowRestPoint: {fileID: 3074471459232485234}
   RightHandRotAngle: {x: 0, y: 0, z: 0}
   RightHandAngle: {x: 0, y: 0, z: 0}
@@ -1128,6 +1125,7 @@ MonoBehaviour:
   _mixArrowSpeed: 0
   _maxArrowSpeed: 50
   gravityDuration: 0
+  arrowSo: {fileID: 0}
   bowString: {fileID: 4110722299673010836}
   pullSpeed: 0
 --- !u!65 &168596980693109903
@@ -1709,7 +1707,7 @@ Transform:
   m_GameObject: {fileID: 6403075537588762447}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0.004, y: 0.1026, z: -0.032}
+  m_LocalPosition: {x: 0.004, y: 0.031, z: -0.044}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

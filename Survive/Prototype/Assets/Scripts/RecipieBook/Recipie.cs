@@ -50,7 +50,7 @@ public class Recipie : MonoBehaviour
         {
             GameObject textObj = Instantiate(textPrefab, transform);
             TextMeshProUGUI tmp = textObj.GetComponent<TextMeshProUGUI>();
-            tmp.text = ing.resourceSo.prefab.name.ToString() + " * " + ing.amount.ToString();
+            tmp.text = ing.objSo.prefab.name.ToString() + " * " + ing.amount.ToString();
         }
     }
 

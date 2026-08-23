@@ -23,7 +23,7 @@ public class ResourceInventory : MonoBehaviour
 
 
     private Slot[,] slots;
-    private Dictionary<ResourceSo, List<InventoryItem>> resources = new();
+    private Dictionary<ObjSo, List<InventoryItem>> resources = new();
 
     private void Awake()
     {
@@ -104,7 +104,7 @@ public class ResourceInventory : MonoBehaviour
         }
     }
 
-    public void TryPlaceItem(ResourceSo So, InventoryItem itemPrefab) // called by player inventory
+    public void TryPlaceItem(ObjSo So, InventoryItem itemPrefab) // called by player inventory
     {
         Vector2Int size = So.size;
         for (int x = 0; x < width; x++)
@@ -225,7 +225,7 @@ public class ResourceInventory : MonoBehaviour
         {
             Debug.Log("slot is cooking slot");
             GameObject obj = Instantiate(heldItem.so.prefab, slot.worldPosition, Quaternion.identity);
-            Obj<ResourceSo> food = obj.GetComponent<Obj<ResourceSo>>();
+            Obj<ObjSo> food = obj.GetComponent<Obj<ObjSo>>();
             food.So = heldItem.so;
             ICook cook = slot.cookingData.handler.GetComponent<ICook>();
             cook.ExecuteCooking(food as Food);
@@ -247,7 +247,7 @@ public class ResourceInventory : MonoBehaviour
         return slots[x, y];
     }
 
-    public void RemoveResourse(ResourceSo so)
+    public void RemoveResourse(ObjSo so)
     {
         if (!resources.ContainsKey(so)) return;
         if (resources[so].Count == 0) return;

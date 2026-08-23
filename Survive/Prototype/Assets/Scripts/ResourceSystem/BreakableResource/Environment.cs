@@ -117,12 +117,12 @@ public class Environment : MonoBehaviour, ItakeDamage, IsoInitializer<EnvironSo>
         {
             Debug.Log("i am breaking");
             // call spawner
-            GameObject result = Instantiate(environSo.breakableData.resourceSo.prefab,
+            GameObject result = Instantiate(environSo.breakableData.objSo.prefab,
                 transform.position + Random.insideUnitSphere * 0.5f + dropOffset, Quaternion.identity);
             BaseObj baseObj = result.GetComponent<BaseObj>();
             if (baseObj != null)
             {
-                baseObj.Initialize(environSo.breakableData.resourceSo);
+                baseObj.Initialize(environSo.breakableData.objSo);
                 Rigidbody rb = result.GetComponent<Rigidbody>();
                 rb.isKinematic = false;
                 Collider collider = result.GetComponent<Collider>();

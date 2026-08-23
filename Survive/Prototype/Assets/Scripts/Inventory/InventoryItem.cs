@@ -11,7 +11,7 @@ public class InventoryItem : MonoBehaviour
     public Vector2Int size { get; set; }
     public RectTransform rect { get; set; }
     public Image icon { get; set; }
-    public ResourceSo so { get; set; }
+    public ObjSo so { get; set; }
     public GameObject obj { get; set; }
     
     public bool IsInCraftingList { get; set; }

@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace FoodSystem
 {
-    public class Food : Obj<ResourceSo>
+    public class Food : Obj<ObjSo>
     {
         private int _health;
         [Header("cooking Threshold")]

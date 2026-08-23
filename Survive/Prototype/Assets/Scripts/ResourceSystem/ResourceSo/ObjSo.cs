@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "ResourceData", menuName = "Scriptable Objects/ResourceData")]
-public class ResourceSo : ScriptableObject, ISpawnedItem
+public class ObjSo : ScriptableObject, ISpawnedItem
 {
     public GameObject prefab;
     public Sprite sprite;

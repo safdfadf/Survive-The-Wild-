@@ -230,10 +230,10 @@ public class ChunkManager : MonoBehaviour
 
                 EventBus.CreateAnimalData.Invoke(_currentRegion, GetTestBounds()); // create animal data
 
-                //    GenericSpawner.Instance.SpawnInChunk<EnvironSo, Environment>(
-                //      SoProvider.instance.GetEnvironmentSo(chunk.regionType), chunk, chunk.objectInChunk);
-                //  GenericSpawner.Instance.SpawnInChunk<ResourceSo, Obj<ResourceSo>>(SoProvider.instance.GetResourceSo(),
-                //    chunk, chunk.objectInChunk);
+                GenericSpawner.Instance.SpawnInChunk<EnvironSo, Environment>(
+                    SoProvider.instance.GetEnvironmentSo(chunk.regionType), chunk, chunk.objectInChunk);
+                GenericSpawner.Instance.SpawnInChunk<ObjSo, Obj<ObjSo>>(SoProvider.instance.GetResourceSo(),
+                    chunk, chunk.objectInChunk);
                 break;
             case RegionType.Swamp:
                 _currentRegion = RegionType.Swamp;
@@ -316,12 +316,12 @@ public class ChunkManager : MonoBehaviour
         }
         else if (obj.TryGetComponent<BaseObj>(out var resObj))
         {
-            ResourceSo so = resObj.So;
+            ObjSo so = resObj.So;
             return so.prefab;
         }
         else if (obj.TryGetComponent<Food>(out var foodObj))
         {
-            FoodSo so = foodObj.So;
+            ObjSo so = foodObj.So;
             return so.prefab;
         }
 

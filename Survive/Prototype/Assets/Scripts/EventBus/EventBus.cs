@@ -7,8 +7,8 @@ public class EventBus
  public static Action OnActivateChunk;
  
  //crafting system 
- public static Action<ResourceSo,InventoryItem> OnResourceAdd;// Invoker: BaseResource subscribed by Crafting Handler
- public static Action<ResourceSo,InventoryItem> OnResourceRemove;
+ public static Action<ObjSo,InventoryItem> OnResourceAdd;// Invoker: BaseResource subscribed by Crafting Handler
+ public static Action<ObjSo,InventoryItem> OnResourceRemove;
  
  public static Action onAttack;
  
@@ -35,6 +35,6 @@ public class EventBus
  public static Action OnToggleTracksMenu;
  
  // Send Resource For Building 
- public static Action<ResourceSo> OnResourceSubmit; //Invoker : inventory system // Subscriber : Base Structure  
+ public static Action<ObjSo> OnResourceSubmit; //Invoker : inventory system // Subscriber : Base Structure  
  
 }

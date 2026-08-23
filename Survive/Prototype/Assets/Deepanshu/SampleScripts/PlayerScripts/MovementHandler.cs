@@ -291,7 +291,7 @@ public class MovementHandler : MonoBehaviour
             BaseStructure structure = hit.collider.GetComponent<BaseStructure>();
             if (structure != null && structure.isActiveAndEnabled) // ray hits structure which is in ghost mode 
             {
-                ResourceSo so = GetRequiredResources(structure);
+                ObjSo so = GetRequiredResources(structure);
                 _playerInventory.SetSubmitResource(so, structure);
                 structure.ToggleDescription(true);
             }
@@ -326,7 +326,7 @@ public class MovementHandler : MonoBehaviour
             ICollectable collectable = currentlyHighlighted.GetComponent<ICollectable>();
             if (collectable != null && collectable.canBeCollected)
             {
-              //  collectable.Collect(_playerInventory);
+                //  collectable.Collect(_playerInventory);
                 _playerInventory.AddWorldItem(collectable.Gm);
                 ClearHighlight();
             }
@@ -362,9 +362,9 @@ public class MovementHandler : MonoBehaviour
         }
     }
 
-    public ResourceSo GetRequiredResources(BaseStructure structure)
+    public ObjSo GetRequiredResources(BaseStructure structure)
     {
-        ResourceSo so = structure.GetNextRequiredResource();
+        ObjSo so = structure.GetNextRequiredResource();
         if (so != null)
             return so;
         return null;
@@ -377,7 +377,6 @@ public class MovementHandler : MonoBehaviour
 
     public void InitializeWeapon(BaseWeapon weapon)
     {
-        Debug.Log("initialize weapon");
         weapon.IniTialize(this, _playerInventory, animator, aimTarget, rightSpwnPoint, crosshair);
     }
 
@@ -396,7 +395,6 @@ public class MovementHandler : MonoBehaviour
         CurrentWeapon.transform.localPosition = CurrentWeapon.RightHandAngle;
         CurrentWeapon.transform.localRotation = Quaternion.Euler(CurrentWeapon.RightHandRotAngle);
     }
-
     private void AddScentHourly(int hour)
     {
         _playerScentEmitter.AddScent(hourlyScentInc);

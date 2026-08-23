@@ -5,7 +5,7 @@ using UnityEngine;
 public class ResourceHandler : MonoBehaviour //ToDo: remove this script 
 {
     // this will responsible for spawining variour resources like wood, stone, metal, tree, boulder 
-    public void SpawnResourcesInChunk(List<ResourceSo> resourceList, Chunk chunk)
+    public void SpawnResourcesInChunk(List<ObjSo> resourceList, Chunk chunk)
     {
         foreach (var ResourceSo in resourceList)
         {
@@ -13,7 +13,7 @@ public class ResourceHandler : MonoBehaviour //ToDo: remove this script
         }
     }
 
-    private void SpawnResourceInChunk(ResourceSo so, Chunk chunk)
+    private void SpawnResourceInChunk(ObjSo so, Chunk chunk)
     {
         int spawned = 0;
        

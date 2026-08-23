@@ -12,7 +12,7 @@ public class AnimalSo : ScriptableObject
     public RegionType regionType;
     public int minAmount;
     public int maxAmount;
-    public ResourceSo resourceSo;// drop the resource 
+    [FormerlySerializedAs("resourceSo")] public ObjSo objSo;// drop the resource 
     public List<GameObject> TrackMesh;
     public float spawnProbability;
     public bool isAggresive;

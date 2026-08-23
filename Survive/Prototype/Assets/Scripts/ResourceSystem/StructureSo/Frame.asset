@@ -9,17 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62df55132cbfbec469527465c09f5352, type: 3}
-  m_Name: Boletus
+  m_Script: {fileID: 11500000, guid: 14a65b5c5010fd148872814fb6b3e439, type: 3}
+  m_Name: Frame
   m_EditorClassIdentifier: 
-  prefab: {fileID: 7427983377439106926, guid: 4952b02fed638ce4c8575073a250448e, type: 3}
+  prefab: {fileID: 8270864640662513725, guid: f894e79538ac7fe409b06928afa28145, type: 3}
   sprite: {fileID: 21300000, guid: 8c651d4fbe7730449b4a0ca23e99ac57, type: 3}
-  amount: 3
-  size: {x: 1, y: 1}
-  appearanceProb: 0.8
-  calories: 65
-  proteinCount: 3
-  carbonCount: 7
-  fatCount: 0.8
-  hydrationCount: 0
-  regionType: 0
+  amount: 1
+  size: {x: 0, y: 0}
+  appearanceProb: 0

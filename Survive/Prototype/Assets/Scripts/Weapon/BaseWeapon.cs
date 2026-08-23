@@ -5,7 +5,7 @@ using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 
-public class BaseWeapon : Obj<ResourceSo>
+public class BaseWeapon : Obj<ObjSo>
 {
     [SerializeField] protected Transform arrowRestPoint;
 

@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 59630027625386342}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Viper_MAINSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41,7 +41,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6447836946736797049}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Viper_Tongue_01_04SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -72,7 +72,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6946919494486867216}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Viper_Back_01_07SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -104,7 +104,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1710928134218510084}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Viper_Front_01_04SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -136,7 +136,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3010694740193753904}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Viper_l_Fang_01_01SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -167,7 +167,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8500651634604101184}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Viper_Neck_01SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -199,7 +199,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5108395627656974861}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Viper_Back_01_09SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -231,7 +231,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8286661450897240938}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Viper_Back_01_02SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -263,7 +263,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2048181689576593592}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Viper_Front_01_11SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -297,7 +297,7 @@ GameObject:
   - component: {fileID: 1170150863722476151}
   - component: {fileID: 6713345539737125516}
   - component: {fileID: 2422056669718269046}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Viper
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -341,6 +341,7 @@ MonoBehaviour:
     damage: 0
     effects:
     - {fileID: 11400000, guid: ae274ab7ccf10ca4280230e4fee8b818, type: 2}
+  animalAtkBehaviour: {fileID: 0}
   AnimalSo: {fileID: 0}
   alertRadius: 1.5
   playerMask:
@@ -381,7 +382,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8029729452338214120}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Viper_Tongue_01_03SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -413,7 +414,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2292907162551274764}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Viper_Front_01_08SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -445,7 +446,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6808437934912603973}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Viper_Head_JawEndSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -476,7 +477,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2406740379311221956}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Viper_Back_01_10SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -507,7 +508,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4152260521347930595}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Viper_Front_01_09SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -540,7 +541,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6525531936117408877}
   - component: {fileID: 2249174500471112510}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: asp_viper_exp8
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -662,7 +663,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1302345945128813158}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Viper_Front_01_02SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -694,7 +695,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7172015890326895835}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Viper_Back_01_05SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -726,7 +727,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8572026030043133365}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Viper_Front_01_06SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -758,7 +759,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1332402318978618116}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Viper_Tongue_01_01SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -790,7 +791,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 477243942125573093}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Viper_Back_01_04SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -822,7 +823,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4901005036007105328}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Viper_Back_01_08SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -854,7 +855,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4033524676167995449}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Viper_Front_01_03SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -886,7 +887,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7615004312021334161}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Viper_Tongue_01_02SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -918,7 +919,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3779179703384757420}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Viper_Front_01_01SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -950,7 +951,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8933914251805123547}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Viper_Back_01_03SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -982,7 +983,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8891379169457600058}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Viper_Front_01_07SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1014,7 +1015,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 795866206524545863}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Viper_Back_01_06SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1046,7 +1047,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5233896449855265818}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Viper_Neck_TopSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1080,7 +1081,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8659508602118259930}
   - component: {fileID: 2615348901609472566}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Viper_Rig
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1135,7 +1136,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6187709183480878535}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Viper_Front_01_05SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1167,7 +1168,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5451648889703463768}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Viper_Head_TopSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1201,7 +1202,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1751602780139971184}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Viper_r_Fang_01_01SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1232,7 +1233,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2968466843829271932}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Viper_ROOTSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1265,7 +1266,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3349752862006509335}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Viper_Front_01_10SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1297,7 +1298,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5065767398796636468}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Viper_Back_01_01SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1329,7 +1330,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2929758513667339035}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Viper_Head_JawSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1361,7 +1362,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4533778326470485774}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Viper_Neck_02SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}

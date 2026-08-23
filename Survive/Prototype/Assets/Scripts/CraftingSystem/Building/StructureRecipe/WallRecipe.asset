@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0138a2adee76104e9f4d77692b6855c, type: 3}
+  m_Name: WallRecipe
+  m_EditorClassIdentifier: 
+  ingredients:
+  - objSo: {fileID: 11400000, guid: b7215a070f1ca7b459087577a8b803e1, type: 2}
+    amount: 1
+  resSo: {fileID: 11400000, guid: 39475a735fcffa7498f671a07af5afd8, type: 2}
+  structureType: 1
+  isChildStructure: 1
