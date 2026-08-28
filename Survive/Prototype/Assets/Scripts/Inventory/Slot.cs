@@ -59,6 +59,7 @@ public class Slot : MonoBehaviour, IPointerClickHandler // i can customize this 
 
     public void OnPointerClick(PointerEventData eventData)
     {
+        Debug.Log("OnPointerClick");
         if (eventData.button != PointerEventData.InputButton.Left) return;
         ResourceInventory inventory = GetComponentInParent<ResourceInventory>();
         if (inventory == null)

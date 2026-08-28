@@ -59,7 +59,7 @@ public class ResourceInventory : MonoBehaviour
         UpdateHeldItemPos();
     }
 
-    private void UpdateHeldItemPos()
+    private void UpdateHeldItemPos()// this is updated based on held item's pos 
     {
         ClearPreviewColors();
         Vector2 localPos;
@@ -94,6 +94,7 @@ public class ResourceInventory : MonoBehaviour
         {
             for (int y = 0; y < size.y; y++)
             {
+                if(origin.x + x > width || origin.y + y > height)return;
                 Slot s = slots[origin.x + x, origin.y + y];
 
                 if (canPlace)
@@ -119,6 +120,7 @@ public class ResourceInventory : MonoBehaviour
                         resources[So] = new List<InventoryItem>();
 
                     resources[So].Add(itemPrefab);
+                    return;
                 }
             }
         }
@@ -134,22 +136,15 @@ public class ResourceInventory : MonoBehaviour
             for (int y = 0; y < size.y; y++)
             {
                 if (slots[startX + x, startY + y].isOccupied)
-                    return false;
+                    return false;// continue 
             }
         }
 
         return true;
     }
-
-    private bool IsOutOFBounds(int startX, int startY, Vector2Int size)
-    {
-        if (startX + size.x > width) return true;
-        if (startY + size.y > height) return true;
-        return false;
-    }
-
     private void PlaceItemAt(InventoryItem item, Vector2Int position, Vector2Int size)
     {
+        Debug.Log("try place item   ");
         item.rect.SetParent(slots[position.x, position.y].rect);
         item.rect.anchoredPosition = Vector2.zero;
         item.rect.localRotation = Quaternion.identity;
@@ -196,19 +191,20 @@ public class ResourceInventory : MonoBehaviour
     {
         if (!IsAreaFree(gridPos.x, gridPos.y, item.size))
             return false;
-
+        
         return true;
     }
 
     public void OnSlotClicked(Slot slot) // here we can check if the clicked slot is a cokking slot 
     {
         Vector2Int pos = slot.gridPosition;
-
+        
         if (heldItem == null)
         {
             heldItem = PickUpItem(pos);
             if (heldItem == null) return;
-
+            foreach (var img in heldItem.GetComponentsInChildren<Image>())
+                img.raycastTarget = false;
             heldItem.rect.SetParent(inventoryRect);
             heldItem.rect.SetAsLastSibling(); // keep on top
             return;
@@ -239,7 +235,7 @@ public class ResourceInventory : MonoBehaviour
     private Slot SlotAtCurrentPos(Vector3 localPos)
     {
         int x = Mathf.RoundToInt(localPos.x / spacingBtwSlotsX);
-        int y = Mathf.RoundToInt(localPos.y / spacingBtwSlotsX);
+        int y = Mathf.RoundToInt(localPos.y / spacingBtwSlotsY);
 
         if (x < 0 || y < 0 || x >= width || y >= height)
             return null;

@@ -1,11 +1,8 @@
-using System;
 using System.Collections.Generic;
 using DefaultNamespace.Interface;
-using NUnit.Framework;
 using Player;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
@@ -158,7 +155,7 @@ public class UIManager : MonoBehaviour
     {
         _currentTarget = action;
         if (_currentTarget == null) return;
-       // Debug.Log(_currentObj.gameObject.name);
+        // Debug.Log(_currentObj.gameObject.name);
         if (_currentTarget.canCraft)
         {
             _activeButtons.Add(craftButton);
@@ -216,6 +213,7 @@ public class UIManager : MonoBehaviour
         {
             buttons.gameObject.SetActive(false);
         }
+
         PlayerRepository.instance.CanPlayerMove(true);
         PlayerRepository.instance.ToggleCursor(false);
     }
