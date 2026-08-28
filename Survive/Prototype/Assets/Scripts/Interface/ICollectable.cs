@@ -1,10 +1,9 @@
 using DefaultNamespace.ResourceSystem;
 using UnityEngine;
 
-public interface ICollectable
+public interface ICollectable// ToDo: replace with more suitable name
 {
-     public ResourceUI resourceUI { get; }
-     public bool outlineMe{get;set;}
+     public bool outlineMe{get;set;}// part of ui
      public  bool canBeCollected { get; set; }
-     public GameObject Gm{get;}
+     public GameObject Gm{get; set; }
 }

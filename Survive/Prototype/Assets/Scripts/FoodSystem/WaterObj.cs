@@ -3,7 +3,8 @@ using UnityEngine;
 
 namespace FoodSystem
 {
-    public class WaterObj : Obj<ObjSo>
+    public class WaterObj : Obj<ObjSo>// for water object when player comes in contact only then allow 
+    // ui appearence 
     {
         public WaterState waterState { get; private set; }
         [SerializeField] private FoodSo waterSo;
@@ -24,6 +25,8 @@ namespace FoodSystem
 
         public override void UseMe()
         {
+            // trigger drink animation 
+            // trigger audio 
             PlayerRepository.instance.ConsumeFood(So as FoodSo);
         }
 

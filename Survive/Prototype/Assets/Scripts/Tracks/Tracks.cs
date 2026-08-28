@@ -34,7 +34,7 @@ public class Tracks : MonoBehaviour, ICollectable // tracks are not collectable
     public ResourceUI resourceUI { get; }
     public bool outlineMe { get; set; }
     public bool canBeCollected { get; set; }
-    public GameObject Gm { get; }
+    public GameObject Gm { get; set; }
     private Material _originalMaterial;
 
     private void Awake()

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using DefaultNamespace.Interface;
 using NUnit.Framework;
 using Player;
 using TMPro;
@@ -30,7 +31,7 @@ public class UIManager : MonoBehaviour
     public Button removeButton;
     public Button useMe;
     public TextMeshProUGUI description;
-    private Obj<ObjSo> _currentObj;
+    private IAction _currentTarget;
     private float currentScale;
     private List<Button> _activeButtons = new();
     private List<Button> _allButtons = new();
@@ -153,30 +154,30 @@ public class UIManager : MonoBehaviour
         cookingSlots.Clear();
     }
 
-    public void ActivateUi(Obj<ObjSo> obj, ObjSo so)
+    public void ActivateUi(IAction action)
     {
-        _currentObj = obj;
-        if (_currentObj == null) return;
-        Debug.Log(_currentObj.gameObject.name);
-        if (_currentObj.canCraft)
+        _currentTarget = action;
+        if (_currentTarget == null) return;
+       // Debug.Log(_currentObj.gameObject.name);
+        if (_currentTarget.canCraft)
         {
             _activeButtons.Add(craftButton);
             craftButton.gameObject.SetActive(true);
-            craftButton.onClick.AddListener(_currentObj.Craft);
+            craftButton.onClick.AddListener(_currentTarget.Craft);
         }
 
-        if (_currentObj.canHarvest)
+        if (_currentTarget.canHarvest)
         {
             _activeButtons.Add(harvestButton);
-            craftButton.onClick.AddListener(_currentObj.Harvest);
+            craftButton.onClick.AddListener(_currentTarget.Harvest);
         }
 
-        if (_currentObj.canUse)
+        if (_currentTarget.canUse)
         {
             _activeButtons.Add(useMe);
             TextMeshProUGUI textMesh = useMe.gameObject.GetComponentInChildren<TextMeshProUGUI>();
-            textMesh.text = _currentObj.useMeDescription;
-            useMe.onClick.AddListener(() => _currentObj.UseMe());
+            textMesh.text = _currentTarget.useMeDescription;
+            useMe.onClick.AddListener(() => _currentTarget.UseMe());
         }
 
         SetDescription();
@@ -186,15 +187,15 @@ public class UIManager : MonoBehaviour
 
     private void SetMainMenuPos()
     {
-        if (_currentObj == null) return;
-        Vector2 canvasPos = WorldToCanvasPosition(_currentObj.transform.position);
+        if (_currentTarget == null) return;
+        Vector2 canvasPos = WorldToCanvasPosition(_currentTarget.obj.transform.position);
         RectTransform rect = objectMenu.GetComponent<RectTransform>();
         rect.anchoredPosition = canvasPos;
     }
 
     public void ActivateSubMenu()
     {
-        if (!objectMenu.activeSelf || _currentObj == null) return;
+        if (!objectMenu.activeSelf || _currentTarget == null) return;
         firstMenu.SetActive(false);
         Debug.Log(_activeButtons.Count + " Activate");
         foreach (var buttons in _activeButtons)
@@ -203,34 +204,33 @@ public class UIManager : MonoBehaviour
         }
 
         PlayerRepository.instance.CanPlayerMove(false);
-        PlayerRepository.instance.ToggleCursor(false);
+        PlayerRepository.instance.ToggleCursor(true);
     }
 
     public void DeactivateSubMenu()
     {
-        if (!objectMenu.activeSelf || _currentObj == null) return;
+        if (!objectMenu.activeSelf || _currentTarget == null) return;
         firstMenu.SetActive(true);
         Debug.Log("Deactivated");
-        foreach (var buttons in _allButtons)
+        foreach (var buttons in _activeButtons)
         {
             buttons.gameObject.SetActive(false);
         }
-
         PlayerRepository.instance.CanPlayerMove(true);
-        PlayerRepository.instance.ToggleCursor(true);
+        PlayerRepository.instance.ToggleCursor(false);
     }
 
     private void SetDescription()
     {
-        if (_currentObj == null) return;
+        if (_currentTarget == null) return;
         TextMeshProUGUI textMesh = useMe.gameObject.GetComponentInChildren<TextMeshProUGUI>();
-        textMesh.text = _currentObj.useMeDescription;
-        description.text = _currentObj.description;
+        textMesh.text = _currentTarget.useMeDescription;
+        description.text = _currentTarget.Description;
     }
 
     public void DeactivateUi()
     {
-        _currentObj = null;
+        _currentTarget = null;
         objectMenu.SetActive(false);
         _activeButtons.Clear();
     }
