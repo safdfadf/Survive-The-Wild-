@@ -3,7 +3,7 @@ using Player;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Bandage : BaseObj, IHeal
+public class Bandage : Obj<ObjSo>, IHeal
 {
     [SerializeField] private EffectsSo effectsSo;
     public EffectsSo EffectsSo { get; set; }
@@ -11,7 +11,7 @@ public class Bandage : BaseObj, IHeal
     protected override void Awake()
     {
         EffectsSo = effectsSo;
-        canUseButton = true;
+        canUse = true;
         base.Awake();
     }
 
@@ -22,5 +22,12 @@ public class Bandage : BaseObj, IHeal
 
     public void HealPlayer()
     {
+    }
+
+    protected override void SetUiBools()
+    {
+        canCraft = true;
+        canHarvest = false;
+        canUse = true;
     }
 }

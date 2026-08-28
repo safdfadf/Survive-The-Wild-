@@ -73,7 +73,6 @@ public class BuildingHandler : MonoBehaviour
             return;
         }
 
-        // 2. FREE STRUCTURES → use collision check
         TryFreePlacement();
     }
 

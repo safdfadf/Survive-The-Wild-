@@ -247,6 +247,20 @@ public class ResourceInventory : MonoBehaviour
         return slots[x, y];
     }
 
+    public InventoryItem GetInventoryItem(InventoryItem i)
+    {
+        foreach (var items in resources.Values)
+        {
+            foreach (var item in items)
+            {
+                if (item == i)
+                    return item;
+            }
+        }
+
+        return null;
+    }
+
     public void RemoveResourse(ObjSo so)
     {
         if (!resources.ContainsKey(so)) return;
@@ -254,8 +268,6 @@ public class ResourceInventory : MonoBehaviour
 
         InventoryItem item = resources[so][0];
         resources[so].RemoveAt(0);
-
-        // drop the object in the real world
 
         if (resources[so].Count == 0)
             resources.Remove(so);

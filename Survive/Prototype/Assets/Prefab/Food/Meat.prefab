@@ -182,9 +182,9 @@ GameObject:
   m_Component:
   - component: {fileID: 93363393632684473}
   - component: {fileID: 3850792754903592905}
-  - component: {fileID: -8060006898673189360}
   - component: {fileID: -7080896222566540981}
   - component: {fileID: 3986609982292252204}
+  - component: {fileID: 7711397739290567922}
   m_Layer: 7
   m_Name: Meat
   m_TagString: Untagged
@@ -231,18 +231,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.27053946, y: 0.07727362, z: 0.27073506}
   m_Center: {x: 0.002678059, y: 0.041961648, z: -0.03356342}
---- !u!114 &-8060006898673189360
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7427983377439106926}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 923861d195e106741a2c2f0447411a4a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!54 &-7080896222566540981
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -297,6 +285,23 @@ LODGroup:
     renderers:
     - renderer: {fileID: 5117156907315327203}
   m_Enabled: 1
+--- !u!114 &7711397739290567922
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7427983377439106926}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2fc8069ea801c64caec67dfd6e9cb6d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canHarvest: 0
+  description: Collect
+  useMeDescription: 
+  cookTime: 10
+  burnTime: 20
 --- !u!1 &7663275863110032566
 GameObject:
   m_ObjectHideFlags: 0

@@ -45,7 +45,7 @@ public class InputManager : MonoBehaviour
         _playerUI = GetComponent<PlayerUI>();
         _controls = new PlayerInputs();
         _phone = GetComponentInChildren<PhoneScript>();
-        
+
 
         // Initialize all delegates
         _movePerformed = ctx =>
@@ -76,19 +76,9 @@ public class InputManager : MonoBehaviour
         //    _toggleRecipeBook = ctx => _playerUI.EnableRecipeBook();
 
 
-        _aimStarted = ctx =>
-        {
-            var weapon = _player.CurrentWeapon;
-            if (weapon != null && weapon.isAimable)
-                weapon.StartAiming();
-        };
+        _aimStarted = ctx => { UIManager.instance.ActivateSubMenu(); };
 
-        _aimCanceled = ctx =>
-        {
-            var weapon = _player.CurrentWeapon;
-            if (weapon != null && weapon.isAimable)
-                weapon.StopAiming();
-        };
+        _aimCanceled = ctx => { UIManager.instance.DeactivateSubMenu(); };
         _shootPerformed = ctx =>
         {
             var weapon = _player.CurrentWeapon;
@@ -111,7 +101,6 @@ public class InputManager : MonoBehaviour
             _controls.Enable();
         }
 
-        // subscribe using stored delegates
         _controls.PlayerMovement.Move.performed += _movePerformed;
         _controls.PlayerMovement.Move.canceled += _moveCanceled;
 
@@ -165,12 +154,11 @@ public class InputManager : MonoBehaviour
 
     private void ToggleCollectableMenu()
     {
-        
         PointerEventData eventData = new PointerEventData(EventSystem.current);
         eventData.position = Mouse.current.position.ReadValue();
 
         List<RaycastResult> results = new List<RaycastResult>();
-        
+
         graphicRaycaster.Raycast(eventData, results);
 
         foreach (var result in results)
@@ -186,8 +174,8 @@ public class InputManager : MonoBehaviour
 
     private void ToggleTracksMenu()
     {
-        EventBus.OnToggleTracksMenu?.Invoke();// interaction
-        _playerInventory.SubmitResource();// Intercation
+        EventBus.OnToggleTracksMenu?.Invoke(); // interaction
+        _playerInventory.SubmitResource(); // Intercation
     }
 
     private void OnDestroy()

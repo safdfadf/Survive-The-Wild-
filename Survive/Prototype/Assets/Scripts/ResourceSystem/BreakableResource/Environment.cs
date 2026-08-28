@@ -119,7 +119,7 @@ public class Environment : MonoBehaviour, ItakeDamage, IsoInitializer<EnvironSo>
             // call spawner
             GameObject result = Instantiate(environSo.breakableData.objSo.prefab,
                 transform.position + Random.insideUnitSphere * 0.5f + dropOffset, Quaternion.identity);
-            BaseObj baseObj = result.GetComponent<BaseObj>();
+            Obj<ObjSo> baseObj = result.GetComponent<Obj<ObjSo>>();
             if (baseObj != null)
             {
                 baseObj.Initialize(environSo.breakableData.objSo);

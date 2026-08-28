@@ -223,6 +223,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2fc8069ea801c64caec67dfd6e9cb6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canHarvest: 0
+  description: Collect
+  useMeDescription: 
+  cookTime: 10
+  burnTime: 20
 --- !u!205 &1596993988906380342
 LODGroup:
   m_ObjectHideFlags: 0

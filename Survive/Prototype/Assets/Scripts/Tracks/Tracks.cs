@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using DefaultNamespace.ResourceSystem;
 using Player;
 using TMPro;
 using UnityEngine;
@@ -30,12 +31,15 @@ public class Tracks : MonoBehaviour, ICollectable // tracks are not collectable
 
     [Header("Tracks data info")] private TrackData trackData = new();
 
+    public ResourceUI resourceUI { get; }
+    public bool outlineMe { get; set; }
     public bool canBeCollected { get; set; }
     public GameObject Gm { get; }
     private Material _originalMaterial;
 
     private void Awake()
     {
+        outlineMe = true;
         cam = Camera.main;
         _meshRenderer = GetComponentsInChildren<MeshRenderer>();
         _originalMaterial = GetComponentInChildren<MeshRenderer>().material;
@@ -45,14 +49,14 @@ public class Tracks : MonoBehaviour, ICollectable // tracks are not collectable
 
     private void OnEnable()
     {
-        EventBus.OnToggleTracksMenu += ToggleTracksMenu;
+        EventBus.OnToggleTracksMenu += ActivateTrackMenu;
         EventBus.OnHourChanged += OnHourChanged;
     }
 
     private void OnDisable()
     {
         EventBus.OnHourChanged -= OnHourChanged;
-        EventBus.OnToggleTracksMenu -= ToggleTracksMenu;
+        EventBus.OnToggleTracksMenu -= ActivateTrackMenu;
     }
 
     private void Update()
@@ -63,9 +67,8 @@ public class Tracks : MonoBehaviour, ICollectable // tracks are not collectable
         }
     }
 
-    private void ToggleTracksMenu()
+    private void ActivateTrackMenu()
     {
-        Debug.Log(" player in range" + playerInRange);
         if (!playerInRange) return;
         menu.SetActive(true);
         RenderOriginalMat();
@@ -106,7 +109,7 @@ public class Tracks : MonoBehaviour, ICollectable // tracks are not collectable
 
     public void ToggleMenu()
     {
-        menu.gameObject.SetActive(!menu.gameObject.activeSelf);
+       
     }
 
     void FaceCamera()
@@ -124,7 +127,6 @@ public class Tracks : MonoBehaviour, ICollectable // tracks are not collectable
         if (other.CompareTag("Player"))
         {
             playerInRange = true;
-            // ask ui to display interact button and when E pressed 
             UIManager.instance.ToggleInteractButton(true);
         }
     }
@@ -134,7 +136,7 @@ public class Tracks : MonoBehaviour, ICollectable // tracks are not collectable
         if (other.CompareTag("Player"))
         {
             playerInRange = false;
-            ToggleMenu();
+            menu.gameObject.SetActive(false);
             UIManager.instance.ToggleInteractButton(false);
         }
     }

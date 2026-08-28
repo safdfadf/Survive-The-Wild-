@@ -105,5 +105,17 @@ namespace Player
             return _movementHandler.animalApproachPos;
         }
 
+        public void CraftWorldItem(GameObject obj)
+        {
+            Obj<ObjSo> o = obj.GetComponent<Obj<ObjSo>>();
+            _playerInventory.MakeItemAnCraft(o);
+        }
+
+        public void ToggleCursor(bool isCursorOn)
+        {
+            _movementHandler.ToggleCursor();
+        }
+       
+
     }
 }

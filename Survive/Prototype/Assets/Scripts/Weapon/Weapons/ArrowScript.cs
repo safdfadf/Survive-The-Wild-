@@ -9,8 +9,7 @@ public class ArrowScript : Obj<ObjSo>
     [SerializeField] private Transform rayOrigin;
     private Vector3 _velocity;
     public float gravity = -9.81f;
-    private ResourceType type;
-
+   
     private bool _isStuck;
     private bool _canMove;
 

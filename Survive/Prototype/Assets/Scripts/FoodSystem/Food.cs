@@ -17,21 +17,27 @@ namespace FoodSystem
 
         protected override void Awake()
         {
-            canBeCollected = true;
-            canUseButton = true;
+            canUse = true;
             Gm = gameObject;
+            useMeDescription = "Eat";
             base.Awake();
         }
 
         public override void UseMe()
         {
             PlayerRepository.instance.ConsumeFood(So as FoodSo);
-            //   PlayerRepository.instance.RemoveResourceFromInventory(So, gameObject);
+            // remove from inventory
         }
 
         public void AddBurntFoodDebuff()
         {
             
+        }
+        protected override void SetUiBools()
+        {
+            canCraft = false;
+            canHarvest = false;
+            canUse = true;
         }
     }
 }

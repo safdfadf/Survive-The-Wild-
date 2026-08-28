@@ -47,9 +47,9 @@ public class BaseWeapon : Obj<ObjSo>
     protected override void Awake()
     {
         base.Awake();
-        canUseButton = true;
+        useMeDescription = "EquipMe";
+        canUse = true;
         playerInventory = GetComponentInParent<PlayerInventory>();
-        rb = null; // ToDo : remove this 
     }
 
     public void SetCraftingSo(CraftingSO weaponSo)
@@ -217,5 +217,11 @@ public class BaseWeapon : Obj<ObjSo>
         player.isAttacking = true;
         yield return new WaitForSeconds(1f);
         player.isAttacking = false;
+    }
+    protected override void SetUiBools()
+    {
+        canCraft = true;
+        canHarvest = false;
+        canUse = true;
     }
 }

@@ -74,12 +74,13 @@ public class PlayerVitalStats : MonoBehaviour
     }
 
     private void UpdateStats()
-    { energyDecayTimer += 5;
+    {
+        energyDecayTimer += 5;
         if (energyDecayTimer >= 60)
         {
             _currentEnergy -= energyDecayPerMinute;
             _currentEnergy = Mathf.Clamp(_currentEnergy, 0f, maxEnergy);
-          
+
             _currentProtein -= proteinDecayTimer;
             _currentProtein = Mathf.Clamp(_currentProtein, 0f, maxProtein);
             _currentCarb -= carbDecayTimer;

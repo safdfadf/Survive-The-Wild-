@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using Player;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -12,35 +14,56 @@ public class InventoryItem : MonoBehaviour
     public RectTransform rect { get; set; }
     public Image icon { get; set; }
     public ObjSo so { get; set; }
-    public GameObject obj { get; set; }
-    
+    public GameObject gm { get; set; }
+
     public bool IsInCraftingList { get; set; }
     [SerializeField] protected GameObject menu;
     [SerializeField] protected Button craftButton;
     [SerializeField] protected Button harvest;
     [SerializeField] protected Button removeButton;
+    private Obj<ObjSo> _currentObj;
     public Button useMe;
-    bool canUseMe = false;
+
+    private List<Button> _activeButtons = new();
 
     private void Awake()
     {
         rect = GetComponent<RectTransform>();
         icon = GetComponent<Image>();
-        craftButton.onClick.AddListener(Craft);
-        harvest.onClick.AddListener(Harvest);
         removeButton.onClick.AddListener(Remove);
+        _activeButtons = new List<Button> { craftButton, harvest, useMe, removeButton };
         Toggle();
     }
 
     public void SetItem(Sprite sprite, GameObject Obj)
     {
         icon.sprite = sprite;
-        obj = Obj;
+        gm = Obj;
+        _currentObj = Obj.GetComponent<Obj<ObjSo>>();
+        if (_currentObj.canCraft)
+        {
+            craftButton.onClick.AddListener(Craft);
+            _activeButtons.Add(craftButton);
+        }
+
+        if (_currentObj.canHarvest)
+        {
+            craftButton.onClick.AddListener(_currentObj.Harvest);
+            _activeButtons.Add(harvest);
+        }
+
+        if (_currentObj.canUse)
+        {
+            _activeButtons.Add(useMe);
+            TextMeshProUGUI textMesh = useMe.gameObject.GetComponentInChildren<TextMeshProUGUI>();
+            textMesh.text = _currentObj.useMeDescription;
+            useMe.onClick.AddListener(() => _currentObj.UseMe());
+        }
     }
 
     public void Craft()
     {
-        IsInCraftingList = true;
+        IsInCraftingList = true; // we might need to move this 
         EventBus.OnResourceAdd.Invoke(so, this);
     }
 
@@ -58,35 +81,16 @@ public class InventoryItem : MonoBehaviour
         else
         {
             PlayerRepository.instance.RemoveResourceFromInventory(so, this.gameObject);
-            Destroy(gameObject);// destroy inventory item 
+            Destroy(gameObject); // destroy inventory item 
         }
     }
 
     public void Toggle()
     {
         menu?.SetActive(!menu.activeSelf);
-        SetUseMe(canUseMe);
-    }
-
-    public void SetUseMe(bool value) // alternative when enabled make it child of option 
-    {
-        canUseMe = value;
-        useMe.gameObject.SetActive(value);
     }
 
     public void UseMeFunctionality(UnityAction call)
     {
-        useMe.onClick.AddListener(() => UseMe(call));
-    }
-
-    private void UseMe(UnityAction call)
-    {
-        if (obj != null && !obj.activeSelf)
-        {
-            obj.SetActive(true);
-        }
-
-        Toggle();
-        call?.Invoke();
     }
 }

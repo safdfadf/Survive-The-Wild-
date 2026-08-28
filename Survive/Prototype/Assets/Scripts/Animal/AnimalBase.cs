@@ -129,7 +129,7 @@ public class AnimalBase : MonoBehaviour
         ObjSo objSo = AnimalSo.objSo;
         GameObject obj = Instantiate(objSo.prefab, transform.position + new Vector3(0, .5f, 0),
             Quaternion.identity);
-        BaseObj baseObj = obj.GetComponent<BaseObj>();
+        Obj<ObjSo> baseObj = obj.GetComponent<Obj<ObjSo>>();
         if (baseObj != null)
         {
             baseObj.Initialize(objSo);

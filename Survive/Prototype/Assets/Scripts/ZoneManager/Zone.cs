@@ -1,12 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DefaultNamespace;
 using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
-public enum WaterBody
+public enum WaterBodyType
 {
     Null,
     Lake,
@@ -17,19 +19,20 @@ public class Zone : MonoBehaviour
 {
     [SerializeField] public Activity zoneType;
     [SerializeField] private List<Vector3> zonePosition = new();
-    public WaterBody waterBodyType;
+
+
     private HashSet<Vector3> occupiedPositions = new();
     private SphereCollider collier;
     private int maxPosition = 6;
     private float disBtwPos = 5;
 
     private TextMeshProUGUI TypeText;
-    private bool isDrinkingZone;
+    private bool _isDrinkingZone;
     private int edgeOffset = 5;
     private int _attempts = 0;
     public bool HasAvailablePosition => zonePosition.Any(pos => !occupiedPositions.Contains(pos));
     private Dictionary<int, Species> hourlyOccupancy = new(); // hour → species
-
+    public WaterBody WaterBody{get; private set;}
 
     private void Awake()
     {
@@ -40,12 +43,14 @@ public class Zone : MonoBehaviour
             collier.isTrigger = true;
         }
 
+        WaterBody = GetComponent<WaterBody>();
+        _isDrinkingZone = WaterBody != null;
         GenerateZonePosition();
         TypeText = gameObject.GetComponentInChildren<TextMeshProUGUI>();
     }
 
     // all the chunks that lies in shape of this game object set it to empty chunk
-    
+
     public void SetZoneText(Activity zone)
     {
         TypeText.text = zone.ToString();
@@ -53,18 +58,22 @@ public class Zone : MonoBehaviour
 
     private void GenerateZonePosition()
     {
-        switch (waterBodyType)
+        if (_isDrinkingZone)
         {
-            case WaterBody.Null:
-                GenerateGrndPos();
-                break;
-            case WaterBody.Lake:
-                GenerateLakePos();
-                break;
-            case WaterBody.River:
-                GenerateRiverPos();
-                break;
+            switch (WaterBody.bodyType)
+            {
+                case WaterBodyType.Lake:
+                    GenerateLakePos();
+                    break;
+                case WaterBodyType.River:
+                    GenerateRiverPos();
+                    break;
+            }
+
+            return;
         }
+
+        GenerateGrndPos();
     }
 
     private void GenerateGrndPos()
@@ -110,7 +119,7 @@ public class Zone : MonoBehaviour
 
     private void GenerateLakePos()
     {
-        MeshCollider _meshCollider = GetComponent<MeshCollider>();
+        Collider _meshCollider = GetComponent<Collider>();
         Bounds bounds = _meshCollider.bounds;
         Vector3 min = bounds.min;
         Vector3 max = bounds.max;

@@ -29,7 +29,7 @@ public class ZoneManager : MonoBehaviour
     private void StoreDrinkingZone()
     {
         _drinkingZone = FindObjectsByType<Zone>(FindObjectsSortMode.InstanceID)
-            .Where(z => z.waterBodyType != WaterBody.Null).ToList();
+            .Where(z => z.WaterBody != null).ToList();
         if (!_zoneByType.ContainsKey(Activity.Drinking))
             _zoneByType[Activity.Drinking] = new List<Zone>();
 
@@ -43,7 +43,6 @@ public class ZoneManager : MonoBehaviour
     {
         var zoneGo = Instantiate(zonePrefab, position, Quaternion.identity);
         Zone zone = zoneGo.GetComponent<Zone>();
-        zone.waterBodyType = WaterBody.Null;
         zone.zoneType = type;
         zone.SetZoneText(type);
         SphereCollider collider = zoneGo.GetComponent<SphereCollider>();

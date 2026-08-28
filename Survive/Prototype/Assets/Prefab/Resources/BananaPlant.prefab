@@ -101,6 +101,7 @@ GameObject:
   - component: {fileID: -7080896222566540981}
   - component: {fileID: 3986609982292252204}
   - component: {fileID: 7056660919638517887}
+  - component: {fileID: -7584303516661927416}
   m_Layer: 7
   m_Name: BananaPlant
   m_TagString: Untagged
@@ -190,6 +191,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 923861d195e106741a2c2f0447411a4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canHarvest: 0
+  description: Collect
+  useMeDescription: 
 --- !u!54 &-7080896222566540981
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -265,6 +269,25 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.59931916, y: 0.22948578, z: 0.90782654}
   m_Center: {x: 0, y: 0.19964452, z: 0}
+--- !u!114 &-7584303516661927416
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7427983377439106926}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 374d9c029d5d409ab1021fa57da37199, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MainMenu: {fileID: 0}
+  subMenu: {fileID: 0}
+  discriptionText: {fileID: 0}
+  craftButton: {fileID: 0}
+  harvestButton: {fileID: 0}
+  useMeButton: {fileID: 0}
+  removeButton: {fileID: 0}
 --- !u!1 &7663275863110032566
 GameObject:
   m_ObjectHideFlags: 0

@@ -211,6 +211,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 923861d195e106741a2c2f0447411a4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canHarvest: 0
+  description: Collect
+  useMeDescription: 
 --- !u!54 &-7080896222566540981
 Rigidbody:
   m_ObjectHideFlags: 0

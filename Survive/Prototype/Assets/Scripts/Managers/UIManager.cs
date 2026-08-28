@@ -1,6 +1,10 @@
 using System;
 using System.Collections.Generic;
+using NUnit.Framework;
+using Player;
+using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
@@ -19,9 +23,17 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button InteractButton;
     [Header("Cooking")] private List<Slot> cookingSlots = new();
     [SerializeField] private Slot cookingSpotUIPrefab;
-
-
+    [Header("Object Menu")] public Button craftButton;
+    public GameObject objectMenu;
+    public GameObject firstMenu;
+    public Button harvestButton;
+    public Button removeButton;
+    public Button useMe;
+    public TextMeshProUGUI description;
+    private Obj<ObjSo> _currentObj;
     private float currentScale;
+    private List<Button> _activeButtons = new();
+    private List<Button> _allButtons = new();
 
     private void Awake()
     {
@@ -35,10 +47,13 @@ public class UIManager : MonoBehaviour
         }
 
         ToggleInteractButton(false);
+        _allButtons = new List<Button> { craftButton, harvestButton, useMe, removeButton };
+        _activeButtons.Add(removeButton);
     }
 
     private void LateUpdate()
     {
+        SetMainMenuPos();
         if (cookingSlots.Count != 0)
         {
             UpdateCookingSpots();
@@ -75,7 +90,6 @@ public class UIManager : MonoBehaviour
         InteractButton.gameObject.SetActive(toggle);
     }
 
-  
 
     public Vector2 WorldToCanvasPosition(Vector3 worldPos)
     {
@@ -101,7 +115,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void DisplayCookingSpots(List<Transform> worldPositions,GameObject handler)
+    public void DisplayCookingSpots(List<Transform> worldPositions, GameObject handler)
     {
         ClearAllCookingSpots();
         for (int i = 0; i < worldPositions.Count; i++)
@@ -109,7 +123,7 @@ public class UIManager : MonoBehaviour
             Vector2 canvasPos = WorldToCanvasPosition(worldPositions[i].position);
 
             Slot uiSlot = Instantiate(cookingSpotUIPrefab, worldCanvas.transform);
-            uiSlot.cookingData = new CookingData(SlotType.CookingSpot,handler);
+            uiSlot.cookingData = new CookingData(SlotType.CookingSpot, handler);
             uiSlot.cookingSpotIndex = i;
             uiSlot.worldPosition = worldPositions[i].position;
             uiSlot.rect.anchoredPosition = canvasPos;
@@ -137,5 +151,87 @@ public class UIManager : MonoBehaviour
             Destroy(spot.gameObject);
 
         cookingSlots.Clear();
+    }
+
+    public void ActivateUi(Obj<ObjSo> obj, ObjSo so)
+    {
+        _currentObj = obj;
+        if (_currentObj == null) return;
+        Debug.Log(_currentObj.gameObject.name);
+        if (_currentObj.canCraft)
+        {
+            _activeButtons.Add(craftButton);
+            craftButton.gameObject.SetActive(true);
+            craftButton.onClick.AddListener(_currentObj.Craft);
+        }
+
+        if (_currentObj.canHarvest)
+        {
+            _activeButtons.Add(harvestButton);
+            craftButton.onClick.AddListener(_currentObj.Harvest);
+        }
+
+        if (_currentObj.canUse)
+        {
+            _activeButtons.Add(useMe);
+            TextMeshProUGUI textMesh = useMe.gameObject.GetComponentInChildren<TextMeshProUGUI>();
+            textMesh.text = _currentObj.useMeDescription;
+            useMe.onClick.AddListener(() => _currentObj.UseMe());
+        }
+
+        SetDescription();
+        objectMenu.SetActive(true);
+        DeactivateSubMenu();
+    }
+
+    private void SetMainMenuPos()
+    {
+        if (_currentObj == null) return;
+        Vector2 canvasPos = WorldToCanvasPosition(_currentObj.transform.position);
+        RectTransform rect = objectMenu.GetComponent<RectTransform>();
+        rect.anchoredPosition = canvasPos;
+    }
+
+    public void ActivateSubMenu()
+    {
+        if (!objectMenu.activeSelf || _currentObj == null) return;
+        firstMenu.SetActive(false);
+        Debug.Log(_activeButtons.Count + " Activate");
+        foreach (var buttons in _activeButtons)
+        {
+            buttons.gameObject.SetActive(true);
+        }
+
+        PlayerRepository.instance.CanPlayerMove(false);
+        PlayerRepository.instance.ToggleCursor(false);
+    }
+
+    public void DeactivateSubMenu()
+    {
+        if (!objectMenu.activeSelf || _currentObj == null) return;
+        firstMenu.SetActive(true);
+        Debug.Log("Deactivated");
+        foreach (var buttons in _allButtons)
+        {
+            buttons.gameObject.SetActive(false);
+        }
+
+        PlayerRepository.instance.CanPlayerMove(true);
+        PlayerRepository.instance.ToggleCursor(true);
+    }
+
+    private void SetDescription()
+    {
+        if (_currentObj == null) return;
+        TextMeshProUGUI textMesh = useMe.gameObject.GetComponentInChildren<TextMeshProUGUI>();
+        textMesh.text = _currentObj.useMeDescription;
+        description.text = _currentObj.description;
+    }
+
+    public void DeactivateUi()
+    {
+        _currentObj = null;
+        objectMenu.SetActive(false);
+        _activeButtons.Clear();
     }
 }

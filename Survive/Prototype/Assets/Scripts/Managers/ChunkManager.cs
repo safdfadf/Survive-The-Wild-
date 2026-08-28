@@ -287,7 +287,7 @@ public class ChunkManager : MonoBehaviour
 
             if (obj.TryGetComponent<Environment>(out var envObj))
                 environ.Add(envObj.gameObject);
-            if (obj.TryGetComponent<BaseObj>(out var resourceObj))
+            if (obj.TryGetComponent<Obj<ObjSo>>(out var resourceObj))
                 resources.Add(resourceObj.gameObject);
             if (obj.TryGetComponent<Food>(out var foodObj))
                 food.Add(foodObj.gameObject);
@@ -314,7 +314,7 @@ public class ChunkManager : MonoBehaviour
 
             return so.prefab;
         }
-        else if (obj.TryGetComponent<BaseObj>(out var resObj))
+        else if (obj.TryGetComponent<Obj<ObjSo>>(out var resObj))
         {
             ObjSo so = resObj.So;
             return so.prefab;

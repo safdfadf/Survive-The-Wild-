@@ -38,7 +38,7 @@ public class PlayerInventory : MonoBehaviour
         foreach (ObjSo so in testResource)
         {
             GameObject obj = Instantiate(so.prefab, transform.position, Quaternion.identity);
-            BaseObj res = obj.GetComponentInParent<BaseObj>();
+            Obj<ObjSo> res = obj.GetComponentInParent<Obj<ObjSo>>();
             res.Initialize(so);
             AddWorldItem(obj);
         }
@@ -122,7 +122,6 @@ public class PlayerInventory : MonoBehaviour
 
     private void SetInventoryItem(Obj<ObjSo> res, ObjSo So, InventoryItem item)
     {
-        item.SetUseMe(res.canUseButton); // is there anything that needs to set
         item.size = So.size;
         RectTransform rect = item.GetComponent<RectTransform>();
         item.rect = rect;
@@ -131,6 +130,7 @@ public class PlayerInventory : MonoBehaviour
         item.so = So;
         item.SetItem(So.sprite, res.gameObject);
         item.UseMeFunctionality(res.UseMe);
+        res.InventoryItem = item;
     }
 
     public void RemoveResource(ObjSo So, GameObject resource)
@@ -152,7 +152,7 @@ public class PlayerInventory : MonoBehaviour
         }
 
         GlobalPool.instance.Get(So.prefab, Vector3.forward); // ToDo: correct Position
-        Obj<ObjSo> res = resource.GetComponent<BaseObj>();
+        Obj<ObjSo> res = resource.GetComponent<Obj<ObjSo>>();
         res.Initialize(So);
         // spawn the real world in 
     }
@@ -180,5 +180,13 @@ public class PlayerInventory : MonoBehaviour
             _resourceInventory.RemoveResourse(_requestedObj);
             _currentStructure.SubmitResource(_requestedObj);
         }
+    }
+
+    public void MakeItemAnCraft(Obj<ObjSo> obj)
+    {
+        AddWorldItem(obj.gameObject); // add to inventory and create inventory item
+        InventoryItem item = _resourceInventory.GetInventoryItem(obj.InventoryItem);
+        obj.InventoryItem.Craft();
+        // open inventory  
     }
 }
