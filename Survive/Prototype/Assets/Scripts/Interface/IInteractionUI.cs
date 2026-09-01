@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace DefaultNamespace.Interface
 {
-    public interface IAction// ToDo : replace with more suitable name
+    public interface IInteractionUI
     {
         public string useMeDescription{get;set;}
         public string Description{get;set;}
