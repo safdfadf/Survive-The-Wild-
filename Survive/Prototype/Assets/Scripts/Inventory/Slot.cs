@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class Slot : MonoBehaviour, IPointerClickHandler // i can customize this script to handle food selection 
+public class Slot : MonoBehaviour, IPointerClickHandler
 {
     public Vector2Int gridPosition { get; set; }
     public bool isOccupied { get; set; }
@@ -27,6 +27,7 @@ public class Slot : MonoBehaviour, IPointerClickHandler // i can customize this 
         isOccupied = false;
         _img = GetComponentInChildren<Image>();
         _regularColor = _img.color;
+        ToggleAlpha(false);
     }
 
     public void PlaceItem(InventoryItem item)
@@ -39,13 +40,20 @@ public class Slot : MonoBehaviour, IPointerClickHandler // i can customize this 
         occupiedItem = item;
     }
 
+    public void RegularColor()
+    {
+        ToggleAlpha(false);
+    }
+
     public void Valid()
     {
-        _img.color = Color.green;
+        ToggleAlpha(true);
+        _img.color = Color.gray;
     }
 
     public void Invalid()
     {
+        ToggleAlpha(true);
         _img.color = Color.red;
     }
 
@@ -70,9 +78,16 @@ public class Slot : MonoBehaviour, IPointerClickHandler // i can customize this 
         inventory.OnSlotClicked(this);
     }
 
+    private void ToggleAlpha(bool isOn)
+    {
+        Color c = _img.color;
+        c.a = isOn ? 1 : 0;
+        _img.color = c;
+    }
+
     public void SetRegularColor()
     {
-        _img.color = _regularColor;
+        ToggleAlpha(false);
     }
 }
 

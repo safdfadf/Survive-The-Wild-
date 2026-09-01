@@ -7,9 +7,8 @@ using UnityEngine.UI;
 
 public class ResourceInventory : MonoBehaviour
 {
-    //ToDo convert 3d to 2d inventory 
-    private int width = 8;
-    private int height = 8;
+    [SerializeField] private int width = 8;
+    [SerializeField] private int height = 8;
     private RectTransform inventoryRect;
 
     [FormerlySerializedAs("spacingBtwSlots")] [SerializeField]
@@ -21,19 +20,19 @@ public class ResourceInventory : MonoBehaviour
 
     [SerializeField] private Slot slotPrefab;
 
-
+    [SerializeField] private GameObject parent;
     private Slot[,] slots;
     private Dictionary<ObjSo, List<InventoryItem>> resources = new();
 
     private void Awake()
     {
         slots = new Slot[width, height];
-        inventoryRect = GetComponent<RectTransform>();
+        inventoryRect = parent.GetComponent<RectTransform>();
         for (int x = 0; x < width; x++)
         {
             for (int y = 0; y < height; y++)
             {
-                Slot slot = Instantiate(slotPrefab, transform);
+                Slot slot = Instantiate(slotPrefab, parent.transform);
                 if (slot == null)
 
                 {
@@ -59,23 +58,31 @@ public class ResourceInventory : MonoBehaviour
         UpdateHeldItemPos();
     }
 
-    private void UpdateHeldItemPos()// this is updated based on held item's pos 
+    private void UpdateHeldItemPos() // this is updated based on held item's pos 
     {
         ClearPreviewColors();
         Vector2 localPos;
         RectTransformUtility.ScreenPointToLocalPointInRectangle(
-            (RectTransform)transform,
+            (RectTransform)parent.transform,
             Input.mousePosition,
             null,
             out localPos
         );
 
         heldItem.rect.anchoredPosition = localPos;
+        Vector2Int origin = GridPosFromLocalPos(localPos);
+        if (origin.x < 0 || origin.y < 0 || origin.x >= width || origin.y >= height)
+            return;
 
-        Slot slot = SlotAtCurrentPos(localPos);
-        if (slot == null) return;
+        PreviewPlacement(heldItem, origin);
+    }
 
-        PreviewPlacement(heldItem, slot.gridPosition);
+    private Vector2Int GridPosFromLocalPos(Vector2 localPos)
+    {
+        var x = Mathf.FloorToInt(localPos.x / spacingBtwSlotsX);
+        var y = Mathf.FloorToInt(localPos.y / spacingBtwSlotsY);
+
+        return new Vector2Int(x, y);
     }
 
     private void ClearPreviewColors()
@@ -94,13 +101,13 @@ public class ResourceInventory : MonoBehaviour
         {
             for (int y = 0; y < size.y; y++)
             {
-                if(origin.x + x > width || origin.y + y > height)return;
+                if (origin.x + x > width || origin.y + y > height) return;
                 Slot s = slots[origin.x + x, origin.y + y];
 
                 if (canPlace)
-                    s.Valid(); // turn green
+                    s.Valid(); 
                 else
-                    s.Invalid(); // turn red
+                    s.Invalid();
             }
         }
     }
@@ -136,12 +143,13 @@ public class ResourceInventory : MonoBehaviour
             for (int y = 0; y < size.y; y++)
             {
                 if (slots[startX + x, startY + y].isOccupied)
-                    return false;// continue 
+                    return false; // continue 
             }
         }
 
         return true;
     }
+
     private void PlaceItemAt(InventoryItem item, Vector2Int position, Vector2Int size)
     {
         Debug.Log("try place item   ");
@@ -191,14 +199,14 @@ public class ResourceInventory : MonoBehaviour
     {
         if (!IsAreaFree(gridPos.x, gridPos.y, item.size))
             return false;
-        
+
         return true;
     }
 
     public void OnSlotClicked(Slot slot) // here we can check if the clicked slot is a cokking slot 
     {
         Vector2Int pos = slot.gridPosition;
-        
+
         if (heldItem == null)
         {
             heldItem = PickUpItem(pos);

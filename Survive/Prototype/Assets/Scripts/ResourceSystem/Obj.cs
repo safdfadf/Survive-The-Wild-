@@ -9,6 +9,8 @@ public abstract class Obj<TSo> : MonoBehaviour, IsoInitializer<TSo>, ICollectabl
 {
     protected PosInChunk CashedPosInChunk;
     public GameObject Gm { get; set; }
+    public bool isHit { get; set; }
+    public Vector3 hitPos { get; set; }
 
     public Rigidbody rb { get; set; }
     protected Camera cam;

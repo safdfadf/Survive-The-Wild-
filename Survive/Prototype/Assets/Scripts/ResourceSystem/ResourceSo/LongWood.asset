@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14a65b5c5010fd148872814fb6b3e439, type: 3}
   m_Name: LongWood
   m_EditorClassIdentifier: 
-  resourceType: 5
   prefab: {fileID: 1266182359429216993, guid: 2ee6b0da3cf551b44956f42feae40077, type: 3}
+  sprite: {fileID: 21300000, guid: 9d1cf762c9bc77c47a9e634688baef16, type: 3}
   amount: 10
   size: {x: 1, y: 3}
+  appearanceProb: 0

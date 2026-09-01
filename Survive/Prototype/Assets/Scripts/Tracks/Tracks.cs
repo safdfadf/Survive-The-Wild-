@@ -35,6 +35,8 @@ public class Tracks : MonoBehaviour, ICollectable // tracks are not collectable
     public bool outlineMe { get; set; }
     public bool canBeCollected { get; set; }
     public GameObject Gm { get; set; }
+    public bool isHit { get; set; }
+    public Vector3 hitPos { get; set; }
     private Material _originalMaterial;
 
     private void Awake()
@@ -109,7 +111,6 @@ public class Tracks : MonoBehaviour, ICollectable // tracks are not collectable
 
     public void ToggleMenu()
     {
-       
     }
 
     void FaceCamera()
