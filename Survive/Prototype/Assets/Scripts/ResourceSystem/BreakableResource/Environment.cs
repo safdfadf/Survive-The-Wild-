@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DefaultNamespace.Weapon;
 using FoodSystem;
+using Player;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
@@ -27,6 +29,8 @@ public class Environment : MonoBehaviour, ItakeDamage, IsoInitializer<EnvironSo>
 
     [SerializeField] private int damageStage2 = 60;
     [SerializeField] private int damageStage3 = 90;
+    [Header("Requirement")]
+    [SerializeField] private WeaponAbility requiredAbility; 
     private LODGroup _lodGroup;
     public bool IsEnvironment { get; set; }
     public bool IsPlayerInRange { get; set; }
@@ -82,7 +86,7 @@ public class Environment : MonoBehaviour, ItakeDamage, IsoInitializer<EnvironSo>
     }
 
 
-    public void TakeDamage(int damage, Vector3 contactPoint)
+    public void TakeDamage(int damage, Vector3 contactPoint)// some of the environment like trees can only be cut by Ihatch
     {
         Debug.Log(gameObject.name + " taking damage " + damage);
         currentHealth -= damage;
@@ -92,7 +96,21 @@ public class Environment : MonoBehaviour, ItakeDamage, IsoInitializer<EnvironSo>
             Break();
         }
     }
-
+    public void Takingdamage(PlayerAttack attack)// some of the environment like trees can only be cut by Ihatch
+    {
+        if (requiredAbility!=null &&requiredAbility != attack.ability)
+        {
+            //Show Notification
+            return;
+        }
+        Debug.Log(gameObject.name + " taking damage " + attack.Damage);
+        currentHealth -= attack.Damage;
+        UpdateDamagedMeshes(attack.Damage);
+        if (currentHealth <= 0)
+        {
+            Break();
+        }
+    }
     private void CheckForDamage(int health)
     {
         // based on Current health replace mesh or break

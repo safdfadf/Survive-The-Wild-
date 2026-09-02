@@ -21,6 +21,7 @@ public class PlayerInventory : MonoBehaviour
     [SerializeField] private List<ObjSo> testResource;
     private ObjSo _requestedObj;
     private BaseStructure _currentStructure;
+    private int _funcCount;
 
     private void Awake()
     {
@@ -40,20 +41,21 @@ public class PlayerInventory : MonoBehaviour
             GameObject obj = Instantiate(so.prefab, transform.position, Quaternion.identity);
             Obj<ObjSo> res = obj.GetComponentInParent<Obj<ObjSo>>();
             res.Initialize(so);
-            AddWorldItem(obj);
+            //     AddWorldItem(obj);
         }
     }
 
-    public GameObject GetNextArrow()
+    public GameObject GetResource(ObjSo so)
     {
-        if (resourcePool.ContainsKey(ArrowSo) && resourcePool[ArrowSo].Count > 0)
+        if (resourcePool.ContainsKey(so) && resourcePool[so].Count > 0)
         {
-            GameObject obj = resourcePool[ArrowSo][0];
-            resourcePool[ArrowSo].RemoveAt(0);
+            GameObject obj = resourcePool[so][0];
+            resourcePool[so].RemoveAt(0);
+            Obj<ObjSo> res = obj.GetComponent<Obj<ObjSo>>();
+            _resourceInventory.RemoveResourse(res);
             return obj;
         }
 
-        Debug.Log(resourcePool[ArrowSo].Count);
         return null;
     }
 
@@ -73,6 +75,7 @@ public class PlayerInventory : MonoBehaviour
             FoodSo foodSo = food.So as FoodSo;
             AddToResPool(foodSo, worldObj);
             MakeUI(foodSo, food);
+            return;
         }
 
         if (worldObj.TryGetComponent<Obj<ObjSo>>(out var baseRes))
@@ -129,32 +132,50 @@ public class PlayerInventory : MonoBehaviour
         item.icon = image;
         item.so = So;
         item.SetItem(So.sprite, res.gameObject);
-        item.UseMeFunctionality(res.UseMe);
         res.InventoryItem = item;
     }
 
-    public void RemoveResource(ObjSo So, GameObject resource)
+    public void RemoveResource(Obj<ObjSo> resource, bool isToBeDestroy)
     {
-        if (resourcePool.ContainsKey(So))
+        ObjSo So = resource.So;
+
+        if (!resourcePool.ContainsKey(So)) return;
+
+        if (resourcePool[So].Contains(resource.gameObject))
         {
-            if (resourcePool[So].Count > 0)
-            {
-                GlobalPool.instance.Return(So.prefab, resourcePool[So][0]);
-            }
-            else
-            {
-                resourcePool.Remove(So);
-            }
+            resourcePool[So].Remove(resource.gameObject);
+            _resourceInventory.RemoveResourse(resource);
+        }
+
+        if (resourcePool[So].Count == 0)
+        {
+            Debug.Log("removing So ");
+            resourcePool.Remove(So);
+        }
+
+
+        if (isToBeDestroy)
+        {
+            GlobalPool.instance.Return(So.prefab, resource.gameObject);
         }
         else
         {
-            return;
+            SpawnObject(So);
         }
+    }
 
-        GlobalPool.instance.Get(So.prefab, Vector3.forward); // ToDo: correct Position
-        Obj<ObjSo> res = resource.GetComponent<Obj<ObjSo>>();
+    public void RemoveWeapon(WeaponSo so)
+    {
+        _weaponInventory.RemoveWeapon(so);
+    }
+
+    private void SpawnObject(ObjSo So)
+    {
+        GameObject
+            obj = GlobalPool.instance.Get(So.prefab,
+                Vector3.forward); // ToDo: instead of vector3 forward replace with something else 
+        Obj<ObjSo> res = obj.GetComponent<Obj<ObjSo>>();
         res.Initialize(So);
-        // spawn the real world in 
     }
 
     public void SetSubmitResource(ObjSo So, BaseStructure structure)
@@ -166,20 +187,10 @@ public class PlayerInventory : MonoBehaviour
     public void SubmitResource() // function is used to assemble structures 
     {
         if (_requestedObj == null || _currentStructure == null) return;
-        if (resourcePool.ContainsKey(_requestedObj))
-        {
-            if (resourcePool[_requestedObj].Count > 0)
-            {
-                //    resourcePool[_requestedResource]--; Correct this 
-            }
-            else
-            {
-                resourcePool.Remove(_requestedObj);
-            }
-
-            _resourceInventory.RemoveResourse(_requestedObj);
-            _currentStructure.SubmitResource(_requestedObj);
-        }
+        if (!resourcePool.ContainsKey(_requestedObj)) return;
+        Obj<ObjSo> res = resourcePool[_requestedObj][0].GetComponent<Obj<ObjSo>>();
+        RemoveResource(res, true);
+        _currentStructure.SubmitResource(_requestedObj);
     }
 
     public void MakeItemAnCraft(Obj<ObjSo> obj)

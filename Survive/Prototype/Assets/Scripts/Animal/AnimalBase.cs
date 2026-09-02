@@ -1,11 +1,13 @@
 using System;
 using System.Collections;
 using Animal.States;
+using DefaultNamespace.Interface;
+using DefaultNamespace.Weapon;
 using Player;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class AnimalBase : MonoBehaviour
+public class AnimalBase : MonoBehaviour,IInteractionUI
 {
     [Header("Movement Info")] [SerializeField]
     protected float walkSpeed;
@@ -19,7 +21,8 @@ public class AnimalBase : MonoBehaviour
     protected AnimalAttack _animalAttack;
 
     [SerializeField] private AnimalAtkBehaviour animalAtkBehaviour;
-
+    [Header("Requirement")]
+    [SerializeField] private  WeaponAbility requiredAbility; 
 
     protected NavMeshAgent agent;
     protected Animator animator;
@@ -42,8 +45,17 @@ public class AnimalBase : MonoBehaviour
 
     protected Bounds Bounds;
 
+    public bool canDisplay { get; set; }
+    public string useMeDescription { get; set; }
+    public string Description { get; set; }
+    public bool canUse { get; set; }
+    public bool canHarvest { get; set; }
+    public bool canCraft { get; set; }
+   
+    public GameObject obj { get; set; }
     public bool IsUnscheduled { get; protected set; } = false;
-
+    
+    
     // a serialized field through which we can decide through the inspector which behavior to choose 
     protected virtual void Awake()
     {
@@ -57,6 +69,10 @@ public class AnimalBase : MonoBehaviour
         {
             h.Initialize(this);
         }
+        canDisplay = false;
+        canUse = false;
+        canHarvest = true;
+        canCraft = false;
     }
 
 
@@ -121,10 +137,9 @@ public class AnimalBase : MonoBehaviour
         agent.enabled = false;
         agent.speed = 0;
         if (AnimalSo == null) return;
-        DropResource();
     }
 
-    private void DropResource()
+    private void DropResource()// there is a condition here if player equipped a weapon that can skin the animal ex. knife 
     {
         ObjSo objSo = AnimalSo.objSo;
         GameObject obj = Instantiate(objSo.prefab, transform.position + new Vector3(0, .5f, 0),
@@ -221,7 +236,7 @@ public class AnimalBase : MonoBehaviour
     {
     }
 
-    public virtual void DoDamage()
+    protected virtual void DoDamage()
     {
         animator.SetTrigger("attack");
         PlayerRepository.instance.ApplyDamage(_animalAttack);
@@ -340,6 +355,29 @@ public class AnimalBase : MonoBehaviour
             center.z + Mathf.Sin(rad) * radius
         );
     }
+    public void Craft()
+    {
+       
+    }
+
+    public void Harvest()
+    {
+        BaseWeapon weapon = PlayerRepository.instance.GetCurrentWeapon();
+        if (weapon == null || weapon.Ability != requiredAbility)
+        {
+            // notification 
+            return;
+        }
+        // start Skinning 
+    }
+
+    public void UseMe()
+    {
+     
+    }
+
+
+  
 }
 
 [System.Serializable]
@@ -353,3 +391,4 @@ public abstract class AnimalAtkBehaviour : ScriptableObject
 {
     public abstract IEnumerator Execute(AnimalBase animal);
 }
+

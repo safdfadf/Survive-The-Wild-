@@ -7,13 +7,14 @@ using UnityEngine;
 
 namespace DefaultNamespace
 {
-    public class WaterBody : MonoBehaviour, IAction, ICollectable // this script will be explored later 
+    public class WaterBody : MonoBehaviour, IInteractionUI, IInteractable // this script will be explored later 
     {
         public bool outlineMe { get; set; }
         public bool canBeCollected { get; set; }
         public GameObject Gm { get; set; }
         public bool isHit { get; set; }
         public Vector3 hitPos { get; set; }
+        public bool canDisplay { get; set; }
         public string useMeDescription { get; set; }
         public string Description { get; set; }
         public bool canUse { get; set; }
@@ -37,6 +38,7 @@ namespace DefaultNamespace
             canHarvest = false;
             canCraft = false;
             canUse = true;
+            canDisplay = true;
             obj = emptyobj;
         }
 

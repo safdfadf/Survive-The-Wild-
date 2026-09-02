@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Interactions;
 using UnityEngine.UI;
 
 public class InputManager : MonoBehaviour
@@ -79,8 +80,9 @@ public class InputManager : MonoBehaviour
         _aimStarted = ctx => { UIManager.instance.ActivateSubMenu(); };
 
         _aimCanceled = ctx => { UIManager.instance.DeactivateSubMenu(); };
-        _shootPerformed = ctx =>
+        _shootPerformed = ctx => // 
         {
+            // this should do three things : if holding start aiming 
             var weapon = _player.CurrentWeapon;
 
             if (weapon != null)
@@ -116,7 +118,9 @@ public class InputManager : MonoBehaviour
 
         _controls.PlayerInteract.Aim.started += _aimStarted;
         _controls.PlayerInteract.Aim.canceled += _aimCanceled;
-        _controls.PlayerInteract.Shoot.performed += _shootPerformed;
+        _controls.PlayerInteract.Shoot.performed += OnInteract;
+        _controls.PlayerInteract.Shoot.canceled += OnInteract;
+
         _controls.PlayerInteract.CursorOnOf.performed += _cursorToggle;
         _controls.PlayerInteract.Inventory.performed += _inventoryToggle;
         _controls.PlayerInteract.ResourceMenu.performed += _resourceMenuToggle;
@@ -143,6 +147,8 @@ public class InputManager : MonoBehaviour
         _controls.PlayerInteract.Aim.started -= _aimStarted;
         _controls.PlayerInteract.Aim.canceled -= _aimCanceled;
         _controls.PlayerInteract.Shoot.performed -= _shootPerformed;
+        _controls.PlayerInteract.Shoot.canceled -= _shootPerformed;
+
         _controls.PlayerInteract.CursorOnOf.performed -= _cursorToggle;
         _controls.PlayerInteract.Inventory.performed -= _inventoryToggle;
         _controls.PlayerInteract.ResourceMenu.performed -= _resourceMenuToggle;
@@ -170,6 +176,13 @@ public class InputManager : MonoBehaviour
                 return;
             }
         }
+    }
+
+    private void OnInteract(InputAction.CallbackContext ctx)
+    {
+        BaseWeapon weapon = _player.CurrentWeapon;
+        if(weapon== null)return;
+        weapon._activeBehaviour.OnInput(ctx);
     }
 
     private void ToggleTracksMenu()

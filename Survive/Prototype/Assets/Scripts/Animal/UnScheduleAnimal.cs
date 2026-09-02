@@ -68,7 +68,7 @@ public class UnScheduleAnimal : AnimalBase // these animals do not have a schedu
         return;
     }
 
-    public override void DoDamage() 
+    protected override void DoDamage() 
     {
         LookAtPlayer();
         base.DoDamage();

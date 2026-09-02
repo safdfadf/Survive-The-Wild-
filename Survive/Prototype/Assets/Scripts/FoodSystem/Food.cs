@@ -9,8 +9,10 @@ namespace FoodSystem
     public class Food : Obj<ObjSo>
     {
         private int _health;
-        [Header("cooking Threshold")]
-        [SerializeField] public float cookTime = 10;
+
+        [Header("cooking Threshold")] [SerializeField]
+        public float cookTime = 10;
+
         [SerializeField] public float burnTime = 20;
 
         public FoodState CurrentState { get; set; } = FoodState.Raw;
@@ -26,13 +28,13 @@ namespace FoodSystem
         public override void UseMe()
         {
             PlayerRepository.instance.ConsumeFood(So as FoodSo);
-            // remove from inventory
+            base.UseMe();
         }
 
         public void AddBurntFoodDebuff()
         {
-            
         }
+
         protected override void SetUiBools()
         {
             canCraft = false;

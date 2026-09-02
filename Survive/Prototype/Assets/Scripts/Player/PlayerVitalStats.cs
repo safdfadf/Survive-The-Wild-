@@ -151,8 +151,6 @@ public class PlayerVitalStats : MonoBehaviour
     public void ConsumeFood(FoodSo so)
     {
         if (so == null) return;
-        Debug.Log("ConsumeFood");
-        // Add nutrients
         _currentProtein = Mathf.Clamp(_currentProtein + so.proteinCount, 0f, maxProtein);
         _currentCarb = Mathf.Clamp(_currentCarb + so.carbonCount, 0f, maxCarb);
         _currentFat = Mathf.Clamp(_currentFat + so.fatCount, 0f, maxFat);

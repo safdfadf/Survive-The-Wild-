@@ -18,12 +18,8 @@ public class Bandage : Obj<ObjSo>, IHeal
     public override void UseMe()
     {
         PlayerRepository.instance.HealPlayer(EffectsSo);
+        base.UseMe();
     }
-
-    public void HealPlayer()
-    {
-    }
-
     protected override void SetUiBools()
     {
         canCraft = true;

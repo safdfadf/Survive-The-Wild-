@@ -5,6 +5,7 @@ namespace DefaultNamespace.Interface
 {
     public interface IInteractionUI
     {
+        public bool canDisplay { get; set; }
         public string useMeDescription{get;set;}
         public string Description{get;set;}
         public bool canUse{get;set;}

@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-public abstract class Obj<TSo> : MonoBehaviour, IsoInitializer<TSo>, ICollectable, IAction
+public abstract class Obj<TSo> : MonoBehaviour, IsoInitializer<TSo>, IInteractable, IInteractionUI
 {
     protected PosInChunk CashedPosInChunk;
     public GameObject Gm { get; set; }
@@ -28,10 +28,11 @@ public abstract class Obj<TSo> : MonoBehaviour, IsoInitializer<TSo>, ICollectabl
     public GameObject obj { get; set; }
 
     public InventoryItem InventoryItem { get; set; }
-
+    public bool canDisplay { get; set; }
     protected virtual void Awake()
     {
         Description = "Collect";
+        canDisplay = true;
         outlineMe = true;
         canBeCollected = true;
         rb = GetComponent<Rigidbody>();
@@ -68,6 +69,7 @@ public abstract class Obj<TSo> : MonoBehaviour, IsoInitializer<TSo>, ICollectabl
 
     public virtual void UseMe()
     {
+        PlayerRepository.instance.RemoveResourceFromInventory(this as Obj<ObjSo>,true);
     }
 
 

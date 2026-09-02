@@ -71,7 +71,7 @@ public class InventoryItem : MonoBehaviour
     {
     }
 
-    private void Remove()
+    private void Remove() // only this will call to go back to the inventory 
     {
         if (IsInCraftingList)
         {
@@ -80,17 +80,12 @@ public class InventoryItem : MonoBehaviour
         }
         else
         {
-            PlayerRepository.instance.RemoveResourceFromInventory(so, this.gameObject);
-            Destroy(gameObject); // destroy inventory item 
+            PlayerRepository.instance.RemoveResourceFromInventory(_currentObj, true);
         }
     }
 
     public void Toggle()
     {
         menu?.SetActive(!menu.activeSelf);
-    }
-
-    public void UseMeFunctionality(UnityAction call)
-    {
     }
 }

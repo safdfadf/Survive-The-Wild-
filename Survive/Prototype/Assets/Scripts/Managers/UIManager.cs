@@ -28,7 +28,7 @@ public class UIManager : MonoBehaviour
     public Button removeButton;
     public Button useMe;
     public TextMeshProUGUI description;
-    private IAction _currentTarget;
+    private IInteractionUI _currentTarget;
     private float currentScale;
     private List<Button> _activeButtons = new();
     private List<Button> _allButtons = new();
@@ -151,11 +151,10 @@ public class UIManager : MonoBehaviour
         cookingSlots.Clear();
     }
 
-    public void ActivateUi(IAction action)
+    public void ActivateUi(IInteractionUI interactionUI)
     {
-        _currentTarget = action;
+        _currentTarget = interactionUI;
         if (_currentTarget == null) return;
-        // Debug.Log(_currentObj.gameObject.name);
         if (_currentTarget.canCraft)
         {
             _activeButtons.Add(craftButton);

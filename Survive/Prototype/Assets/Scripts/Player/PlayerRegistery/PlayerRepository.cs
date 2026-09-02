@@ -72,11 +72,15 @@ namespace Player
             return _movementHandler._isWalking;
         }
 
-        public void RemoveResourceFromInventory(ObjSo so,GameObject resource)
+        public void RemoveResourceFromInventory(Obj<ObjSo> resource,bool isToBeDestroy)
         {
-            _playerInventory.RemoveResource(so,resource);
+            _playerInventory.RemoveResource(resource,isToBeDestroy);
         }
-        
+
+        public void RemoveWeapon(WeaponSo so)
+        {
+            _playerInventory.RemoveWeapon(so);
+        }
         public void ConsumeFood(FoodSo so)
         {
             _playerVitalStats.ConsumeFood(so);
@@ -115,7 +119,26 @@ namespace Player
         {
             _movementHandler.ToggleCursor();
         }
-       
+
+        public void SetAttacking(bool isAttacking)
+        {
+            _movementHandler.isAttacking = isAttacking;
+        }
+
+        public void HandleSpinRotation(bool toggle)
+        {
+            _movementHandler.SetSpineControl(toggle);
+        }
+
+        public GameObject GetResource(ObjSo so)
+        {
+            return _playerInventory.GetResource(so);
+        }
+
+        public BaseWeapon GetCurrentWeapon()
+        {
+           return _movementHandler.CurrentWeapon;
+        }
 
     }
 }

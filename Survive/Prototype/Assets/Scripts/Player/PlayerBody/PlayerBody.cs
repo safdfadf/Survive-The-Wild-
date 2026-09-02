@@ -17,7 +17,6 @@ public class PlayerBody : MonoBehaviour
     private Symptom _symptom;
     private List<ActiveSymptom> _activeSymptoms = new();
 
-    // current issue regular damage : wound is created 
     private void Awake()
     {
         _playerUI = GetComponent<PlayerUI>();
@@ -41,7 +40,7 @@ public class PlayerBody : MonoBehaviour
         {
             if (effect.damageType == DamageType.Regular)
             {
-                //    _playerVitalStats.DecreaseHealth(effect.damage);
+                    _playerVitalStats.DamageToHealth(effect.damage);
                 Debug.Log("taking regular damage");
                 ActiveEffect woundEffect = new ActiveEffect(effect);
                 woundEffect.woundTimerRoutine = StartCoroutine(HandleWoundTimer(woundEffect));
@@ -59,19 +58,7 @@ public class PlayerBody : MonoBehaviour
 
         Debug.Log(attack.Effects[0].name);
     }
-
-    private void CreateSymptom(DamageType type) // here we dont need symptom but based on 
-    {
-        /*
-        return type switch
-        {
-            BaseSymptomType.Dizziness => new DizzinessSymptom(this),
-            BaseSymptomType.Vomit => new VomitSymptom(this),
-            BaseSymptomType.Hallucination => new HallucinationSymptom(this),
-            BaseSymptomType.Unconscious => new UnconsciousSymptom(this),
-            _ => null
-        };*/
-    }
+    
 
     private IEnumerator HandleWoundTimer(ActiveEffect wound)
     {
@@ -89,7 +76,7 @@ public class PlayerBody : MonoBehaviour
         ApplyInfectionEffect();
     }
 
-    private void ApplyInfectionEffect() // infection is like an attack to self 
+    private void ApplyInfectionEffect() 
     {
         Debug.Log("Applying infection effect");
         TakeDamage(attackToSelf);

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using FoodSystem;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -105,7 +106,7 @@ public class ResourceInventory : MonoBehaviour
                 Slot s = slots[origin.x + x, origin.y + y];
 
                 if (canPlace)
-                    s.Valid(); 
+                    s.Valid();
                 else
                     s.Invalid();
             }
@@ -152,7 +153,6 @@ public class ResourceInventory : MonoBehaviour
 
     private void PlaceItemAt(InventoryItem item, Vector2Int position, Vector2Int size)
     {
-        Debug.Log("try place item   ");
         item.rect.SetParent(slots[position.x, position.y].rect);
         item.rect.anchoredPosition = Vector2.zero;
         item.rect.localRotation = Quaternion.identity;
@@ -183,7 +183,6 @@ public class ResourceInventory : MonoBehaviour
 
     private InventoryItem PickUpItem(Vector2Int gridPos)
     {
-        Debug.Log("pick up item");
         Slot slot = slots[gridPos.x, gridPos.y];
         if (!slot.isOccupied || slot.occupiedItem == null)
             return null;
@@ -265,15 +264,30 @@ public class ResourceInventory : MonoBehaviour
         return null;
     }
 
-    public void RemoveResourse(ObjSo so)
+    public void RemoveResourse(Obj<ObjSo> obj) // we need to remove exactly the one that has been clicked 
     {
-        if (!resources.ContainsKey(so)) return;
-        if (resources[so].Count == 0) return;
+        if (obj == null)
+        {
+            Debug.Log("so was null");}
+        if (!resources.ContainsKey(obj.So)) return;
+        if (resources[obj.So].Count == 0)
+        {
+            Debug.Log(("returningh"));
+            return;
+        }
 
-        InventoryItem item = resources[so][0];
-        resources[so].RemoveAt(0);
+        if (resources[obj.So].Contains(obj.InventoryItem))
+        {
+            resources[obj.So].Remove(obj.InventoryItem);
+            Debug.Log((resources[obj.So].Count));
+            Destroy(obj.InventoryItem.gameObject);
+            return;
+        }
 
-        if (resources[so].Count == 0)
-            resources.Remove(so);
+        if (resources[obj.So].Count == 0)
+        {
+            Debug.Log((resources[obj.So].Count));
+            resources.Remove(obj.So);
+        }
     }
 }
