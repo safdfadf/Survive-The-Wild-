@@ -9,6 +9,11 @@ public class AnimalAttack : IAttack
 
     [SerializeField] private List<EffectsSo> effects;
 
-    public int Damage => damage;
+    public int Damage
+    {
+        get => damage;
+        set => damage = value;
+    }
+
     public List<EffectsSo> Effects => effects;
 }

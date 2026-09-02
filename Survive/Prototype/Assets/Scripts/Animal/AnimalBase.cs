@@ -94,16 +94,16 @@ public class AnimalBase : MonoBehaviour,IInteractionUI
         CurrentState.UpdateState();
     }
 
-    public void TakeDamage(int damage, Vector3 contact)
+    public void TakeDamage(PlayerAttack atk)
     {
         if (_currentHealth <= 0) return;
-        if (contact == Vector3.zero)
+        if (atk.hitPoint == Vector3.zero)
         {
-            contact = transform.position;
+            atk.hitPoint = transform.position;
         }
 
-        PlayBloodVfx(contact);
-        int totalDamage = baseDamage * damage; // health = 100, 10 * 8
+        PlayBloodVfx(atk.hitPoint);
+        int totalDamage = baseDamage * atk.Damage; // health = 100, 10 * 8
         _currentHealth -= totalDamage;
         Debug.Log(myspecie + "remaing Health" + _currentHealth);
         if (_currentHealth <= 0)

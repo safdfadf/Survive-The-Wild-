@@ -1,4 +1,5 @@
 using System;
+using Player;
 using UnityEngine;
 
 public class ArrowScript : Obj<ObjSo>
@@ -47,10 +48,11 @@ public class ArrowScript : Obj<ObjSo>
         transform.rotation = Quaternion.LookRotation(-hit.normal);
 
         transform.SetParent(hit.collider.transform, true);
-
+        PlayerAttack atk = new PlayerAttack(0,null,null,hitPos);//ToDo Add effects for player
+        
         ItakeDamage combatant = hit.collider.GetComponent<ItakeDamage>();
         if (combatant != null&& !combatant.IsEnvironment)
-            combatant.TakeDamage(0, hit.point);
+            combatant.TakeDamage(atk);
     }
 
     public void ShootArrow(Vector3 shootDirection, float arrowSpeed)

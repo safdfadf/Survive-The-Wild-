@@ -75,7 +75,8 @@ namespace DefaultNamespace.Weapon
             ItakeDamage dmgObj = obj.GetComponent<ItakeDamage>();
             if (dmgObj != null)
             {
-                dmgObj.TakeDamage(data.weaponSo.damage, Vector3.zero);
+                PlayerAttack attack = new PlayerAttack(data.weaponSo.damage,null, weapon.Ability,Vector3.zero);
+                dmgObj.TakeDamage(attack);
             }
         }
 

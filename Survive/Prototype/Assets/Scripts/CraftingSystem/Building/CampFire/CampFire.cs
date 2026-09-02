@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DefaultNamespace;
 using FoodSystem;
 using UnityEngine;
 
@@ -134,8 +135,9 @@ public class CampFire : BaseStructure, ICook // this will be base class for all 
 
             if (damageTimer >= 60f)
             {
+                SelfAttack atk = new SelfAttack(5,Vector3.zero);
                 damageTimer = 0f;
-                base.TakeDamage(5, new Vector3(0f, 0f, 0f));
+                base.TakeDamage(atk);
             }
 
             yield return null;

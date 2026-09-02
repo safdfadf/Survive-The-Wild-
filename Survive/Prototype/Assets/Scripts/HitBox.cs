@@ -1,4 +1,5 @@
 using System;
+using Player;
 using UnityEngine;
 
 public class HitBox : MonoBehaviour, ItakeDamage
@@ -6,6 +7,10 @@ public class HitBox : MonoBehaviour, ItakeDamage
     private TargetPractice mainBody;
     private AnimalBase _animal;
     public bool IsEnvironment { get; set; }
+    public void TakeDamage(IAttack attack)
+    {
+        _animal.TakeDamage(attack as PlayerAttack);
+    }
 
 
     [SerializeField] private int damageMultiplayer;
@@ -24,11 +29,4 @@ public class HitBox : MonoBehaviour, ItakeDamage
         }
     }
 
-
-   
-    public void TakeDamage(int damage, Vector3 contactPoint)
-    {
-        if (_animal != null)
-            _animal.TakeDamage(damageMultiplayer, contactPoint);
-    }
 }

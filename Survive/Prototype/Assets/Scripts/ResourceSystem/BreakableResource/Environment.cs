@@ -85,20 +85,10 @@ public class Environment : MonoBehaviour, ItakeDamage, IsoInitializer<EnvironSo>
         IsPlayerInRange = inRange;
     }
 
-
-    public void TakeDamage(int damage, Vector3 contactPoint)// some of the environment like trees can only be cut by Ihatch
+    public void TakeDamage(IAttack attack)// some of the environment like trees can only be cut by Ihatch
     {
-        Debug.Log(gameObject.name + " taking damage " + damage);
-        currentHealth -= damage;
-        UpdateDamagedMeshes(damage);
-        if (currentHealth <= 0)
-        {
-            Break();
-        }
-    }
-    public void Takingdamage(PlayerAttack attack)// some of the environment like trees can only be cut by Ihatch
-    {
-        if (requiredAbility!=null &&requiredAbility != attack.ability)
+        PlayerAttack atk = attack as PlayerAttack;
+        if (requiredAbility!=null &&requiredAbility != atk.ability)
         {
             //Show Notification
             return;
@@ -111,11 +101,6 @@ public class Environment : MonoBehaviour, ItakeDamage, IsoInitializer<EnvironSo>
             Break();
         }
     }
-    private void CheckForDamage(int health)
-    {
-        // based on Current health replace mesh or break
-    }
-
     private Vector3 GetPosition()
     {
         PosInEnvironment available = pos.FirstOrDefault(p => p.isAvailable);
