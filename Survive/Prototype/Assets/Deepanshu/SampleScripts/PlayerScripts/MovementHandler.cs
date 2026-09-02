@@ -28,7 +28,7 @@ public class MovementHandler : MonoBehaviour
 
     [SerializeField] private float hourlyScentInc = 0.01f;
     [SerializeField] private float moveScentInc = 0.005f;
-
+     public Transform uiPos;
     [FormerlySerializedAs("animalApproachPoint")]
     public Transform animalApproachPos;
 
@@ -65,7 +65,7 @@ public class MovementHandler : MonoBehaviour
 
     private float _xRotation = 0f;
     private Vector3 _velocity;
-
+    private IInteractable lastInteractable;
     public bool isAttacking { get; set; }
 
     [SerializeField] private Material outlineMaterial;
@@ -307,19 +307,20 @@ public class MovementHandler : MonoBehaviour
             {
                 if (currentlyHighlighted != hit.collider.gameObject)
                 {
-                    ClearHighlight(interactable);
-                    ApplyOutline(renderer, interactable);
-                    interactable.isHit = true;
-                    interactable.hitPos = hit.point;
+                    ClearHighlight(lastInteractable);
+                    lastInteractable = interactable;
+                    ApplyOutline(renderer, lastInteractable);
+                    lastInteractable.isHit = true;
+                    lastInteractable.hitPos = hit.point;
                     currentlyHighlighted = hit.collider.gameObject;
-                    ActivateUI(interactable);
+                    ActivateUI(lastInteractable);
                 }
 
                 return;
             }
         }
 
-        ClearHighlight(null);
+        ClearHighlight(lastInteractable);
     }
 
     private void CollectCheck()
@@ -371,7 +372,7 @@ public class MovementHandler : MonoBehaviour
 
             UIManager.instance.DeactivateUi();
             _originalMaterials = null;
-            if (interactable == null) return;
+            if (interactable == null){ Debug.Log("interactable is null"); return;}
             interactable.isHit = false;
             currentlyHighlighted = null;
         }

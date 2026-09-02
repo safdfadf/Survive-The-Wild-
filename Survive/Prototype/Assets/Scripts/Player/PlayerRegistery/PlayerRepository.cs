@@ -140,5 +140,10 @@ namespace Player
            return _movementHandler.CurrentWeapon;
         }
 
+        public Vector3 GetPlayerUiPos()
+        {
+            return _movementHandler.uiPos.position;
+        }
+
     }
 }

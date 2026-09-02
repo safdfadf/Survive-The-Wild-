@@ -41,11 +41,10 @@ namespace DefaultNamespace
             canDisplay = true;
             obj = emptyobj;
         }
-
         public void LateUpdate()
         {
             if (!isHit) return;
-            emptyobj.transform.position = new Vector3(hitPos.x, 0, hitPos.z);
+            emptyobj.transform.position = PlayerRepository.instance.GetPlayerUiPos();
         }
 
         private void WashYourself() // it can be used in two ways one wash your self and consume me 
@@ -56,9 +55,6 @@ namespace DefaultNamespace
         {
         }
 
-        public void DrinkMe()
-        {
-        }
 
         public void Craft()
         {
