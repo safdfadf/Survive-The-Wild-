@@ -22,7 +22,7 @@ public class Zone : MonoBehaviour
 
 
     private HashSet<Vector3> occupiedPositions = new();
-    private SphereCollider collier;
+
     private int maxPosition = 6;
     private float disBtwPos = 5;
 
@@ -32,17 +32,10 @@ public class Zone : MonoBehaviour
     private int _attempts = 0;
     public bool HasAvailablePosition => zonePosition.Any(pos => !occupiedPositions.Contains(pos));
     private Dictionary<int, Species> hourlyOccupancy = new(); // hour → species
-    public WaterBody WaterBody{get; private set;}
+    public WaterBody WaterBody { get; private set; }
 
     private void Awake()
     {
-        collier = gameObject.GetComponent<SphereCollider>();
-        if (collier == null)
-        {
-            collier = gameObject.AddComponent<SphereCollider>();
-            collier.isTrigger = true;
-        }
-
         WaterBody = GetComponent<WaterBody>();
         _isDrinkingZone = WaterBody != null;
         GenerateZonePosition();
@@ -78,6 +71,13 @@ public class Zone : MonoBehaviour
 
     private void GenerateGrndPos()
     {
+        SphereCollider collier = gameObject.GetComponent<SphereCollider>();
+        if (collier == null)
+        {
+            collier = gameObject.AddComponent<SphereCollider>();
+            collier.isTrigger = true;
+        }
+
         int attempts = 0;
         // while (zonePosition.Count < maxPosition && attempts < maxPosition)
         for (int i = 0; i < maxPosition; i++)

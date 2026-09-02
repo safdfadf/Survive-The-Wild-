@@ -52,7 +52,7 @@ public class PlayerAnimator : MonoBehaviour
         FireArrow(false);
     }
 
-    public void SwordEquipped(bool isEquipped)
+    public void HandWeaponEquip(bool isEquipped)
     {
         animator.SetBool("SwordEquip",isEquipped);
     }
