@@ -1,9 +1,10 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [CreateAssetMenu(fileName = "WeaponSo", menuName = "Scriptable Objects/WeaponSo")]
 
 public class WeaponSo : ObjSo
 {
-    public int maxDamage;
-    public int maxBlock;
+    [FormerlySerializedAs("maxDamage")] public int damage;
+    [FormerlySerializedAs("maxBlock")] public int block;
 }

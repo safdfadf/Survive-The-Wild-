@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using DefaultNamespace.Interface;
 using Player;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
@@ -40,7 +41,6 @@ public class MovementHandler : MonoBehaviour
     // References //
     public Camera playerCamera;
     private CharacterController characterController;
-    private Bow _bow;
     private PlayerInventory _playerInventory;
     private PlayerAnimator animator;
     private PlayerUI _ui;
@@ -95,6 +95,8 @@ public class MovementHandler : MonoBehaviour
     public void SetSpineControl(bool isAiming)
     {
         if (!isAiming) return;
+        
+     
         float pitch = Camera.main.transform.localEulerAngles.x;
         if (pitch > 180) pitch -= 360;
 
@@ -142,10 +144,6 @@ public class MovementHandler : MonoBehaviour
 
         EventBus.OnHunterSenseToggle?.Invoke(isHuntingSenseActive);
         UIManager.instance.ToggleSoundUI(isHuntingSenseActive);
-    }
-
-    public void ToggleInventory() // currently we are toggling resource inventory i want to toggle the whole inventory 
-    {
     }
 
     private void MovePlayer()
@@ -286,6 +284,8 @@ public class MovementHandler : MonoBehaviour
     private void ShootRay()
     {
         Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
+        DrawSphereCast(playerCamera.transform.position, playerCamera.transform.forward, radius, maxDistance);
+
         if (Physics.SphereCast(ray, radius, out RaycastHit hit, maxDistance))
         {
             BaseStructure structure = hit.collider.GetComponent<BaseStructure>();
@@ -296,53 +296,65 @@ public class MovementHandler : MonoBehaviour
                 structure.ToggleDescription(true);
             }
 
-            ICollectable collectable = hit.collider.GetComponent<ICollectable>();
+            IInteractable interactable = hit.collider.GetComponent<IInteractable>();
             MeshRenderer renderer = hit.collider.GetComponent<MeshRenderer>();
             if (renderer == null)
             {
                 renderer = hit.collider.GetComponentInChildren<MeshRenderer>();
             }
 
-            if (collectable != null && renderer != null)
+            if (interactable != null && renderer != null)
             {
                 if (currentlyHighlighted != hit.collider.gameObject)
                 {
-                    ClearHighlight();
-                    ApplyOutline(renderer, collectable);
+                    ClearHighlight(interactable);
+                    ApplyOutline(renderer, interactable);
+                    interactable.isHit = true;
+                    interactable.hitPos = hit.point;
                     currentlyHighlighted = hit.collider.gameObject;
+                    ActivateUI(interactable);
                 }
 
                 return;
             }
         }
 
-        ClearHighlight();
+        ClearHighlight(null);
     }
 
     private void CollectCheck()
     {
         if (currentlyHighlighted != null && Input.GetKeyDown(KeyCode.E))
         {
-            ICollectable collectable = currentlyHighlighted.GetComponent<ICollectable>();
-            if (collectable != null && collectable.canBeCollected)
+            IInteractable interactable = currentlyHighlighted.GetComponent<IInteractable>();
+            if (interactable != null && interactable.canBeCollected)
             {
-                //  collectable.Collect(_playerInventory);
-                _playerInventory.AddWorldItem(collectable.Gm);
-                ClearHighlight();
+                _playerInventory.AddWorldItem(interactable.Gm);
+                ClearHighlight(interactable);
             }
         }
     }
 
-    private void ApplyOutline(MeshRenderer renderer, ICollectable collectable)
+    private void ApplyOutline(MeshRenderer renderer, IInteractable interactable)
     {
+        if (!interactable.outlineMe) return;
         _originalMaterials = renderer.materials;
         Material[] newMaterials = new Material[_originalMaterials.Length + 1];
         _originalMaterials.CopyTo(newMaterials, 0);
         newMaterials[newMaterials.Length - 1] = outlineMaterial;
         renderer.materials = newMaterials;
+      
     }
 
-    private void ClearHighlight()
+    private void ActivateUI(IInteractable interactable)
+    {
+        if (interactable == null) return;
+        IInteractionUI ac = interactable.Gm.GetComponent<IInteractionUI>();
+        if(!ac.canDisplay)return;
+        UIManager.instance.ActivateUi(ac);
+    }
+
+    private void ClearHighlight(IInteractable interactable)
     {
         if (currentlyHighlighted != null)
         {
@@ -357,12 +369,45 @@ public class MovementHandler : MonoBehaviour
                 renderer.materials = _originalMaterials;
             }
 
-            currentlyHighlighted = null;
+            UIManager.instance.DeactivateUi();
             _originalMaterials = null;
+            if (interactable == null) return;
+            interactable.isHit = false;
+            currentlyHighlighted = null;
         }
     }
 
-    public ObjSo GetRequiredResources(BaseStructure structure)
+    void DrawSphereCast(Vector3 origin, Vector3 direction, float radius, float distance)
+    {
+        // Draw the ray
+        Debug.DrawRay(origin, direction * distance, Color.red);
+
+        // Draw circles at start and end
+        DrawCircle(origin, radius);
+        DrawCircle(origin + direction * distance, radius);
+    }
+
+    void DrawCircle(Vector3 center, float radius)
+    {
+        int segments = 20;
+        float angle = 0f;
+
+        for (int i = 0; i < segments; i++)
+        {
+            float nextAngle = angle + 360f / segments;
+
+            Vector3 p1 = center + new Vector3(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad), 0) *
+                radius;
+            Vector3 p2 = center +
+                         new Vector3(Mathf.Cos(nextAngle * Mathf.Deg2Rad), Mathf.Sin(nextAngle * Mathf.Deg2Rad), 0) *
+                         radius;
+
+            Debug.DrawLine(p1, p2, Color.yellow);
+            angle = nextAngle;
+        }
+    }
+
+    private ObjSo GetRequiredResources(BaseStructure structure)
     {
         ObjSo so = structure.GetNextRequiredResource();
         if (so != null)
@@ -382,6 +427,7 @@ public class MovementHandler : MonoBehaviour
 
     public void EquipItem(BaseWeapon weapon)
     {
+        Debug.Log("equiping item");
         CurrentWeapon = weapon;
         if (CurrentWeapon.isLeftHanded)
         {
@@ -394,7 +440,9 @@ public class MovementHandler : MonoBehaviour
 
         CurrentWeapon.transform.localPosition = CurrentWeapon.RightHandAngle;
         CurrentWeapon.transform.localRotation = Quaternion.Euler(CurrentWeapon.RightHandRotAngle);
+        CurrentWeapon.gameObject.SetActive(true);
     }
+
     private void AddScentHourly(int hour)
     {
         _playerScentEmitter.AddScent(hourlyScentInc);
@@ -408,5 +456,5 @@ public class MovementHandler : MonoBehaviour
     public bool IsSprinting()
     {
         return _isSprinting;
-    } //hunter
+    }
 }

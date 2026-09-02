@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5a4f998fb58a50c4abda8539d2613cbc, type: 3}
-  m_Name: Bow
+  m_Name: StoneKnife
   m_EditorClassIdentifier: 
-  prefab: {fileID: 2810370539657348168, guid: 13025a44a07e4cd449a466a507f0764b, type: 3}
-  sprite: {fileID: 21300000, guid: 53a7e39f9dff38d4eb970ad6f8f3da68, type: 3}
+  prefab: {fileID: 8393908558293731060, guid: ab0f7782072ddc04b9cc42ef241e5d57, type: 3}
+  sprite: {fileID: 21300000, guid: d010eb9653d0ede4c8692a0011e6060f, type: 3}
   amount: 1
-  size: {x: 0, y: 0}
+  size: {x: 1, y: 3}
   appearanceProb: 0
-  maxDamage: 0
-  maxBlock: 0
+  damage: 20
+  block: 20

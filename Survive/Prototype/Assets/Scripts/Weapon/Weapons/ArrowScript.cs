@@ -17,7 +17,8 @@ public class ArrowScript : Obj<ObjSo>
     protected override void Awake()
     {
         Gm = gameObject;
-        canBeCollected = true;
+        canBeCollected = false;
+        outlineMe = false;
     }
 
     private void Start()
