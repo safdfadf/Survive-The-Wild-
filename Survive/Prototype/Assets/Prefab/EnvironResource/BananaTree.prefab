@@ -508,6 +508,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   resourceDropCount: 2
   dropOffset: {x: 0, y: 0.5, z: 0}
+  foodSos: []
+  pos: []
+  damagedVersions: []
+  damageStage1: 25
+  damageStage2: 60
+  damageStage3: 90
+  requiredAbility: {fileID: 11400000, guid: d636c7e318bc04141b4e3a44b4deaf31, type: 2}
 --- !u!208 &407322698040891147
 NavMeshObstacle:
   m_ObjectHideFlags: 0

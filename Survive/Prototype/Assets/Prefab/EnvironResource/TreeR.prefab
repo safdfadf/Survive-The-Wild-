@@ -295,6 +295,11 @@ MonoBehaviour:
   dropOffset: {x: 0, y: 0.5, z: 0}
   foodSos: []
   pos: []
+  damagedVersions: []
+  damageStage1: 25
+  damageStage2: 60
+  damageStage3: 90
+  requiredAbility: {fileID: 11400000, guid: d636c7e318bc04141b4e3a44b4deaf31, type: 2}
 --- !u!1 &7382164028152246429
 GameObject:
   m_ObjectHideFlags: 0
