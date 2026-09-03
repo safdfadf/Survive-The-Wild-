@@ -193,7 +193,6 @@ public class UIManager : MonoBehaviour
     {
         if (!objectMenu.activeSelf || _currentTarget == null) return;
         firstMenu.SetActive(false);
-        Debug.Log(_activeButtons.Count + " Activate");
         foreach (var buttons in _activeButtons)
         {
             buttons.gameObject.SetActive(true);
@@ -207,7 +206,6 @@ public class UIManager : MonoBehaviour
     {
         if (!objectMenu.activeSelf || _currentTarget == null) return;
         firstMenu.SetActive(true);
-        Debug.Log("Deactivated");
         foreach (var buttons in _activeButtons)
         {
             buttons.gameObject.SetActive(false);

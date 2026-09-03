@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using DefaultNamespace.EventBus;
 using DefaultNamespace.Interface;
 using Player;
 using UnityEngine;
@@ -330,7 +331,8 @@ public class MovementHandler : MonoBehaviour
             IInteractable interactable = currentlyHighlighted.GetComponent<IInteractable>();
             if (interactable != null && interactable.canBeCollected)
             {
-                _playerInventory.AddWorldItem(interactable.Gm);
+               // _playerInventory.AddWorldItem(interactable.Gm);
+                EventManager.Instance.reseourceEvent.GatherResource(interactable.Gm);
                 ClearHighlight(interactable);
             }
         }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DefaultNamespace.EventBus;
 using FoodSystem;
 using Inventory;
 using Mono.Cecil;
@@ -26,6 +27,16 @@ public class PlayerInventory : MonoBehaviour
     private void Awake()
     {
         _movementHandler = GetComponent<MovementHandler>();
+    }
+
+    private void OnEnable()
+    {
+        EventManager.Instance.reseourceEvent.onGatherResource += AddWorldItem;
+    }
+
+    private void OnDisable()
+    {
+        EventManager.Instance.reseourceEvent.onGatherResource -= AddWorldItem;
     }
 
     private void Start()
@@ -193,7 +204,7 @@ public class PlayerInventory : MonoBehaviour
         _currentStructure.SubmitResource(_requestedObj);
     }
 
-    public void MakeItemAnCraft(Obj<ObjSo> obj)
+    public void MakeItemAndCraft(Obj<ObjSo> obj)
     {
         AddWorldItem(obj.gameObject); // add to inventory and create inventory item
         InventoryItem item = _resourceInventory.GetInventoryItem(obj.InventoryItem);

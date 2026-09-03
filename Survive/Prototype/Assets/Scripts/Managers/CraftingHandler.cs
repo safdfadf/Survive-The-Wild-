@@ -38,14 +38,14 @@ public class CraftingHandler : MonoBehaviour
 
     private void OnEnable()
     {
-        EventBus.OnResourceAdd += AddIngredient;
-        EventBus.OnResourceRemove += RemoveResource;
+        EventBus.OnCraftResource += AddIngredient;
+        EventBus.OnUnCraftResource += RemoveResource;
     }
 
     private void OnDisable()
     {
-        EventBus.OnResourceAdd -= AddIngredient;
-        EventBus.OnResourceRemove -= RemoveResource;
+        EventBus.OnCraftResource -= AddIngredient;
+        EventBus.OnUnCraftResource -= RemoveResource;
     }
 
     private void Awake()

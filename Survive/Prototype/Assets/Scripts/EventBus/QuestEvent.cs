@@ -6,7 +6,7 @@ namespace DefaultNamespace.EventBus
     {
      public Action<string> onQuestComplete;
 
-     public void OnQuestComplete(string quest)
+     public void QuestComplete(string quest)
      {
          onQuestComplete(quest);
      }

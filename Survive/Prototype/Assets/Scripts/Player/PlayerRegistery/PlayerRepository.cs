@@ -112,7 +112,7 @@ namespace Player
         public void CraftWorldItem(GameObject obj)
         {
             Obj<ObjSo> o = obj.GetComponent<Obj<ObjSo>>();
-            _playerInventory.MakeItemAnCraft(o);
+            _playerInventory.MakeItemAndCraft(o);
         }
 
         public void ToggleCursor(bool isCursorOn)

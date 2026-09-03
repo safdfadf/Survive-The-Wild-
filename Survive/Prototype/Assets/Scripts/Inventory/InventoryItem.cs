@@ -64,7 +64,7 @@ public class InventoryItem : MonoBehaviour
     public void Craft()
     {
         IsInCraftingList = true; // we might need to move this 
-        EventBus.OnResourceAdd.Invoke(so, this);
+        EventBus.OnCraftResource.Invoke(so, this);
     }
 
     public void Harvest()
@@ -76,7 +76,7 @@ public class InventoryItem : MonoBehaviour
         if (IsInCraftingList)
         {
             IsInCraftingList = false;
-            EventBus.OnResourceRemove.Invoke(so, this);
+            EventBus.OnUnCraftResource.Invoke(so, this);
         }
         else
         {
