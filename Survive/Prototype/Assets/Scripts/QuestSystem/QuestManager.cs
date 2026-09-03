@@ -42,18 +42,17 @@ namespace DefaultNamespace.QuestSystem
             Debug.Log(_currentQuestIndex);
             string id = allQuests[_currentQuestIndex].id;
             Quest quest = questsMap[id];
-            if (quest is not { questState: QuestState.CanStart })
+            if (quest is not { questState: QuestState.CanStart }|| !quest.CanStartQuest())
             {
                 return;
             }
-
+            Debug.Log(quest.CanStartQuest());
             _currentQuestIndex++;
-            quest.SpawnQuest(this.transform);
+            quest.SpawnQuest(transform);
         }
 
         private void FinishQuest(string id) // will be called by Quest Step 
         {
-            //ClaimReward
             Quest q = questsMap[id];
             if (q.IsNextQuestAvailable())
             {

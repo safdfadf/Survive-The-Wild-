@@ -28,6 +28,7 @@ namespace DefaultNamespace.QuestSystem.QuestSteps
                 Debug.Log("object is null");
                 return;
             }
+
             foreach (var req in requirements.Where(req => req.so == obj.So))
             {
                 req.amount--;
@@ -38,6 +39,7 @@ namespace DefaultNamespace.QuestSystem.QuestSteps
                 Debug.Log("keep it comming");
                 return;
             }
+
             FinishQuest();
         }
 

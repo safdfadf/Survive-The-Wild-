@@ -26,7 +26,7 @@ namespace DefaultNamespace.QuestSystem
 
         public void SpawnQuest(Transform transform)
         {
-            if (questState != QuestState.CanStart)
+            if (questState != QuestState.CanStart|| CanStartQuest())
             {
                 return;
             }
@@ -56,14 +56,9 @@ namespace DefaultNamespace.QuestSystem
             }
         }
 
-        public bool CanStartQuest(int playerLevel)
+        public bool CanStartQuest()
         {
-            if (playerLevel >= questInfo.PlayerLevelRequired)
-            {
-                return true;
-            }
-
-            return false;
+            return currentQuestIndex < questInfo.QuestSteps.Length;
         }
     }
 }
