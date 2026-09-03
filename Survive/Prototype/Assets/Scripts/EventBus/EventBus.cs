@@ -1,14 +1,14 @@
 using System;
 using UnityEngine;
 
-public class EventBus
+public class EventBus// Todo: instead of keeping events like make separate classes for events based on the system 
 {
  
  public static Action OnActivateChunk;
  
  //crafting system 
- public static Action<ObjSo,InventoryItem> OnResourceAdd;// Invoker: BaseResource subscribed by Crafting Handler
- public static Action<ObjSo,InventoryItem> OnResourceRemove;
+ public static Action<ObjSo,InventoryItem> OnCraftResource;// Invoker: BaseResource subscribed by Crafting Handler
+ public static Action<ObjSo,InventoryItem> OnUnCraftResource;
  
  public static Action onAttack;
  
