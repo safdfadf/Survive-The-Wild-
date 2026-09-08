@@ -32,7 +32,7 @@ namespace DefaultNamespace.QuestSystem
             {
                 GameObject obj = Object.Instantiate(o, transform);
                 QuestStep step = obj.GetComponent<QuestStep>();
-                step.Initialize(questInfo.id, questState);
+                step.Initialize(questState,questInfo);
                 obj.SetActive(false);
                 _currentQuestSteps.Add(step);
             }

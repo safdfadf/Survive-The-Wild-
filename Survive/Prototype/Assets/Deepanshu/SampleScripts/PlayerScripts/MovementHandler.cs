@@ -77,7 +77,7 @@ public class MovementHandler : MonoBehaviour
     private GameObject crosshair;
     private float scentTracker;
     private Coroutine noiseRoutine;
-
+    public PlayerStats _playerStats;// move it to a different place
 
     private void Awake()
     {
@@ -90,6 +90,7 @@ public class MovementHandler : MonoBehaviour
         _playerScentEmitter = GetComponent<PlayerScentEmitter>();
         _noiseEmitter = GetComponent<PlayerNoiseEmitter>();
         _playerVitalStats = GetComponent<PlayerVitalStats>();
+        _playerStats = new PlayerStats(_ui);
         SetSpineControl(false);
     }
 
@@ -125,11 +126,13 @@ public class MovementHandler : MonoBehaviour
     private void OnEnable()
     {
         EventBus.OnHourChanged += AddScentHourly;
+        EventManager.Instance.playerEvents.OnAddExperience += _playerStats.AddXp;
     }
 
     private void OnDisable()
     {
         EventBus.OnHourChanged -= AddScentHourly;
+        EventManager.Instance.playerEvents.OnAddExperience -= _playerStats.AddXp;
     }
 
     public void ToggleHunterSense()

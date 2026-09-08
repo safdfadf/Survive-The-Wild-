@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Player;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -8,14 +9,6 @@ using UnityEngine.UI;
 public class PlayerUI : MonoBehaviour
 {
     [SerializeField] private GameObject crosshair;
-    [Header("BodyUI")] [SerializeField] private Transform rightHand;
-    [SerializeField] private Transform leftHand;
-    [SerializeField] private Transform head;
-    [SerializeField] private Transform leftLeg;
-    [SerializeField] private Transform rightLeg;
-    [SerializeField] private List<GameObject> bodyParts;
-
-    [Header("BodyMat")] [SerializeField] private Material OrigMat;
     [Header("Inventory")] [SerializeField] private GameObject invParent;
     [SerializeField] private Button rscInvButton;
     [SerializeField] private Button wpnInvButton;
@@ -60,6 +53,9 @@ public class PlayerUI : MonoBehaviour
     private GameObject blurScreen;
 
     [SerializeField] private GameObject recipeBookUI;
+
+    [Header("Level System")] public Slider levelSlider;
+    [SerializeField] private TextMeshProUGUI currentLevelText;
 
     // Script Reference  
     private PlayerNoiseEmitter _playerNoiseEmitter;
@@ -130,14 +126,13 @@ public class PlayerUI : MonoBehaviour
     public void EnableCraftingUI()
     {
         craftingUI.SetActive(true);
-        bodyStatusUI.SetActive(false);
-
+        ToggleBodyUI(false);
         _rBookHandler.DisableRecipeBook();
     }
 
-    public void EnableBodyStatusUI()
+    private void EnableBodyStatusUI()
     {
-        bodyStatusUI.SetActive(true);
+        ToggleBodyUI(true);
         craftingUI.SetActive(false);
         _rBookHandler.DisableRecipeBook();
     }
@@ -146,7 +141,14 @@ public class PlayerUI : MonoBehaviour
     {
         _rBookHandler.EnableRecipeBook();
         craftingUI.SetActive(false);
-        bodyStatusUI.SetActive(false);
+        ToggleBodyUI(false);
+    }
+
+    public void ToggleBodyUI(bool toggle)
+    {
+        bodyStatusUI.SetActive(toggle);
+        levelSlider.gameObject.SetActive(toggle);
+        currentLevelText.gameObject.SetActive(toggle);
     }
 
     private void LateUpdate()
@@ -241,20 +243,17 @@ public class PlayerUI : MonoBehaviour
 
     public void ApplyWoundUI(Material mat)
     {
-        foreach (var gm in bodyParts)
-        {
-            SkinnedMeshRenderer smr = gm.GetComponent<SkinnedMeshRenderer>();
-            smr.material = mat;
-        }
+        Debug.Log("ApplyWoundUI");
     }
-
 
     public void ApplyOriginalUI()
     {
-        foreach (var gm in bodyParts)
-        {
-            SkinnedMeshRenderer smr = gm.GetComponent<SkinnedMeshRenderer>();
-            smr.material = OrigMat;
-        }
+        Debug.Log("ApplyOriginalUI");
+    }
+
+    public void UpdateLevel(int xp, int level)
+    {
+        currentLevelText.text = level.ToString();
+        levelSlider.value = xp / 100;
     }
 }

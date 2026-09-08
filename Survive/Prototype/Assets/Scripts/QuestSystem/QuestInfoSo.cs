@@ -9,10 +9,10 @@ namespace DefaultNamespace.QuestSystem
         [field: SerializeField] public string id { get; private set; }
         public string displayName;
         public int PlayerLevelRequired;
-
         public GameObject[] QuestSteps;
 
         //recipe unlocked 
+        public int ExperienceReward;
         private void OnValidate()
         {
 #if UNITY_EDITOR

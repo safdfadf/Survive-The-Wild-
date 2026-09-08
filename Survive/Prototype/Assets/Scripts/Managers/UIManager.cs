@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using DefaultNamespace.Interface;
+using DefaultNamespace.QuestSystem;
 using Player;
 using TMPro;
 using UnityEngine;
@@ -28,6 +29,10 @@ public class UIManager : MonoBehaviour
     public Button removeButton;
     public Button useMe;
     public TextMeshProUGUI description;
+    [Header("Quests UI")] [SerializeField] private TextMeshProUGUI questsText;
+    [SerializeField] private Transform questUiParent;
+    private Dictionary<string, TextMeshProUGUI> questsUI = new();
+
     private IInteractionUI _currentTarget;
     private float currentScale;
     private List<Button> _activeButtons = new();
@@ -228,5 +233,24 @@ public class UIManager : MonoBehaviour
         _currentTarget = null;
         objectMenu.SetActive(false);
         _activeButtons.Clear();
+    }
+
+    public void AddQuestName(List<QuestStep> questSteps)
+    {
+        foreach (var step in questSteps)
+        {
+            if (step.IsFinished) // update list
+            {
+                if (questsUI.TryGetValue(step.StepName, out var value))
+                    Destroy(value);
+            }
+            else
+            {
+                var obj = Instantiate(questsText.gameObject, questUiParent);
+                var textMesh = obj.GetComponent<TextMeshProUGUI>();
+                textMesh.text = step.StepName;
+                questsUI.Add(step.StepName, textMesh);
+            }
+        }
     }
 }

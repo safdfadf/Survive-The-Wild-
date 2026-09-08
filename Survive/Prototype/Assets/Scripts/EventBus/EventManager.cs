@@ -9,6 +9,7 @@ namespace DefaultNamespace.EventBus
         public static EventManager Instance;
         public QuestEvent questEvent ;
         public ResourceEvents reseourceEvent;
+        public PlayerEvents playerEvents;
         private void Awake()
         {
             if (Instance == null)
@@ -21,6 +22,7 @@ namespace DefaultNamespace.EventBus
             }
             questEvent = new QuestEvent();
             reseourceEvent = new ResourceEvents();
+            playerEvents = new PlayerEvents();
         }
     }
 }

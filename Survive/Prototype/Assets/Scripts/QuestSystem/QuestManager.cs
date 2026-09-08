@@ -10,7 +10,6 @@ namespace DefaultNamespace.QuestSystem
         [SerializeField] private List<QuestInfoSo> allQuests = new();
         private Dictionary<string, Quest> questsMap = new();
         private int _currentQuestIndex = 0;
-        private int _currentPlayerLevel = 0;
         private Quest _currentQuest;
 
         private void Awake()
@@ -41,13 +40,14 @@ namespace DefaultNamespace.QuestSystem
         private void StartNewQuest() // who will call this function maybe Game manager 
         {
             Debug.Log(_currentQuestIndex);
-            if(_currentQuestIndex +1 > allQuests.Count)return;
+            if (_currentQuestIndex + 1 > allQuests.Count) return;
             string id = allQuests[_currentQuestIndex].id;
-           _currentQuest = questsMap[id];
-            if (_currentQuest is not { questState: QuestState.CanStart }|| !_currentQuest.CanStartQuest())
+            _currentQuest = questsMap[id];
+            if (_currentQuest is not { questState: QuestState.CanStart } || !_currentQuest.CanStartQuest())
             {
                 return;
             }
+
             Debug.Log(_currentQuest.CanStartQuest());
             _currentQuestIndex++;
             _currentQuest.SpawnQuest(transform);
@@ -58,7 +58,7 @@ namespace DefaultNamespace.QuestSystem
             Quest q = questsMap[id];
             if (q.IsNextQuestAvailable())
             {
-              q.UpdateQuest();
+                q.UpdateQuest();
             }
             else
             {
@@ -74,11 +74,6 @@ namespace DefaultNamespace.QuestSystem
             }
 
             StartNewQuest();
-        }
-
-        private void DisplayCurrentQuests()
-        {
-            //_currentQuest.DisplayCurrentMission()
         }
     }
 }
