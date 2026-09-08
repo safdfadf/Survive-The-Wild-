@@ -1,12 +1,17 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using DefaultNamespace.EventBus;
+using DefaultNamespace.QuestSystem;
 using Player;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class RBookHandler : MonoBehaviour
 {
-    [Header("Tags")] [SerializeField] private Button weaponTag;
+    [Header("Tags")] [SerializeField] private Button questTag;
+    [SerializeField] private Button weaponTag;
     [SerializeField] private Button baseBuildTage;
     [SerializeField] private Button trapsTag;
     [SerializeField] private Button fireTag;
@@ -17,27 +22,40 @@ public class RBookHandler : MonoBehaviour
     [Header("Arrows")] [SerializeField] private GameObject nextButton;
     [SerializeField] private GameObject previousButton;
 
-    [Header("RecipePrefab")] [SerializeField]
-    private GameObject recipiePrefab;
-
+    [Header("Prefabs")] [SerializeField] private GameObject recipiePrefab;
+    [SerializeField] private GameObject questPrefab;
     [Header("ParentObj")] [SerializeField] private GameObject parentObj;
 
     private List<CraftingSO> _weaponRecipes;
 
-    // private List<CraftingSO> trapRecipes;
     private List<CraftingSO> _baseRecipes;
+
+    // private List<CraftingSO> trapRecipes;
     [Header("Crafting Handler")] private CraftingHandler _craftingHandler;
 
     private List<CraftingSO> activeList;
     private int currentIndex = 0;
     private List<GameObject> spawnedSlots = new();
+    private Dictionary<string, TextMeshProUGUI> questTexts = new();
+    List<TextMeshProUGUI> questTextList = new();
 
     private void Awake()
     {
+        questTag.onClick.AddListener(ShowQuest);
         weaponTag.onClick.AddListener(ShowWeaponRecipe);
         baseBuildTage.onClick.AddListener(ShowBaseBuildRecipe);
         trapsTag.onClick.AddListener(ShowTrapsRecipe);
         fireTag.onClick.AddListener(ShowFireRecipe);
+    }
+
+    private void OnEnable()
+    {
+        EventManager.Instance.questEvent.onQuestComplete += CheckQuest;
+    }
+
+    private void OnDisable()
+    {
+        EventManager.Instance.questEvent.onQuestComplete -= CheckQuest;
     }
 
     public void ToggleRBook()
@@ -46,7 +64,7 @@ public class RBookHandler : MonoBehaviour
         if (parentObj.activeSelf)
         {
             PlayerRepository.instance.CanPlayerMove(false);
-            ShowWeaponRecipe(); // or jorney so far 
+            ShowWeaponRecipe();
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
         }
@@ -77,11 +95,27 @@ public class RBookHandler : MonoBehaviour
 
         foreach (var so in allRecipes)
         {
-            if(so == null){Debug.Log("so is nul");}
-            if( so.resSo == null ){Debug.Log("res so is null" + so);}
-            if(so.resSo.prefab == null){Debug.Log("resSo.prefab is null" + so.resSo);}
+            if (so == null)
+            {
+                Debug.Log("so is nul");
+            }
+
+            if (so.resSo == null)
+            {
+                Debug.Log("res so is null" + so);
+            }
+
+            if (so.resSo.prefab == null)
+            {
+                Debug.Log("resSo.prefab is null" + so.resSo);
+            }
+
             GameObject prefab = so.resSo.prefab;
-            if(prefab == null){Debug.Log("prefab is null");}        
+            if (prefab == null)
+            {
+                Debug.Log("prefab is null");
+            }
+
             if (prefab.TryGetComponent<BaseWeapon>(out _))
             {
                 _weaponRecipes.Add(so);
@@ -93,15 +127,13 @@ public class RBookHandler : MonoBehaviour
         }
     }
 
-    private void ShowPage()
+    private void ShowRecipes()
     {
-        // Clear old slots
         foreach (var slot in spawnedSlots)
             Destroy(slot);
         spawnedSlots.Clear();
 
         Transform currentTransform;
-        // Show 4 recipes starting from currentIndex
         for (int i = 0; i < 4; i++)
         {
             currentTransform = i <= 1 ? page1 : page2;
@@ -113,7 +145,6 @@ public class RBookHandler : MonoBehaviour
             spawnedSlots.Add(r);
         }
 
-        // Update buttons
         previousButton.SetActive(currentIndex > 0);
         nextButton.SetActive(currentIndex + 4 < activeList.Count);
     }
@@ -123,7 +154,7 @@ public class RBookHandler : MonoBehaviour
         if (currentIndex + 4 < activeList.Count)
         {
             currentIndex += 4;
-            ShowPage();
+            ShowRecipes();
         }
     }
 
@@ -132,7 +163,7 @@ public class RBookHandler : MonoBehaviour
         if (currentIndex > 0)
         {
             currentIndex -= 4;
-            ShowPage();
+            ShowRecipes();
         }
     }
 
@@ -140,7 +171,7 @@ public class RBookHandler : MonoBehaviour
     {
         activeList = _weaponRecipes;
         currentIndex = 0;
-        ShowPage();
+        ShowRecipes();
     }
 
     private void ShowBaseBuildRecipe()
@@ -148,7 +179,7 @@ public class RBookHandler : MonoBehaviour
         Debug.Log("Show Base Build Recipe");
         activeList = _baseRecipes;
         currentIndex = 0;
-        ShowPage();
+        ShowRecipes();
     }
 
     private void ShowTrapsRecipe()
@@ -157,5 +188,56 @@ public class RBookHandler : MonoBehaviour
 
     private void ShowFireRecipe()
     {
+    }
+
+    private void ShowQuest()
+    {
+        foreach (var slot in spawnedSlots)// this will create an issue because it destroys objs that means text mesh obj created 
+            spawnedSlots.Clear();
+
+        Transform currentTransform;
+
+        for (int i = 0; i < questTextList.Count; i++)
+        {
+            currentTransform = i <= 1 ? page1 : page2;
+
+            int index = currentIndex + i;
+            if (index >= questTextList.Count) break;
+                
+             var textMesh = questTextList[index];
+             textMesh.gameObject.transform.SetParent(currentTransform);
+             RectTransform rectTransform = textMesh.GetComponent<RectTransform>();
+            rectTransform.anchoredPosition = currentTransform.position;
+            Debug.Log(textMesh.gameObject);
+            textMesh.gameObject.SetActive(true);
+            spawnedSlots.Add(textMesh.gameObject);
+        }
+
+        previousButton.SetActive(currentIndex > 0);
+        nextButton.SetActive(currentIndex + 4 < questTextList.Count);
+    }
+
+    public void SetQuestSteps(List<QuestStep> questSteps)
+    {
+        foreach (var q in questSteps)
+        {
+            GameObject obj = Instantiate(questPrefab, gameObject.transform);
+            var textMesh = obj.GetComponent<TextMeshProUGUI>();
+            textMesh.text = q.StepName;
+            questTexts.Add(q.QuestId, textMesh);
+            questTextList.Add(textMesh);
+            obj.SetActive(false);
+        }
+
+        questTextList = questTexts.Values.ToList();
+        currentIndex = 0;
+        ShowQuest();
+    }
+
+    //we need to store active id and text 
+    private void CheckQuest(string id)
+    {
+        TextMeshProUGUI text = questTexts[id];
+        text.fontStyle = FontStyles.Strikethrough;
     }
 }

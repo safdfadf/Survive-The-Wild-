@@ -8,7 +8,7 @@ namespace DefaultNamespace.QuestSystem.QuestSteps
     public class CollectionQuest : QuestStep
     {
         [SerializeField] private List<CollectionData> requirements;
-
+        // step name needs to be set  
         private void OnEnable()
         {
             EventManager.Instance.reseourceEvent.onGatherResource += CheckSubmitResource;

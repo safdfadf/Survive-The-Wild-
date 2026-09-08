@@ -12,7 +12,6 @@ namespace DefaultNamespace.QuestSystem
 
         public GameObject[] QuestSteps;
 
-        //public QuestStep[] questStep; // list of quests in a quest 
         //recipe unlocked 
         private void OnValidate()
         {

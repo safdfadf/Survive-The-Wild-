@@ -1,12 +1,14 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace DefaultNamespace.QuestSystem
 {
-    public class Quest
+    public class Quest // this scrtipt will be responsible to display ui 
     {
         public int currentQuestIndex;
         public QuestInfoSo questInfo;
         public QuestState questState; // do i need quest state ?
+        public List<QuestStep> _currentQuestSteps = new();
 
         public Quest(QuestInfoSo questInfo)
         {
@@ -26,15 +28,40 @@ namespace DefaultNamespace.QuestSystem
 
         public void SpawnQuest(Transform transform)
         {
-            if (questState != QuestState.CanStart|| CanStartQuest())
+            foreach (var o in questInfo.QuestSteps)
             {
-                return;
+                GameObject obj = Object.Instantiate(o, transform);
+                QuestStep step = obj.GetComponent<QuestStep>();
+                step.Initialize(questInfo.id, questState);
+                obj.SetActive(false);
+                _currentQuestSteps.Add(step);
             }
 
-            GameObject obj = Object.Instantiate(questInfo.QuestSteps[currentQuestIndex], transform);
-            QuestStep step = obj.GetComponent<QuestStep>();
-            step.Initialize(questInfo.id, questState);
+            RBookHandler uiHandler = Object.FindAnyObjectByType<RBookHandler>();
+            uiHandler.SetQuestSteps(_currentQuestSteps);
+            currentQuestIndex = 0;
+            ActivateNextQuest();
+        }
+
+        public void UpdateQuest()
+        {
             currentQuestIndex++;
+            for (int i = 0; i < _currentQuestSteps.Count; i++)
+            {
+                if (_currentQuestSteps[i].gameObject == null)
+                {
+                    _currentQuestSteps.RemoveAt(i);
+                }
+            }
+
+            UIManager.instance.AddQuestName(_currentQuestSteps);
+            ActivateNextQuest();
+        }
+
+        public void ActivateNextQuest()
+        {
+            QuestStep currentSteps = _currentQuestSteps[currentQuestIndex];
+            currentSteps.gameObject.SetActive(true);
         }
 
         public bool IsNextQuestAvailable()
