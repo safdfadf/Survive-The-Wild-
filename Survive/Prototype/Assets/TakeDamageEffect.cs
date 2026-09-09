@@ -2,20 +2,21 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.Rendering.HighDefinition;
 using UnityEngine.Rendering.Universal;
 
 public class TakeDamageEffect : MonoBehaviour
 {
+    [SerializeField] private Volume volume;
     private Vignette vignette;
-    private Volume volume;
 
-    private void Awake()
+
+    private void Start()
     {
-        volume = GetComponent<Volume>();
         volume.profile.TryGet(out vignette);
     }
 
-    public void TriggerDamageEffect()// when player health is decreasing trigger this 
+    public void TriggerDamageEffect() // when player health is decreasing trigger this 
     {
         StopAllCoroutines();
         StartCoroutine(DamageFlash());
