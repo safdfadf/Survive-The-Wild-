@@ -127,7 +127,7 @@ public class InputManager : MonoBehaviour
         _controls.PlayerInteract.Interact.performed += _toggleTarckMenu;
         _controls.PlayerInteract.Phone.started += ctx => _phone.MoveInPhone();
         _controls.PlayerInteract.Phone.canceled += ctx => _phone.MoveOutPhone();
-        _controls.PlayerInteract.Scroll.performed += _phone.Scroll;
+        _controls.PlayerInteract.Scroll.performed += Scroll;
         _controls.PlayerInteract.Book.performed += _toggleRecipeBook;
     }
 
@@ -148,7 +148,7 @@ public class InputManager : MonoBehaviour
         _controls.PlayerInteract.Aim.canceled -= _aimCanceled;
         _controls.PlayerInteract.Shoot.performed -= _shootPerformed;
         _controls.PlayerInteract.Shoot.canceled -= _shootPerformed;
-
+        _controls.PlayerInteract.Scroll.canceled -= Scroll;
         _controls.PlayerInteract.CursorOnOf.performed -= _cursorToggle;
         _controls.PlayerInteract.Inventory.performed -= _inventoryToggle;
         _controls.PlayerInteract.ResourceMenu.performed -= _resourceMenuToggle;
@@ -181,7 +181,7 @@ public class InputManager : MonoBehaviour
     private void OnInteract(InputAction.CallbackContext ctx)
     {
         BaseWeapon weapon = _player.CurrentWeapon;
-        if(weapon== null)return;
+        if (weapon == null) return;
         weapon._activeBehaviour.OnInput(ctx);
     }
 
@@ -189,6 +189,20 @@ public class InputManager : MonoBehaviour
     {
         EventBus.OnToggleTracksMenu?.Invoke(); // interaction
         _playerInventory.SubmitResource(); // Intercation
+    }
+
+    public void Scroll(InputAction.CallbackContext ctx)
+    {
+        if (_phone.IsPhoneActive)
+        {
+            _phone.Scroll(ctx);
+        }
+        else
+        {
+            Vector2 movement = ctx.ReadValue<Vector2>();
+            bool scrollup = movement.y > 0;
+            _player.SwitchWeapon(scrollup);
+        }
     }
 
     private void OnDestroy()

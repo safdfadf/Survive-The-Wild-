@@ -29,7 +29,8 @@ public class MovementHandler : MonoBehaviour
 
     [SerializeField] private float hourlyScentInc = 0.01f;
     [SerializeField] private float moveScentInc = 0.005f;
-     public Transform uiPos;
+    public Transform uiPos;
+
     [FormerlySerializedAs("animalApproachPoint")]
     public Transform animalApproachPos;
 
@@ -77,7 +78,7 @@ public class MovementHandler : MonoBehaviour
     private GameObject crosshair;
     private float scentTracker;
     private Coroutine noiseRoutine;
-    public PlayerStats _playerStats;// move it to a different place
+    public PlayerStats _playerStats; // move it to a different place
 
     private void Awake()
     {
@@ -97,8 +98,8 @@ public class MovementHandler : MonoBehaviour
     public void SetSpineControl(bool isAiming)
     {
         if (!isAiming) return;
-        
-     
+
+
         float pitch = Camera.main.transform.localEulerAngles.x;
         if (pitch > 180) pitch -= 360;
 
@@ -334,7 +335,7 @@ public class MovementHandler : MonoBehaviour
             IInteractable interactable = currentlyHighlighted.GetComponent<IInteractable>();
             if (interactable != null && interactable.canBeCollected)
             {
-               // _playerInventory.AddWorldItem(interactable.Gm);
+                // _playerInventory.AddWorldItem(interactable.Gm);
                 EventManager.Instance.reseourceEvent.GatherResource(interactable.Gm);
                 ClearHighlight(interactable);
             }
@@ -349,14 +350,13 @@ public class MovementHandler : MonoBehaviour
         _originalMaterials.CopyTo(newMaterials, 0);
         newMaterials[newMaterials.Length - 1] = outlineMaterial;
         renderer.materials = newMaterials;
-      
     }
 
     private void ActivateUI(IInteractable interactable)
     {
         if (interactable == null || interactable.Gm == null) return;
         IInteractionUI ac = interactable.Gm.GetComponent<IInteractionUI>();
-        if(!ac.canDisplay)return;
+        if (!ac.canDisplay) return;
         UIManager.instance.ActivateUi(ac);
     }
 
@@ -377,7 +377,12 @@ public class MovementHandler : MonoBehaviour
 
             UIManager.instance.DeactivateUi();
             _originalMaterials = null;
-            if (interactable == null){ Debug.Log("interactable is null"); return;}
+            if (interactable == null)
+            {
+                Debug.Log("interactable is null");
+                return;
+            }
+
             interactable.isHit = false;
             currentlyHighlighted = null;
         }
@@ -431,9 +436,16 @@ public class MovementHandler : MonoBehaviour
         weapon.IniTialize(this, _playerInventory, animator, aimTarget, rightSpwnPoint, crosshair);
     }
 
+    public void SwitchWeapon(bool scrollUp)
+    {
+        if (CurrentWeapon == null) return;
+        _playerInventory.AddWorldItem(CurrentWeapon.gameObject);
+        _playerInventory.EquipItem(scrollUp);
+    }
+
     public void EquipItem(BaseWeapon weapon)
     {
-        Debug.Log("equiping item");
+        Debug.Log("equip new weapon");
         CurrentWeapon = weapon;
         if (CurrentWeapon.isLeftHanded)
         {

@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: BowRecipe
   m_EditorClassIdentifier: 
   ingredients:
-  - resourceSo: {fileID: 11400000, guid: 496f4571bf45f3546a94b0b5e615c915, type: 2}
-    amount: 2
+  - objSo: {fileID: 11400000, guid: 496f4571bf45f3546a94b0b5e615c915, type: 2}
+    amount: 1
+  - objSo: {fileID: 11400000, guid: fb90724a3af42ad44a8eff5d99fae24d, type: 2}
+    amount: 1
   resSo: {fileID: 11400000, guid: af6418bc7ac8fce45825be06e93ea814, type: 2}

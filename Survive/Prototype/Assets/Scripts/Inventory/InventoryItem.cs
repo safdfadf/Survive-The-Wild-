@@ -21,7 +21,7 @@ public class InventoryItem : MonoBehaviour
     [SerializeField] protected Button craftButton;
     [SerializeField] protected Button harvest;
     [SerializeField] protected Button removeButton;
-    private Obj<ObjSo> _currentObj;
+    public Obj<ObjSo> _currentObj{get; private set; }
     public Button useMe;
 
     private List<Button> _activeButtons = new();
@@ -89,4 +89,5 @@ public class InventoryItem : MonoBehaviour
     {
         menu?.SetActive(!menu.activeSelf);
     }
+    
 }

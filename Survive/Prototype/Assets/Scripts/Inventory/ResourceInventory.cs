@@ -280,7 +280,6 @@ public class ResourceInventory : MonoBehaviour
         if (resources[obj.So].Contains(obj.InventoryItem))
         {
             resources[obj.So].Remove(obj.InventoryItem);
-            Debug.Log((resources[obj.So].Count));
             Destroy(obj.InventoryItem.gameObject);
             return;
         }
