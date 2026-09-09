@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace DefaultNamespace.QuestSystem
 {
-    public class Quest // this scrtipt will be responsible to display ui 
+    public class Quest 
     {
         public int currentQuestIndex;
         public QuestInfoSo questInfo;

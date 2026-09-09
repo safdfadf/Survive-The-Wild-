@@ -6,6 +6,7 @@ public class HitBox : MonoBehaviour, ItakeDamage
 {
     private TargetPractice mainBody;
     private AnimalBase _animal;
+    private Collider _collider;
     public bool IsEnvironment { get; set; }
     public void TakeDamage(IAttack attack)
     {
@@ -18,6 +19,7 @@ public class HitBox : MonoBehaviour, ItakeDamage
     private void Awake()
     {
         _animal = GetComponentInParent<AnimalBase>();
+        _collider = GetComponent<Collider>();
     }
 
     public void Initialize(AnimalBase scheduledAnimal)
@@ -27,6 +29,11 @@ public class HitBox : MonoBehaviour, ItakeDamage
         {
             Debug.LogError(_animal.name + " is missing animal");
         }
+    }
+
+    public void ToggleCollider(bool toggle)
+    {
+        _collider.enabled = toggle;
     }
 
 }

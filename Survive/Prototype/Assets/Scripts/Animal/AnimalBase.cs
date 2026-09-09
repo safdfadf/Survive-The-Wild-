@@ -7,7 +7,7 @@ using Player;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class AnimalBase : MonoBehaviour,IInteractionUI
+public class AnimalBase : MonoBehaviour, IInteractionUI, IInteractable
 {
     [Header("Movement Info")] [SerializeField]
     protected float walkSpeed;
@@ -21,8 +21,9 @@ public class AnimalBase : MonoBehaviour,IInteractionUI
     protected AnimalAttack _animalAttack;
 
     [SerializeField] private AnimalAtkBehaviour animalAtkBehaviour;
-    [Header("Requirement")]
-    [SerializeField] private  WeaponAbility requiredAbility; 
+
+    [Header("Requirement")] [SerializeField]
+    private WeaponAbility requiredAbility;
 
     protected NavMeshAgent agent;
     protected Animator animator;
@@ -51,12 +52,16 @@ public class AnimalBase : MonoBehaviour,IInteractionUI
     public bool canUse { get; set; }
     public bool canHarvest { get; set; }
     public bool canCraft { get; set; }
-   
+
     public GameObject obj { get; set; }
     public bool IsUnscheduled { get; protected set; } = false;
-    
-    
-    // a serialized field through which we can decide through the inspector which behavior to choose 
+
+    public bool outlineMe { get; set; }
+    public bool canBeCollected { get; set; }
+    public GameObject Gm { get; set; }
+    public bool isHit { get; set; }
+    public Vector3 hitPos { get; set; }
+
     protected virtual void Awake()
     {
         _currentHealth = _maxhealth;
@@ -69,12 +74,22 @@ public class AnimalBase : MonoBehaviour,IInteractionUI
         {
             h.Initialize(this);
         }
+
         canDisplay = false;
+
         canUse = false;
         canHarvest = true;
         canCraft = false;
+        canBeCollected = false;
+        outlineMe = false;
+        Gm = gameObject;
+        obj = gameObject;
     }
 
+    private void Start()
+    {
+        ToggleCollider(false);
+    }
 
     private void OnEnable()
     {
@@ -105,7 +120,7 @@ public class AnimalBase : MonoBehaviour,IInteractionUI
         PlayBloodVfx(atk.hitPoint);
         int totalDamage = baseDamage * atk.Damage; // health = 100, 10 * 8
         _currentHealth -= totalDamage;
-        Debug.Log(myspecie + "remaing Health" + _currentHealth);
+        Debug.Log(myspecie + "remaing Health" + _currentHealth + totalDamage);
         if (_currentHealth <= 0)
         {
             Death();
@@ -133,13 +148,14 @@ public class AnimalBase : MonoBehaviour,IInteractionUI
     protected virtual void Death()
     {
         Debug.Log("Death");
+        ToggleCollider(true);
         animator.SetBool("Death", true);
         agent.enabled = false;
         agent.speed = 0;
-        if (AnimalSo == null) return;
+        canDisplay = true;
     }
 
-    private void DropResource()// there is a condition here if player equipped a weapon that can skin the animal ex. knife 
+    private void DropResource()
     {
         ObjSo objSo = AnimalSo.objSo;
         GameObject obj = Instantiate(objSo.prefab, transform.position + new Vector3(0, .5f, 0),
@@ -263,7 +279,6 @@ public class AnimalBase : MonoBehaviour,IInteractionUI
 
     protected void LookAtPlayer()
     {
-        // 1. Face the player
         Transform player = PlayerRepository.instance.GetPlayerTransform(); // or however you reference player
         Vector3 dir = (player.position - transform.position).normalized;
         dir.y = 0f; // prevent tilting
@@ -355,17 +370,23 @@ public class AnimalBase : MonoBehaviour,IInteractionUI
             center.z + Mathf.Sin(rad) * radius
         );
     }
+
     public void Craft()
     {
-       
     }
 
     public void Harvest()
     {
         BaseWeapon weapon = PlayerRepository.instance.GetCurrentWeapon();
-        if (weapon == null || weapon.Ability != requiredAbility)
+        if (weapon == null)
         {
-            // notification 
+            Debug.Log("weapon is null");
+        }
+
+        if (weapon == null || weapon.Ability == null || weapon.Ability != requiredAbility)
+        {
+            Debug.Log("show stuff");
+            UIManager.instance.DisplayNotification("You dont have the required tool");
             return;
         }
         // start Skinning 
@@ -373,11 +394,17 @@ public class AnimalBase : MonoBehaviour,IInteractionUI
 
     public void UseMe()
     {
-     
     }
 
-
-  
+    private void ToggleCollider(bool toggle)
+    {
+        Collider collider = GetComponent<Collider>();
+        collider.enabled = toggle;
+        foreach (var box in hitBoxes)
+        {
+            box.ToggleCollider(!toggle);
+        }
+    }
 }
 
 [System.Serializable]
@@ -391,4 +418,3 @@ public abstract class AnimalAtkBehaviour : ScriptableObject
 {
     public abstract IEnumerator Execute(AnimalBase animal);
 }
-

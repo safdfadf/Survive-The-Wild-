@@ -13,7 +13,7 @@ public class ArrowScript : Obj<ObjSo>
    
     private bool _isStuck;
     private bool _canMove;
-
+    private int _dmg;
 
     protected override void Awake()
     {
@@ -28,11 +28,9 @@ public class ArrowScript : Obj<ObjSo>
             Display.displays[1].Activate();
     }
 
-    public void Init(Collider PlayerCollider, Collider bowCol)
+    public void InitDamage(int damage)
     {
-        Collider arrowCollider = GetComponent<Collider>();
-        Physics.IgnoreCollision(PlayerCollider, arrowCollider);
-        Physics.IgnoreCollision(bowCol, arrowCollider);
+      _dmg = damage;
     }
 
     private void Update()
@@ -48,7 +46,7 @@ public class ArrowScript : Obj<ObjSo>
         transform.rotation = Quaternion.LookRotation(-hit.normal);
 
         transform.SetParent(hit.collider.transform, true);
-        PlayerAttack atk = new PlayerAttack(0,null,null,hitPos);//ToDo Add effects for player
+        PlayerAttack atk = new PlayerAttack(_dmg,null,null,hitPos);//ToDo Add effects for player
         
         ItakeDamage combatant = hit.collider.GetComponent<ItakeDamage>();
         if (combatant != null&& !combatant.IsEnvironment)

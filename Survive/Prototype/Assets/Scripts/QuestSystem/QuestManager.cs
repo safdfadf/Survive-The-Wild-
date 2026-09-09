@@ -39,7 +39,6 @@ namespace DefaultNamespace.QuestSystem
 
         private void StartNewQuest() // who will call this function maybe Game manager 
         {
-            Debug.Log(_currentQuestIndex);
             if (_currentQuestIndex + 1 > allQuests.Count) return;
             string id = allQuests[_currentQuestIndex].id;
             _currentQuest = questsMap[id];
@@ -48,7 +47,6 @@ namespace DefaultNamespace.QuestSystem
                 return;
             }
 
-            Debug.Log(_currentQuest.CanStartQuest());
             _currentQuestIndex++;
             _currentQuest.SpawnQuest(transform);
         }

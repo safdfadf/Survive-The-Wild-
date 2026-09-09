@@ -29,7 +29,6 @@ namespace DefaultNamespace.Weapon
 
         public override void OnInput(InputAction.CallbackContext ctx)
         {
-            Debug.Log(ctx.interaction is HoldInteraction && ctx.phase == InputActionPhase.Canceled); 
             if (ctx.interaction is TapInteraction)
             {
                 StartAiming();
@@ -37,19 +36,15 @@ namespace DefaultNamespace.Weapon
 
             else if (ctx.interaction is HoldInteraction && ctx.phase == InputActionPhase.Performed)
             {
-                Debug.Log("start");
                 StartAiming();
             }
 
-            // EARLY RELEASE → stop aiming
             else if (ctx.interaction is HoldInteraction && ctx.phase == InputActionPhase.Canceled && !isAiming)
             {
-                Debug.Log("stop");
                 StopAiming();
             }
-            else if (ctx.interaction is HoldInteraction && ctx.phase == InputActionPhase.Canceled )
+            else if (ctx.interaction is HoldInteraction && ctx.phase == InputActionPhase.Canceled)
             {
-                Debug.Log("shoot");
                 Shoot();
             }
         }
@@ -61,7 +56,6 @@ namespace DefaultNamespace.Weapon
             PullArrow();
             UpdateAimTarget();
             UpdateCrosshair();
-          
         }
 
         private void LateUpdate()
@@ -125,15 +119,16 @@ namespace DefaultNamespace.Weapon
 
         public void Shoot()
         {
-            animator.FireArrow(true);
-          
             if (CurrentArrow == null)
             {
                 return;
             }
 
+            animator.FireArrow(true);
+
 
             ArrowScript arrowScript = CurrentArrow.GetComponent<ArrowScript>();
+            arrowScript.InitDamage(data.weaponSo.damage);
             if (arrowScript != null)
             {
                 arrowScript.canBeCollected = true;
@@ -147,12 +142,13 @@ namespace DefaultNamespace.Weapon
 
 
             Vector3 shootDirection = (aimTarget.position - RestPoint.position).normalized;
-           arrowScript.ShootArrow(shootDirection, arrowSpeed);
+            arrowScript.ShootArrow(shootDirection, arrowSpeed);
             StartCoroutine(animator.ResetFireArrow());
 
             CurrentArrow = null;
             drawTime = 0f;
             isAiming = false;
+            animator.Aim(false);
         }
 
         private void UpdateAimTarget()

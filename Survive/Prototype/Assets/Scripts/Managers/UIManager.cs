@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using DefaultNamespace.Interface;
 using DefaultNamespace.QuestSystem;
@@ -29,7 +30,17 @@ public class UIManager : MonoBehaviour
     public Button removeButton;
     public Button useMe;
     public TextMeshProUGUI description;
-    [Header("Quests UI")] [SerializeField] private TextMeshProUGUI questsText;
+
+    [Header("Notification")] [SerializeField]
+    private GameObject notificationParent;
+
+    [SerializeField] private TextMeshProUGUI notificationText;
+    [SerializeField] private float slideSpeed;
+    [SerializeField] private float stayTime;
+    [SerializeField] private int showPoint;
+    [SerializeField] private int hidePoint;
+
+    [Header("Quest")] [SerializeField] private TextMeshProUGUI questsText;
     [SerializeField] private Transform questUiParent;
     private Dictionary<string, TextMeshProUGUI> questsUI = new();
 
@@ -159,7 +170,11 @@ public class UIManager : MonoBehaviour
     public void ActivateUi(IInteractionUI interactionUI)
     {
         _currentTarget = interactionUI;
-        if (_currentTarget == null) return;
+        if (_currentTarget == null)
+        {
+            Debug.LogWarning("No interaction UI selected");
+            return;
+        }
         if (_currentTarget.canCraft)
         {
             _activeButtons.Add(craftButton);
@@ -169,8 +184,9 @@ public class UIManager : MonoBehaviour
 
         if (_currentTarget.canHarvest)
         {
+            Debug.Log(_currentTarget.obj.name);
             _activeButtons.Add(harvestButton);
-            craftButton.onClick.AddListener(_currentTarget.Harvest);
+            harvestButton.onClick.AddListener(_currentTarget.Harvest);
         }
 
         if (_currentTarget.canUse)
@@ -251,6 +267,34 @@ public class UIManager : MonoBehaviour
                 textMesh.text = step.StepName;
                 questsUI.Add(step.StepName, textMesh);
             }
+        }
+    }
+
+    public void DisplayNotification(string discription)
+    {
+        notificationText.text = discription;
+        StartCoroutine(ShowNotification());
+    }
+
+    private IEnumerator ShowNotification()
+    { RectTransform rect = notificationParent.GetComponent<RectTransform>();
+        Vector2 startPos = new Vector2(showPoint,rect.anchoredPosition.y);
+        Vector2 targetPos = new Vector2(hidePoint, rect.anchoredPosition.y);
+       
+        rect.anchoredPosition = Vector2.zero;
+        float t = 0;
+        while (t < 1f)
+        {
+            t += Time.deltaTime * .05f;
+           rect.anchoredPosition= Vector2.Lerp(startPos, targetPos, t);
+        }
+
+        yield return new WaitForSeconds(stayTime);
+        t = 0;
+        while (t < 1f)
+        {
+            t += Time.deltaTime * .05f;
+           rect.anchoredPosition = Vector2.Lerp(targetPos, startPos, t);
         }
     }
 }

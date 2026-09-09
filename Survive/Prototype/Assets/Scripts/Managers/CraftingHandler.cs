@@ -18,9 +18,7 @@ public class CraftingHandler : MonoBehaviour
     private List<Ingredient> _currentIngredients = new();
     private Dictionary<ObjSo, List<GameObject>> _ingredientVisuals = new();
     private PlayerInventory _playerInventory;
-    private MovementHandler _movementHandler;
     private ResourceInventory _resourceInventory;
-    private WeaponInventory _weaponInventory;
     [SerializeField] private Vector3 tableOffset;
 
     [SerializeField] private Button craftButton;
@@ -35,6 +33,7 @@ public class CraftingHandler : MonoBehaviour
 
     private CraftingSO _currentSo;
     private BuildingHandler _buildingHandler;
+    private List<InventoryItem> _currentItems = new();
 
     private void OnEnable()
     {
@@ -52,9 +51,7 @@ public class CraftingHandler : MonoBehaviour
     {
         craftButton.gameObject.SetActive(false);
         _playerInventory = GetComponent<PlayerInventory>();
-        _movementHandler = GetComponent<MovementHandler>();
         _resourceInventory = FindAnyObjectByType<ResourceInventory>();
-        _weaponInventory = FindAnyObjectByType<WeaponInventory>();
         recipeBook.CategorizeRecipes(craftingSo, this);
         _buildingHandler = GetComponent<BuildingHandler>();
     }
@@ -63,7 +60,6 @@ public class CraftingHandler : MonoBehaviour
     {
         foreach (var so in testingSo)
         {
-            Debug.Log(so.resSo.Amount);
             for (int i = 0; i < so.resSo.Amount; i++)
             {
                 Craft(so);
@@ -88,10 +84,11 @@ public class CraftingHandler : MonoBehaviour
         {
             Debug.Log("new ingi");
             _currentIngredients.Add(new Ingredient { objSo = So, amount = 1 });
-            RectTransform rectTransform = uiPrefab.GetComponent<RectTransform>();
-            rectTransform.position = craftingUITransform.position;
         }
 
+        RectTransform rectTransform = uiPrefab.GetComponent<RectTransform>();
+        rectTransform.position = craftingUITransform.position;
+        _currentItems.Add(uiPrefab);
         CheckForRecipe();
     }
 
@@ -110,7 +107,7 @@ public class CraftingHandler : MonoBehaviour
             }
         }
 
-        _resourceInventory.TryPlaceItem(So, item); // issue here  is Inventory item 
+        _resourceInventory.TryPlaceItem(So, item);
     }
 
     private void CheckForRecipe()
@@ -165,11 +162,11 @@ public class CraftingHandler : MonoBehaviour
 
         obj.So = so.resSo;
         _playerInventory.AddWorldItem(result);
-//        ConsumeIngredients();// enable this 
+        //ConsumeIngredients(); // enable this 
         craftButton.gameObject.SetActive(false);
     }
 
-    private void ConsumeIngredients()
+    private void ConsumeIngredients() // in consume ingredient we need 
     {
         foreach (var req in _currentSo.ingredients)
         {
@@ -189,11 +186,14 @@ public class CraftingHandler : MonoBehaviour
         }
 
         _currentIngredients.RemoveAll(i => i.amount <= 0);
+        foreach (var item in _currentItems)
+            Destroy(item.gameObject);
+        _currentItems.Clear();
     }
 
     private void SpawnStructure(CraftingSO so) // spawns structure and lets base builder handle placement 
     {
-        _buildingHandler.SetGHostObject(so );
+        _buildingHandler.SetGHostObject(so);
     }
 
     private Vector3 GetNextIngredientSlotPosition()

@@ -354,7 +354,7 @@ public class MovementHandler : MonoBehaviour
 
     private void ActivateUI(IInteractable interactable)
     {
-        if (interactable == null) return;
+        if (interactable == null || interactable.Gm == null) return;
         IInteractionUI ac = interactable.Gm.GetComponent<IInteractionUI>();
         if(!ac.canDisplay)return;
         UIManager.instance.ActivateUi(ac);
