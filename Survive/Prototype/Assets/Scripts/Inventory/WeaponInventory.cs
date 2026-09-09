@@ -23,9 +23,10 @@ namespace Inventory
 
         public void AddWeapon(WeaponSo so, InventoryItem item)
         {
+            // we need to make sure same object item is not added to multiple 
             AvailablePos freeSlot = slots.FirstOrDefault(s => s.available);
 
-            if (freeSlot == null)
+            if (freeSlot == null || CheckSlot(item))
             {
                 Debug.Log("Weapon inventory full");
                 return;
@@ -56,6 +57,17 @@ namespace Inventory
 
             WeaponSo wso = item.so as WeaponSo;
             childObj.localScale = Vector3.one * wso.scale;
+        }
+
+        private bool CheckSlot(InventoryItem item)
+        {
+            foreach (var s in slots)
+            {
+                if (s.item == null) continue;
+                if (s.item._currentObj == item._currentObj) return true;
+            }
+
+            return false;
         }
 
         private void AlignUIItems()
@@ -90,7 +102,7 @@ namespace Inventory
             }
         }
 
-        public void RemoveWeapon(WeaponSo so) // remove inventory prefab of the weapon 
+        public void RemoveWeapon(WeaponSo so) // remove weapon is probab
         {
             int index = storedWeapons.IndexOf(so);
             if (index < 0) return;
@@ -98,8 +110,10 @@ namespace Inventory
             currentItem = uiItems[index];
             storedWeapons.RemoveAt(index);
             uiItems.RemoveAt(index);
+            if (currentItem == null) return;
             currentItem.gameObject.SetActive(false);
             FreeSlot(currentItem);
+            currentItem = null;
             // Destroy(uiItems[index].gameObject);
 
             AlignUIItems();
@@ -112,7 +126,7 @@ namespace Inventory
             if (slotCount == 0) return;
 
             // If no weapon equipped yet → start from slot 0
-           
+
             if (currentSlotIndex == -1)
                 currentSlotIndex = 0;
             else
@@ -121,7 +135,7 @@ namespace Inventory
                     : (currentSlotIndex - 1 + slotCount) % slotCount;
 
             AvailablePos nextSlot = slots[currentSlotIndex];
-           
+
             if (nextSlot.item == null)
             {
                 UnequipCurrentWeapon();
@@ -148,6 +162,7 @@ namespace Inventory
                     if (w.isEquipped)
                     {
                         w.isEquipped = false;
+
                         FreeSlot(s.item);
                     }
                 }
@@ -183,6 +198,7 @@ namespace Inventory
                 {
                     s.available = true;
                     s.item = null;
+                    Destroy(item);
                 }
             }
         }

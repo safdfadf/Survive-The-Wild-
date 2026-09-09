@@ -177,6 +177,7 @@ public class PlayerInventory : MonoBehaviour
 
     public void RemoveWeapon(WeaponSo so)
     {
+        // also remove it from the world storage maybe 
         _weaponInventory.RemoveWeapon(so);
     }
 
@@ -189,6 +190,10 @@ public class PlayerInventory : MonoBehaviour
         res.Initialize(So);
     }
 
+    public void EquipItem(bool scrollUp)
+    {
+        _weaponInventory.EquipNextWeapon(scrollUp);
+    }
     public void SetSubmitResource(ObjSo So, BaseStructure structure)
     {
         _requestedObj = So;
