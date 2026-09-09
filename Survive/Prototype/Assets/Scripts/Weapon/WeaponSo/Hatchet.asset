@@ -19,3 +19,4 @@ MonoBehaviour:
   appearanceProb: 0
   damage: 20
   block: 30
+  scale: 8

@@ -30,7 +30,8 @@ public class InventoryItem : MonoBehaviour
     {
         rect = GetComponent<RectTransform>();
         icon = GetComponent<Image>();
-        removeButton.onClick.AddListener(Remove);
+        if (rect != null)
+            removeButton.onClick.AddListener(Remove);
         _activeButtons = new List<Button> { craftButton, harvest, useMe, removeButton };
         Toggle();
     }

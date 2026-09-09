@@ -120,6 +120,7 @@ public class ResourceInventory : MonoBehaviour
         {
             for (int y = 0; y < height; y++)
             {
+                
                 var slot = slots[x, y];
                 if (IsAreaFree(x, y, size))
                 {
