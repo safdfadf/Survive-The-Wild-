@@ -404,7 +404,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5085944126746296474}
   - component: {fileID: 168596980693109903}
-  - component: {fileID: 2804351235769249056}
   - component: {fileID: 3919165193493127026}
   - component: {fileID: 9146444499941203607}
   m_Layer: 7
@@ -453,23 +452,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.22721621, y: 0.05382727, z: 1.2583807}
   m_Center: {x: 0.017320067, y: 0.007942065, z: -0.005575776}
---- !u!114 &2804351235769249056
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2810370539657348168}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f836798e4f4cbd74995479cbd00c581c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  menu: {fileID: 0}
-  craftButton: {fileID: 0}
-  harvest: {fileID: 0}
-  removeButton: {fileID: 0}
-  useMe: {fileID: 0}
 --- !u!114 &3919165193493127026
 MonoBehaviour:
   m_ObjectHideFlags: 0

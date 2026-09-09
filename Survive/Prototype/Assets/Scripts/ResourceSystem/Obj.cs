@@ -17,7 +17,7 @@ public abstract class Obj<TSo> : MonoBehaviour, IsoInitializer<TSo>, IInteractab
 
     public ResourceUI resourceUI { get; set; }
     public bool outlineMe { get; set; }
-    public bool canBeCollected { get; set; }
+    public bool canBeCollected { get; set; }// one way to do this is 
     public TSo So { get; set; }
 
     public bool canCraft { get; set; }
@@ -29,6 +29,7 @@ public abstract class Obj<TSo> : MonoBehaviour, IsoInitializer<TSo>, IInteractab
 
     public InventoryItem InventoryItem { get; set; }
     public bool canDisplay { get; set; }
+
     protected virtual void Awake()
     {
         Description = "Collect";
@@ -69,9 +70,8 @@ public abstract class Obj<TSo> : MonoBehaviour, IsoInitializer<TSo>, IInteractab
 
     public virtual void UseMe()
     {
-        PlayerRepository.instance.RemoveResourceFromInventory(this as Obj<ObjSo>,true);
+        PlayerRepository.instance.RemoveResourceFromInventory(this as Obj<ObjSo>, true);
     }
-
 
     protected virtual void SetUiBools()
     {

@@ -5,7 +5,6 @@ using Effect;
 using Player;
 using UnityEngine;
 
-//ToDo : Fire damage and Poison damage is a shared Behaviour find solution for that 
 public class PlayerBody : MonoBehaviour
 {
     // this script will keep track of player body status  
@@ -40,7 +39,7 @@ public class PlayerBody : MonoBehaviour
         {
             if (effect.damageType == DamageType.Regular)
             {
-                    _playerVitalStats.DamageToHealth(effect.damage);
+                _playerVitalStats.DamageToHealth(effect.damage);
                 Debug.Log("taking regular damage");
                 ActiveEffect woundEffect = new ActiveEffect(effect);
                 woundEffect.woundTimerRoutine = StartCoroutine(HandleWoundTimer(woundEffect));
@@ -58,7 +57,7 @@ public class PlayerBody : MonoBehaviour
 
         Debug.Log(attack.Effects[0].name);
     }
-    
+
 
     private IEnumerator HandleWoundTimer(ActiveEffect wound)
     {
@@ -72,11 +71,12 @@ public class PlayerBody : MonoBehaviour
             timer -= Time.deltaTime;
             yield return null;
         }
+
         _symptom.ExecuteSympton(_activeEffects[0]);
         ApplyInfectionEffect();
     }
 
-    private void ApplyInfectionEffect() 
+    private void ApplyInfectionEffect()
     {
         Debug.Log("Applying infection effect");
         TakeDamage(attackToSelf);
@@ -88,11 +88,10 @@ public class PlayerBody : MonoBehaviour
 
         while (active.elapsedTime < data.MaxTime)
         {
-           
             yield return new WaitForSeconds(data.timeFrame * 60f);
             active.elapsedTime += data.timeFrame;
         }
-        
+
         RemoveEffect(active);
     }
 

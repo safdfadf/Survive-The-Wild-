@@ -63,7 +63,8 @@ public class CraftingHandler : MonoBehaviour
     {
         foreach (var so in testingSo)
         {
-            for (int i = 0; i <= so.resSo.Amount; i++)
+            Debug.Log(so.resSo.Amount);
+            for (int i = 0; i < so.resSo.Amount; i++)
             {
                 Craft(so);
             }

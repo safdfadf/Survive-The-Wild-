@@ -8,7 +8,7 @@ using UnityEngine;
 using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
-//ToDo: add growth script 
+//ToDo: add growth functionality 
 public class Environment : MonoBehaviour, ItakeDamage, IsoInitializer<EnvironSo>
 {
     [SerializeField] protected int resourceDropCount;
@@ -17,11 +17,11 @@ public class Environment : MonoBehaviour, ItakeDamage, IsoInitializer<EnvironSo>
     public EnvironSo environSo { get; private set; }
     protected int currentHealth;
     protected PosInChunk cashedPosInChunk;
-    [Header("Dropables")] [SerializeField] private List<FoodSo> foodSos;
+    [Header("Dropables")] [SerializeField] private List<ObjSo> objSos;
 
     [SerializeField] private List<PosInEnvironment> pos;
 
-    [FormerlySerializedAs("_damagedVersions")] [Header("DamagedVersions")] [SerializeField]
+    [Header("DamagedVersions")] [SerializeField]
     protected List<GameObject> damagedVersions;
 
     [Header("Damage Threshold")] [SerializeField]
@@ -29,8 +29,10 @@ public class Environment : MonoBehaviour, ItakeDamage, IsoInitializer<EnvironSo>
 
     [SerializeField] private int damageStage2 = 60;
     [SerializeField] private int damageStage3 = 90;
-    [Header("Requirement")]
-    [SerializeField] private WeaponAbility requiredAbility; 
+
+    [Header("Requirement")] [SerializeField]
+    private WeaponAbility requiredAbility;
+
     private LODGroup _lodGroup;
     public bool IsEnvironment { get; set; }
     public bool IsPlayerInRange { get; set; }
@@ -45,22 +47,24 @@ public class Environment : MonoBehaviour, ItakeDamage, IsoInitializer<EnvironSo>
     {
         environSo = so;
         IsEnvironment = true;
-        SpawnFood();
+        SpawnObj();
         if (environSo == null) return;
     }
 
-    private void SpawnFood()
+    private void SpawnObj()//use probablility  
     {
-        foreach (var so in foodSos)
+        foreach (var so in objSos)
         {
             for (int i = 0; i < so.amount; i++)
             {
+                if (Random.value > so.appearanceProb)
+                    continue;   
                 Vector3 pos = GetPosition();
                 if (pos == Vector3.zero) continue;
-                GameObject food = Instantiate(so.prefab, gameObject.transform, true);
-                Food foodScript = food.GetComponent<Food>();
-                foodScript.Initialize(so);
-                food.transform.position = pos;
+                GameObject gm = Instantiate(so.prefab, gameObject.transform, true);
+                Obj<ObjSo> obj = gm.GetComponent< Obj<ObjSo>>();
+                obj.Initialize(so);
+                gm.transform.position = pos;
             }
         }
     }
@@ -85,14 +89,15 @@ public class Environment : MonoBehaviour, ItakeDamage, IsoInitializer<EnvironSo>
         IsPlayerInRange = inRange;
     }
 
-    public void TakeDamage(IAttack attack)// some of the environment like trees can only be cut by Ihatch
+    public void TakeDamage(IAttack attack) // some of the environment like trees can only be cut by Ihatch
     {
         PlayerAttack atk = attack as PlayerAttack;
-        if (requiredAbility!=null &&requiredAbility != atk.ability)
+        if (requiredAbility != null && requiredAbility != atk.ability)
         {
             //Show Notification
             return;
         }
+
         Debug.Log(gameObject.name + " taking damage " + attack.Damage);
         currentHealth -= attack.Damage;
         UpdateDamagedMeshes(attack.Damage);
@@ -101,6 +106,7 @@ public class Environment : MonoBehaviour, ItakeDamage, IsoInitializer<EnvironSo>
             Break();
         }
     }
+
     private Vector3 GetPosition()
     {
         PosInEnvironment available = pos.FirstOrDefault(p => p.isAvailable);

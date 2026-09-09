@@ -44,6 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b5fe27674df461f88ba38368c2709fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stepName: Collect 4 Wood
+  displayTask: 
   requirements:
   - so: {fileID: 11400000, guid: c86ed73cf5fd37c419c3c3ee52c1dd4c, type: 2}
     amount: 2
