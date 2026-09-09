@@ -1380,6 +1380,7 @@ GameObject:
   - component: {fileID: 5796701215567592885}
   - component: {fileID: 8429723508683712202}
   - component: {fileID: 8731085512660135307}
+  - component: {fileID: 5585694612597495462}
   m_Layer: 8
   m_Name: Rabit
   m_TagString: Untagged
@@ -1424,6 +1425,7 @@ MonoBehaviour:
     damage: 0
     effects: []
   animalAtkBehaviour: {fileID: 0}
+  requiredAbility: {fileID: 0}
   AnimalSo: {fileID: 0}
   alertRadius: 1
   playerMask:
@@ -1455,6 +1457,27 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!65 &5585694612597495462
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7570953989789132748}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Size: {x: 0.9745476, y: 0.3890105, z: 1}
+  m_Center: {x: 0.012726188, y: 0.30549476, z: 0}
 --- !u!1 &7628965469497994813
 GameObject:
   m_ObjectHideFlags: 0
