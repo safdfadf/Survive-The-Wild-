@@ -127,7 +127,6 @@ public class BuildingHandler : MonoBehaviour
         {
             Debug.Log(hit.gameObject.name);
         }
-
         canPlace = hits.Length == 0;
         _currentStructure.ToggleMat(canPlace);
     }

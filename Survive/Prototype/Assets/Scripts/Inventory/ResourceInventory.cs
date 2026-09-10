@@ -120,7 +120,6 @@ public class ResourceInventory : MonoBehaviour
         {
             for (int y = 0; y < height; y++)
             {
-                
                 var slot = slots[x, y];
                 if (IsAreaFree(x, y, size))
                 {
@@ -227,12 +226,13 @@ public class ResourceInventory : MonoBehaviour
         }
         else if (slot.cookingData != null)
         {
-            Debug.Log("slot is cooking slot");
             GameObject obj = Instantiate(heldItem.so.prefab, slot.worldPosition, Quaternion.identity);
             Obj<ObjSo> food = obj.GetComponent<Obj<ObjSo>>();
             food.So = heldItem.so;
             ICook cook = slot.cookingData.handler.GetComponent<ICook>();
             cook.ExecuteCooking(food as Food);
+            slot.ToggleAlpha(false);
+            Destroy(heldItem.gameObject);
         }
         else
         {
@@ -269,7 +269,9 @@ public class ResourceInventory : MonoBehaviour
     {
         if (obj == null)
         {
-            Debug.Log("so was null");}
+            Debug.Log("so was null");
+        }
+
         if (!resources.ContainsKey(obj.So)) return;
         if (resources[obj.So].Count == 0)
         {

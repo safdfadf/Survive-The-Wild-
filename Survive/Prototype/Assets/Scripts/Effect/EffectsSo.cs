@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Effect
 {
-    [CreateAssetMenu(fileName = "EffectSo", menuName = "Scriptable Objects/EffectSo")]
+    [CreateAssetMenu(fileName = "EffectSo", menuName = "Scriptable Objects/Effects/EffectSo")]
     public class EffectsSo : ScriptableObject
     {
         public DamageType damageType;
@@ -12,6 +12,7 @@ namespace Effect
         public float timeFrame;
         public float MaxTime;
         public string description;
+        public Sprite icon;
         public Material woundMaterial;// temp
        
     }

@@ -61,6 +61,7 @@ public class PlayerBody : MonoBehaviour
 
     private IEnumerator HandleWoundTimer(ActiveEffect wound)
     {
+        
         float timer = wound.data.MaxTime * 60f;
 
         while (timer > 0f)
@@ -90,8 +91,8 @@ public class PlayerBody : MonoBehaviour
         {
             yield return new WaitForSeconds(data.timeFrame * 60f);
             active.elapsedTime += data.timeFrame;
+            // trigger symptom 
         }
-
         RemoveEffect(active);
     }
 

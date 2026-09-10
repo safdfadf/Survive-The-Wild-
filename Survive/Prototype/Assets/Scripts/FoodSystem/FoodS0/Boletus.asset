@@ -22,4 +22,13 @@ MonoBehaviour:
   carbonCount: 7
   fatCount: 0.8
   hydrationCount: 0
+  nutrientsCount:
+    calories: 65
+    protien: 3
+    carb: 7
+    hydration: 0
+    fat: 0.8
   regionType: 0
+  cooked: {fileID: 0}
+  burnt: {fileID: 0}
+  rotten: {fileID: 0}

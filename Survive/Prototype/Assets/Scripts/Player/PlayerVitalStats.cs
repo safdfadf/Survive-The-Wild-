@@ -1,4 +1,5 @@
 using System;
+using FoodSystem;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -39,11 +40,13 @@ public class PlayerVitalStats : MonoBehaviour
     private bool _isStaminaDrain;
 
     private MovementHandler _movementHandler;
+    private PlayerBody _playerBody;
 
     private void Awake()
     {
         _movementHandler = GetComponent<MovementHandler>();
         _playerUI = GetComponent<PlayerUI>();
+        _playerBody = GetComponent<PlayerBody>();
         _currentEnergy = maxEnergy;
         _currentHealth = maxHealth;
         _currentStamina = maxStamina;
@@ -148,19 +151,21 @@ public class PlayerVitalStats : MonoBehaviour
         _playerUI.HealthSlider(_currentHealth / maxHealth);
     }
 
-    public void ConsumeFood(FoodSo so)
+    public void ConsumeFood(FoodConsumptionData so)
     {
         if (so == null) return;
-        _currentProtein = Mathf.Clamp(_currentProtein + so.proteinCount, 0f, maxProtein);
-        _currentCarb = Mathf.Clamp(_currentCarb + so.carbonCount, 0f, maxCarb);
-        _currentFat = Mathf.Clamp(_currentFat + so.fatCount, 0f, maxFat);
-        _currentHydration = Mathf.Clamp(_currentHydration + so.hydrationCount, 0f, maxHydration);
+        _currentProtein = Mathf.Clamp(_currentProtein + so.NutrientsCount.protien, 0f, maxProtein);
+        _currentCarb = Mathf.Clamp(_currentCarb + so.NutrientsCount.carb, 0f, maxCarb);
+        _currentFat = Mathf.Clamp(_currentFat + so.NutrientsCount.fat, 0f, maxFat);
+        _currentHydration = Mathf.Clamp(_currentHydration + so.NutrientsCount.hydration, 0f, maxHydration);
 
         _playerUI.EnergySlider(_currentEnergy / maxEnergy);
         _playerUI.StaminaSlider(_currentStamina / maxStamina);
 
         UpdateHealth();
         _playerUI.HealthSlider(_currentHealth / maxHealth);
+        if (so.SelfAttack.Effects.Count > 0)
+            _playerBody.TakeDamage(so.SelfAttack);
     }
 
     public void DamageToHealth(float amount)

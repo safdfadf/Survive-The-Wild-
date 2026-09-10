@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using DefaultNamespace;
+using DefaultNamespace.EventBus;
 using FoodSystem;
 using UnityEngine;
 
@@ -21,16 +22,36 @@ public class CampFire : BaseStructure, ICook // this will be base class for all 
     private bool _canIgnite;
     private bool _isBurning;
     private bool _canCook;
-    private List<Food> _foodInSpot;
+    private List<Food> _foodInSpot = new();
     private Transform[] fxObjects;
+
     protected override void Awake()
     {
         fxObjects = _fireVfx.GetComponentsInChildren<Transform>();
         base.Awake();
     }
+
     private void OnEnable()
     {
         EventBus.OnToggleTracksMenu += Ignite;
+        EventManager.Instance.reseourceEvent.onGatherResource += RemoveFood;
+    }
+
+    private void OnDisable()
+    {
+        EventBus.OnToggleTracksMenu -= Ignite;
+        EventManager.Instance.reseourceEvent.onGatherResource -= RemoveFood;
+    }
+
+    private void RemoveFood(GameObject food)
+    {
+        Food f = food.GetComponent<Food>();
+        f.canCookMe = false;
+        if (_foodInSpot.Contains(f))
+        {
+            UIManager.instance.DisplayCookingSpots(cookingSpots, gameObject);
+            _foodInSpot.Remove(f);
+        }
     }
 
     protected override void OnStructureAssembled()
@@ -135,7 +156,7 @@ public class CampFire : BaseStructure, ICook // this will be base class for all 
 
             if (damageTimer >= 60f)
             {
-                SelfAttack atk = new SelfAttack(5,Vector3.zero);
+                SelfAttack atk = new SelfAttack(5, Vector3.zero);
                 damageTimer = 0f;
                 base.TakeDamage(atk);
             }
@@ -176,55 +197,52 @@ public class CampFire : BaseStructure, ICook // this will be base class for all 
 
     private void UpdateFxScale(float scale)
     {
-     
         foreach (var t in fxObjects)
         {
-           t.localScale = new Vector3(scale, scale, scale);
+            t.localScale = new Vector3(scale, scale, scale);
         }
     }
 
     public void ExecuteCooking(Food food)
     {
+        if (food == null)
+        {
+            print("food is null");
+        }
+
+        //still need a 
         _canCook = true;
         _foodInSpot.Add(food);
     }
 
     private void CookFoods(float deltaTime)
     {
-        if (!_canCook) return;
+        if (!_canCook)
+        {
+            Debug.Log("returning");
+            return;
+        }
+
         foreach (var food in _foodInSpot)
         {
-            if (food == null) return;
+            if (food == null || !food.canCookMe) return;
 
-            switch (food.CurrentState)
+            if (food.currentState == food.rawState)
             {
-                case FoodState.Raw:
-                    food.cookTime -= deltaTime;
-                    if (food.cookTime <= 0)
-                    {
-                        food.CurrentState = FoodState.Cooked;
-                        Debug.Log(food.name + " is cooked!");
-                    }
-
-                    break;
-
-                case FoodState.Cooked:
-                    food.burnTime -= deltaTime;
-                    if (food.burnTime <= 0)
-                    {
-                        food.CurrentState = FoodState.Burnt;
-                        Debug.Log(food.name + " is burnt!");
-                    }
-
-                    break;
-
-                case FoodState.Burnt:
-                    food.AddBurntFoodDebuff();
-                    break;
+                food.cookTime -= deltaTime;
+                if (food.cookTime <= 0)
+                {
+                    food.ApplyState(food.cookState);
+                }
             }
-
-            _canCook = false;
-            Debug.Log(_canCook + " setting can cook to false");
+            else if (food.currentState == food.cookState)
+            {
+                food.burnTime -= deltaTime;
+                if (food.burnTime <= 0)
+                {
+                    food.ApplyState(food.burntState);
+                }
+            }
         }
     }
 }

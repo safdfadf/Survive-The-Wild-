@@ -91,7 +91,7 @@ public class InputManager : MonoBehaviour
                 EventBus.onAttack.Invoke();
             }
         };
-        _cursorToggle = ctx => _player.ToggleCursor();
+   //     _cursorToggle = ctx => _player.ToggleCursor();
         _inventoryToggle = ctx => { _playerUI.ToggleInventory(); };
         _resourceMenuToggle = ctx => ToggleCollectableMenu();
         _toggleTarckMenu = ctx => ToggleTracksMenu();
@@ -122,7 +122,7 @@ public class InputManager : MonoBehaviour
         _controls.PlayerInteract.Shoot.performed += OnInteract;
         _controls.PlayerInteract.Shoot.canceled += OnInteract;
 
-        _controls.PlayerInteract.CursorOnOf.performed += _cursorToggle;
+    //    _controls.PlayerInteract.CursorOnOf.performed += _cursorToggle;
         _controls.PlayerInteract.Inventory.performed += _inventoryToggle;
         _controls.PlayerInteract.ResourceMenu.performed += _resourceMenuToggle;
         _controls.PlayerInteract.Interact.performed += _toggleTarckMenu;
@@ -150,7 +150,7 @@ public class InputManager : MonoBehaviour
         _controls.PlayerInteract.Shoot.performed -= _shootPerformed;
         _controls.PlayerInteract.Shoot.canceled -= _shootPerformed;
         _controls.PlayerInteract.Scroll.canceled -= Scroll;
-        _controls.PlayerInteract.CursorOnOf.performed -= _cursorToggle;
+     //   _controls.PlayerInteract.CursorOnOf.performed -= _cursorToggle;
         _controls.PlayerInteract.Inventory.performed -= _inventoryToggle;
         _controls.PlayerInteract.ResourceMenu.performed -= _resourceMenuToggle;
         _controls.PlayerMovement.HunerSense.performed -= _toggleHuntetSenses;

@@ -1,6 +1,7 @@
 ﻿using System;
 using DefaultNamespace.Interface;
 using DefaultNamespace.ResourceSystem;
+using Effect;
 using FoodSystem;
 using Player;
 using UnityEngine;
@@ -27,7 +28,13 @@ namespace DefaultNamespace
         public GameObject obj { get; set; }
         [SerializeField] private float allowedRadius = 2f;
         private Vector3 lastValidPos;
+        private FoodConsumptionData data = new();
 
+        [Header("food poisoning Amount")] [SerializeField]
+        private float minPoisonAmount;
+
+        [SerializeField] private float maxPoisonAmount;
+        [SerializeField] private EffectsSo parasiteEffect;
         private void Awake()
         {
             canBeCollected = false;
@@ -40,7 +47,9 @@ namespace DefaultNamespace
             canUse = true;
             canDisplay = true;
             obj = emptyobj;
+            data.NutrientsCount = waterSo.nutrientsCount;
         }
+
         public void LateUpdate()
         {
             if (!isHit) return;
@@ -60,29 +69,41 @@ namespace DefaultNamespace
         {
         }
 
-        private bool IsOutOfBounds(Vector3 position) //1 we need to make sure player is in water bounderies 
-            //2) when player is water bounds only show it in alllowed radius which is updated based on player pos 
-        {
-            float dist = Vector3.Distance(transform.position, position);
-            return dist > allowedRadius;
-        }
-
         public void Harvest()
         {
         }
 
         public void UseMe()
         {
-            PlayerRepository.instance.ConsumeFood(waterSo);
+            CheckForPoisoning();
+            PlayerRepository.instance.ConsumeFood(data);
         }
-        // first we need to know ray cast is hitting thi object 
-        // then update test objs pos on rays pos -y 
-    }
 
-    public enum DirtLevel
-    {
-        Safe,
-        UnSafe,
-        Dirty
+        private void CheckForPoisoning()
+        {
+            // if current water state is unsfae
+            if (waterState == WaterState.Safe) return;
+
+            float poisonChance = 0f;
+
+            switch (waterState)
+            {
+                case WaterState.UnSafe:
+                    poisonChance = 0.40f; // 40% chance
+                    break;
+
+                case WaterState.Dirty:
+                    poisonChance = 0.75f; // 75% chance
+                    break;
+            }
+
+            if (UnityEngine.Random.value <= poisonChance)
+            {
+                float poisonAmount = UnityEngine.Random.Range(minPoisonAmount, maxPoisonAmount);
+                SelfAttack attack = new SelfAttack(Mathf.CeilToInt(poisonAmount) , Vector3.zero);
+                attack.Effects.Add(parasiteEffect);
+                data.SelfAttack = attack;
+            }
+        }
     }
 }

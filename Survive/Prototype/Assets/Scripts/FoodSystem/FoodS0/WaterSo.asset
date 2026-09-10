@@ -17,9 +17,13 @@ MonoBehaviour:
   amount: 0
   size: {x: 0, y: 0}
   appearanceProb: 0
-  calories: 0
-  proteinCount: 0
-  carbonCount: 0
-  fatCount: 0
-  hydrationCount: 50
+  nutrientsCount:
+    calories: 0
+    protien: 0
+    carb: 0
+    hydration: 50
+    fat: 0
   regionType: 0
+  cooked: {fileID: 0}
+  burnt: {fileID: 0}
+  rotten: {fileID: 0}

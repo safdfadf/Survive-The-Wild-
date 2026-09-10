@@ -1,5 +1,6 @@
 ﻿using System;
 using Effect;
+using FoodSystem;
 using UnityEngine;
 
 namespace Player
@@ -78,7 +79,7 @@ namespace Player
         }
 
        
-        public void ConsumeFood(FoodSo so)
+        public void ConsumeFood(FoodConsumptionData so)
         {
             _playerVitalStats.ConsumeFood(so);
         }
@@ -112,9 +113,9 @@ namespace Player
             _playerInventory.MakeItemAndCraft(o);
         }
 
-        public void ToggleCursor(bool isCursorOn)
+        public void ToggleCursor(bool CursorOn)
         {
-            _movementHandler.ToggleCursor();
+            _movementHandler.ToggleCursor(CursorOn);
         }
 
         public void SetAttacking(bool isAttacking)

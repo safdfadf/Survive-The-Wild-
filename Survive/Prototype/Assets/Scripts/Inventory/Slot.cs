@@ -27,6 +27,7 @@ public class Slot : MonoBehaviour, IPointerClickHandler
         isOccupied = false;
         _img = GetComponentInChildren<Image>();
         _regularColor = _img.color;
+      
         ToggleAlpha(false);
     }
 
@@ -78,7 +79,7 @@ public class Slot : MonoBehaviour, IPointerClickHandler
         inventory.OnSlotClicked(this);
     }
 
-    private void ToggleAlpha(bool isOn)
+    public void ToggleAlpha(bool isOn)
     {
         Color c = _img.color;
         c.a = isOn ? 1 : 0;

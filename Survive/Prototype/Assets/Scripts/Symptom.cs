@@ -16,11 +16,7 @@ public class Symptom : MonoBehaviour
 
     [SerializeField] private GameObject blurGameObject;
 
-    private void Awake()
-    {
-   
-    }
-
+ 
     public void ExecuteSympton(ActiveEffect activeEffect)
     {
         switch (activeEffect.data.damageType)

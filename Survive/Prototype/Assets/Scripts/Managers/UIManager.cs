@@ -141,6 +141,7 @@ public class UIManager : MonoBehaviour
             uiSlot.cookingSpotIndex = i;
             uiSlot.worldPosition = worldPositions[i].position;
             uiSlot.rect.anchoredPosition = canvasPos;
+            uiSlot.ToggleAlpha(true);
             cookingSlots.Add(uiSlot);
         }
     }
