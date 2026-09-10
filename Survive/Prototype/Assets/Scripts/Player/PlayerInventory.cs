@@ -113,6 +113,14 @@ public class PlayerInventory : MonoBehaviour
 
     private void MakeUI(ObjSo so, Obj<ObjSo> res)
     {
+        if (res.InventoryItem != null)
+        {
+         
+            InventoryItem i = res.InventoryItem;
+            i.gameObject.SetActive(true);
+            _weaponInventory.AddWeapon(so as WeaponSo, i);
+            return;
+        }
         GameObject uiObj = Instantiate(uiItemPrefab);
         InventoryItem item = uiObj.GetComponent<InventoryItem>();
         SetInventoryItem(res, so, item);
@@ -174,13 +182,6 @@ public class PlayerInventory : MonoBehaviour
             SpawnObject(So);
         }
     }
-
-    public void RemoveWeapon(WeaponSo so)
-    {
-        // also remove it from the world storage maybe 
-        _weaponInventory.RemoveWeapon(so);
-    }
-
     private void SpawnObject(ObjSo So)
     {
         GameObject

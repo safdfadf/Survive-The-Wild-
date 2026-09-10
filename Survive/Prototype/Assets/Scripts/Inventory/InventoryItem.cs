@@ -33,7 +33,7 @@ public class InventoryItem : MonoBehaviour
         if (rect != null)
             removeButton.onClick.AddListener(Remove);
         _activeButtons = new List<Button> { craftButton, harvest, useMe, removeButton };
-        Toggle();
+    //    Toggle();
     }
 
     public void SetItem(Sprite sprite, GameObject Obj)

@@ -438,14 +438,13 @@ public class MovementHandler : MonoBehaviour
 
     public void SwitchWeapon(bool scrollUp)
     {
-        if (CurrentWeapon == null) return;
-        _playerInventory.AddWorldItem(CurrentWeapon.gameObject);
+        if (CurrentWeapon != null)
+            _playerInventory.AddWorldItem(CurrentWeapon.gameObject);
         _playerInventory.EquipItem(scrollUp);
     }
 
     public void EquipItem(BaseWeapon weapon)
     {
-        Debug.Log("equip new weapon");
         CurrentWeapon = weapon;
         if (CurrentWeapon.isLeftHanded)
         {

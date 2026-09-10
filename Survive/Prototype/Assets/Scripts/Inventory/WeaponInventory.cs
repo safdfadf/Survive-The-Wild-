@@ -23,19 +23,15 @@ namespace Inventory
 
         public void AddWeapon(WeaponSo so, InventoryItem item)
         {
-            // we need to make sure same object item is not added to multiple 
             AvailablePos freeSlot = slots.FirstOrDefault(s => s.available);
 
-            if (freeSlot == null || CheckSlot(item))
+            if (freeSlot == null)
             {
-                Debug.Log("Weapon inventory full");
+                Debug.Log("slot was null ");
                 return;
             }
 
-            storedWeapons.Add(so);
-            uiItems.Add(item);
 
-            // Assign item to slot
             freeSlot.available = false;
             freeSlot.item = item;
 
@@ -57,67 +53,9 @@ namespace Inventory
 
             WeaponSo wso = item.so as WeaponSo;
             childObj.localScale = Vector3.one * wso.scale;
+            Debug.Log(item._currentObj + "try adding");
         }
 
-        private bool CheckSlot(InventoryItem item)
-        {
-            foreach (var s in slots)
-            {
-                if (s.item == null) continue;
-                if (s.item._currentObj == item._currentObj) return true;
-            }
-
-            return false;
-        }
-
-        private void AlignUIItems()
-        {
-            for (int i = 0; i < uiItems.Count; i++)
-            {
-                RectTransform itemRect = uiItems[i].rect;
-                RectTransform childObj = itemRect.GetChild(0).GetComponent<RectTransform>();
-                Image img = uiItems[i].GetComponent<Image>();
-                img.enabled = false;
-
-                AvailablePos slot = GetAvailableSlots();
-                if (slot == null)
-                {
-                    Debug.LogWarning("No available slot for item: " + uiItems[i].name);
-                    return;
-                }
-
-                slot.item = uiItems[i];
-
-                RectTransform t = slot.pos.GetComponent<RectTransform>();
-                Image childI = childObj.GetComponent<Image>();
-                childI.sprite = img.sprite;
-                childI.enabled = true;
-
-                itemRect.SetParent(t);
-                itemRect.anchoredPosition = Vector2.zero;
-                childObj.anchoredPosition = Vector2.zero;
-                childObj.localRotation = Quaternion.identity;
-                WeaponSo so = uiItems[i].so as WeaponSo;
-                childObj.localScale = Vector3.one * so.scale;
-            }
-        }
-
-        public void RemoveWeapon(WeaponSo so) // remove weapon is probab
-        {
-            int index = storedWeapons.IndexOf(so);
-            if (index < 0) return;
-
-            currentItem = uiItems[index];
-            storedWeapons.RemoveAt(index);
-            uiItems.RemoveAt(index);
-            if (currentItem == null) return;
-            currentItem.gameObject.SetActive(false);
-            FreeSlot(currentItem);
-            currentItem = null;
-            // Destroy(uiItems[index].gameObject);
-
-            AlignUIItems();
-        }
 
         public void EquipNextWeapon(bool scrollUp)
         {
@@ -138,7 +76,7 @@ namespace Inventory
 
             if (nextSlot.item == null)
             {
-                UnequipCurrentWeapon();
+                //    UnequipCurrentWeapon();
                 Debug.Log("Slot empty → player empty-handed");
                 return;
             }
@@ -146,21 +84,23 @@ namespace Inventory
             InventoryItem nextItem = nextSlot.item;
             BaseWeapon weapon = nextItem._currentObj.GetComponent<BaseWeapon>();
 
-            UnequipCurrentWeapon();
+            //    UnequipCurrentWeapon();
 
             weapon.isEquipped = true;
             weapon.UseMe();
+            FreeSlot(nextItem); // remove equipped item's inventory ui 
         }
 
         private void UnequipCurrentWeapon()
         {
             foreach (var s in slots)
             {
-                if (s.item != null)
+                if (s.item != null) // this condition should be 
                 {
                     BaseWeapon w = s.item._currentObj.GetComponent<BaseWeapon>();
                     if (w.isEquipped)
                     {
+                        Debug.Log(w.name);
                         w.isEquipped = false;
 
                         FreeSlot(s.item);
@@ -198,7 +138,7 @@ namespace Inventory
                 {
                     s.available = true;
                     s.item = null;
-                    Destroy(item);
+                    item.gameObject.SetActive(false);
                 }
             }
         }
