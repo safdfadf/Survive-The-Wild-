@@ -9875,8 +9875,8 @@ GameObject:
   - component: {fileID: 8755818976717823960}
   - component: {fileID: -4867088237296332636}
   - component: {fileID: 4095662600821654924}
-  - component: {fileID: 6397708284772177575}
   - component: {fileID: 2367513296970332002}
+  - component: {fileID: 6645027732956125000}
   m_Layer: 0
   m_Name: Fire
   m_TagString: Untagged
@@ -9918,7 +9918,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   resourceDropCount: 0
   dropOffset: {x: 0, y: 0, z: 0}
-  foodSos: []
+  objSos: []
   pos: []
   damagedVersions:
   - {fileID: 6366551207998023065}
@@ -9927,8 +9927,9 @@ MonoBehaviour:
   damageStage1: 25
   damageStage2: 60
   damageStage3: 90
+  requiredAbility: {fileID: 0}
   _combustibleIngredients:
-  - resourceSo: {fileID: 11400000, guid: b7215a070f1ca7b459087577a8b803e1, type: 2}
+  - objSo: {fileID: 11400000, guid: b7215a070f1ca7b459087577a8b803e1, type: 2}
     amount: 1
   cookingSpots:
   - {fileID: 2194732193837992413}
@@ -9952,27 +9953,6 @@ MonoBehaviour:
   resourceName: {fileID: 7986618906328628811}
   amount: {fileID: 7283745317403744108}
   parent: {fileID: 8378274173197818674}
---- !u!65 &6397708284772177575
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3151341399998811539}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1.8650103, y: 0.52375084, z: 1.7559481}
-  m_Center: {x: -0.14464569, y: 0.23812458, z: 0.067643404}
 --- !u!205 &2367513296970332002
 LODGroup:
   m_ObjectHideFlags: 0
@@ -9998,6 +9978,27 @@ LODGroup:
     fadeTransitionWidth: 0
     renderers: []
   m_Enabled: 1
+--- !u!135 &6645027732956125000
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3151341399998811539}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 2
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &3646957500161529431
 GameObject:
   m_ObjectHideFlags: 0

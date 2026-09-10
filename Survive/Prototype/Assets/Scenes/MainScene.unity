@@ -2565,6 +2565,9 @@ MonoBehaviour:
   waterSo: {fileID: 11400000, guid: 3483a145ec13d574482cbee18e863b4c, type: 2}
   emptyobj: {fileID: 438041936}
   allowedRadius: 2
+  minPoisonAmount: 0
+  maxPoisonAmount: 0
+  parasiteEffect: {fileID: 0}
 --- !u!114 &478308938
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2578,6 +2581,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   waterSo: {fileID: 11400000, guid: 3483a145ec13d574482cbee18e863b4c, type: 2}
+  minPoisonAmount: 0
+  maxPoisonAmount: 0
 --- !u!65 &478308939
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4612,7 +4617,10 @@ MonoBehaviour:
   _weaponInventory: {fileID: 1952130103}
   worldStorage: {fileID: 2144131478}
   ArrowSo: {fileID: 0}
-  testResource: []
+  testResource:
+  - {fileID: 11400000, guid: 27c789396ea0e234f9d51213578af493, type: 2}
+  - {fileID: 11400000, guid: b7215a070f1ca7b459087577a8b803e1, type: 2}
+  - {fileID: 11400000, guid: b7215a070f1ca7b459087577a8b803e1, type: 2}
 --- !u!114 &848024449
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4771,7 +4779,7 @@ MonoBehaviour:
     m_Bits: 8
   collisionMask:
     serializedVersion: 2
-    m_Bits: 375
+    m_Bits: 310
   socketSearchRadius: 2
   structureMask:
     serializedVersion: 2
@@ -13191,7 +13199,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
   m_AnchoredPosition: {x: 1250, y: 304}
-  m_SizeDelta: {x: 800, y: 800}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1849152902
 CanvasRenderer:
@@ -14460,7 +14468,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1cfddb2ee54d4373bcfb793101c5195a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSlots: 4
   slots:
   - pos: {fileID: 1083059277}
     available: 1

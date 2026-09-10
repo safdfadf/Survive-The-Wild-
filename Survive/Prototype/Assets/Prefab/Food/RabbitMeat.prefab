@@ -297,11 +297,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2fc8069ea801c64caec67dfd6e9cb6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canHarvest: 0
-  description: Collect
-  useMeDescription: 
   cookTime: 10
   burnTime: 20
+  cookedMaterial: {fileID: 2100000, guid: ac54ac0b0a3f88a4aa589618f65b4015, type: 2}
+  burntMaterial: {fileID: 2100000, guid: 0e985a81c87c2e247aaac57f66e24c2c, type: 2}
+  canCookMe: 1
+  minpoisonProbab: 0
+  maxpoisonProbab: 0
+  rawState:
+    sanityEffect: -2
+    isPoison: 1
+    effect: {fileID: 11400000, guid: 658c1bd50dbf21441ac3a71e7f6fffe8, type: 2}
+    material: {fileID: 2100000, guid: 74416f31d8332314fb62aa877ea72ebe, type: 2}
+  cookState:
+    sanityEffect: 2
+    isPoison: 0
+    effect: {fileID: 0}
+    material: {fileID: 2100000, guid: ac54ac0b0a3f88a4aa589618f65b4015, type: 2}
+  burntState:
+    sanityEffect: -2
+    isPoison: 0
+    effect: {fileID: 0}
+    material: {fileID: 2100000, guid: 0e985a81c87c2e247aaac57f66e24c2c, type: 2}
+  currentStateData:
+    sanityEffect: 0
+    isPoison: 0
+    effect: {fileID: 0}
+    material: {fileID: 0}
 --- !u!1 &7663275863110032566
 GameObject:
   m_ObjectHideFlags: 0
