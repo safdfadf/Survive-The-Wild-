@@ -1784,6 +1784,19 @@ MonoBehaviour:
   runSpeed: 12
   fleeSpeed: 14
   followPoint: {fileID: 4927684963539932423}
+  _animalAttack:
+    damage: 0
+    effects: []
+  animalAtkBehaviour: {fileID: 0}
+  requiredAbility: {fileID: 11400000, guid: 704126e62b7d502428b912f629fb1b74, type: 2}
+  AnimalSo: {fileID: 0}
+  leftEye: {fileID: 0}
+  rightEye: {fileID: 0}
+  eyeSightDistance: 20
+  eyeSightAngle: 45
+  obstructionMask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!195 &1111393339059093989
 NavMeshAgent:
   m_ObjectHideFlags: 0

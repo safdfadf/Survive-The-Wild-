@@ -186,7 +186,7 @@ GameObject:
   - component: {fileID: 3986609982292252204}
   - component: {fileID: 7711397739290567922}
   m_Layer: 7
-  m_Name: Meat
+  m_Name: RabbitMeat
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

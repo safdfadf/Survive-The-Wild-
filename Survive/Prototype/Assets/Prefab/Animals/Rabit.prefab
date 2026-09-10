@@ -1425,7 +1425,7 @@ MonoBehaviour:
     damage: 0
     effects: []
   animalAtkBehaviour: {fileID: 0}
-  requiredAbility: {fileID: 0}
+  requiredAbility: {fileID: 11400000, guid: 704126e62b7d502428b912f629fb1b74, type: 2}
   AnimalSo: {fileID: 0}
   alertRadius: 1
   playerMask:
