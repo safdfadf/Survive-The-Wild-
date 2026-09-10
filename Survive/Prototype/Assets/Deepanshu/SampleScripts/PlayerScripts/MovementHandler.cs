@@ -272,9 +272,9 @@ public class MovementHandler : MonoBehaviour
         characterController.Move(_velocity * Time.deltaTime);
     }
 
-    public void ToggleCursor()
+    public void ToggleCursor(bool cursorOn)
     {
-        if (Cursor.lockState == CursorLockMode.Locked)
+        if (cursorOn)
         {
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
@@ -439,7 +439,11 @@ public class MovementHandler : MonoBehaviour
     public void SwitchWeapon(bool scrollUp)
     {
         if (CurrentWeapon != null)
+        {
+            CurrentWeapon.UnEquipMe();
             _playerInventory.AddWorldItem(CurrentWeapon.gameObject);
+        }
+
         _playerInventory.EquipItem(scrollUp);
     }
 
