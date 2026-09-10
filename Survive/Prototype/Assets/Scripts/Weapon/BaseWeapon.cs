@@ -29,7 +29,8 @@ public class BaseWeapon : Obj<ObjSo>
     public PlayerAnimator animator { get; private set; }
 
     private Vector3 crossHairPoint;
-
+    
+    public bool isEquipped { get;  set; }
     public WeaponAbility Ability => ability;
     protected override void Awake()
     {
@@ -60,19 +61,25 @@ public class BaseWeapon : Obj<ObjSo>
         {
             b.Initialize(data, animator, this);
         }
-
-        behaviours[0].isEquipped = true;
-        _activeBehaviour.OnEquip();
         crosshair.SetActive(false);
     }
 
 
     public override void UseMe()
     {
+        isEquipped = true;
+        _activeBehaviour.OnEquip();
         player.EquipItem(this);
-        PlayerRepository.instance.RemoveWeapon(So as WeaponSo);
+     //   PlayerRepository.instance.RemoveWeapon(So as WeaponSo);
+        
     }
 
+    public void UnEquipMe()
+    {
+        isEquipped = false;
+        _activeBehaviour.OnUnEquip();
+        
+    }
     public void DeliverDamage()
     {
         _activeBehaviour.DeliverDamage();
