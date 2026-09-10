@@ -17,3 +17,4 @@ MonoBehaviour:
   PlayerLevelRequired: 1
   QuestSteps:
   - {fileID: 8698992301795059399, guid: 40a4451f004b92541ba172e370b405ac, type: 3}
+  ExperienceReward: 0

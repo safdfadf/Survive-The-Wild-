@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 
 namespace DefaultNamespace.Weapon
 {
+    // how do we control animator as we switch through weapon  
     public class WeaponBehaviour : MonoBehaviour
     {
         protected BaseWeapon weapon;
@@ -11,7 +12,7 @@ namespace DefaultNamespace.Weapon
         protected Transform aimTarget;
 
         protected WeaponData data;
-        [HideInInspector] public bool isEquipped;
+      
         protected Transform cameraTransform;
 
         public virtual void Initialize(WeaponData data, PlayerAnimator animator, BaseWeapon weapon)
@@ -25,8 +26,13 @@ namespace DefaultNamespace.Weapon
 
         public virtual void OnEquip()
         {
+          
         }
 
+        public virtual void OnUnEquip()
+        {
+            
+        }
         protected virtual void Attack()
         {
         }

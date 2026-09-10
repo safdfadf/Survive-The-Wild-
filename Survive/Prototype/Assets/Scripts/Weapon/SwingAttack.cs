@@ -19,7 +19,7 @@ namespace DefaultNamespace.Weapon
 
         public override void OnInput(InputAction.CallbackContext ctx)
         {
-            if (!isEquipped) return;
+            if (weapon.isEquipped) return;
             switch (ctx.interaction)
             {
                 case TapInteraction:
@@ -41,7 +41,13 @@ namespace DefaultNamespace.Weapon
         public override void OnEquip()
         {
             animator.HandWeaponEquip(true);
+            base.OnEquip();
           
+        }
+
+        public override void OnUnEquip()
+        {
+            animator.HandWeaponEquip(false);
         }
 
         protected virtual GameObject IsInRange()

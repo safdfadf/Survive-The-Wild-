@@ -77,10 +77,7 @@ namespace Player
             _playerInventory.RemoveResource(resource,isToBeDestroy);
         }
 
-        public void RemoveWeapon(WeaponSo so)
-        {
-            _playerInventory.RemoveWeapon(so);
-        }
+       
         public void ConsumeFood(FoodSo so)
         {
             _playerVitalStats.ConsumeFood(so);

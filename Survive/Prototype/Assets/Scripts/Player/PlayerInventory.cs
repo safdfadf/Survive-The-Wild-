@@ -83,8 +83,10 @@ public class PlayerInventory : MonoBehaviour
 
         if (worldObj.TryGetComponent<Food>(out var food))
         {
+         
             FoodSo foodSo = food.So as FoodSo;
-            AddToResPool(foodSo, worldObj);
+            if( foodSo == null){print("so is nll");}
+            AddToResPool(food.So, worldObj);
             MakeUI(foodSo, food);
             return;
         }

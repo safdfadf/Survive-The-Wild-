@@ -6,5 +6,5 @@ using UnityEngine.UI;
 public class CraftingSO : ScriptableObject
 {
     public Ingredient[] ingredients;
-    public ObjSo resSo; 
+    public ObjSo resSo;//result 
 }

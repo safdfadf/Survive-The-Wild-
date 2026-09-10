@@ -7,7 +7,6 @@ namespace Inventory
 {
     public class WeaponInventory : MonoBehaviour
     {
-        [SerializeField] private int maxSlots = 4;
         [SerializeField] private List<AvailablePos> slots;
         private AvailablePos _lastSlot;
         private RectTransform rect;
@@ -76,48 +75,16 @@ namespace Inventory
 
             if (nextSlot.item == null)
             {
-                //    UnequipCurrentWeapon();
                 Debug.Log("Slot empty → player empty-handed");
                 return;
             }
-
             InventoryItem nextItem = nextSlot.item;
             BaseWeapon weapon = nextItem._currentObj.GetComponent<BaseWeapon>();
-
-            //    UnequipCurrentWeapon();
-
-            weapon.isEquipped = true;
             weapon.UseMe();
             FreeSlot(nextItem); // remove equipped item's inventory ui 
         }
 
-        private void UnequipCurrentWeapon()
-        {
-            foreach (var s in slots)
-            {
-                if (s.item != null) // this condition should be 
-                {
-                    BaseWeapon w = s.item._currentObj.GetComponent<BaseWeapon>();
-                    if (w.isEquipped)
-                    {
-                        Debug.Log(w.name);
-                        w.isEquipped = false;
-
-                        FreeSlot(s.item);
-                    }
-                }
-            }
-        }
-
-        private int GetCurrentIndex()
-        {
-            return uiItems.FindIndex(item =>
-            {
-                BaseWeapon weapon = item._currentObj.GetComponent<BaseWeapon>();
-                return weapon.isEquipped;
-            });
-        }
-
+       
         private AvailablePos GetAvailableSlots()
         {
             foreach (var s in slots)

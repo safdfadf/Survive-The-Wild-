@@ -7,7 +7,7 @@ public class PhoneScript : MonoBehaviour
   [SerializeField] private GameObject Compass;
   [SerializeField] private GameObject VitalStats;
    private Animator _animator;
-   private bool _isPhoneActive;
+   public bool IsPhoneActive{get; private set;}
    private int _currentIndex;
 
    private void Awake()
@@ -18,18 +18,18 @@ public class PhoneScript : MonoBehaviour
 
    public void MoveInPhone()
    {
-       _isPhoneActive = true;
+       IsPhoneActive = true;
        _animator.SetBool("phoneIn",true);
    }
 
    public void MoveOutPhone()
    {
-       _isPhoneActive = false;
+       IsPhoneActive = false;
        _animator.SetBool("phoneIn",false);
    }
    public void Scroll(InputAction.CallbackContext context)
    {
-       if (!_isPhoneActive) return;
+       if (!IsPhoneActive) return;
 
        Vector2 scroll = context.ReadValue<Vector2>();
 

@@ -18,7 +18,7 @@ MonoBehaviour:
   regionType: 0
   minAmount: 1
   maxAmount: 4
-  resourceSo: {fileID: 11400000, guid: 632089d7767cb1e46831c69d260859ab, type: 2}
+  collectable: {fileID: 11400000, guid: 27c789396ea0e234f9d51213578af493, type: 2}
   TrackMesh: []
   spawnProbability: 8
   isAggresive: 0

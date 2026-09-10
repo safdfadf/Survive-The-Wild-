@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using Animal.States;
+using DefaultNamespace.EventBus;
 using DefaultNamespace.Interface;
 using DefaultNamespace.Weapon;
 using Player;
@@ -157,9 +158,8 @@ public class AnimalBase : MonoBehaviour, IInteractionUI, IInteractable
 
     private void DropResource()
     {
-        ObjSo objSo = AnimalSo.objSo;
-        GameObject obj = Instantiate(objSo.prefab, transform.position + new Vector3(0, .5f, 0),
-            Quaternion.identity);
+        ObjSo objSo = AnimalSo.collectable;
+        GameObject obj = GlobalPool.instance.Get(objSo.prefab, transform.position + new Vector3(0, .1f, 0));
         Obj<ObjSo> baseObj = obj.GetComponent<Obj<ObjSo>>();
         if (baseObj != null)
         {
@@ -173,6 +173,9 @@ public class AnimalBase : MonoBehaviour, IInteractionUI, IInteractable
             collider.enabled = true;
             collider.isTrigger = true;
         }
+
+        GlobalPool.instance.Return(AnimalSo.prefab, gameObject);
+        EventManager.Instance.reseourceEvent.GatherResource(baseObj.gameObject); //Todo:  remove this 
     }
 
     public virtual void MoveTo(Vector3 destination, Action onArrived = null, float? speedOverride = null)
@@ -378,18 +381,23 @@ public class AnimalBase : MonoBehaviour, IInteractionUI, IInteractable
     public void Harvest()
     {
         BaseWeapon weapon = PlayerRepository.instance.GetCurrentWeapon();
-        if (weapon == null)
-        {
-            Debug.Log("weapon is null");
-        }
 
         if (weapon == null || weapon.Ability == null || weapon.Ability != requiredAbility)
         {
-            Debug.Log("show stuff");
+            print(weapon + "" + "weapon.Ability");
             UIManager.instance.DisplayNotification("You dont have the required tool");
             return;
         }
-        // start Skinning 
+
+        // now lets add skinning element to this : wait for couple of secs and either send food to the inventory or drop 
+        StartCoroutine(Skinning());
+    }
+
+    private IEnumerator Skinning()
+    {
+        // skinning effetc 
+        yield return new WaitForSeconds(.5f);
+        DropResource();
     }
 
     public void UseMe()

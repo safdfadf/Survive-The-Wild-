@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47bfb8fec6adf8a4eaec7050e0502b1c, type: 3}
   m_Name: Poison
   m_EditorClassIdentifier: 
-  symptoms: 020000000100000003000000
+  damageType: 0
   damage: 10
   timeFrame: 60
   MaxTime: 12
+  description: Guide for poison
   woundMaterial: {fileID: 2100000, guid: 00a3f1174317fb24f97e0320192a4fbb, type: 2}

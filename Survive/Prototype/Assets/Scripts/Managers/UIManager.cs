@@ -175,6 +175,7 @@ public class UIManager : MonoBehaviour
             Debug.LogWarning("No interaction UI selected");
             return;
         }
+
         if (_currentTarget.canCraft)
         {
             _activeButtons.Add(craftButton);
@@ -277,16 +278,17 @@ public class UIManager : MonoBehaviour
     }
 
     private IEnumerator ShowNotification()
-    { RectTransform rect = notificationParent.GetComponent<RectTransform>();
-        Vector2 startPos = new Vector2(showPoint,rect.anchoredPosition.y);
+    {
+        RectTransform rect = notificationParent.GetComponent<RectTransform>();
+        Vector2 startPos = new Vector2(showPoint, rect.anchoredPosition.y);
         Vector2 targetPos = new Vector2(hidePoint, rect.anchoredPosition.y);
-       
+
         rect.anchoredPosition = Vector2.zero;
         float t = 0;
         while (t < 1f)
         {
             t += Time.deltaTime * .05f;
-           rect.anchoredPosition= Vector2.Lerp(startPos, targetPos, t);
+            rect.anchoredPosition = Vector2.Lerp(startPos, targetPos, t);
         }
 
         yield return new WaitForSeconds(stayTime);
@@ -294,7 +296,7 @@ public class UIManager : MonoBehaviour
         while (t < 1f)
         {
             t += Time.deltaTime * .05f;
-           rect.anchoredPosition = Vector2.Lerp(targetPos, startPos, t);
+            rect.anchoredPosition = Vector2.Lerp(targetPos, startPos, t);
         }
     }
 }

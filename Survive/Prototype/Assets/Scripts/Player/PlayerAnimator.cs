@@ -31,9 +31,9 @@ public class PlayerAnimator : MonoBehaviour
         float newWeight = Mathf.Lerp(currentWeight, targetWeight, Time.deltaTime * 10f);
         animator.SetLayerWeight(upperBodyLayerIndex, newWeight);
     }
-    public void DrawArrow()
+    public void DrawArrow(bool toggle)
     {
-        animator.SetTrigger("Draw");
+        animator.SetBool("BowEquipped",toggle);
     }
     public void Aim(bool isAiming)
     {

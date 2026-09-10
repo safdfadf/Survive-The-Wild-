@@ -4638,6 +4638,8 @@ MonoBehaviour:
   testingSo:
   - {fileID: 11400000, guid: 15af8bb8594c95447afdf7794853d300, type: 2}
   - {fileID: 11400000, guid: 9752ee708873a9a4ab53dd37a570a44c, type: 2}
+  - {fileID: 11400000, guid: 312a35121394ecd489a76af6cf8bdb65, type: 2}
+  - {fileID: 11400000, guid: 312a35121394ecd489a76af6cf8bdb65, type: 2}
   tableOffset: {x: 0, y: 0, z: -0.1}
   craftButton: {fileID: 1605686666}
   recipeBook: {fileID: 535103729}
@@ -14462,12 +14464,16 @@ MonoBehaviour:
   slots:
   - pos: {fileID: 1083059277}
     available: 1
+    item: {fileID: 0}
   - pos: {fileID: 31555544}
     available: 1
+    item: {fileID: 0}
   - pos: {fileID: 486052456}
     available: 1
+    item: {fileID: 0}
   - pos: {fileID: 1206405113}
     available: 1
+    item: {fileID: 0}
 --- !u!1 &1972162084
 GameObject:
   m_ObjectHideFlags: 0

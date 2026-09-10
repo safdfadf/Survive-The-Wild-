@@ -51,7 +51,7 @@ namespace DefaultNamespace.Weapon
 
         protected void Update()
         {
-            if (!isAiming || CurrentArrow == null || !isEquipped) return;
+            if (!isAiming || CurrentArrow == null || !weapon.isEquipped) return;
             UpdateBowRotation();
             PullArrow();
             UpdateAimTarget();
@@ -74,7 +74,7 @@ namespace DefaultNamespace.Weapon
 
         private void PrepareNextArrow() // this function should be here 
         {
-            animator.DrawArrow();
+           // animator.DrawArrow();
             CurrentArrow = PlayerRepository.instance.GetResource(shootables); // how can we get current arrow 
             if (CurrentArrow == null) return;
             ArrowScript Arrow = CurrentArrow.GetComponent<ArrowScript>();
@@ -115,6 +115,16 @@ namespace DefaultNamespace.Weapon
             Vector3 direction = (aimTarget.position - RestPoint.position).normalized;
             Quaternion lookRotation = Quaternion.LookRotation(direction);
             RestPoint.rotation = Quaternion.Slerp(RestPoint.rotation, lookRotation, Time.deltaTime * 10f);
+        }
+
+        public override void OnEquip()
+        {
+            animator.DrawArrow(true);
+        }
+
+        public override void OnUnEquip()
+        {
+            animator.DrawArrow(false);
         }
 
         public void Shoot()

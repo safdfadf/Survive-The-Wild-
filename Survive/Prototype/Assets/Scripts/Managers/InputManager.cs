@@ -17,7 +17,8 @@ public class InputManager : MonoBehaviour
     private Camera _camera;
     private PhoneScript _phone;
 
-
+    private float scrollCooldown = 0.2f; // adjust to taste
+    private float lastScrollTime = 0f;
     private Action<InputAction.CallbackContext> _movePerformed;
     private Action<InputAction.CallbackContext> _moveCanceled;
     private Action<InputAction.CallbackContext> _lookPerformed;
@@ -196,13 +197,19 @@ public class InputManager : MonoBehaviour
         if (_phone.IsPhoneActive)
         {
             _phone.Scroll(ctx);
+            return;
         }
-        else
-        {
-            Vector2 movement = ctx.ReadValue<Vector2>();
-            bool scrollup = movement.y > 0;
-            _player.SwitchWeapon(scrollup);
-        }
+
+        // throttle scroll
+        if (Time.time < lastScrollTime + scrollCooldown)
+            return;
+
+        lastScrollTime = Time.time;
+
+        Vector2 movement = ctx.ReadValue<Vector2>();
+        bool scrollUp = movement.y > 0;
+
+        _player.SwitchWeapon(scrollUp);
     }
 
     private void OnDestroy()

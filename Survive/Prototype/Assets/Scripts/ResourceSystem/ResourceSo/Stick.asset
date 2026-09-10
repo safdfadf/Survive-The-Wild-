@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14a65b5c5010fd148872814fb6b3e439, type: 3}
   m_Name: Stick
   m_EditorClassIdentifier: 
-  resourceType: 6
   prefab: {fileID: 4046599013461815987, guid: 703fd0bc79cb13e47ae6e89376a2e944, type: 3}
+  sprite: {fileID: 0}
   amount: 10
   size: {x: 1, y: 3}
+  appearanceProb: 1
