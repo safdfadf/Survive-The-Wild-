@@ -52,7 +52,6 @@ namespace Inventory
 
             WeaponSo wso = item.so as WeaponSo;
             childObj.localScale = Vector3.one * wso.scale;
-            Debug.Log(item._currentObj + "try adding");
         }
 
 

@@ -208,7 +208,6 @@ public class RBookHandler : MonoBehaviour
              textMesh.gameObject.transform.SetParent(currentTransform);
              RectTransform rectTransform = textMesh.GetComponent<RectTransform>();
             rectTransform.anchoredPosition = currentTransform.position;
-            Debug.Log(textMesh.gameObject);
             textMesh.gameObject.SetActive(true);
             spawnedSlots.Add(textMesh.gameObject);
         }

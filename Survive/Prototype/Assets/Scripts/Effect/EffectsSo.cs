@@ -12,8 +12,6 @@ namespace Effect
         public float InfectionChance;
         public string description;
         public Sprite icon;
-        public Material woundMaterial;// temp
-       
     }
    
 }

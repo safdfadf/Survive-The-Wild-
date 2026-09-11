@@ -268,7 +268,8 @@ public class PlayerUI : MonoBehaviour
         Debug.Log("SetWoundUI");
         GameObject obj = Instantiate(WoundStatusPrefab, StatusParent);
         WoundUI woundUI = obj.GetComponent<WoundUI>();
-        woundUI.SetImage(effect.icon);
+        if (effect.icon != null)
+            woundUI.SetImage(effect.icon);
         return woundUI;
     }
 }

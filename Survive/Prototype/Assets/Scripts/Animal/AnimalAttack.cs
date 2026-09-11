@@ -8,6 +8,7 @@ public class AnimalAttack : IAttack
     [SerializeField] private int damage;
 
     [SerializeField] private EffectsSo effects;
+    [SerializeField] private float bleedingProbability;
 
     public int Damage
     {
@@ -15,5 +16,6 @@ public class AnimalAttack : IAttack
         set => damage = value;
     }
 
+   public float BleedingProbab=>bleedingProbability;
     public EffectsSo Effects => effects;
 }

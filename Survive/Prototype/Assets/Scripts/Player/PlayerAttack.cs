@@ -21,7 +21,7 @@ namespace Player
         public EffectsSo Effects => effects;
         public WeaponAbility ability;
         public Vector3 hitPoint;
-
+        public float BleedingProbab { get; set; }
         public PlayerAttack(int damage, EffectsSo effects, WeaponAbility ability, Vector3 hitLoc)
         {
             Damage = damage;

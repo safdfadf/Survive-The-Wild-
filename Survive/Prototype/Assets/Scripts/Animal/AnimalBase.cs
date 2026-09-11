@@ -180,7 +180,7 @@ public class AnimalBase : MonoBehaviour, IInteractionUI, IInteractable
 
     public virtual void MoveTo(Vector3 destination, Action onArrived = null, float? speedOverride = null)
     {
-        Debug.Log("Move");
+//        Debug.Log("Move");
         if (isMoving)
         {
             Debug.Log("already moving" + gameObject.name);

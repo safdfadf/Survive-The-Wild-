@@ -5,13 +5,17 @@ using DefaultNamespace;
 using Effect;
 using Player;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class PlayerBody : MonoBehaviour
 {
     [SerializeField] private GameObject woundPrefab;
     [SerializeField] private Transform woundTransform;
-    [SerializeField] private DOtEffects InfectionEffect;
+
+    [FormerlySerializedAs("InfectionEffect")] [SerializeField]
+    private DOtEffects BleedingEffect;
+
     private bool _isAbleToInfect;
     private PlayerUI _playerUI;
     private PlayerVitalStats _playerVitalStats;
@@ -38,15 +42,16 @@ public class PlayerBody : MonoBehaviour
 
     public void TakeDamage(IAttack attack)
     {
+       
         _playerVitalStats.DamageToHealth(attack.Damage);
 
         DOtEffects dot = attack.Effects as DOtEffects;
         if (dot != null)
         {
-            if (CheckForActiveEffects(dot,out ActiveEffect existing))
+            if (CheckForActiveEffects(dot, out ActiveEffect existing))
             {
-                // increase elapsed time 
-                existing.elapsedTime = 0;// reset
+                existing.elapsedTime = 0; // reset
+                // display time as well 
                 return;
             }
 
@@ -54,12 +59,15 @@ public class PlayerBody : MonoBehaviour
             _activeEffects.Add(activeEffect);
             StopCoroutine(HandleEffectDamage(activeEffect));
         }
-        else
+        else // Regular damage 
         {
-            if (Random.value <= attack.Effects.InfectionChance)
+            Debug.Log("taking damage" + BleedingEffect);
+            if (Random.value <= attack.BleedingProbab)
             {
-                ActiveEffect woundEffect = new ActiveEffect(InfectionEffect);
-                woundEffect.woundTimerRoutine = StartCoroutine(HandleWoundTimer(woundEffect));
+                Debug.Log("Bleeding effect");
+                // this comes true we c
+                ActiveEffect woundEffect = new ActiveEffect(BleedingEffect);
+                woundEffect.woundTimerRoutine = StartCoroutine(HandleEffectDamage(woundEffect));
                 _activeEffects.Add(woundEffect);
             }
         }
@@ -75,27 +83,25 @@ public class PlayerBody : MonoBehaviour
                 return true;
             }
         }
+
         effect = null;
         return false;
     }
 
     private IEnumerator HandleWoundTimer(ActiveEffect wound)
     {
-        float timer = wound.data.MaxTime * 60f;
+        float timer = 5f;//wound.data.MaxTime * 60f;
 
         while (timer > 0f)
         {
             if (wound.isHealed)
                 yield break;
-
             timer -= Time.deltaTime;
             yield return null;
         }
-
-        _symptom.ExecuteSympton(_activeEffects[0]);
-        ApplyInfectionEffect(wound);
-
-        yield return null; // remove this
+        //ToDo: Infection
+        // after this bleeding will stop and now if player has used bandage there will be less probabiliy pf infection 
+        // if not there will be more chances and based on that infection will apppied 
     }
 
     private void ApplyInfectionEffect(ActiveEffect effect)
@@ -108,13 +114,14 @@ public class PlayerBody : MonoBehaviour
     private IEnumerator HandleEffectDamage(ActiveEffect active)
     {
         DOtEffects data = active.data;
-
+        WoundUI ui = _playerUI.SetWoundUI(data);
+        active.WoundUI = ui;
         while (active.elapsedTime < data.MaxTime)
         {
             yield return new WaitForSeconds(data.timeFrame * 60f);
             active.elapsedTime += data.timeFrame;
+            ui.UpdateSlider(active.elapsedTime, data.MaxTime);
             // trigger symptom 
-            // do damage over time if needed 
             // stamina depletion 
         }
 
@@ -125,15 +132,9 @@ public class PlayerBody : MonoBehaviour
     {
         if (active.damageRoutine != null)
             StopCoroutine(active.damageRoutine);
-        RemoveWound();
+
         Destroy(active.WoundUI);
         _activeEffects.Remove(active);
-    }
-
-    private void RemoveWound()
-    {
-        Debug.Log("remove wound");
-        _playerUI.ApplyOriginalUI();
     }
 }
 

@@ -42,7 +42,6 @@ namespace Animal.States
 
         private void AttackPlayer()
         {
-            Debug.Log("attack" + Animal.AnimalSo.name);
            Animal.Attack();
         }
         private void DeActivateAnimal()
