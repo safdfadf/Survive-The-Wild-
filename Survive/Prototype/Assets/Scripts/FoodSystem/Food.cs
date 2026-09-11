@@ -16,7 +16,7 @@ namespace FoodSystem
 
         [SerializeField] public float burnTime = 20;
         public FoodConsumptionData counsmptionData { get; set; }
-       
+
         [SerializeField] private Material cookedMaterial;
         [SerializeField] private Material burntMaterial;
         private MeshRenderer[] _mrs;
@@ -32,7 +32,9 @@ namespace FoodSystem
         [Header("StateData")] public RawState rawState;
         public CookState cookState;
         public BurntState burntState;
-        [FormerlySerializedAs("currentStateData")] public StateData currentState;
+
+        [FormerlySerializedAs("currentStateData")]
+        public StateData currentState;
 
         protected override void Awake()
         {
@@ -67,12 +69,14 @@ namespace FoodSystem
             {
                 r.material = state.material;
             }
+
             data.SanityEffect = state.sanityEffect;
-           if(!state.isPoison)return;
-           SelfAttack atk = new SelfAttack(Mathf.CeilToInt(state.effect.damage), Vector3.zero);
-           atk.Effects.Add( state.effect);
-           data.SelfAttack = atk;
+            if (!state.isPoison) return;
+            SelfAttack atk = new SelfAttack(Mathf.CeilToInt(state.effect.damage), Vector3.zero);
+            atk.Effects = state.effect;
+            data.SelfAttack = atk;
         }
+
         protected override void SetUiBools()
         {
             canCraft = false;
@@ -81,6 +85,7 @@ namespace FoodSystem
         }
     }
 }
+
 [System.Serializable]
 public class StateData
 {

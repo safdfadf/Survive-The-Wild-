@@ -35,6 +35,7 @@ namespace DefaultNamespace
 
         [SerializeField] private float maxPoisonAmount;
         [SerializeField] private EffectsSo parasiteEffect;
+
         private void Awake()
         {
             canBeCollected = false;
@@ -100,8 +101,8 @@ namespace DefaultNamespace
             if (UnityEngine.Random.value <= poisonChance)
             {
                 float poisonAmount = UnityEngine.Random.Range(minPoisonAmount, maxPoisonAmount);
-                SelfAttack attack = new SelfAttack(Mathf.CeilToInt(poisonAmount) , Vector3.zero);
-                attack.Effects.Add(parasiteEffect);
+                SelfAttack attack = new SelfAttack(Mathf.CeilToInt(poisonAmount), Vector3.zero);
+                attack.Effects = parasiteEffect;
                 data.SelfAttack = attack;
             }
         }
