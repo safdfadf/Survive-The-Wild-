@@ -9,11 +9,11 @@ namespace Effect
     {
         public DamageType damageType;
         public float damage;
-        public float timeFrame;
-        public float MaxTime;
+        public float InfectionChance;
         public string description;
         public Sprite icon;
         public Material woundMaterial;// temp
        
     }
+   
 }

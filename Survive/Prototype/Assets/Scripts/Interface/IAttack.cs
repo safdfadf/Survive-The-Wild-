@@ -5,5 +5,5 @@ using UnityEngine;
 public interface IAttack
 {
     public int Damage { get; set; }
-    public List<EffectsSo> Effects { get; }
+    public EffectsSo Effects { get; }
 }

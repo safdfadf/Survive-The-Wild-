@@ -1,14 +1,17 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DefaultNamespace;
 using Effect;
 using Player;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class PlayerBody : MonoBehaviour
 {
-    // this script will keep track of player body status  
-    [SerializeField] private PlayerAttack attackToSelf;
+    [SerializeField] private GameObject woundPrefab;
+    [SerializeField] private Transform woundTransform;
+    [SerializeField] private DOtEffects InfectionEffect;
     private bool _isAbleToInfect;
     private PlayerUI _playerUI;
     private PlayerVitalStats _playerVitalStats;
@@ -35,33 +38,49 @@ public class PlayerBody : MonoBehaviour
 
     public void TakeDamage(IAttack attack)
     {
-        foreach (var effect in attack.Effects)
-        {
-            if (effect.damageType == DamageType.Regular)
-            {
-                _playerVitalStats.DamageToHealth(effect.damage);
-                Debug.Log("taking regular damage");
-                ActiveEffect woundEffect = new ActiveEffect(effect);
-                woundEffect.woundTimerRoutine = StartCoroutine(HandleWoundTimer(woundEffect));
+        _playerVitalStats.DamageToHealth(attack.Damage);
 
-                _activeEffects.Add(woundEffect);
-                ApplyWound(effect.woundMaterial);
-                continue;
+        DOtEffects dot = attack.Effects as DOtEffects;
+        if (dot != null)
+        {
+            if (CheckForActiveEffects(dot,out ActiveEffect existing))
+            {
+                // increase elapsed time 
+                existing.elapsedTime = 0;// reset
+                return;
             }
 
-            ActiveEffect active = new ActiveEffect(effect);
-            active.damageRoutine = StartCoroutine(HandleEffectDamage(active));
-            _activeEffects.Add(active);
-            ApplyWound(effect.woundMaterial);
+            ActiveEffect activeEffect = new ActiveEffect(dot);
+            _activeEffects.Add(activeEffect);
+            StopCoroutine(HandleEffectDamage(activeEffect));
         }
-
-        Debug.Log(attack.Effects[0].name);
+        else
+        {
+            if (Random.value <= attack.Effects.InfectionChance)
+            {
+                ActiveEffect woundEffect = new ActiveEffect(InfectionEffect);
+                woundEffect.woundTimerRoutine = StartCoroutine(HandleWoundTimer(woundEffect));
+                _activeEffects.Add(woundEffect);
+            }
+        }
     }
 
+    private bool CheckForActiveEffects(DOtEffects newDot, out ActiveEffect effect)
+    {
+        foreach (var e in _activeEffects)
+        {
+            if (e.data == newDot)
+            {
+                effect = e;
+                return true;
+            }
+        }
+        effect = null;
+        return false;
+    }
 
     private IEnumerator HandleWoundTimer(ActiveEffect wound)
     {
-        
         float timer = wound.data.MaxTime * 60f;
 
         while (timer > 0f)
@@ -74,25 +93,31 @@ public class PlayerBody : MonoBehaviour
         }
 
         _symptom.ExecuteSympton(_activeEffects[0]);
-        ApplyInfectionEffect();
+        ApplyInfectionEffect(wound);
+
+        yield return null; // remove this
     }
 
-    private void ApplyInfectionEffect()
+    private void ApplyInfectionEffect(ActiveEffect effect)
     {
-        Debug.Log("Applying infection effect");
-        TakeDamage(attackToSelf);
+        SelfAttack atk = new SelfAttack(0, Vector3.zero);
+        atk.Effects = effect.data;
+        TakeDamage(atk);
     }
 
     private IEnumerator HandleEffectDamage(ActiveEffect active)
     {
-        EffectsSo data = active.data;
+        DOtEffects data = active.data;
 
         while (active.elapsedTime < data.MaxTime)
         {
             yield return new WaitForSeconds(data.timeFrame * 60f);
             active.elapsedTime += data.timeFrame;
             // trigger symptom 
+            // do damage over time if needed 
+            // stamina depletion 
         }
+
         RemoveEffect(active);
     }
 
@@ -101,13 +126,8 @@ public class PlayerBody : MonoBehaviour
         if (active.damageRoutine != null)
             StopCoroutine(active.damageRoutine);
         RemoveWound();
+        Destroy(active.WoundUI);
         _activeEffects.Remove(active);
-    }
-
-    private void ApplyWound(Material mat) // temp 
-    {
-        Debug.Log("Applying Wound");
-        _playerUI.ApplyWoundUI(mat);
     }
 
     private void RemoveWound()
@@ -119,13 +139,14 @@ public class PlayerBody : MonoBehaviour
 
 public class ActiveEffect
 {
-    public EffectsSo data;
+    public DOtEffects data;
     public float elapsedTime;
     public Coroutine damageRoutine;
     public Coroutine woundTimerRoutine;
     public bool isHealed;
+    public WoundUI WoundUI;
 
-    public ActiveEffect(EffectsSo data)
+    public ActiveEffect(DOtEffects data)
     {
         this.data = data;
         elapsedTime = 0f;

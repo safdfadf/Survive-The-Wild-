@@ -389,7 +389,6 @@ public class AnimalBase : MonoBehaviour, IInteractionUI, IInteractable
             return;
         }
 
-        // now lets add skinning element to this : wait for couple of secs and either send food to the inventory or drop 
         StartCoroutine(Skinning());
     }
 
@@ -407,7 +406,8 @@ public class AnimalBase : MonoBehaviour, IInteractionUI, IInteractable
     private void ToggleCollider(bool toggle)
     {
         Collider collider = GetComponent<Collider>();
-        collider.enabled = toggle;
+        if (collider != null)
+            collider.enabled = toggle;
         foreach (var box in hitBoxes)
         {
             box.ToggleCollider(!toggle);

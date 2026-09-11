@@ -10,7 +10,7 @@ namespace Player
     {
         [SerializeField] private int damage;
 
-        [SerializeField] private List<EffectsSo> effects; // we can later add poison/Fire damage 
+        [SerializeField] private EffectsSo effects; // we can later add poison/Fire damage 
 
         public int Damage
         {
@@ -18,11 +18,11 @@ namespace Player
             set => damage = value;
         }
 
-        public List<EffectsSo> Effects => effects;
+        public EffectsSo Effects => effects;
         public WeaponAbility ability;
         public Vector3 hitPoint;
 
-        public PlayerAttack(int damage, List<EffectsSo> effects, WeaponAbility ability, Vector3 hitLoc)
+        public PlayerAttack(int damage, EffectsSo effects, WeaponAbility ability, Vector3 hitLoc)
         {
             Damage = damage;
             this.effects = effects;

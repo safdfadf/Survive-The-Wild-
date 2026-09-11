@@ -340,7 +340,7 @@ MonoBehaviour:
   _animalAttack:
     damage: 0
     effects:
-    - {fileID: 11400000, guid: ae274ab7ccf10ca4280230e4fee8b818, type: 2}
+    - {fileID: 11400000, guid: 8da14ff072eddd14da365420c417d922, type: 2}
   animalAtkBehaviour: {fileID: 0}
   requiredAbility: {fileID: 11400000, guid: 704126e62b7d502428b912f629fb1b74, type: 2}
   AnimalSo: {fileID: 0}

@@ -7,7 +7,7 @@ public class AnimalAttack : IAttack
 {
     [SerializeField] private int damage;
 
-    [SerializeField] private List<EffectsSo> effects;
+    [SerializeField] private EffectsSo effects;
 
     public int Damage
     {
@@ -15,5 +15,5 @@ public class AnimalAttack : IAttack
         set => damage = value;
     }
 
-    public List<EffectsSo> Effects => effects;
+    public EffectsSo Effects => effects;
 }

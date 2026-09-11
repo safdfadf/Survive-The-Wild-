@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Effect;
 using Player;
 using TMPro;
 using UnityEngine;
@@ -57,11 +58,16 @@ public class PlayerUI : MonoBehaviour
     [Header("Level System")] public Slider levelSlider;
     [SerializeField] private TextMeshProUGUI currentLevelText;
 
-    // Script Reference  
+    [Header("Wound Status")] [SerializeField]
+    private GameObject WoundStatusPrefab;
+
+    [SerializeField] private Transform StatusParent;
     private PlayerNoiseEmitter _playerNoiseEmitter;
     private MovementHandler _movementHandler;
     private float currentScale;
     private RBookHandler _rBookHandler;
+
+    private List<GameObject> _activeWoundsUI = new();
 
     private void Awake()
     {
@@ -255,5 +261,14 @@ public class PlayerUI : MonoBehaviour
     {
         currentLevelText.text = level.ToString();
         levelSlider.value = xp / 100;
+    }
+
+    public WoundUI SetWoundUI(EffectsSo effect)
+    {
+        Debug.Log("SetWoundUI");
+        GameObject obj = Instantiate(WoundStatusPrefab, StatusParent);
+        WoundUI woundUI = obj.GetComponent<WoundUI>();
+        woundUI.SetImage(effect.icon);
+        return woundUI;
     }
 }

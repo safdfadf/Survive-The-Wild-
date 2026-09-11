@@ -2088,6 +2088,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da5c2534a13300a468aff0fafd89c4c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  woundPrefab: {fileID: 0}
+  woundTransform: {fileID: 0}
   attackToSelf:
     damage: 0
     effects: []
@@ -4688,6 +4690,8 @@ MonoBehaviour:
   recipeBookUI: {fileID: 535103727}
   levelSlider: {fileID: 468699249}
   currentLevelText: {fileID: 1898062004}
+  WoundStatusPrefab: {fileID: 2251338005642499602, guid: 6898e6c8dc7316e4ba920e84c43229e8, type: 3}
+  StatusParent: {fileID: 1883415640}
 --- !u!114 &848024451
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4796,10 +4800,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da5c2534a13300a468aff0fafd89c4c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  woundPrefab: {fileID: 2251338005642499602, guid: 6898e6c8dc7316e4ba920e84c43229e8, type: 3}
+  woundTransform: {fileID: 1883415640}
   attackToSelf:
     damage: 0
     effects:
-    - {fileID: 11400000, guid: f210a36c4022e5b4981e1ebdda88ae24, type: 2}
+    - {fileID: 11400000, guid: 4d5768030cac7454d9f7dfc9a1fc264e, type: 2}
     ability: {fileID: 0}
     hitPoint: {x: 0, y: 0, z: 0}
 --- !u!114 &848024457
@@ -8410,6 +8416,7 @@ RectTransform:
   m_Children:
   - {fileID: 607294332}
   - {fileID: 460794189}
+  - {fileID: 1883415640}
   m_Father: {fileID: 1799837982}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -10360,6 +10367,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 8615c1a8c1093bd44a2f274781e8640f, type: 2}
   animalSos:
   - {fileID: 11400000, guid: 106987c4aae703c4ea38fe5be5a4fc3b, type: 2}
+  - {fileID: 11400000, guid: 5faa782b109e3f14e8ca7b948af9a4c9, type: 2}
   foodSo:
   - {fileID: 11400000, guid: c86ed73cf5fd37c419c3c3ee52c1dd4c, type: 2}
   Tracks: {fileID: 3294912275451329300, guid: 1c83f54ce3bf6e64b85db36037cc7075, type: 3}
@@ -13314,6 +13322,68 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1864515056}
   m_CullTransparentMesh: 1
+--- !u!1 &1883415639
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1883415640}
+  - component: {fileID: 1883415641}
+  m_Layer: 5
+  m_Name: Wound
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1883415640
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1883415639}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1358569903}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -153.2, y: 79}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1883415641
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1883415639}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30649d3a9faa99c48a7b1166b86bf2a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 0
+  m_Spacing: 0
+  m_ChildForceExpandWidth: 1
+  m_ChildForceExpandHeight: 1
+  m_ChildControlWidth: 0
+  m_ChildControlHeight: 0
+  m_ChildScaleWidth: 0
+  m_ChildScaleHeight: 0
+  m_ReverseArrangement: 0
 --- !u!1 &1898062002
 GameObject:
   m_ObjectHideFlags: 0

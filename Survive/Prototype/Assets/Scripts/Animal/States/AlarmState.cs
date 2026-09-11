@@ -14,7 +14,6 @@ namespace Animal.States
         public AlarmState(){}
         public override void EnterState(AnimalBase animal)
         {
-            // for alert state when running some animals like small game will only run in active zone
             Animal = animal;
             _isAggresive = Animal.AnimalSo.isAggresive;
             if (_isAggresive)
