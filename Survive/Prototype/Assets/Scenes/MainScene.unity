@@ -2090,11 +2090,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   woundPrefab: {fileID: 0}
   woundTransform: {fileID: 0}
-  attackToSelf:
-    damage: 0
-    effects: []
-    ability: {fileID: 0}
-    hitPoint: {x: 0, y: 0, z: 0}
+  InfectionEffect: {fileID: 0}
 --- !u!1 &436875885
 GameObject:
   m_ObjectHideFlags: 0
@@ -4802,12 +4798,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   woundPrefab: {fileID: 2251338005642499602, guid: 6898e6c8dc7316e4ba920e84c43229e8, type: 3}
   woundTransform: {fileID: 1883415640}
-  attackToSelf:
-    damage: 0
-    effects:
-    - {fileID: 11400000, guid: 4d5768030cac7454d9f7dfc9a1fc264e, type: 2}
-    ability: {fileID: 0}
-    hitPoint: {x: 0, y: 0, z: 0}
+  InfectionEffect: {fileID: 11400000, guid: 4d5768030cac7454d9f7dfc9a1fc264e, type: 2}
 --- !u!114 &848024457
 MonoBehaviour:
   m_ObjectHideFlags: 0
