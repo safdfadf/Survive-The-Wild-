@@ -21,7 +21,7 @@ public class Deer : ScheduledAnimal //ToDo:  remove script
     }
 
     // ToDo: remove this override function 
-    public override void MoveTo(Vector3 destination, Action onArrived = null, float? speedOverride = null)
+    public override void MoveTo(Vector3 destination, Action onArrived = null, float? speedOverride = null,bool ovveride = false)
     {
         if (CurrentState == CalmState && !AnimalData.isZoneTraveling)
         {

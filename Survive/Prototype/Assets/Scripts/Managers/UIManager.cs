@@ -186,7 +186,6 @@ public class UIManager : MonoBehaviour
 
         if (_currentTarget.canHarvest)
         {
-            Debug.Log(_currentTarget.obj.name);
             _activeButtons.Add(harvestButton);
             harvestButton.onClick.AddListener(_currentTarget.Harvest);
         }

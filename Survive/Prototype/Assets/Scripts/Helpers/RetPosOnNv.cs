@@ -52,7 +52,10 @@ public static class RetPosOnNv
     public static bool TryGetNavMeshPoint(Vector3 target, out Vector3 navPoint)
     {
         NavMeshHit hit;
-        if (NavMesh.SamplePosition(target, out hit, 2f, NavMesh.AllAreas))
+        float maxY = Terrain.activeTerrain != null
+            ? Terrain.activeTerrain.terrainData.size.y + Terrain.activeTerrain.transform.position.y
+            : 200f;
+        if (NavMesh.SamplePosition(target, out hit, maxY, NavMesh.AllAreas))
         {
             navPoint = hit.position;
             return true;

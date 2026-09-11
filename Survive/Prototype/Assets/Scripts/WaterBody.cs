@@ -26,7 +26,7 @@ namespace DefaultNamespace
         [SerializeField] private FoodSo waterSo;
         [SerializeField] private GameObject emptyobj;
         public GameObject obj { get; set; }
-        [SerializeField] private float allowedRadius = 2f;
+
         private Vector3 lastValidPos;
         private FoodConsumptionData data = new();
 

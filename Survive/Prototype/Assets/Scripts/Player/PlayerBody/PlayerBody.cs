@@ -42,19 +42,18 @@ public class PlayerBody : MonoBehaviour
 
     public void TakeDamage(IAttack attack)
     {
-       
         _playerVitalStats.DamageToHealth(attack.Damage);
 
         DOtEffects dot = attack.Effects as DOtEffects;
+        if (CheckForActiveEffects(dot, out ActiveEffect existing))
+        {
+            existing.elapsedTime = 0; // reset
+            // display time as well 
+            return;
+        }
+
         if (dot != null)
         {
-            if (CheckForActiveEffects(dot, out ActiveEffect existing))
-            {
-                existing.elapsedTime = 0; // reset
-                // display time as well 
-                return;
-            }
-
             ActiveEffect activeEffect = new ActiveEffect(dot);
             _activeEffects.Add(activeEffect);
             StopCoroutine(HandleEffectDamage(activeEffect));
@@ -90,7 +89,7 @@ public class PlayerBody : MonoBehaviour
 
     private IEnumerator HandleWoundTimer(ActiveEffect wound)
     {
-        float timer = 5f;//wound.data.MaxTime * 60f;
+        float timer = 5f; //wound.data.MaxTime * 60f;
 
         while (timer > 0f)
         {

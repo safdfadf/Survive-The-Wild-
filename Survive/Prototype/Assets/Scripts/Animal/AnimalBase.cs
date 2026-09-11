@@ -178,10 +178,11 @@ public class AnimalBase : MonoBehaviour, IInteractionUI, IInteractable
         EventManager.Instance.reseourceEvent.GatherResource(baseObj.gameObject); //Todo:  remove this 
     }
 
-    public virtual void MoveTo(Vector3 destination, Action onArrived = null, float? speedOverride = null)
+    public virtual void MoveTo(Vector3 destination, Action onArrived = null, float? speedOverride = null,
+        bool ovveride = false)
     {
-//        Debug.Log("Move");
-        if (isMoving)
+       Debug.Log(ovveride);
+        if (isMoving && !ovveride)
         {
             Debug.Log("already moving" + gameObject.name);
             return;
@@ -292,7 +293,7 @@ public class AnimalBase : MonoBehaviour, IInteractionUI, IInteractable
     {
         float warningRadius = 10f;
         float stopOffset = 1.5f;
-        float waitBeforeNextRam = 1f;
+        float waitBeforeNextRam = .5f;
 
         Transform player = PlayerRepository.instance.GetPlayerTransform();
         bool hasAttackedOnce = false;
@@ -316,23 +317,16 @@ public class AnimalBase : MonoBehaviour, IInteractionUI, IInteractable
             }
 
             DoDamage();
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(1f); // get Away from player 
             hasAttackedOnce = true;
 
-            if (hasAttackedOnce)
-            {
-                float dist = Vector3.Distance(transform.position, player.position);
-                if (dist > warningRadius)
-                    yield break;
-            }
 
-            Vector3 circlePoint = GetRandomPointOnCircle(player.position, warningRadius);
+            Vector3 circlePoint = GetRandomPointOnCircle(player.position, 15f);
 
             if (!RetPosOnNv.TryGetNavMeshPoint(circlePoint, out Vector3 navCirclePoint))
             {
-                Debug.Log("pos failed");
-                Vector3 pos = ChunkManager.Instance.GetClosestInactiveChunkPosition(transform.position);
-                MoveTo(pos, () => RemoveAnimal());
+                Debug.Log("pos failed Remove Animal");
+                GetOutOfChunk();
                 yield break;
             }
 
@@ -344,8 +338,8 @@ public class AnimalBase : MonoBehaviour, IInteractionUI, IInteractable
                 float dist = Vector3.Distance(transform.position, player.position);
                 if (dist > warningRadius)
                 {
-                    Debug.Log("dis tance greter ");
-                    //  RemoveAnimal();
+                    Debug.Log("Remove Animal ");
+                    GetOutOfChunk();
                     yield break;
                 }
 
@@ -357,6 +351,14 @@ public class AnimalBase : MonoBehaviour, IInteractionUI, IInteractable
         }
     }
 
+    private void GetOutOfChunk()
+    {
+        Debug.Log("pos failed Remove Animal");
+        Vector3 pos = ChunkManager.Instance.GetClosestInactiveChunkPosition(transform.position);
+        RetPosOnNv.TryGetNavMeshPoint(pos, out Vector3 navMeshHit);
+        MoveTo(navMeshHit, () => RemoveAnimal(), null, true);
+    }
+
     protected virtual void RemoveAnimal()
     {
         GlobalPool.instance.Return(AnimalSo.prefab, gameObject);
@@ -366,12 +368,18 @@ public class AnimalBase : MonoBehaviour, IInteractionUI, IInteractable
     {
         float angle = UnityEngine.Random.Range(0f, 360f);
         float rad = angle * Mathf.Deg2Rad;
-
-        return new Vector3(
+        Vector3 pos = new Vector3(
             center.x + Mathf.Cos(rad) * radius,
             center.y,
             center.z + Mathf.Sin(rad) * radius
         );
+        RetPosOnNv.TryGetNavMeshPoint(pos, out Vector3 navMeshHit);
+        if (navMeshHit == Vector3.zero)
+        {
+            Debug.Log("return pos zero");
+        }
+
+        return navMeshHit;
     }
 
     public void Craft()

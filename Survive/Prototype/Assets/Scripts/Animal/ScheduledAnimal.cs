@@ -32,11 +32,6 @@ public class ScheduledAnimal : AnimalBase
         ActivateState(CurrentState);
     }
 
-    public override void MoveTo(Vector3 destination, Action onArrived = null, float? speedOverride = null)
-    {
-        base.MoveTo(destination, onArrived, speedOverride);
-    }
-
     protected override void IsPlayerAround()
     {
         if (leftEye == null || rightEye == null)
