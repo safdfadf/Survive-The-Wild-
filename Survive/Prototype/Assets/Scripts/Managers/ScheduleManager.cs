@@ -2,33 +2,23 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ScheduleManager  // schedule manager generates data based on hard codded values 
+public class ScheduleManager // schedule manager generates data based on hard codded values 
 {
     public static ScheduleManager Instance;
     private Dictionary<Species, List<Schedule>> _scheduleTemplate;
     private List<string> listofnames = new();
+
     public void GenerateSchedule()
     {
+        _scheduleTemplate = new Dictionary<Species, List<Schedule>>();
 
-    _scheduleTemplate = new Dictionary<Species, List<Schedule>>();
-        
-    _scheduleTemplate[Species.Deer] = GenerateRandomSchedule(Species.Deer);
-   // _scheduleTemplate[Species.Antelope] = GenerateRandomSchedule(Species.Antelope);
-    _scheduleTemplate[Species.Horse] = GenerateRandomSchedule(Species.Horse);
-    
-foreach (var kvp in _scheduleTemplate)
-{
-    Species species = kvp.Key;
-    List<Schedule> schedules = kvp.Value;
-
-    foreach (var entry in schedules)
-    {
-//        Debug.Log($"{species}: {entry.zoneType} {entry.startHour}-{entry.endHour}");
-    }
-}
+        _scheduleTemplate[Species.Deer] = GenerateRandomSchedule(Species.Deer);
+        // _scheduleTemplate[Species.Antelope] = GenerateRandomSchedule(Species.Antelope);
+        _scheduleTemplate[Species.Horse] = GenerateRandomSchedule(Species.Horse);
 
     }
-    private List<Schedule> GenerateRandomSchedule(Species species)// create blocks at 5 Am 
+
+    private List<Schedule> GenerateRandomSchedule(Species species) // create blocks at 5 Am 
     {
         // Activities available for random selection
         List<Activity> activities = new List<Activity>
@@ -111,14 +101,19 @@ foreach (var kvp in _scheduleTemplate)
             durations.Add(c - prev);
             prev = c;
         }
+
         durations.Add(total - prev);
         return durations;
     }
 
-    public List<Schedule> GetSchedule(Species species, Bounds regionBounds)// this function assigns zone to the schedule if there are no a
+    public List<Schedule>
+        GetSchedule(Species species,
+            Bounds regionBounds) // this function assigns zone to the schedule if there are no a
     {
-        if(!_scheduleTemplate.ContainsKey(species))
-        {  return null;}
+        if (!_scheduleTemplate.ContainsKey(species))
+        {
+            return null;
+        }
 
         var schedule = _scheduleTemplate[species];
         foreach (var entry in schedule)
@@ -130,6 +125,7 @@ foreach (var kvp in _scheduleTemplate)
                 entry.endHour,
                 regionBounds);
         }
+
         return schedule;
     }
 }

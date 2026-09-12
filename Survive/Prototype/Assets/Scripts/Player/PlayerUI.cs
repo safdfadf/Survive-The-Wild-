@@ -48,12 +48,12 @@ public class PlayerUI : MonoBehaviour
 
     [SerializeField] private GameObject bodyStatusUI;
 
+    [SerializeField] private GameObject recipeBookUI;
     [SerializeField] private Button recipeBookButton;
 
-    [Header("BlurScreen")] [SerializeField]
-    private GameObject blurScreen;
+    [Header("Screens")] [SerializeField] private GameObject blurScreen;
+    [SerializeField] private GameObject damageScreen;
 
-    [SerializeField] private GameObject recipeBookUI;
 
     [Header("Level System")] public Slider levelSlider;
     [SerializeField] private TextMeshProUGUI currentLevelText;
@@ -126,7 +126,7 @@ public class PlayerUI : MonoBehaviour
         craftingButton.gameObject.SetActive(visible);
         bodyStatButton.gameObject.SetActive(visible);
         recipeBookButton.gameObject.SetActive(visible);
-        bodyStatusUI.gameObject.SetActive(visible);
+    //    bodyStatusUI.gameObject.SetActive(visible);
     }
 
     public void EnableCraftingUI()

@@ -7,17 +7,15 @@ public enum Activity
     Drinking
 }
 
-public enum  Species
+public enum Species // Todo: Use ids instead 
 {
-   Deer,Antelope,Elephant,Buffalo,Horse
+    Deer,
+    Antelope,
+    Elephant,
+    Buffalo,
+    Horse
 }
 
-[System.Serializable]
-public class SpeciesDate// will be used by region 
-{
-    public Species specie;
-    public int count;
-}
 [System.Serializable]
 public class Schedule
 {

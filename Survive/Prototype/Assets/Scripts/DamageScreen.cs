@@ -5,7 +5,7 @@ using UnityEngine.Rendering;
 using UnityEngine.Rendering.HighDefinition;
 using UnityEngine.Rendering.Universal;
 
-public class TakeDamageEffect : MonoBehaviour
+public class DamageScreen : MonoBehaviour
 {
     [SerializeField] private Volume volume;
     private Vignette vignette;
@@ -14,6 +14,7 @@ public class TakeDamageEffect : MonoBehaviour
     private void Start()
     {
         volume.profile.TryGet(out vignette);
+        TriggerDamageEffect();
     }
 
     public void TriggerDamageEffect() // when player health is decreasing trigger this 
@@ -24,6 +25,7 @@ public class TakeDamageEffect : MonoBehaviour
 
     private IEnumerator DamageFlash()
     {
+        Debug.Log("DamageFlash");
         float intensity = 0.45f;
         vignette.intensity.value = intensity;
 

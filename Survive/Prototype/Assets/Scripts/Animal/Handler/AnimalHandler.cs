@@ -18,8 +18,7 @@ public class
     private List<AnimalSo> _animalSo;
     private readonly Dictionary<AnimalData, GameObject> _soundUI = new();
     private AnimalStateManager _animalStateManager;
-    // for every animal data, when player is close or both animal and player is in same active chunk start the ui 
-
+    
     public void OnEnable()
     {
         EventBus.OnHourChanged += UpdateAnimalPos; // update animal current position
@@ -122,6 +121,7 @@ public class
             if (!data.CurrentPos.HasValue) Debug.Log("currentPOs issue");
             if (data.CurrentPos.HasValue && chunk.bounds.Contains(data.CurrentPos.Value))
             {
+                // if data contains the same so , they will make a herd 
                 ActivateAnimal(data);
             }
         }
@@ -164,7 +164,6 @@ public class
                 GameObject obj = GlobalPool.instance.Get(So.prefab, data.CurrentPos.Value);
                 data.AnimalInstance = obj;
                 data.IsSpawned = true;
-                //    data.AnimalSo = So;
                 ScheduledAnimal scheduledAnimal = obj.GetComponent<ScheduledAnimal>();
                 scheduledAnimal.InitializeByData(data);
                 scheduledAnimal.AnimalWrap(data.CurrentPos.Value);

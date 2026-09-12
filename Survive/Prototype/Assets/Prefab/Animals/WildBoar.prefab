@@ -153,9 +153,10 @@ MonoBehaviour:
   followPoint: {fileID: 2259642533415108932}
   _animalAttack:
     damage: 10
-    effects:
-    - {fileID: 11400000, guid: e1547f690d3ccd143b21ab9c12a3bd70, type: 2}
+    effects: {fileID: 0}
+    bleedingProbability: 1
   animalAtkBehaviour: {fileID: 11400000, guid: e765e500050310048a5f1f8b30c7408c, type: 2}
+  bleedingProbability: 1
   requiredAbility: {fileID: 11400000, guid: 704126e62b7d502428b912f629fb1b74, type: 2}
   AnimalSo: {fileID: 0}
   leftEye: {fileID: 5138556661773915582}

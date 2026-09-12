@@ -22,11 +22,13 @@ public class PlayerBody : MonoBehaviour
     private List<ActiveEffect> _activeEffects = new();
     private Symptom _symptom;
     private List<ActiveSymptom> _activeSymptoms = new();
+    private DamageScreen _damageScreen;
 
     private void Awake()
     {
         _playerUI = GetComponent<PlayerUI>();
         _playerVitalStats = GetComponent<PlayerVitalStats>();
+        _damageScreen = GetComponentInChildren<DamageScreen>();
     }
 
 
@@ -43,12 +45,12 @@ public class PlayerBody : MonoBehaviour
     public void TakeDamage(IAttack attack)
     {
         _playerVitalStats.DamageToHealth(attack.Damage);
-
+        _damageScreen.TriggerDamageEffect();
         DOtEffects dot = attack.Effects as DOtEffects;
         if (CheckForActiveEffects(dot, out ActiveEffect existing))
         {
             existing.elapsedTime = 0; // reset
-            // display time as well 
+            //update ui
             return;
         }
 
@@ -61,10 +63,9 @@ public class PlayerBody : MonoBehaviour
         else // Regular damage 
         {
             Debug.Log("taking damage" + BleedingEffect);
-            if (Random.value <= attack.BleedingProbab)
+            if (Random.value <= attack.BleedingProbab && !CheckForActiveEffects(BleedingEffect, out ActiveEffect activeEffect))
             {
                 Debug.Log("Bleeding effect");
-                // this comes true we c
                 ActiveEffect woundEffect = new ActiveEffect(BleedingEffect);
                 woundEffect.woundTimerRoutine = StartCoroutine(HandleEffectDamage(woundEffect));
                 _activeEffects.Add(woundEffect);

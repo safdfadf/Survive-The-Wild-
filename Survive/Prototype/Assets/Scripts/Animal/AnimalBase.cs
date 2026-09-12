@@ -181,7 +181,7 @@ public class AnimalBase : MonoBehaviour, IInteractionUI, IInteractable
     public virtual void MoveTo(Vector3 destination, Action onArrived = null, float? speedOverride = null,
         bool ovveride = false)
     {
-       Debug.Log(ovveride);
+        Debug.Log(ovveride);
         if (isMoving && !ovveride)
         {
             Debug.Log("already moving" + gameObject.name);
@@ -296,7 +296,6 @@ public class AnimalBase : MonoBehaviour, IInteractionUI, IInteractable
         float waitBeforeNextRam = .5f;
 
         Transform player = PlayerRepository.instance.GetPlayerTransform();
-        bool hasAttackedOnce = false;
 
         while (_currentHealth > _maxhealth * 0.10f)
         {
@@ -318,7 +317,6 @@ public class AnimalBase : MonoBehaviour, IInteractionUI, IInteractable
 
             DoDamage();
             yield return new WaitForSeconds(1f); // get Away from player 
-            hasAttackedOnce = true;
 
 
             Vector3 circlePoint = GetRandomPointOnCircle(player.position, 15f);
