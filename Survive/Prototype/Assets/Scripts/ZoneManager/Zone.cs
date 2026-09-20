@@ -41,9 +41,6 @@ public class Zone : MonoBehaviour
         GenerateZonePosition();
         TypeText = gameObject.GetComponentInChildren<TextMeshProUGUI>();
     }
-
-    // all the chunks that lies in shape of this game object set it to empty chunk
-
     public void SetZoneText(Activity zone)
     {
         TypeText.text = zone.ToString();

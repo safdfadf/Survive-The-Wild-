@@ -122,6 +122,7 @@ public class PlayerBody : MonoBehaviour
             active.elapsedTime += data.timeFrame;
             ui.UpdateSlider(active.elapsedTime, data.MaxTime);
             // trigger symptom 
+            _symptom.ExecuteSympton(active);
             // stamina depletion 
         }
 

@@ -3,15 +3,19 @@
 namespace Animal.States
 {
     // depending on the animal it goes to the attacks n no. of times 
-    public class AlarmState:AnimalState
+    public class AlarmState : AnimalState
     {
         private bool _isAggresive = false;
         private float _attackCoolDown;
+
         public AlarmState(AnimalData animalData) : base(animalData)
         {
-            
         }
-        public AlarmState(){}
+
+        public AlarmState()
+        {
+        }
+
         public override void EnterState(AnimalBase animal)
         {
             Animal = animal;
@@ -29,26 +33,27 @@ namespace Animal.States
         public override void UpdateState()
         {
         }
+
         public override void ExitState()
         {
         }
 
-        private void RunOutOfActiveChunk()
+        public void RunOutOfActiveChunk()
         {
             Debug.Log("Run out of active chunk");
-            Vector3 pos =data.GetOutofActiveChunkPos();
-            Animal.MoveTo(pos,()=> DeActivateAnimal());
+            Vector3 pos = data.GetOutofActiveChunkPos();
+            Animal.MoveTo(pos, () => DeActivateAnimal());
         }
 
         private void AttackPlayer()
         {
-           Animal.Attack();
+            Animal.Attack();
         }
+
         private void DeActivateAnimal()
         {
-            if(data!=null)
+            if (data != null)
                 data.AnimalHandler.DeactivateAnimal(data);
-                   
         }
     }
 }

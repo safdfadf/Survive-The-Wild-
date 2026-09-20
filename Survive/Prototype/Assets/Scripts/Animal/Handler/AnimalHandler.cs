@@ -18,7 +18,9 @@ public class
     private List<AnimalSo> _animalSo;
     private readonly Dictionary<AnimalData, GameObject> _soundUI = new();
     private AnimalStateManager _animalStateManager;
-    
+    private List<AnimalBase> _spawnedAnimals = new();
+    public AnimalBase Attacker { get; set; }
+
     public void OnEnable()
     {
         EventBus.OnHourChanged += UpdateAnimalPos; // update animal current position
@@ -167,6 +169,7 @@ public class
                 ScheduledAnimal scheduledAnimal = obj.GetComponent<ScheduledAnimal>();
                 scheduledAnimal.InitializeByData(data);
                 scheduledAnimal.AnimalWrap(data.CurrentPos.Value);
+                _spawnedAnimals.Add(scheduledAnimal);
             }
         }
 
@@ -198,7 +201,6 @@ public class
                 DeactivateAnimal(data);
             }
         }
-        // add a list of unecheduled animals and deactivate them 
     }
 
     public void DeactivateAnimal(AnimalData data)
@@ -207,6 +209,19 @@ public class
         data.IsSpawned = false;
         GlobalPool.instance.Return(data.AnimalSo.prefab, data.AnimalInstance);
         DeactivateAnimalUI(data);
+    }
+
+    public void HerdWarning(AnimalBase animal, Zone zone)
+    {
+        if (!_spawnedAnimals.Contains(animal)) return;
+        foreach (var a in _spawnedAnimals)
+        {
+            var scheduledAnimal = a.GetComponent<ScheduledAnimal>();
+            if (scheduledAnimal == null || scheduledAnimal.AnimalData.GetCurrentZone() != zone) return;
+            var state = scheduledAnimal.AnimalData.GetAlarmState();
+            scheduledAnimal.IsAggresive = false;
+            scheduledAnimal.AnimalData.ChangeState(state);
+        }
     }
 
     public void RemoveAnimalData(AnimalData data)

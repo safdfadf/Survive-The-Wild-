@@ -11,18 +11,20 @@ public class ScheduledAnimal : AnimalBase
     public Zone currentZone { get; private set; }
     public Vector3? currentPos { get; private set; }
 
-    protected AnimalData AnimalData;
+    public AnimalData AnimalData{get; private set;}
 
+    
     [SerializeField] private Transform leftEye;
     [SerializeField] private Transform rightEye;
     [SerializeField] private float eyeSightDistance = 20f;
     [SerializeField] private float eyeSightAngle = 45f; // half-angle of cone
     [SerializeField] private LayerMask obstructionMask;
-
+    
     public void InitializeByData(AnimalData animalData)
     {
         AnimalData = animalData;
         AnimalSo = animalData.AnimalSo;
+        IsAggresive = AnimalSo.isAggresive;
         CurrentState = animalData.GetCurrentState();
         CalmState = animalData.GetCalmState();
         AlertState = animalData.GetAlertState();
@@ -64,6 +66,7 @@ public class ScheduledAnimal : AnimalBase
         agent.Warp(position);
     }
 
+    
     public void ActivateState(AnimalState newState)
     {
         CurrentState.ExitState();
@@ -76,6 +79,11 @@ public class ScheduledAnimal : AnimalBase
         return followPoint;
     }
 
+    public override void Attack()
+    {
+        AnimalData.AnimalHandler.HerdWarning(this,AnimalData.GetCurrentZone());
+        base.Attack();
+    }
     protected override void RemoveAnimal()
     {
         Vector3 pos = ChunkManager.Instance.GetClosestInactiveChunkPosition(transform.position);

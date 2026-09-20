@@ -36,10 +36,12 @@ public class Symptom : MonoBehaviour
 
     private void TriggerPoisonSymptom()
     {
+        StartCoroutine(Dizziness());
     }
 
-    public void TriggerInfectionSymptom()
+    private void TriggerInfectionSymptom()
     {
+        StartCoroutine(Dizziness());
     }
 
     public void Hallucination() // maybe
@@ -61,7 +63,6 @@ public class Symptom : MonoBehaviour
 
     private IEnumerator Dizziness()
     {
-        Debug.Log("Dizziness");
         blurGameObject.SetActive(true);
         for (int i = 0; i < 2; i++)
         {

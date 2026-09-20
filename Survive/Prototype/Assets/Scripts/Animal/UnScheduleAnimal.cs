@@ -21,6 +21,7 @@ public class UnScheduleAnimal : AnimalBase // these animals do not have a schedu
     {
         Bounds = bounds;
         AnimalSo = so;
+        IsAggresive = AnimalSo.isAggresive;
         CreateNewState();
         CalmState.EnterState(this);
     }

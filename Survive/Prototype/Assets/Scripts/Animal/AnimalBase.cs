@@ -62,6 +62,7 @@ public class AnimalBase : MonoBehaviour, IInteractionUI, IInteractable
     public GameObject Gm { get; set; }
     public bool isHit { get; set; }
     public Vector3 hitPos { get; set; }
+    public bool IsAggresive { get; set; }
 
     protected virtual void Awake()
     {
