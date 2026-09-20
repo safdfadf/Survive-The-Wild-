@@ -6,7 +6,7 @@ public class TrackData
 {
     public Vector3 pos;
     public float Angle;
-    public Species species;
+    public string specie;
     public float TimeStamp; //age
     public bool isInjured;
     public int maxTrackAge;
@@ -16,10 +16,10 @@ public class TrackData
     public AnimalSo soAnimal;
     public GameObject prefab;
 
-    public TrackData(AnimalSo so,Vector3 pos, Species species, float timeStamp, bool isInjured, int maxTrackAge,string Direction,float angle,AnimalState state)
+    public TrackData(AnimalSo so,Vector3 pos, string specie, float timeStamp, bool isInjured, int maxTrackAge,string Direction,float angle,AnimalState state)
     {
         this.pos = pos;
-        this.species = species;
+        this.specie = specie;
         TimeStamp = timeStamp;
         this.isInjured = isInjured;
         this.maxTrackAge = maxTrackAge;

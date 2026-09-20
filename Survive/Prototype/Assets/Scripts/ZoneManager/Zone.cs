@@ -31,7 +31,7 @@ public class Zone : MonoBehaviour
     private int edgeOffset = 5;
     private int _attempts = 0;
     public bool HasAvailablePosition => zonePosition.Any(pos => !occupiedPositions.Contains(pos));
-    private Dictionary<int, Species> hourlyOccupancy = new(); // hour → species
+    private Dictionary<int, string> hourlyOccupancy = new(); // hour → species
     public WaterBody WaterBody { get; private set; }
 
     private void Awake()
@@ -179,7 +179,7 @@ public class Zone : MonoBehaviour
         }
     }
 
-    public bool IsAvailableForTime(Species species, int startHour, int endHour)
+    public bool IsAvailableForTime(string species, int startHour, int endHour)
     {
         for (int hour = startHour; hour < endHour; hour++)
         {
@@ -193,7 +193,7 @@ public class Zone : MonoBehaviour
         return true;
     }
 
-    public void ReserveTime(Species species, int startHour, int endHour)
+    public void ReserveTime(string species, int startHour, int endHour)
     {
         for (int hour = startHour; hour < endHour; hour++)
         {

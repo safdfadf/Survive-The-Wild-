@@ -2,23 +2,23 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ScheduleManager // schedule manager generates data based on hard codded values 
+public class ScheduleManager
 {
     public static ScheduleManager Instance;
-    private Dictionary<Species, List<Schedule>> _scheduleTemplate;
+    private Dictionary<string, List<Schedule>> _scheduleTemplate;
     private List<string> listofnames = new();
 
-    public void GenerateSchedule()
+    public void GenerateSchedule(List<AnimalSo> sos)
     {
-        _scheduleTemplate = new Dictionary<Species, List<Schedule>>();
+        _scheduleTemplate = new Dictionary<string, List<Schedule>>();
 
-        _scheduleTemplate[Species.Deer] = GenerateRandomSchedule(Species.Deer);
-        // _scheduleTemplate[Species.Antelope] = GenerateRandomSchedule(Species.Antelope);
-        _scheduleTemplate[Species.Horse] = GenerateRandomSchedule(Species.Horse);
-
+        foreach (var so in sos)
+        {
+            _scheduleTemplate[so.id] = GenerateRandomSchedule(so.id);
+        }
     }
 
-    private List<Schedule> GenerateRandomSchedule(Species species) // create blocks at 5 Am 
+    private List<Schedule> GenerateRandomSchedule(string species) // create blocks at 5 Am 
     {
         // Activities available for random selection
         List<Activity> activities = new List<Activity>
@@ -28,14 +28,11 @@ public class ScheduleManager // schedule manager generates data based on hard co
             Activity.Resting
         };
 
-        // Decide how many blocks the day will have (2–4)
         int blockCount = UnityEngine.Random.Range(3, 8);
 
-        // Ensure resting is always included
         List<Activity> chosen = new List<Activity>();
         chosen.Add(Activity.Resting);
 
-        // Fill remaining blocks with random activities
         for (int i = 1; i < blockCount; i++)
         {
             Activity a = activities[UnityEngine.Random.Range(0, activities.Count)];
@@ -45,7 +42,7 @@ public class ScheduleManager // schedule manager generates data based on hard co
         List<Schedule> schedule = new List<Schedule>();
         schedule.Add(new Schedule
         {
-            species = species,
+            specie = species,
             zoneType = chosen[0],
             startHour = 0,
             endHour = 5
@@ -70,7 +67,7 @@ public class ScheduleManager // schedule manager generates data based on hard co
 
             schedule.Add(new Schedule
             {
-                species = species,
+                specie = species,
                 zoneType = chosen[i],
                 startHour = start,
                 endHour = end
@@ -106,9 +103,8 @@ public class ScheduleManager // schedule manager generates data based on hard co
         return durations;
     }
 
-    public List<Schedule>
-        GetSchedule(Species species,
-            Bounds regionBounds) // this function assigns zone to the schedule if there are no a
+    public List<Schedule> GetSchedule(string species,
+        Bounds regionBounds) // this function assigns zone to the schedule if there are no a
     {
         if (!_scheduleTemplate.ContainsKey(species))
         {
@@ -120,7 +116,7 @@ public class ScheduleManager // schedule manager generates data based on hard co
         {
             entry.assignedZone = ZoneManager.Instance.GetAvailableZone(
                 entry.zoneType,
-                entry.species,
+                entry.specie,
                 entry.startHour,
                 entry.endHour,
                 regionBounds);

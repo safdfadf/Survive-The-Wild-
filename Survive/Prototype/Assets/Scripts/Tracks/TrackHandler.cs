@@ -35,7 +35,7 @@ public class TrackHandler : MonoBehaviour // no need to be monobehaviour
     {
         EventBus.OnHourChanged -= AgeTrackData;
     }
-    public void CreateTracks(MovementSegment segment, Species specie,AnimalState state,AnimalSo so)
+    public void CreateTracks(MovementSegment segment, AnimalState state,AnimalSo so)
     {
         // we need to make sure it does not creates unecessary tracks 
         float distance = Vector3.Distance(segment.StartPos, segment.EndPos);
@@ -52,7 +52,7 @@ public class TrackHandler : MonoBehaviour // no need to be monobehaviour
             
             // Adjust to terrain height
             pos.y = Terrain.activeTerrain.SampleHeight(pos);
-            TrackData data = new TrackData(so,pos, specie, 0,false,maxTrackAgeHours,Dir,angle ,state);
+            TrackData data = new TrackData(so,pos, so.id, 0,false,maxTrackAgeHours,Dir,angle ,state);
            Chunk chunk =  chunkManager.GetChunkAtPos(pos);
            if(chunk == null){Debug.Log("Could not find chunk");return;}
            if(chunk.TrackData.Count >= maxtracksPerChunk) continue;

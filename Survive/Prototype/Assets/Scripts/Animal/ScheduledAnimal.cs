@@ -79,11 +79,6 @@ public class ScheduledAnimal : AnimalBase
         return followPoint;
     }
 
-    public override void Attack()
-    {
-        AnimalData.AnimalHandler.HerdWarning(this,AnimalData.GetCurrentZone());
-        base.Attack();
-    }
     protected override void RemoveAnimal()
     {
         Vector3 pos = ChunkManager.Instance.GetClosestInactiveChunkPosition(transform.position);

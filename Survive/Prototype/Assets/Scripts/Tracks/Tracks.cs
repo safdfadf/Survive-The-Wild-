@@ -87,7 +87,7 @@ public class Tracks : MonoBehaviour, IInteractable // tracks are not collectable
     private void DisplayTarackData()
     {
         animalDirec.text = trackData.Dir;
-        Specie.text = trackData.species.ToString();
+        Specie.text = trackData.specie;
         TimeStamp.text = trackData.trackAge.ToString();
         state.text = trackData.AnimalState.GetType().Name;
     }

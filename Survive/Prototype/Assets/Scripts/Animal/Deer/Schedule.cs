@@ -19,7 +19,7 @@ public enum Species // Todo: Use ids instead
 [System.Serializable]
 public class Schedule
 {
-    public Species species;
+    public string specie;
     public int startHour;
     public int endHour;
     public Activity zoneType;

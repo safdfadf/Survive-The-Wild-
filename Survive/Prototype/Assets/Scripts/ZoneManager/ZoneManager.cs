@@ -52,7 +52,7 @@ public class ZoneManager : MonoBehaviour
         _zoneByType[type].Add(zone); // added to the available zones  
     }
 
-    public Zone GetAvailableZone(Activity type, Species species, int startHour, int endHour, Bounds regionBounds)
+    public Zone GetAvailableZone(Activity type, string species, int startHour, int endHour, Bounds regionBounds)
     {
         if (!_zoneByType.ContainsKey(type))
             _zoneByType[type] = new List<Zone>();

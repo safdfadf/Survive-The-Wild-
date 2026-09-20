@@ -152,7 +152,7 @@ public class PlayerUI : MonoBehaviour
 
     public void ToggleBodyUI(bool toggle)
     {
-        bodyStatusUI.SetActive(toggle);
+       
         levelSlider.gameObject.SetActive(toggle);
         currentLevelText.gameObject.SetActive(toggle);
     }

@@ -41,12 +41,13 @@ public class
     {
         _animalStateManager = GetComponent<AnimalStateManager>();
         _scheduleManager = new ScheduleManager();
-        _scheduleManager.GenerateSchedule();
+       
     }
 
     private void Start()
     {
         _animalSo = SoProvider.instance.GetAnimalSo();
+        _scheduleManager.GenerateSchedule(_animalSo);
     }
 
     private void CreateAnimalData(RegionType regionType, Bounds regionBounds)
@@ -161,12 +162,13 @@ public class
         foreach (var So in _animalSo)
         {
             if (data.IsSpawned) continue;
-            if (So.specie == data.Specie)
+            if (So == data.AnimalSo)
             {
                 GameObject obj = GlobalPool.instance.Get(So.prefab, data.CurrentPos.Value);
                 data.AnimalInstance = obj;
                 data.IsSpawned = true;
                 ScheduledAnimal scheduledAnimal = obj.GetComponent<ScheduledAnimal>();
+                if(scheduledAnimal == null){print(obj.name+" scheduledAnimal is null");return;}
                 scheduledAnimal.InitializeByData(data);
                 scheduledAnimal.AnimalWrap(data.CurrentPos.Value);
                 _spawnedAnimals.Add(scheduledAnimal);
@@ -216,6 +218,7 @@ public class
         if (!_spawnedAnimals.Contains(animal)) return;
         foreach (var a in _spawnedAnimals)
         {
+            if(a == animal)continue;
             var scheduledAnimal = a.GetComponent<ScheduledAnimal>();
             if (scheduledAnimal == null || scheduledAnimal.AnimalData.GetCurrentZone() != zone) return;
             var state = scheduledAnimal.AnimalData.GetAlarmState();

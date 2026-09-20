@@ -20,6 +20,11 @@ namespace Animal.States
         {
             Animal = animal;
             _isAggresive = Animal.AnimalSo.isAggresive;
+            if (data != null)
+            {
+                data.AnimalHandler.HerdWarning(animal, data.GetCurrentZone());
+            }
+
             if (_isAggresive)
             {
                 AttackPlayer();

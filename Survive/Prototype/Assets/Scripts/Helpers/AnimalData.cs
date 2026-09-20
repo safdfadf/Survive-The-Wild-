@@ -8,7 +8,6 @@ public class AnimalData
     public AnimalSo AnimalSo;
     public GameObject AnimalInstance;
     public GameObject AnimalUI;
-    public Species Specie;
     private readonly List<Schedule> _dailySchedule;
     public Vector3? CurrentPos; // current pos in the zone 
     public int currentIndex;
@@ -36,9 +35,9 @@ public class AnimalData
     {
         AnimalHandler = animalHandler;
         this.AnimalSo = animalSo;
-        Specie = animalSo.specie;
 
-        _dailySchedule = scheduleManager.GetSchedule(animalSo.specie, regionBounds);
+
+        _dailySchedule = scheduleManager.GetSchedule(animalSo.id, regionBounds);
 
         foreach (var schedule in _dailySchedule)
         {
@@ -63,7 +62,6 @@ public class AnimalData
 
         if (currentSchedule == null)
         {
-            Debug.LogError($"No schedule found for hour {hour} for species {Specie}");
             currentSchedule = _dailySchedule[0];
         }
 
@@ -142,11 +140,12 @@ public class AnimalData
         if (IsSpawned)
         {
             ScheduledAnimal scheduledAnimal = AnimalInstance.GetComponent<ScheduledAnimal>();
-          //  if (!scheduledAnimal.isMoving)
+            //  if (!scheduledAnimal.isMoving)
             //    scheduledAnimal.SetIsMoving(false); // ovveride move 
             isZoneTraveling = true;
+            Debug.Log(AnimalInstance);
             scheduledAnimal.MoveTo(CurrentPos.Value, onArrived: () =>
-                TrackHandler.instance.CreateTracks(_lastSegment, Specie, currentState, AnimalSo));
+                TrackHandler.instance.CreateTracks(_lastSegment, currentState, AnimalSo));
             AnimalUI.transform.SetParent(scheduledAnimal.gameObject.transform);
             return;
         }
@@ -161,7 +160,7 @@ public class AnimalData
                 .Value); // improve further by adding a delay and make them reach at a proper time 
         }
 
-        TrackHandler.instance.CreateTracks(_lastSegment, Specie, currentState, AnimalSo);
+        TrackHandler.instance.CreateTracks(_lastSegment, currentState, AnimalSo);
         AnimalUI.transform.position = CurrentPos.Value;
     }
 
@@ -195,6 +194,7 @@ public class AnimalData
         currentState = state;
         if (!IsSpawned) return;
         ScheduledAnimal scheduledAnimal = AnimalInstance.GetComponent<ScheduledAnimal>();
+        if (scheduledAnimal == null) return;
         scheduledAnimal.ActivateState(currentState);
     }
 

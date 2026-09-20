@@ -21,9 +21,10 @@ public class AnimalStateManager : MonoBehaviour //ToDo : Change script name to p
     private float baseIntensityThreshold = .01f;
     private AnimalHandler _animalHandler;
     private AnimalState _currentState;
-
+  //  private Dictionary<int,AnimalData> _animalData = new();
     public void AddActiveData(AnimalData activeAnimals)
     {
+        
         _activeAnimalsData.Add(activeAnimals);
     }
 
@@ -83,7 +84,7 @@ public class AnimalStateManager : MonoBehaviour //ToDo : Change script name to p
         }
     }
 
-    private void CheckPlayerNoise()
+    private void CheckPlayerNoise()// this is part of herd behaviour , should i use ids instead , all the animal share the same zone 
     {
         Transform playerTransform = _playerRepository.GetPlayerTransform();
         Vector3 playerPos = playerTransform.transform.position;
@@ -92,7 +93,6 @@ public class AnimalStateManager : MonoBehaviour //ToDo : Change script name to p
         bool isCrouching = _playerRepository.GetIsCrouching();
 
         Vector2 p = new Vector2(playerPos.x, playerPos.z);
-
         for (int i = _activeAnimalsData.Count - 1; i >= 0; i--)
         {
             AnimalData data = _activeAnimalsData[i];
@@ -154,6 +154,7 @@ public class AnimalStateManager : MonoBehaviour //ToDo : Change script name to p
         AnimalState newState = data.GetCalmState();
         if (_currentState != null && _currentState.Equals(newState)) return;
         _currentState = newState;
+        if(data == null){Debug.LogWarning("animal is null");return;}
         data.ChangeState(newState);
     }
 
@@ -173,6 +174,7 @@ public class AnimalStateManager : MonoBehaviour //ToDo : Change script name to p
         data.ChangeState(newState);
         if (data.IsSpawned) return;
         _activeAnimalsData.Remove(data);
+        
         _animalHandler.RemoveAnimalData(data);
     }
 }

@@ -107,7 +107,8 @@ public class AnimalBase : MonoBehaviour, IInteractionUI, IInteractable
 
     private void UpdateCalmState()
     {
-        if (CurrentState != CalmState) return;
+        if (CurrentState == null || CurrentState != CalmState) return;
+        Debug.Log(CurrentState + " "+gameObject.name);
         CurrentState.UpdateState();
     }
 
