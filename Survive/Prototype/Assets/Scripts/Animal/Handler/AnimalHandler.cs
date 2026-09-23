@@ -222,12 +222,15 @@ public class
         if (!_spawnedAnimals.Contains(animal)) return;
         foreach (var a in _spawnedAnimals)
         {
-            if ( a.AnimalSo.id != animal.AnimalSo.id) continue;
+            if (a.AnimalSo.id != animal.AnimalSo.id || a == animal) continue;
             var scheduledAnimal = a.GetComponent<ScheduledAnimal>();
             if (scheduledAnimal == null || scheduledAnimal.AnimalData.GetCurrentZone() != zone) return;
             a.IsAggresive = false;
             var state = scheduledAnimal.AnimalData.GetAlarmState();
             scheduledAnimal.AnimalData.ChangeState(state);
+            GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            sphere.transform.position = scheduledAnimal.transform.position;
+            sphere.transform.localScale = new Vector3(.5f, .5f, .5f);
         }
     }
 

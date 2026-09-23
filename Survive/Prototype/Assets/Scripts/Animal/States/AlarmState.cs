@@ -19,13 +19,13 @@ namespace Animal.States
         public override void EnterState(AnimalBase animal)
         {
             Animal = animal;
-            _isAggresive = Animal.AnimalSo.isAggresive;
-            if (data is { isLeader: true }) // every animal in the zone is calling and changing states 
+            if (data is { isLeader: true })
             {
+                Debug.Log(animal.IsAggresive);
                 Animal.HerdCall();
             }
 
-            if (_isAggresive)
+            if (Animal.IsAggresive)
             {
                 AttackPlayer();
             }
