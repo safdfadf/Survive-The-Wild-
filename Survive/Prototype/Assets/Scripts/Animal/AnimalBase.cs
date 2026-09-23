@@ -315,7 +315,7 @@ public class AnimalBase : MonoBehaviour, IInteractionUI, IInteractable
             yield return new WaitForSeconds(1f); // get Away from player 
 
 
-            Vector3 circlePoint = GetRandomPointOnCircle(player.position, 15f);
+            Vector3 circlePoint = GetRandomPointOnCircle(player.position, warningRadius);
 
             if (!RetPosOnNv.TryGetNavMeshPoint(circlePoint, out Vector3 navCirclePoint))
             {

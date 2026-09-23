@@ -17,7 +17,7 @@ MonoBehaviour:
   prefab: {fileID: 4970729551493521049, guid: 87b7635260b802a4d9cff6dded095899, type: 3}
   regionType: 0
   minAmount: 1
-  maxAmount: 1
+  maxAmount: 3
   collectable: {fileID: 0}
   TrackMesh:
   - {fileID: 6128482553316515338, guid: 8cb10271f3165da44b531f6fef55711b, type: 3}
