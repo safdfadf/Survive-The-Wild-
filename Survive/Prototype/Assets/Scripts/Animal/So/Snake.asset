@@ -12,14 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3446d969a603b9741bd8db43b6e9bc7b, type: 3}
   m_Name: Snake
   m_EditorClassIdentifier: 
-  specie: 0
+  <id>k__BackingField: Snake
   isScheduled: 0
   prefab: {fileID: 3253494446645128198, guid: 6fda65b5306004540a22f2ed6e420d9b, type: 3}
   regionType: 0
   minAmount: 1
   maxAmount: 1
-  resourceSo: {fileID: 11400000, guid: 632089d7767cb1e46831c69d260859ab, type: 2}
+  collectable: {fileID: 0}
   TrackMesh: []
   spawnProbability: 6
   isAggresive: 1
-  damage: 30

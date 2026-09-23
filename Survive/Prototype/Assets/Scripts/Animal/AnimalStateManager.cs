@@ -21,12 +21,29 @@ public class AnimalStateManager : MonoBehaviour //ToDo : Change script name to p
     private float baseIntensityThreshold = .01f;
     private AnimalHandler _animalHandler;
     private AnimalState _currentState;
-  //  private Dictionary<int,AnimalData> _animalData = new();
-    public void AddActiveData(AnimalData activeAnimals)
+    private Dictionary<int, List<AnimalData>> _animalData = new();
+    private int index = 0;
+    private Bounds _currentChunkBounds;
+    private AnimalData _currentAnimal;
+
+    public void AddActiveData(AnimalData activeAnimal)
     {
-        
-        _activeAnimalsData.Add(activeAnimals);
+        foreach (var kvp in _animalData)
+        {
+            List<AnimalData> group = kvp.Value;
+
+            if (group.Count == 0) continue;
+
+            if (group[0].GetCurrentZone() == activeAnimal.GetCurrentZone())
+            {
+                group.Add(activeAnimal);
+                return;
+            }
+        }
+
+        _animalData.Add(index, new List<AnimalData> { activeAnimal });
     }
+
 
     private void Awake()
     {
@@ -84,67 +101,73 @@ public class AnimalStateManager : MonoBehaviour //ToDo : Change script name to p
         }
     }
 
-    private void CheckPlayerNoise()// this is part of herd behaviour , should i use ids instead , all the animal share the same zone 
+
+    private void CheckPlayerNoise()
     {
+        Bounds bounds = ChunkManager.Instance.CurrentBounds;
         Transform playerTransform = _playerRepository.GetPlayerTransform();
-        Vector3 playerPos = playerTransform.transform.position;
+        Vector3 playerPos = playerTransform.position;
+
         bool isSprinting = _playerRepository.GetIsSprinting();
         bool isMoving = _playerRepository.GetIsWalking();
         bool isCrouching = _playerRepository.GetIsCrouching();
 
         Vector2 p = new Vector2(playerPos.x, playerPos.z);
-        for (int i = _activeAnimalsData.Count - 1; i >= 0; i--)
+        foreach (var kvp in _animalData)
         {
-            AnimalData data = _activeAnimalsData[i];
-            if (!data.CurrentPos.HasValue) continue;
+            List<AnimalData> group = kvp.Value;
+            if (group.Count == 0) continue;
 
-            Vector2 a = new Vector2(data.CurrentPos.Value.x, data.CurrentPos.Value.z);
+            AnimalData first = group[0];
+            if (!first.CurrentPos.HasValue) continue;
+
+            Vector3 firstPos = first.CurrentPos.Value;
+
+            if (!bounds.Contains(firstPos))
+            {
+                print("not in bounds");
+
+                continue;
+            }
+
+            print("in bounds");
+            Vector3 animalPos3D = first.CurrentPos.Value;
+            Vector2 a = new Vector2(animalPos3D.x, animalPos3D.z);
+
             float dist = Vector2.Distance(a, p);
-            // Debug.Log(dist);
 
             bool shouldAlert = false;
 
             if (isSprinting && dist <= sprintAlertRange)
-            {
                 shouldAlert = true;
-            }
-            // ✅ Walk rule
             else if (isMoving && !isCrouching && dist <= walkAlertRange)
-            {
                 shouldAlert = true;
-            }
-            // ✅ Crouch = safer (no forced alert)
-            else
-            {
-                shouldAlert = false;
-            }
 
             // Suspicion accumulation
             if (shouldAlert)
             {
                 float fillRate = 1f / alertToAlarmTime;
-                data.NoiseSuspicion += fillRate * Time.deltaTime;
+                first.NoiseSuspicion += fillRate * Time.deltaTime;
             }
             else
             {
-                data.NoiseSuspicion -= suspicionDecay * Time.deltaTime;
+                first.NoiseSuspicion -= suspicionDecay * Time.deltaTime;
             }
 
-
-            data.NoiseSuspicion = Mathf.Clamp01(data.NoiseSuspicion);
+            first.NoiseSuspicion = Mathf.Clamp01(first.NoiseSuspicion);
 
             // State logic
-            if (data.NoiseSuspicion >= 1f)
+            if (first.NoiseSuspicion >= 1f)
             {
-                ChangeToAlarmState(data); // sustained too long
+                ChangeToAlarmState(first);
             }
-            else if (data.NoiseSuspicion > 0f)
+            else if (first.NoiseSuspicion > 0f)
             {
-                ChangeToAlertState(data); // in zone or cooling down
+                ChangeToAlertState(first);
             }
             else
             {
-                ChangeToCalmState(data);
+                ChangeToCalmState(first);
             }
         }
     }
@@ -154,12 +177,19 @@ public class AnimalStateManager : MonoBehaviour //ToDo : Change script name to p
         AnimalState newState = data.GetCalmState();
         if (_currentState != null && _currentState.Equals(newState)) return;
         _currentState = newState;
-        if(data == null){Debug.LogWarning("animal is null");return;}
+        if (data == null)
+        {
+            Debug.LogWarning("animal is null");
+            return;
+        }
+
+        data.isLeader = true;
         data.ChangeState(newState);
     }
 
     private void ChangeToAlertState(AnimalData data)
     {
+
         AnimalState newState = data.GetAlertState();
         if (_currentState != null && _currentState.Equals(newState)) return;
         _currentState = newState;
@@ -168,13 +198,14 @@ public class AnimalStateManager : MonoBehaviour //ToDo : Change script name to p
 
     private void ChangeToAlarmState(AnimalData data)
     {
+        Debug.Log("Changing State");
         AnimalState newState = data.GetAlarmState();
         if (_currentState != null && _currentState.Equals(newState)) return;
         _currentState = newState;
         data.ChangeState(newState);
-        if (data.IsSpawned) return;
-        _activeAnimalsData.Remove(data);
-        
-        _animalHandler.RemoveAnimalData(data);
+        //     if (data.IsSpawned) return;
+        //    _activeAnimalsData.Remove(data);
+
+        //  _animalHandler.RemoveAnimalData(data);
     }
 }

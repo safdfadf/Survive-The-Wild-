@@ -23,7 +23,7 @@ public class ChunkManager : MonoBehaviour
 
     [Header("CashedPos")] [SerializeField] private int cashedPosCount = 0;
 
-    private Bounds _currentBounds;
+    public Bounds CurrentBounds { get; private set; } // total bounds of active chunk
     private Dictionary<RegionType, Bounds> regionBounds = new();
 
     private Vector2Int _playerPos;
@@ -201,6 +201,28 @@ public class ChunkManager : MonoBehaviour
         }
 
         GpuInstancing();
+        UpdateCurrentBounds();
+    }
+
+    private void UpdateCurrentBounds()
+    {
+        Bounds mergedBounds = new Bounds();
+        bool first = true;
+
+        foreach (Chunk chunk in activeChunks)
+        {
+            if (first)
+            {
+                mergedBounds = chunk.bounds; // initialize with first active chunk
+                first = false;
+            }
+            else
+            {
+                mergedBounds.Encapsulate(chunk.bounds); // expand to include this chunk
+            }
+        }
+
+        CurrentBounds = mergedBounds;
     }
 
     private void GpuInstancing()
@@ -339,6 +361,11 @@ public class ChunkManager : MonoBehaviour
             return chunk;
 
         return null;
+    }
+
+    public Bounds GetActiveChunkBounds()
+    {
+        return CurrentBounds;
     }
 
     public bool IsPosInPlayerChunk(Vector3 pos)

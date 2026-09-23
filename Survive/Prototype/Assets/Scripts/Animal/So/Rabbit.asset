@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3446d969a603b9741bd8db43b6e9bc7b, type: 3}
   m_Name: Rabbit
   m_EditorClassIdentifier: 
-  specie: 0
+  <id>k__BackingField: Rabbit
   isScheduled: 0
   prefab: {fileID: 7570953989789132748, guid: b89edc040dd6043419c5ef1fe07c3aef, type: 3}
   regionType: 0
@@ -22,4 +22,3 @@ MonoBehaviour:
   TrackMesh: []
   spawnProbability: 8
   isAggresive: 0
-  damage: 0

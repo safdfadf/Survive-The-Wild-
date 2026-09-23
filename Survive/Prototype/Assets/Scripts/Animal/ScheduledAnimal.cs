@@ -11,15 +11,15 @@ public class ScheduledAnimal : AnimalBase
     public Zone currentZone { get; private set; }
     public Vector3? currentPos { get; private set; }
 
-    public AnimalData AnimalData{get; private set;}
+    public AnimalData AnimalData { get; private set; }
 
-    
+
     [SerializeField] private Transform leftEye;
     [SerializeField] private Transform rightEye;
     [SerializeField] private float eyeSightDistance = 20f;
     [SerializeField] private float eyeSightAngle = 45f; // half-angle of cone
     [SerializeField] private LayerMask obstructionMask;
-    
+
     public void InitializeByData(AnimalData animalData)
     {
         AnimalData = animalData;
@@ -66,9 +66,10 @@ public class ScheduledAnimal : AnimalBase
         agent.Warp(position);
     }
 
-    
+
     public void ActivateState(AnimalState newState)
     {
+        if (CurrentState != null && CurrentState == newState) return;
         CurrentState.ExitState();
         CurrentState = newState;
         CurrentState.EnterState(this);
@@ -79,10 +80,28 @@ public class ScheduledAnimal : AnimalBase
         return followPoint;
     }
 
+    public override void TakeDamage(PlayerAttack atk)
+    {
+        base.TakeDamage(atk);
+        AnimalData.isLeader = true;
+        ActivateState(AlarmState);
+    }
+
     protected override void RemoveAnimal()
     {
         Vector3 pos = ChunkManager.Instance.GetClosestInactiveChunkPosition(transform.position);
         MoveTo(pos, () => AnimalData.AnimalHandler.DeactivateAnimal(AnimalData)
         );
+    }
+
+    public override void HerdCall()
+    {
+        if (AnimalData.AnimalHandler.Attacker == null && IsAggresive)
+        {
+            AnimalData.AnimalHandler.Attacker = this;
+        }
+        // maye an audio and anim : Warning 
+        
+        AnimalData.AnimalHandler.HerdWarning(this, AnimalData.GetCurrentZone());
     }
 }

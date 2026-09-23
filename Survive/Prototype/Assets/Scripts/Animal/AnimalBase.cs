@@ -108,11 +108,10 @@ public class AnimalBase : MonoBehaviour, IInteractionUI, IInteractable
     private void UpdateCalmState()
     {
         if (CurrentState == null || CurrentState != CalmState) return;
-        Debug.Log(CurrentState + " "+gameObject.name);
         CurrentState.UpdateState();
     }
 
-    public void TakeDamage(PlayerAttack atk)
+    public virtual void TakeDamage(PlayerAttack atk) // since attack is just no. how do we 
     {
         if (_currentHealth <= 0) return;
         if (atk.hitPoint == Vector3.zero)
@@ -121,17 +120,13 @@ public class AnimalBase : MonoBehaviour, IInteractionUI, IInteractable
         }
 
         PlayBloodVfx(atk.hitPoint);
-        int totalDamage = baseDamage * atk.Damage; // health = 100, 10 * 8
-        _currentHealth -= totalDamage;
-        Debug.Log(myspecie + "remaing Health" + _currentHealth + totalDamage);
+        _currentHealth = atk.Damage;
+        print(_currentHealth);
         if (_currentHealth <= 0)
         {
             Death();
         }
-        else
-        {
-            // change to alert state 
-        }
+      
     }
 
     private void PlayBloodVfx(Vector3 contact)
@@ -183,7 +178,6 @@ public class AnimalBase : MonoBehaviour, IInteractionUI, IInteractable
     public virtual void MoveTo(Vector3 destination, Action onArrived = null, float? speedOverride = null,
         bool ovveride = false)
     {
-        Debug.Log(ovveride);
         if (isMoving && !ovveride)
         {
             Debug.Log("already moving" + gameObject.name);
@@ -351,7 +345,7 @@ public class AnimalBase : MonoBehaviour, IInteractionUI, IInteractable
         }
     }
 
-    private void GetOutOfChunk()
+    public void GetOutOfChunk()
     {
         Debug.Log("pos failed Remove Animal");
         Vector3 pos = ChunkManager.Instance.GetClosestInactiveChunkPosition(transform.position);
@@ -421,6 +415,7 @@ public class AnimalBase : MonoBehaviour, IInteractionUI, IInteractable
             box.ToggleCollider(!toggle);
         }
     }
+    public virtual void HerdCall(){}
 }
 
 [System.Serializable]

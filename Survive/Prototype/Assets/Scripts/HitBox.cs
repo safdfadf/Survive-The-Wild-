@@ -4,14 +4,12 @@ using UnityEngine;
 
 public class HitBox : MonoBehaviour, ItakeDamage
 {
+    [SerializeField] private DamageLocation dmgLoc;
     private TargetPractice mainBody;
     private AnimalBase _animal;
     private Collider _collider;
     public bool IsEnvironment { get; set; }
-    public void TakeDamage(IAttack attack)
-    {
-        _animal.TakeDamage(attack as PlayerAttack);
-    }
+  
 
 
     [SerializeField] private int damageMultiplayer;
@@ -30,10 +28,19 @@ public class HitBox : MonoBehaviour, ItakeDamage
             Debug.LogError(_animal.name + " is missing animal");
         }
     }
-
+    public void TakeDamage(IAttack attack)
+    {
+        attack.Damage *= damageMultiplayer;
+        _animal.TakeDamage(attack as PlayerAttack);
+    }
     public void ToggleCollider(bool toggle)
     {
         _collider.enabled = toggle;
     }
 
+}
+[System.Serializable]
+public enum DamageLocation
+{
+    Head,BackBody,MiddleBody
 }

@@ -29,6 +29,7 @@ public class AnimalData
     private AnimalState calmState;
     private AnimalState alertState;
     private AnimalState alarmState;
+    public bool isLeader = false;
 
     public AnimalData(AnimalSo animalSo, Bounds regionBounds, ScheduleManager scheduleManager,
         AnimalHandler animalHandler)
@@ -140,10 +141,7 @@ public class AnimalData
         if (IsSpawned)
         {
             ScheduledAnimal scheduledAnimal = AnimalInstance.GetComponent<ScheduledAnimal>();
-            //  if (!scheduledAnimal.isMoving)
-            //    scheduledAnimal.SetIsMoving(false); // ovveride move 
             isZoneTraveling = true;
-            Debug.Log(AnimalInstance);
             scheduledAnimal.MoveTo(CurrentPos.Value, onArrived: () =>
                 TrackHandler.instance.CreateTracks(_lastSegment, currentState, AnimalSo));
             AnimalUI.transform.SetParent(scheduledAnimal.gameObject.transform);
@@ -191,6 +189,7 @@ public class AnimalData
 
     public void ChangeState(AnimalState state) // remove states from data 
     {
+        if (currentState != null && currentState == state) return;
         currentState = state;
         if (!IsSpawned) return;
         ScheduledAnimal scheduledAnimal = AnimalInstance.GetComponent<ScheduledAnimal>();

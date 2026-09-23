@@ -12,7 +12,6 @@ public class DamageScreen : MonoBehaviour
     private void Start()
     {
         volume.profile.TryGet(out vignette);
-        TriggerDamageEffect();
     }
 
     public void TriggerDamageEffect() // when player health is decreasing trigger this 

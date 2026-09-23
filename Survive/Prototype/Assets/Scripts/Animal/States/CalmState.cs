@@ -25,7 +25,8 @@ namespace Animal.States
 
         public override void UpdateState() // for now updating every 5 secs
         {
-            if (data != null && data.isZoneTraveling) return;
+            if (data != null && data.isZoneTraveling || Animal == null) return;
+            
             if (!ChunkManager.Instance.IsPosInPlayerChunk(Animal.transform.position))
                 return;
             if (Time.time >= nextActionTime)

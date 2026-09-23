@@ -31,3 +31,7 @@ namespace Player
         }
     }
 }
+
+
+// if damage is on head its obviously deadly and animal will drop directly , i damage to the back/middle  animal will run away if it is in the middle 
+// damage is deadly run and drop 

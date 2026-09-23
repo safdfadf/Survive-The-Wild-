@@ -20,9 +20,9 @@ namespace Animal.States
         {
             Animal = animal;
             _isAggresive = Animal.AnimalSo.isAggresive;
-            if (data != null)
+            if (data is { isLeader: true }) // every animal in the zone is calling and changing states 
             {
-                data.AnimalHandler.HerdWarning(animal, data.GetCurrentZone());
+                Animal.HerdCall();
             }
 
             if (_isAggresive)
@@ -33,6 +33,16 @@ namespace Animal.States
             {
                 RunOutOfActiveChunk();
             }
+        }
+
+        private void HerdCall(AnimalBase animal)
+        {
+            if (data.AnimalHandler.Attacker == null && _isAggresive)
+            {
+                data.AnimalHandler.Attacker = animal;
+            }
+
+            data.AnimalHandler.HerdWarning(animal, data.GetCurrentZone());
         }
 
         public override void UpdateState()
@@ -47,7 +57,7 @@ namespace Animal.States
         {
             Debug.Log("Run out of active chunk");
             Vector3 pos = data.GetOutofActiveChunkPos();
-            Animal.MoveTo(pos, () => DeActivateAnimal());
+            Animal.GetOutOfChunk();
         }
 
         private void AttackPlayer()
@@ -55,10 +65,5 @@ namespace Animal.States
             Animal.Attack();
         }
 
-        private void DeActivateAnimal()
-        {
-            if (data != null)
-                data.AnimalHandler.DeactivateAnimal(data);
-        }
     }
 }

@@ -41,7 +41,6 @@ public class
     {
         _animalStateManager = GetComponent<AnimalStateManager>();
         _scheduleManager = new ScheduleManager();
-       
     }
 
     private void Start()
@@ -168,7 +167,12 @@ public class
                 data.AnimalInstance = obj;
                 data.IsSpawned = true;
                 ScheduledAnimal scheduledAnimal = obj.GetComponent<ScheduledAnimal>();
-                if(scheduledAnimal == null){print(obj.name+" scheduledAnimal is null");return;}
+                if (scheduledAnimal == null)
+                {
+                    print(obj.name + " scheduledAnimal is null");
+                    return;
+                }
+
                 scheduledAnimal.InitializeByData(data);
                 scheduledAnimal.AnimalWrap(data.CurrentPos.Value);
                 _spawnedAnimals.Add(scheduledAnimal);
@@ -218,15 +222,19 @@ public class
         if (!_spawnedAnimals.Contains(animal)) return;
         foreach (var a in _spawnedAnimals)
         {
-            if(a == animal)continue;
+            if ( a.AnimalSo.id != animal.AnimalSo.id) continue;
             var scheduledAnimal = a.GetComponent<ScheduledAnimal>();
             if (scheduledAnimal == null || scheduledAnimal.AnimalData.GetCurrentZone() != zone) return;
+            a.IsAggresive = false;
             var state = scheduledAnimal.AnimalData.GetAlarmState();
-            scheduledAnimal.IsAggresive = false;
             scheduledAnimal.AnimalData.ChangeState(state);
         }
     }
 
+/* var state = scheduledAnimal.AnimalData.GetAlarmState();
+            scheduledAnimal.IsAggresive = false;
+            scheduledAnimal.AnimalData.ChangeState(state);
+        */
     public void RemoveAnimalData(AnimalData data)
     {
         if (!_activeData.Contains(data)) return;
