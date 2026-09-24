@@ -14483,6 +14483,9 @@ MonoBehaviour:
   tableOffset: {x: 0, y: 0, z: -0.1}
   craftButton: {fileID: 1605686666}
   recipeBook: {fileID: 535103729}
+  earlyAccessRecipe:
+  - {fileID: 11400000, guid: 74fc9e7c1e22c864d82fd707fb2b4748, type: 2}
+  - {fileID: 11400000, guid: a751adc1215897a4293b3386445490d8, type: 2}
 --- !u!114 &848024450
 MonoBehaviour:
   m_ObjectHideFlags: 0

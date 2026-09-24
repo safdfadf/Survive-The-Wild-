@@ -5,12 +5,13 @@ using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-public class Recipie : MonoBehaviour
+public class RecipieUI : MonoBehaviour
 {
     private CraftingSO _craftingSo;
     private Ingredient[] _ingredients;
     [SerializeField] private GameObject textPrefab;
-
+    [SerializeField] private Image image;
+    [SerializeField] private Transform parent;
     private CraftingHandler _craftingHandler;
     private Image _image;
 
@@ -21,15 +22,16 @@ public class Recipie : MonoBehaviour
         _image = GetComponent<Image>();
     }
 
-    public void Initialize(CraftingSO craftingSo, CraftingHandler craftingHandler)
+    public void Initialize(RecipeData data, CraftingHandler craftingHandler)
     {
         if (_craftingSo == null)
         {
             Debug.Log("_craftingSo reci[ie is null");
+            return;
         }
 
-        _craftingSo = craftingSo;
-        _ingredients = craftingSo.ingredients;
+        _craftingSo = data.craftingSo;
+        _ingredients = data.craftingSo.ingredients;
         _craftingHandler = craftingHandler;
         BaseWeapon weapon = _craftingSo.resSo.prefab.GetComponent<BaseWeapon>();
         if (weapon != null)
@@ -48,12 +50,12 @@ public class Recipie : MonoBehaviour
             Destroy(child.gameObject);
         foreach (var ing in _craftingSo.ingredients)
         {
-            GameObject textObj = Instantiate(textPrefab, transform);
+            GameObject textObj = Instantiate(textPrefab, parent);
             TextMeshProUGUI tmp = textObj.GetComponent<TextMeshProUGUI>();
             tmp.text = ing.objSo.prefab.name.ToString() + " * " + ing.amount.ToString();
         }
     }
-
+    
     private void SpawnRecipie()
     {
         _craftingHandler.Craft(_craftingSo);

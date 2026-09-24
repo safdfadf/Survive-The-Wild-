@@ -26,6 +26,9 @@ public class CraftingHandler : MonoBehaviour
     [Header("Recipe Book")] [SerializeField]
     private RBookHandler recipeBook;
 
+    [Header("Early Access Recipe")] [SerializeField]
+    private List<CraftingSO> earlyAccessRecipe = new();
+
     //TODo: Move recipe Book ui to PlayerUI script 
     public bool enableCrafting { get; set; }
 
@@ -34,6 +37,7 @@ public class CraftingHandler : MonoBehaviour
     private CraftingSO _currentSo;
     private BuildingHandler _buildingHandler;
     private List<InventoryItem> _currentItems = new();
+    private List<RecipeData> _recipeData = new();
 
     private void OnEnable()
     {
@@ -49,10 +53,11 @@ public class CraftingHandler : MonoBehaviour
 
     private void Awake()
     {
+        InitRecipeData();
         craftButton.gameObject.SetActive(false);
         _playerInventory = GetComponent<PlayerInventory>();
         _resourceInventory = FindAnyObjectByType<ResourceInventory>();
-        recipeBook.CategorizeRecipes(craftingSo, this);
+        recipeBook.CategorizeRecipes(_recipeData, this);
         _buildingHandler = GetComponent<BuildingHandler>();
     }
 
@@ -67,6 +72,17 @@ public class CraftingHandler : MonoBehaviour
         }
     }
 
+    private void InitRecipeData()
+    {
+        foreach (var recipe in craftingSo)
+        {
+            RecipeData data = new(recipe);
+            _recipeData.Add(data);
+            if (earlyAccessRecipe.Contains(recipe))
+                data.isLocked = false;
+        }
+       
+    }
 
     private void AddIngredient(ObjSo So, InventoryItem uiPrefab)
     {

@@ -26,14 +26,14 @@ public class RBookHandler : MonoBehaviour
     [SerializeField] private GameObject questPrefab;
     [Header("ParentObj")] [SerializeField] private GameObject parentObj;
 
-    private List<CraftingSO> _weaponRecipes;
+    private List<RecipeData> _weaponRecipes;
 
-    private List<CraftingSO> _baseRecipes;
+    private List<RecipeData> _baseRecipes;
 
     // private List<CraftingSO> trapRecipes;
     [Header("Crafting Handler")] private CraftingHandler _craftingHandler;
 
-    private List<CraftingSO> activeList;
+    private List<RecipeData> activeList;
     private int currentIndex = 0;
     private List<GameObject> spawnedSlots = new();
     private Dictionary<string, TextMeshProUGUI> questTexts = new();
@@ -86,31 +86,31 @@ public class RBookHandler : MonoBehaviour
         parentObj.SetActive(false);
     }
 
-    public void CategorizeRecipes(List<CraftingSO> allRecipes, CraftingHandler craftingHandler)
+    public void CategorizeRecipes(List<RecipeData> data, CraftingHandler craftingHandler)
     {
         _craftingHandler = craftingHandler;
-        _weaponRecipes = new List<CraftingSO>();
+        _weaponRecipes = new List<RecipeData>();
         //      trapRecipes = new List<CraftingSO>();
-        _baseRecipes = new List<CraftingSO>();
+        _baseRecipes = new List<RecipeData>();
 
-        foreach (var so in allRecipes)
+        foreach (var r in data)
         {
-            if (so == null)
+            if (r == null)
             {
-                Debug.Log("so is nul");
+                Debug.Log("recipiedata is nul");
             }
 
-            if (so.resSo == null)
+            if (r.craftingSo == null)
             {
-                Debug.Log("res so is null" + so);
+                Debug.Log("res so is null" + r);
             }
 
-            if (so.resSo.prefab == null)
+            if (r.craftingSo.resSo.prefab == null)
             {
-                Debug.Log("resSo.prefab is null" + so.resSo);
+                Debug.Log("resSo.prefab is null" + r.craftingSo);
             }
 
-            GameObject prefab = so.resSo.prefab;
+            GameObject prefab = r.craftingSo.resSo.prefab;
             if (prefab == null)
             {
                 Debug.Log("prefab is null");
@@ -118,12 +118,12 @@ public class RBookHandler : MonoBehaviour
 
             if (prefab.TryGetComponent<BaseWeapon>(out _))
             {
-                _weaponRecipes.Add(so);
+                _weaponRecipes.Add(r);
             }
             //   else if (prefab.TryGetComponent<Trap>(out _))
             //              trapRecipes.Add(so);
             else if (prefab.TryGetComponent<BaseStructure>(out _))
-                _baseRecipes.Add(so);
+                _baseRecipes.Add(r);
         }
     }
 
@@ -141,7 +141,7 @@ public class RBookHandler : MonoBehaviour
             if (index >= activeList.Count) break;
 
             GameObject r = Instantiate(recipiePrefab, currentTransform);
-            r.GetComponent<Recipie>().Initialize(activeList[index], _craftingHandler);
+            r.GetComponent<RecipieUI>().Initialize(activeList[index], _craftingHandler);
             spawnedSlots.Add(r);
         }
 
@@ -170,6 +170,7 @@ public class RBookHandler : MonoBehaviour
     private void ShowWeaponRecipe()
     {
         activeList = _weaponRecipes;
+        RemoveLockedRecipes();
         currentIndex = 0;
         ShowRecipes();
     }
@@ -178,6 +179,7 @@ public class RBookHandler : MonoBehaviour
     {
         Debug.Log("Show Base Build Recipe");
         activeList = _baseRecipes;
+        RemoveLockedRecipes();
         currentIndex = 0;
         ShowRecipes();
     }
@@ -190,9 +192,21 @@ public class RBookHandler : MonoBehaviour
     {
     }
 
+    private void RemoveLockedRecipes()
+    {
+        for (int i = activeList.Count - 1; i >= 0; i--)
+        {
+            if (activeList[i].isLocked)
+            {
+                activeList.RemoveAt(i);
+            }
+        }
+    }
+
     private void ShowQuest()
     {
-        foreach (var slot in spawnedSlots)// this will create an issue because it destroys objs that means text mesh obj created 
+        foreach (var slot in
+                 spawnedSlots) // this will create an issue because it destroys objs that means text mesh obj created 
             spawnedSlots.Clear();
 
         Transform currentTransform;
@@ -203,10 +217,10 @@ public class RBookHandler : MonoBehaviour
 
             int index = currentIndex + i;
             if (index >= questTextList.Count) break;
-                
-             var textMesh = questTextList[index];
-             textMesh.gameObject.transform.SetParent(currentTransform);
-             RectTransform rectTransform = textMesh.GetComponent<RectTransform>();
+
+            var textMesh = questTextList[index];
+            textMesh.gameObject.transform.SetParent(currentTransform);
+            RectTransform rectTransform = textMesh.GetComponent<RectTransform>();
             rectTransform.anchoredPosition = currentTransform.position;
             textMesh.gameObject.SetActive(true);
             spawnedSlots.Add(textMesh.gameObject);
@@ -238,5 +252,9 @@ public class RBookHandler : MonoBehaviour
     {
         TextMeshProUGUI text = questTexts[id];
         text.fontStyle = FontStyles.Strikethrough;
+    }
+
+    public void UnlockRecipe(CraftingSO so)
+    {
     }
 }
