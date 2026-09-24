@@ -123,11 +123,7 @@ namespace Player
             _movementHandler.isAttacking = isAttacking;
         }
 
-        public void HandleSpinRotation(bool toggle)
-        {
-            _movementHandler.SetSpineControl(toggle);
-        }
-
+        
         public GameObject GetResource(ObjSo so)
         {
             return _playerInventory.GetResource(so);

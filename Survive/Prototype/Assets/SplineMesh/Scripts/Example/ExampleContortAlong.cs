@@ -23,22 +23,25 @@ namespace SplineMesh
         [HideInInspector] public GameObject generated;
 
         public Mesh mesh;
-        public Material material;
+        public Material material { get; set; }
         public Vector3 rotation;
         public Vector3 scale;
 
         public float DurationInSecond;
 
-        private void Start()
-        {
-            StartCoroutine(MoveAlongSpline());
-        }
+        public WaterShaderFx puddleFx { get; set; }
+        private MovementHandler player;
 
         private void OnValidate()
         {
-            Init();
         }
 
+        public void Initialize(Material mat, MovementHandler player)
+        {
+            material = mat;
+            this.player = player;
+            Init();
+        }
 
         public void ActivateWaterMovement()
         {
@@ -54,14 +57,38 @@ namespace SplineMesh
                 rate += Time.deltaTime / DurationInSecond;
 
                 float meshLength = meshBender.Source.Length;
+
                 float start = Mathf.Min(spline.Length * rate, spline.Length - 0.0001f);
-                float end =  Mathf.Min(start + meshLength, spline.Length);
+                float end = Mathf.Min(start + meshLength, spline.Length);
 
                 meshBender.SetInterval(spline, start, end);
                 meshBender.ComputeIfNeeded();
+                if (end >= spline.Length)
+                {
+                    if (puddleFx != null)
+                    {
+                        puddleFx.gameObject.SetActive(true);
+                        puddleFx.ActivateFx();
+                    }
+                }
 
                 yield return null;
             }
+
+
+            if (generated != null)
+            {
+                player.SetBending(false);
+                Destroy(generated);
+            }
+
+            if (puddleFx != null)
+                puddleFx.PauseFx();
+
+            yield return new WaitForSeconds(2f);
+
+            if (puddleFx != null)
+                StartCoroutine(puddleFx.DeactivateFx());
         }
 
         private void Contort()

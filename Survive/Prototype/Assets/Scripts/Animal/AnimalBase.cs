@@ -119,7 +119,7 @@ public class AnimalBase : MonoBehaviour, IInteractionUI, IInteractable
             atk.hitPoint = transform.position;
         }
 
-        PlayBloodVfx(atk.hitPoint);
+        //PlayBloodVfx(atk.hitPoint);
         _currentHealth = atk.Damage;
         print(_currentHealth);
         if (_currentHealth <= 0)
@@ -129,9 +129,9 @@ public class AnimalBase : MonoBehaviour, IInteractionUI, IInteractable
       
     }
 
-    private void PlayBloodVfx(Vector3 contact)
+    private void PlayBloodVfx()
     {
-        GameObject obj = GlobalPool.instance.Get(_bloodVfx, contact);
+        GameObject obj = GlobalPool.instance.Get(_bloodVfx, transform.position);
         ParticleSystem ps = obj.GetComponent<ParticleSystem>();
         ps.Play();
         StartCoroutine(ReturnAfter(1f, obj));
@@ -151,6 +151,7 @@ public class AnimalBase : MonoBehaviour, IInteractionUI, IInteractable
         agent.enabled = false;
         agent.speed = 0;
         canDisplay = true;
+        PlayBloodVfx();
     }
 
     private void DropResource()

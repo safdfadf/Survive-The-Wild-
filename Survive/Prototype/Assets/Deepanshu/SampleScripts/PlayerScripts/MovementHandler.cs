@@ -34,8 +34,9 @@ public class MovementHandler : MonoBehaviour
     [FormerlySerializedAs("animalApproachPoint")]
     public Transform animalApproachPos;
 
-    [Header("Rotation Lock")]
-    //f  private int 
+    [Header("Rotation Lock")] [SerializeField]
+    private Vector3 bendLimit;
+
     public bool isHuntingSenseActive { get; set; }
 
     [SerializeField] private Transform aimTarget;
@@ -79,6 +80,12 @@ public class MovementHandler : MonoBehaviour
     private float scentTracker;
     private Coroutine noiseRoutine;
     public PlayerStats _playerStats; // move it to a different place
+    private bool _isBending;
+    private Vector3 camStartPos = new Vector3(0f, 0.77f, 0.178f);
+    private Vector3 camEndPos = new Vector3(0f, 0.641f, 0.414f);
+
+    private Quaternion camStartRot = Quaternion.Euler(0f, 0f, 0f);
+    private Quaternion camEndRot = Quaternion.Euler(50f, 0f, 0f);
 
     private void Awake()
     {
@@ -477,5 +484,69 @@ public class MovementHandler : MonoBehaviour
     public bool IsSprinting()
     {
         return _isSprinting;
+    }
+
+    public void SetBending(bool isBending)
+    {
+        if (_isBending == isBending)
+            return;
+
+        _isBending = isBending;
+        StopAllCoroutines();
+        StartCoroutine(isBending ? BendForward() : BendBack());
+    }
+
+    private IEnumerator BendForward() // we need late update here 
+    {
+        Debug.Log("bend forward");
+        _canMove = false;
+
+
+        float duration = 0.25f;
+        float t = 0f;
+
+        // Mid point creates the arc
+        Vector3 mid = new Vector3(0f, 0.70f, 0.30f);
+
+        while (t < 1f)
+        {
+            t += Time.deltaTime / duration;
+
+            // Arc movement
+            playerCamera.transform.localPosition = Bezier(camStartPos, mid, camEndPos, t);
+
+            // Smooth rotation
+            playerCamera.transform.localRotation = Quaternion.Slerp(camStartRot, camEndRot, t);
+
+            yield return null;
+        }
+    }
+
+    private IEnumerator BendBack()
+    {
+        Debug.Log("bend back");
+        float duration = 0.25f;
+        float t = 0f;
+
+        Vector3 mid = new Vector3(0f, 0.70f, 0.30f);
+
+        while (t < 1f)
+        {
+            t += Time.deltaTime / duration;
+
+            playerCamera.transform.localPosition = Bezier(camEndPos, mid, camStartPos, t);
+            playerCamera.transform.localRotation = Quaternion.Slerp(camEndRot, camStartRot, t);
+
+            yield return null;
+        }
+
+        _canMove = true;
+    }
+
+    private Vector3 Bezier(Vector3 a, Vector3 b, Vector3 c, float t)
+    {
+        Vector3 ab = Vector3.Lerp(a, b, t);
+        Vector3 bc = Vector3.Lerp(b, c, t);
+        return Vector3.Lerp(ab, bc, t);
     }
 }
