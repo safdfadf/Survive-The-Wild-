@@ -105,16 +105,20 @@ public class PlayerUI : MonoBehaviour
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
             SetUIVisible(false);
-            _movementHandler.TogglePlayerLock(true);
+            _movementHandler.CanMove(true);
+            if (_movementHandler.CurrentWeapon)
+                _movementHandler.CurrentWeapon.RestrictUse = false;
         }
         else
         {
             SetUIVisible(true);
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
-            _movementHandler.TogglePlayerLock(false);
+            _movementHandler.CanMove(false);
             ShowRscInv();
             EnableCraftingUI();
+            if (_movementHandler.CurrentWeapon)
+                _movementHandler.CurrentWeapon.RestrictUse = true;
         }
     }
 
@@ -126,7 +130,7 @@ public class PlayerUI : MonoBehaviour
         craftingButton.gameObject.SetActive(visible);
         bodyStatButton.gameObject.SetActive(visible);
         recipeBookButton.gameObject.SetActive(visible);
-    //    bodyStatusUI.gameObject.SetActive(visible);
+        //    bodyStatusUI.gameObject.SetActive(visible);
     }
 
     public void EnableCraftingUI()
@@ -152,7 +156,6 @@ public class PlayerUI : MonoBehaviour
 
     public void ToggleBodyUI(bool toggle)
     {
-       
         levelSlider.gameObject.SetActive(toggle);
         currentLevelText.gameObject.SetActive(toggle);
     }

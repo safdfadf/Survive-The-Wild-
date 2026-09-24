@@ -90,7 +90,7 @@ namespace Player
         }
         public void CanPlayerMove(bool isLocked)
         {
-            _movementHandler.TogglePlayerLock(isLocked);
+            _movementHandler.CanMove(isLocked);
         }
 
         public void ApplyDamage(IAttack attack)

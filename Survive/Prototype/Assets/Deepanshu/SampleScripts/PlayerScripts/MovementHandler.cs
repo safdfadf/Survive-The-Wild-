@@ -114,7 +114,7 @@ public class MovementHandler : MonoBehaviour
 
         SpineController.transform.localRotation = Quaternion.Euler(0f, 0, pitch);
     }
-
+   
     private void Start()
     {
 //        resourceInventory.gameObject.SetActive(false);
@@ -433,7 +433,7 @@ public class MovementHandler : MonoBehaviour
         return null;
     }
 
-    public void TogglePlayerLock(bool isLocked)
+    public void CanMove(bool isLocked)
     {
         _canMove = isLocked;
     }

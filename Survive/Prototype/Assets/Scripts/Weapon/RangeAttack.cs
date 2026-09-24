@@ -29,6 +29,7 @@ namespace DefaultNamespace.Weapon
 
         public override void OnInput(InputAction.CallbackContext ctx)
         {
+            if(weapon.RestrictUse)return;
             if (ctx.interaction is TapInteraction)
             {
                 StartAiming();
@@ -74,7 +75,7 @@ namespace DefaultNamespace.Weapon
 
         private void PrepareNextArrow() // this function should be here 
         {
-           // animator.DrawArrow();
+            // animator.DrawArrow();
             CurrentArrow = PlayerRepository.instance.GetResource(shootables); // how can we get current arrow 
             if (CurrentArrow == null) return;
             ArrowScript Arrow = CurrentArrow.GetComponent<ArrowScript>();

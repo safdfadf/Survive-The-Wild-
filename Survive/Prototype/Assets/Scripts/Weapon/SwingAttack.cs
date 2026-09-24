@@ -12,14 +12,14 @@ namespace DefaultNamespace.Weapon
 
         protected override void Attack()
         {
-            if(isHolding)return;
+            if (isHolding) return;
             animator.SwordAttack(); //ToDo: make it a trigger 
             StartCoroutine(StartAttacking());
         }
 
         public override void OnInput(InputAction.CallbackContext ctx)
         {
-            if (weapon.isEquipped) return;
+            if (weapon.isEquipped || weapon.RestrictUse) return;
             switch (ctx.interaction)
             {
                 case TapInteraction:
@@ -42,7 +42,6 @@ namespace DefaultNamespace.Weapon
         {
             animator.HandWeaponEquip(true);
             base.OnEquip();
-          
         }
 
         public override void OnUnEquip()
@@ -81,7 +80,7 @@ namespace DefaultNamespace.Weapon
             ItakeDamage dmgObj = obj.GetComponent<ItakeDamage>();
             if (dmgObj != null)
             {
-                PlayerAttack attack = new PlayerAttack(data.weaponSo.damage,null, weapon.Ability,Vector3.zero);
+                PlayerAttack attack = new PlayerAttack(data.weaponSo.damage, null, weapon.Ability, Vector3.zero);
                 dmgObj.TakeDamage(attack);
             }
         }

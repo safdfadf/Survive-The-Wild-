@@ -43,6 +43,7 @@ namespace DefaultNamespace.Weapon
 
         public virtual void OnInput(InputAction.CallbackContext ctx)
         {
+           
         }
         public virtual void DeliverDamage(){}
     }
