@@ -47,16 +47,17 @@ public class BaseWeapon : Obj<ObjSo>
         canUse = true;
         playerInventory = GetComponentInParent<PlayerInventory>();
         behaviours = GetComponentsInChildren<WeaponBehaviour>();
-        _activeBehaviour = behaviours[0];
+       
         _projectileAttack = HasRangeAttack();
         _meleeAtk = GetMeleeAtk();
+        Debug.Log(_meleeAtk);
+        _activeBehaviour = _meleeAtk == null ? _projectileAttack : _meleeAtk;
     }
 
     public void SetCraftingSo(CraftingSO weaponSo)
     {
         CraftingSo = weaponSo;
     }
-
     public void IniTialize(MovementHandler movementHandler, PlayerInventory inventory, PlayerAnimator animator,
         Transform aimTarget, Transform rightHandDrawPoint, GameObject Crosshair)
     {
@@ -128,6 +129,7 @@ public class BaseWeapon : Obj<ObjSo>
             _activeBehaviour = _meleeAtk;
             _activeBehaviour.OnInput(ctx);
         }
+        Debug.Log(_activeBehaviour);
     }
 
     private ProjectileAttack HasRangeAttack()

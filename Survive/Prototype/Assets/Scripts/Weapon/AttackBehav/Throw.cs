@@ -10,6 +10,11 @@ namespace DefaultNamespace.Weapon
             base.Awake();
         }
 
+        protected override void Update()
+        {
+            if(!isAiming)return;
+            base.Update();
+        }
         private void LateUpdate()
         {
             UpdateRestRotation();
