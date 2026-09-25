@@ -23,6 +23,8 @@ namespace DefaultNamespace.Weapon
             switch (ctx.interaction)
             {
                 case TapInteraction:
+                    Attack();
+                    break;
                 case HoldInteraction when ctx.phase == InputActionPhase.Performed:
                     Attack();
                     isHolding = true;
@@ -41,7 +43,7 @@ namespace DefaultNamespace.Weapon
         public override void OnEquip()
         {
             animator.HandWeaponEquip(true);
-            base.OnEquip();
+           
         }
 
         public override void OnUnEquip()

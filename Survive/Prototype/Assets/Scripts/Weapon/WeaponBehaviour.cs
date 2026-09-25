@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Interactions;
 
 namespace DefaultNamespace.Weapon
 {
@@ -12,27 +13,29 @@ namespace DefaultNamespace.Weapon
         protected Transform aimTarget;
 
         protected WeaponData data;
-      
-        protected Transform cameraTransform;
 
-        public virtual void Initialize(WeaponData data, PlayerAnimator animator, BaseWeapon weapon)
+        protected Transform cameraTransform;
+        protected MovementHandler Player;
+
+        public virtual void Initialize(WeaponData data, PlayerAnimator animator, BaseWeapon weapon,
+            MovementHandler player)
         {
             this.animator = animator;
             this.data = data;
             this.weapon = weapon;
             aimTarget = data.aimTarget;
             cameraTransform = Camera.main.transform;
+            Player = player;
         }
 
         public virtual void OnEquip()
         {
-          
         }
 
         public virtual void OnUnEquip()
         {
-            
         }
+
         protected virtual void Attack()
         {
         }
@@ -43,8 +46,10 @@ namespace DefaultNamespace.Weapon
 
         public virtual void OnInput(InputAction.CallbackContext ctx)
         {
-           
         }
-        public virtual void DeliverDamage(){}
+
+        public virtual void DeliverDamage()
+        {
+        }
     }
 }

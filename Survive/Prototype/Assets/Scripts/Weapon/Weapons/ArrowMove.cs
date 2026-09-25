@@ -2,7 +2,7 @@ using System;
 using Player;
 using UnityEngine;
 
-public class ArrowScript : Obj<ObjSo>
+public class ArrowMove : Obj<ObjSo>
 {
     [SerializeField] private GameObject TestHitPoint;
     [SerializeField] private Vector3 offset;
@@ -10,7 +10,7 @@ public class ArrowScript : Obj<ObjSo>
     [SerializeField] private Transform rayOrigin;
     private Vector3 _velocity;
     public float gravity = -9.81f;
-   
+
     private bool _isStuck;
     private bool _canMove;
     private int _dmg;
@@ -30,7 +30,8 @@ public class ArrowScript : Obj<ObjSo>
 
     public void InitDamage(int damage)
     {
-      _dmg = damage;
+        _dmg = damage;
+        canBeCollected = true;
     }
 
     private void Update()
@@ -46,10 +47,10 @@ public class ArrowScript : Obj<ObjSo>
         transform.rotation = Quaternion.LookRotation(-hit.normal);
 
         transform.SetParent(hit.collider.transform, true);
-        PlayerAttack atk = new PlayerAttack(_dmg,null,null,hitPos);//ToDo Add effects for player
-        
+        PlayerAttack atk = new PlayerAttack(_dmg, null, null, hitPos); //ToDo Add effects for player
+
         ItakeDamage combatant = hit.collider.GetComponent<ItakeDamage>();
-        if (combatant != null&& !combatant.IsEnvironment)
+        if (combatant != null && !combatant.IsEnvironment)
             combatant.TakeDamage(atk);
     }
 

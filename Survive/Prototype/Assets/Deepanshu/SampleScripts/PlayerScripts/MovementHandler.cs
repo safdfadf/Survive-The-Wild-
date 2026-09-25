@@ -25,7 +25,7 @@ public class MovementHandler : MonoBehaviour
     [SerializeField] private float groundCheckRadius = 0.3f;
 
     [SerializeField] private Transform LeftSpwnPoint;
-    [SerializeField] private Transform rightSpwnPoint;
+    [SerializeField] public Transform rightSpwnPoint;
 
     [SerializeField] private float hourlyScentInc = 0.01f;
     [SerializeField] private float moveScentInc = 0.005f;

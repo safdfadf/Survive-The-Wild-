@@ -83,16 +83,13 @@ public class InputManager : MonoBehaviour
         _aimCanceled = ctx => { UIManager.instance.DeactivateSubMenu(); };
         _shootPerformed = ctx => // 
         {
-            // this should do three things : if holding start aiming 
             var weapon = _player.CurrentWeapon;
 
             if (weapon != null)
             {
                 EventBus.onAttack.Invoke();
             }
-        };
-   //     _cursorToggle = ctx => _player.ToggleCursor();
-        _inventoryToggle = ctx => { _playerUI.ToggleInventory(); };
+        }; _inventoryToggle = ctx => { _playerUI.ToggleInventory(); };
         _resourceMenuToggle = ctx => ToggleCollectableMenu();
         _toggleTarckMenu = ctx => ToggleTracksMenu();
     }
@@ -183,7 +180,8 @@ public class InputManager : MonoBehaviour
     {
         BaseWeapon weapon = _player.CurrentWeapon;
         if (weapon == null) return;
-        weapon._activeBehaviour.OnInput(ctx);
+        weapon.SwitchWeaponBehavior(ctx);
+       
     }
 
     private void ToggleTracksMenu()

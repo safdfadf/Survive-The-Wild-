@@ -65,4 +65,9 @@ public class PlayerAnimator : MonoBehaviour
     {
         animator.SetTrigger("SwordBlock");
     }
+
+    public void Stab()
+    {
+        animator.SetTrigger("Stab");
+    }
 }

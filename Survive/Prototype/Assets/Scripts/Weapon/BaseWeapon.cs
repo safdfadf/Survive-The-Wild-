@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using DefaultNamespace.Weapon;
 using Player;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Interactions;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
@@ -34,6 +36,10 @@ public class BaseWeapon : Obj<ObjSo>
     public WeaponAbility Ability => ability;
     public bool RestrictUse { get; set; } = true;
 
+    // what if weapon uses both behaviours 
+    private ProjectileParent _projectileAttack;
+    private WeaponBehaviour _meleeAtk;
+
     protected override void Awake()
     {
         base.Awake();
@@ -41,7 +47,9 @@ public class BaseWeapon : Obj<ObjSo>
         canUse = true;
         playerInventory = GetComponentInParent<PlayerInventory>();
         behaviours = GetComponentsInChildren<WeaponBehaviour>();
-        _activeBehaviour = behaviours[0]; // fix this 
+        _activeBehaviour = behaviours[0];
+        _projectileAttack = HasRangeAttack();
+        _meleeAtk = GetMeleeAtk();
     }
 
     public void SetCraftingSo(CraftingSO weaponSo)
@@ -61,7 +69,7 @@ public class BaseWeapon : Obj<ObjSo>
         data.weaponSo = So as WeaponSo;
         foreach (var b in behaviours)
         {
-            b.Initialize(data, animator, this);
+            b.Initialize(data, animator, this, player);
         }
 
         crosshair.SetActive(false);
@@ -92,6 +100,64 @@ public class BaseWeapon : Obj<ObjSo>
         canCraft = true;
         canHarvest = false;
         canUse = true;
+    }
+
+    public void SwitchWeaponBehavior(InputAction.CallbackContext ctx)
+    {
+        if (behaviours.Length == 1) // if there is only one behaviour 
+        {
+            _activeBehaviour.OnInput(ctx);
+            return;
+        }
+
+        if (ctx.interaction is HoldInteraction && ctx.phase == InputActionPhase.Performed)
+        {
+            // if player is holding switch to range attack if not get back to earlier behaviour 
+            if (_projectileAttack != null)
+            {
+                _activeBehaviour = _projectileAttack;
+                _activeBehaviour.OnInput(ctx);
+            }
+            else
+            {
+                _activeBehaviour.OnInput(ctx);
+            }
+        }
+        else //if not holding switch to other atk behaviour 
+        {
+            _activeBehaviour = _meleeAtk;
+            _activeBehaviour.OnInput(ctx);
+        }
+    }
+
+    private ProjectileAttack HasRangeAttack()
+    {
+        foreach (var b in behaviours)
+        {
+            if (b.TryGetComponent<ProjectileAttack>(out var range)) return range;
+        }
+
+        return null;
+    }
+
+    private WeaponBehaviour GetMeleeAtk()
+    {
+        foreach (var w in behaviours)
+        {
+            if (w.TryGetComponent<SwingAttack>(out var melee))
+            {
+                if (melee != null)
+                    return melee;
+            }
+
+            if (w.TryGetComponent<ThrustAttack>(out var thrust))
+            {
+                if (thrust != null)
+                    return thrust;
+            }
+        }
+
+        return null;
     }
 }
 
