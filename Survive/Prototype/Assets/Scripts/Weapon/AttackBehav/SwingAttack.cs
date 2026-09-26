@@ -19,19 +19,20 @@ namespace DefaultNamespace.Weapon
 
         public override void OnInput(InputAction.CallbackContext ctx)
         {
-            if (weapon.isEquipped || weapon.RestrictUse) return;
-            switch (ctx.interaction)
+            Debug.Log(weapon.isEquipped +" "+ weapon.RestrictUse);
+            if (!weapon.isEquipped || weapon.RestrictUse) return;
+           if (ctx.interaction is TapInteraction)
             {
-                case TapInteraction:
-                    Attack();
-                    break;
-                case HoldInteraction when ctx.phase == InputActionPhase.Performed:
-                    Attack();
-                    isHolding = true;
-                    break;
-                case HoldInteraction when ctx.phase == InputActionPhase.Canceled:
-                    isHolding = false;
-                    break;
+                Attack();
+            }
+            else if (ctx.interaction is HoldInteraction && ctx.phase == InputActionPhase.Performed)
+            {
+                Attack();
+                isHolding = true;
+            }
+            else if (ctx.interaction is HoldInteraction && ctx.phase == InputActionPhase.Canceled)
+            {
+                isHolding = false;
             }
         }
 
@@ -43,7 +44,6 @@ namespace DefaultNamespace.Weapon
         public override void OnEquip()
         {
             animator.HandWeaponEquip(true);
-           
         }
 
         public override void OnUnEquip()

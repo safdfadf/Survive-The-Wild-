@@ -34,7 +34,7 @@ public class BaseWeapon : Obj<ObjSo>
 
     public bool isEquipped { get; set; }
     public WeaponAbility Ability => ability;
-    public bool RestrictUse { get; set; } = true;
+    public bool RestrictUse { get; set; }
 
     // what if weapon uses both behaviours 
     private ProjectileParent _projectileAttack;
@@ -50,7 +50,6 @@ public class BaseWeapon : Obj<ObjSo>
        
         _projectileAttack = HasRangeAttack();
         _meleeAtk = GetMeleeAtk();
-        Debug.Log(_meleeAtk);
         _activeBehaviour = _meleeAtk == null ? _projectileAttack : _meleeAtk;
     }
 

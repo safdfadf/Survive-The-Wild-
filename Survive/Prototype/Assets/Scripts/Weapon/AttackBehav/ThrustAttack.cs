@@ -20,12 +20,14 @@ namespace DefaultNamespace.Weapon
 
         private void LateUpdate()
         {
-            Player.SetSpineControl(true);
+           // Player.SetSpineControl(true);
         }
 
         public override void OnInput(InputAction.CallbackContext ctx)
         {
-            if (weapon.isEquipped || weapon.RestrictUse) return;
+            Debug.Log("attack");
+            if (!weapon.isEquipped || weapon.RestrictUse) return;
+            Debug.Log("attack");
             switch (ctx.interaction)
             {
                 case TapInteraction:
@@ -36,6 +38,7 @@ namespace DefaultNamespace.Weapon
 
         protected override void Attack()
         {
+            Debug.Log("attack");
             _thrustAnims.ThrustAnim();
             StartCoroutine(StartAttacking());
         }

@@ -99,6 +99,7 @@ GameObject:
   - component: {fileID: 7477111461604054398}
   - component: {fileID: 4179899187964630881}
   - component: {fileID: 1178477213324160792}
+  - component: {fileID: 490825786604744840}
   m_Layer: 0
   m_Name: WoodSpear
   m_TagString: Untagged
@@ -185,3 +186,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RestPoint: {fileID: 0}
+--- !u!114 &490825786604744840
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4231470475333935068}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c41cc9b69f043968fd25cfe96a66bc3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
