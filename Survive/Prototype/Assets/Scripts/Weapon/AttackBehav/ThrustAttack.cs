@@ -20,14 +20,12 @@ namespace DefaultNamespace.Weapon
 
         private void LateUpdate()
         {
-           // Player.SetSpineControl(true);
+            Player.SetSpineControl(true, true);
         }
 
         public override void OnInput(InputAction.CallbackContext ctx)
         {
-            Debug.Log("attack");
             if (!weapon.isEquipped || weapon.RestrictUse) return;
-            Debug.Log("attack");
             switch (ctx.interaction)
             {
                 case TapInteraction:

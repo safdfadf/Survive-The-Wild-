@@ -14368,6 +14368,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 83c00074e48f06f4184745b285ad46e1, type: 2}
   craftingUITransform: {fileID: 1849152900}
   testingSo:
+  - {fileID: 11400000, guid: 15af8bb8594c95447afdf7794853d300, type: 2}
+  - {fileID: 11400000, guid: 9752ee708873a9a4ab53dd37a570a44c, type: 2}
   - {fileID: 11400000, guid: 1a298092ace585741a429f1f80d0e88d, type: 2}
   tableOffset: {x: 0, y: 0, z: -0.1}
   craftButton: {fileID: 1605686666}
@@ -20520,7 +20522,7 @@ Transform:
   m_GameObject: {fileID: 1600046402}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.641, z: 0.414}
+  m_LocalPosition: {x: 0, y: 0.748, z: 0.136}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

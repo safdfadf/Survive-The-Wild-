@@ -102,7 +102,7 @@ public class MovementHandler : MonoBehaviour
         SetSpineControl(false);
     }
 
-    public void SetSpineControl(bool isAiming)
+    public void SetSpineControl(bool isAiming, bool rotateX = false)
     {
         if (!isAiming) return;
 
@@ -112,9 +112,9 @@ public class MovementHandler : MonoBehaviour
 
         pitch = Mathf.Clamp(pitch, -30, 30);
 
-        SpineController.transform.localRotation = Quaternion.Euler(0f, 0, pitch);
+        SpineController.transform.localRotation = !rotateX ? Quaternion.Euler(0f, 0, pitch) : Quaternion.Euler(pitch, 0, 0);
     }
-   
+
     private void Start()
     {
 //        resourceInventory.gameObject.SetActive(false);

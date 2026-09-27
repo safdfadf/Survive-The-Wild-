@@ -20,12 +20,13 @@ namespace DefaultNamespace.Weapon
 
         protected virtual void Update()
         {
+            if(!isAiming)return;
             UpdateAimTarget();
             UpdateCrosshair();
            
         }
 
-        private void LateUpdate()
+        protected virtual void LateUpdate()
         {
             Player.SetSpineControl(isAiming);
         }

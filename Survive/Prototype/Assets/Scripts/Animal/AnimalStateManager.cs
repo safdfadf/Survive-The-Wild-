@@ -130,7 +130,6 @@ public class AnimalStateManager : MonoBehaviour //ToDo : Change script name to p
                 continue;
             }
 
-            print("in bounds");
             Vector3 animalPos3D = first.CurrentPos.Value;
             Vector2 a = new Vector2(animalPos3D.x, animalPos3D.z);
 

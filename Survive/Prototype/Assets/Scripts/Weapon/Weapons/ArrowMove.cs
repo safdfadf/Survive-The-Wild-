@@ -7,7 +7,7 @@ public class ArrowMove : Obj<ObjSo>
     [SerializeField] private GameObject TestHitPoint;
     [SerializeField] private Vector3 offset;
     [SerializeField] private LayerMask mask;
-    [SerializeField] private Transform rayOrigin;
+    [SerializeField] public Transform rayOrigin;
     private Vector3 _velocity;
     public float gravity = -9.81f;
 

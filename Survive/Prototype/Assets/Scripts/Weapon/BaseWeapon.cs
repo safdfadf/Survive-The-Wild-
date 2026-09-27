@@ -47,8 +47,9 @@ public class BaseWeapon : Obj<ObjSo>
         canUse = true;
         playerInventory = GetComponentInParent<PlayerInventory>();
         behaviours = GetComponentsInChildren<WeaponBehaviour>();
-       
+
         _projectileAttack = HasRangeAttack();
+        Debug.Log(_projectileAttack);
         _meleeAtk = GetMeleeAtk();
         _activeBehaviour = _meleeAtk == null ? _projectileAttack : _meleeAtk;
     }
@@ -57,6 +58,7 @@ public class BaseWeapon : Obj<ObjSo>
     {
         CraftingSo = weaponSo;
     }
+
     public void IniTialize(MovementHandler movementHandler, PlayerInventory inventory, PlayerAnimator animator,
         Transform aimTarget, Transform rightHandDrawPoint, GameObject Crosshair)
     {
@@ -109,33 +111,38 @@ public class BaseWeapon : Obj<ObjSo>
             _activeBehaviour.OnInput(ctx);
             return;
         }
-
-        if (ctx.interaction is HoldInteraction && ctx.phase == InputActionPhase.Performed)
+        if (ctx.interaction is TapInteraction  && ctx.phase == InputActionPhase.Performed)
         {
-            // if player is holding switch to range attack if not get back to earlier behaviour 
-            if (_projectileAttack != null)
-            {
-                _activeBehaviour = _projectileAttack;
-                _activeBehaviour.OnInput(ctx);
-            }
-            else
-            {
-                _activeBehaviour.OnInput(ctx);
-            }
-        }
-        else //if not holding switch to other atk behaviour 
-        {
+            Debug.Log("Tap → Melee");
             _activeBehaviour = _meleeAtk;
             _activeBehaviour.OnInput(ctx);
+            return;
         }
-        Debug.Log(_activeBehaviour);
+        if (ctx.interaction is HoldInteraction && ctx.phase == InputActionPhase.Performed)
+        {
+            Debug.Log("Hold Start → Projectile");
+            _activeBehaviour = _projectileAttack;
+            _activeBehaviour.OnInput(ctx);
+            return;
+        }
+
+        // HOLD RELEASE (Canceled)
+        if (ctx.interaction is HoldInteraction && ctx.phase == InputActionPhase.Canceled)
+        {
+            Debug.Log("Hold Release → Projectile");
+            _activeBehaviour = _projectileAttack;
+            _activeBehaviour.OnInput(ctx);
+            return;
+        }
+
+        // TAP (Click)
     }
 
-    private ProjectileAttack HasRangeAttack()
+    private ProjectileParent HasRangeAttack()
     {
         foreach (var b in behaviours)
         {
-            if (b.TryGetComponent<ProjectileAttack>(out var range)) return range;
+            if (b.TryGetComponent<ProjectileParent>(out var range)) return range;
         }
 
         return null;
