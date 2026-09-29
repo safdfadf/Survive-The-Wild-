@@ -57,8 +57,8 @@ public class CraftingHandler : MonoBehaviour
         craftButton.gameObject.SetActive(false);
         _playerInventory = GetComponent<PlayerInventory>();
         _resourceInventory = FindAnyObjectByType<ResourceInventory>();
-        recipeBook.CategorizeRecipes(_recipeData, this);
         _buildingHandler = GetComponent<BuildingHandler>();
+        recipeBook.CategorizeRecipes(_recipeData, this);
     }
 
     private void Start()
@@ -81,29 +81,45 @@ public class CraftingHandler : MonoBehaviour
             if (earlyAccessRecipe.Contains(recipe))
                 data.isLocked = false;
         }
-        // all the recipes that has upgrades get their recipiesdata and store them in their base recipes
+
         InitUpgradesData();
     }
 
     private void InitUpgradesData()
     {
-        foreach (var data in _recipeData)
+        for (int i = _recipeData.Count - 1; i >= 0; i--) // go through base recipe 
         {
-            if (data.craftingSo.upgrades.Count <= 0) return;
-            RecipeData upData = GetRecipeData(data.craftingSo);
-            if (upData == null) continue;
-            data.upgrades.Add(upData);
+            if (_recipeData[i].craftingSo.upgrades.Count <= 0) continue; // if has upgrades
+            var upData = GetRecipeData(_recipeData[i].craftingSo); // returns upgrade recipes 
+            if (upData == null)
+            {
+                Debug.Log("upgrade data not found");
+                continue;
+            }
+
+            foreach (var upgrade in upData)
+            {
+                _recipeData[i].upgrades.Add(upgrade);
+                _recipeData.Remove(upgrade);
+                Debug.Log(upgrade.craftingSo);
+            }
         }
     }
 
-    private RecipeData GetRecipeData(CraftingSO so)
+    private List<RecipeData> GetRecipeData(CraftingSO so) // this function returns upgrade
     {
-        foreach (var data in _recipeData)
+        List<RecipeData> upgrades = new();
+        foreach (var up in so.upgrades)
         {
-            if (data.craftingSo == so) return data;
+            foreach (var data in _recipeData)
+            {
+                if (data.craftingSo == up)
+                    upgrades.Add(data);
+            }
         }
 
-        return null;
+
+        return upgrades;
     }
 
     private void AddIngredient(ObjSo So, InventoryItem uiPrefab)

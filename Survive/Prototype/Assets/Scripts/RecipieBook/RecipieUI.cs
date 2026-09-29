@@ -52,8 +52,10 @@ public class RecipieUI : MonoBehaviour
     private void HandleUpgradesSlot()
     {
         if (!_currentCraftingSo.craftingSo.hasUpgrades) return;
+        Debug.Log("continue" + _currentCraftingSo.craftingSo.upgrades.Count);
         foreach (var up in _currentCraftingSo.upgrades)
         {
+            Debug.Log("creating upgrade slot");
             CreateSlot(up);
         }
     }
@@ -77,7 +79,7 @@ public class RecipieUI : MonoBehaviour
         TextMeshProUGUI[] objs = parent.gameObject.GetComponentsInChildren<TextMeshProUGUI>();
         for (int i = objs.Length-1; i >= 0; i--)
         {
-            Destroy(objs[i]);
+            Destroy(objs[i].gameObject);
         }
 
         foreach (var ing in _currentCraftingSo.craftingSo.ingredients)

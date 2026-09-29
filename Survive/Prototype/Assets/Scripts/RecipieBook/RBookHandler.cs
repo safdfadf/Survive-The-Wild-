@@ -144,8 +144,7 @@ public class RBookHandler : MonoBehaviour
             r.GetComponent<RecipieUI>().Initialize(activeList[index], _craftingHandler);
             spawnedSlots.Add(r);
         }
-
-        previousButton.SetActive(currentIndex > 0);
+       previousButton.SetActive(currentIndex > 0);
         nextButton.SetActive(currentIndex + 4 < activeList.Count);
     }
 
@@ -170,7 +169,6 @@ public class RBookHandler : MonoBehaviour
     private void ShowWeaponRecipe()
     {
         activeList = _weaponRecipes;
-        RemoveLockedRecipes();
         currentIndex = 0;
         ShowRecipes();
     }
@@ -179,7 +177,6 @@ public class RBookHandler : MonoBehaviour
     {
         Debug.Log("Show Base Build Recipe");
         activeList = _baseRecipes;
-        RemoveLockedRecipes();
         currentIndex = 0;
         ShowRecipes();
     }
