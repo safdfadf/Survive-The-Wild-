@@ -10,11 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f2cee1ac6d1f451ea90efb5e688ac9ad, type: 3}
-  m_Name: CollectionQuest
+  m_Name: Mission1
   m_EditorClassIdentifier: 
-  <id>k__BackingField: CollectionQuest
+  <id>k__BackingField: Mission1
   displayName: 'Collect '
   PlayerLevelRequired: 1
   QuestSteps:
+  - {fileID: 8698992301795059399, guid: 40a4451f004b92541ba172e370b405ac, type: 3}
   - {fileID: 8698992301795059399, guid: 40a4451f004b92541ba172e370b405ac, type: 3}
   ExperienceReward: 0

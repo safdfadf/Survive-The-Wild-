@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &8698992301795059399
+--- !u!1 &8267339032128751719
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,44 +8,42 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 3950072850949652347}
-  - component: {fileID: 7887617057826475675}
+  - component: {fileID: 3974368195755167957}
+  - component: {fileID: 820388058163296556}
   m_Layer: 0
-  m_Name: CollectWood
+  m_Name: CraftHatchet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &3950072850949652347
+--- !u!4 &3974368195755167957
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8698992301795059399}
+  m_GameObject: {fileID: 8267339032128751719}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 138.6, y: 0.97, z: 47.71}
+  m_LocalPosition: {x: 1.3362955, y: 0.08931595, z: 2.9308362}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7887617057826475675
+--- !u!114 &820388058163296556
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8698992301795059399}
+  m_GameObject: {fileID: 8267339032128751719}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4b5fe27674df461f88ba38368c2709fe, type: 3}
+  m_Script: {fileID: 11500000, guid: dd76427b0bf549488ab400b3277e9d8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stepName: Collect 4 Wood
+  stepName: Craft Hatchet
   displayTask: 
-  requirements:
-  - so: {fileID: 11400000, guid: b7215a070f1ca7b459087577a8b803e1, type: 2}
-    amount: 2
+  requiredObject: {fileID: 11400000, guid: abc92296cd6774842a1f0e6844cf558e, type: 2}

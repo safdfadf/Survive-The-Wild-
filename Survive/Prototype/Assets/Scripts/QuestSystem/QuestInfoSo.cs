@@ -10,7 +10,7 @@ namespace DefaultNamespace.QuestSystem
         public string displayName;
         public int PlayerLevelRequired;
         public GameObject[] QuestSteps;
-
+        
         //recipe unlocked 
         public int ExperienceReward;
         private void OnValidate()

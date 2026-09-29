@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using DefaultNamespace.EventBus;
 using Inventory;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -215,8 +216,9 @@ public class CraftingHandler : MonoBehaviour
         }
 
         obj.So = so.resSo;
+        EventManager.Instance.CraftEvents.ObjectCraft(obj.So);
         _playerInventory.AddWorldItem(result);
-        //ConsumeIngredients(); // enable this 
+        ConsumeIngredients(); // enable this 
         craftButton.gameObject.SetActive(false);
     }
 

@@ -10,6 +10,7 @@ namespace DefaultNamespace.EventBus
         public QuestEvent questEvent ;
         public ResourceEvents reseourceEvent;
         public PlayerEvents playerEvents;
+        public CraftEvents CraftEvents;
         private void Awake()
         {
             if (Instance == null)
@@ -23,6 +24,7 @@ namespace DefaultNamespace.EventBus
             questEvent = new QuestEvent();
             reseourceEvent = new ResourceEvents();
             playerEvents = new PlayerEvents();
+            CraftEvents = new CraftEvents();
         }
     }
 }
