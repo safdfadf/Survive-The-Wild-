@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5a4f998fb58a50c4abda8539d2613cbc, type: 3}
-  m_Name: Bow
+  m_Name: RockKnife
   m_EditorClassIdentifier: 
-  <itemName>k__BackingField: Bow
-  prefab: {fileID: 2810370539657348168, guid: 13025a44a07e4cd449a466a507f0764b, type: 3}
-  sprite: {fileID: 21300000, guid: 87b522df918f65b439565a6a93c398f2, type: 3}
+  <itemName>k__BackingField: RockKnife
+  prefab: {fileID: 8393908558293731060, guid: ab0f7782072ddc04b9cc42ef241e5d57, type: 3}
+  sprite: {fileID: 21300000, guid: df040033217dc0a42a7bf2996fb8cf40, type: 3}
   amount: 1
-  size: {x: 0, y: 0}
+  size: {x: 1, y: 3}
   appearanceProb: 0
   damage: 20
-  block: 30
+  block: 20
   scale: 8

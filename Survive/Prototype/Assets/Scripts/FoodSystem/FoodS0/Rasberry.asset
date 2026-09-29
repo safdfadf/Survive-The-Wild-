@@ -12,14 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62df55132cbfbec469527465c09f5352, type: 3}
   m_Name: Rasberry
   m_EditorClassIdentifier: 
+  <itemName>k__BackingField: Rasberry
   prefab: {fileID: 3968307702440492694, guid: d179316e35a349c47bf3bde99a3bb35d, type: 3}
-  inventoryItem: {fileID: 0}
+  sprite: {fileID: 0}
   amount: 4
   size: {x: 0, y: 0}
   appearanceProb: 0
-  calories: 0
-  proteinCount: 0
-  carbonCount: 0
-  fatCount: 0
-  hydrationCount: 0
+  nutrientsCount:
+    calories: 0
+    protien: 0
+    carb: 0
+    hydration: 0
+    fat: 0
   regionType: 0
+  cooked: {fileID: 0}
+  burnt: {fileID: 0}
+  rotten: {fileID: 0}

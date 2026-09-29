@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14a65b5c5010fd148872814fb6b3e439, type: 3}
   m_Name: PoisonBandage
   m_EditorClassIdentifier: 
+  <itemName>k__BackingField: PoisonBandage
   prefab: {fileID: 7427983377439106926, guid: ca510dfd4ad334a4c8a9bd1411a0642f, type: 3}
   sprite: {fileID: 0}
   amount: 1

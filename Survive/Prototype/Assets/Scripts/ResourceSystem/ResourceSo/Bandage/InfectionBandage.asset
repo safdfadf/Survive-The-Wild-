@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14a65b5c5010fd148872814fb6b3e439, type: 3}
   m_Name: InfectionBandage
   m_EditorClassIdentifier: 
+  <itemName>k__BackingField: InfectionBandage
   prefab: {fileID: 7427983377439106926, guid: f25b683ebf6ee5345bb29d16d0f7701c, type: 3}
   sprite: {fileID: 0}
   amount: 0

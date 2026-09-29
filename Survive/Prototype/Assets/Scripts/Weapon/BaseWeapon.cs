@@ -49,7 +49,6 @@ public class BaseWeapon : Obj<ObjSo>
         behaviours = GetComponentsInChildren<WeaponBehaviour>();
 
         _projectileAttack = HasRangeAttack();
-        Debug.Log(_projectileAttack);
         _meleeAtk = GetMeleeAtk();
         _activeBehaviour = _meleeAtk == null ? _projectileAttack : _meleeAtk;
     }

@@ -17,4 +17,6 @@ MonoBehaviour:
     amount: 1
   - objSo: {fileID: 11400000, guid: 27e2c7e41bc250641915060a71bb3246, type: 2}
     amount: 1
-  resSo: {fileID: 11400000, guid: f76cb144e3b9f7341b25ebc40da272d2, type: 2}
+  resSo: {fileID: 11400000, guid: b1fefa13b9cb7bc4eae22062c5f0c173, type: 2}
+  hasUpgrades: 0
+  upgrades: []

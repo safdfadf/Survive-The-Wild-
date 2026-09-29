@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a4f998fb58a50c4abda8539d2613cbc, type: 3}
   m_Name: Hatchet
   m_EditorClassIdentifier: 
+  <itemName>k__BackingField: Hatchet
   prefab: {fileID: 8679677764685016200, guid: 3e3cdb758d337024d823c17ef70f4f3b, type: 3}
-  sprite: {fileID: 21300000, guid: a5f5fa3314681294d80ffdde8141ceed, type: 3}
+  sprite: {fileID: 21300000, guid: d75efac1221e5794f83e524c82403202, type: 3}
   amount: 1
   size: {x: 1, y: 1}
   appearanceProb: 0

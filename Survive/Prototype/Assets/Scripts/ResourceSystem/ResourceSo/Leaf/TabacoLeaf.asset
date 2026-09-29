@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14a65b5c5010fd148872814fb6b3e439, type: 3}
   m_Name: TabacoLeaf
   m_EditorClassIdentifier: 
+  <itemName>k__BackingField: TabacoLeaf
   prefab: {fileID: 0}
   sprite: {fileID: 0}
   amount: 0

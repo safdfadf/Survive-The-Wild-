@@ -81,7 +81,29 @@ public class CraftingHandler : MonoBehaviour
             if (earlyAccessRecipe.Contains(recipe))
                 data.isLocked = false;
         }
-       
+        // all the recipes that has upgrades get their recipiesdata and store them in their base recipes
+        InitUpgradesData();
+    }
+
+    private void InitUpgradesData()
+    {
+        foreach (var data in _recipeData)
+        {
+            if (data.craftingSo.upgrades.Count <= 0) return;
+            RecipeData upData = GetRecipeData(data.craftingSo);
+            if (upData == null) continue;
+            data.upgrades.Add(upData);
+        }
+    }
+
+    private RecipeData GetRecipeData(CraftingSO so)
+    {
+        foreach (var data in _recipeData)
+        {
+            if (data.craftingSo == so) return data;
+        }
+
+        return null;
     }
 
     private void AddIngredient(ObjSo So, InventoryItem uiPrefab)

@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a4f998fb58a50c4abda8539d2613cbc, type: 3}
   m_Name: StoneKnife
   m_EditorClassIdentifier: 
-  prefab: {fileID: 8393908558293731060, guid: ab0f7782072ddc04b9cc42ef241e5d57, type: 3}
-  sprite: {fileID: 21300000, guid: d010eb9653d0ede4c8692a0011e6060f, type: 3}
+  <itemName>k__BackingField: StoneKnife
+  prefab: {fileID: 8393908558293731060, guid: faf48dba22a8fc440ae55e2827f01f0e, type: 3}
+  sprite: {fileID: 21300000, guid: 9a8938311f16b1d4fa0fe1b9d9cfbe32, type: 3}
   amount: 1
   size: {x: 1, y: 3}
   appearanceProb: 0

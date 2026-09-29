@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14a65b5c5010fd148872814fb6b3e439, type: 3}
   m_Name: Rope
   m_EditorClassIdentifier: 
+  <itemName>k__BackingField: Rope
   prefab: {fileID: 8924393967249425686, guid: 50b428886ba357945ad82aff62dcb31e, type: 3}
   sprite: {fileID: 21300000, guid: 9a6df6a32c075354ea4e44b3669c7020, type: 3}
   amount: 4

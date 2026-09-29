@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62df55132cbfbec469527465c09f5352, type: 3}
   m_Name: WaterSo
   m_EditorClassIdentifier: 
+  <itemName>k__BackingField: WaterSo
   prefab: {fileID: 0}
   sprite: {fileID: 0}
   amount: 0
