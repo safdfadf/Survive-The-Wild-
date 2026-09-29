@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3950072850949652347}
   - component: {fileID: 7887617057826475675}
   m_Layer: 0
-  m_Name: CollectWood
+  m_Name: CollectFireRecipe
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44,10 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b5fe27674df461f88ba38368c2709fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stepName: Collect 2 Wood
+  stepName: Collect 4 Wood
   displayTask: 
   requirements:
   - so: {fileID: 11400000, guid: b7215a070f1ca7b459087577a8b803e1, type: 2}
     amount: 2
-  requiredData:
-  - {fileID: 11400000, guid: 74fc9e7c1e22c864d82fd707fb2b4748, type: 2}

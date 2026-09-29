@@ -36,8 +36,8 @@ public class RBookHandler : MonoBehaviour
     private List<RecipeData> activeList;
     private int currentIndex = 0;
     private List<GameObject> spawnedSlots = new();
-    private Dictionary<string, TextMeshProUGUI> questTexts = new();
-    List<TextMeshProUGUI> questTextList = new();
+    private Dictionary<string, List<TextMeshProUGUI>> questTexts = new();
+    List<GameObject> questTextList = new();
 
     private void Awake()
     {
@@ -144,7 +144,8 @@ public class RBookHandler : MonoBehaviour
             r.GetComponent<RecipieUI>().Initialize(activeList[index], _craftingHandler);
             spawnedSlots.Add(r);
         }
-       previousButton.SetActive(currentIndex > 0);
+
+        previousButton.SetActive(currentIndex > 0);
         nextButton.SetActive(currentIndex + 4 < activeList.Count);
     }
 
@@ -200,7 +201,7 @@ public class RBookHandler : MonoBehaviour
         }
     }
 
-    private void ShowQuest()
+    private void ShowQuest() // instead of quest step i would like to show the whole mission 
     {
         foreach (var slot in
                  spawnedSlots) // this will create an issue because it destroys objs that means text mesh obj created 
@@ -208,19 +209,32 @@ public class RBookHandler : MonoBehaviour
 
         Transform currentTransform;
 
-        for (int i = 0; i < questTextList.Count; i++)
+        foreach (var key in questTexts)
+        {
+            GameObject quest = Instantiate(questPrefab, parentObj.transform);
+            var tittle = quest.GetComponent<TextMeshProUGUI>();
+            tittle.text = key.Key;
+            foreach (var text in key.Value)
+            {
+                text.gameObject.transform.SetParent(quest.transform);
+            }
+
+            questTextList.Add(quest);
+        }
+
+        for (int i = 0; i < questTextList.Count; i++) // based on no. of missions set their page 
         {
             currentTransform = i <= 1 ? page1 : page2;
 
             int index = currentIndex + i;
             if (index >= questTextList.Count) break;
 
-            var textMesh = questTextList[index];
-            textMesh.gameObject.transform.SetParent(currentTransform);
-            RectTransform rectTransform = textMesh.GetComponent<RectTransform>();
+            var questObj = questTextList[index];
+            questObj.gameObject.transform.SetParent(currentTransform);
+            RectTransform rectTransform = questObj.GetComponent<RectTransform>();
             rectTransform.anchoredPosition = currentTransform.position;
-            textMesh.gameObject.SetActive(true);
-            spawnedSlots.Add(textMesh.gameObject);
+            questObj.gameObject.SetActive(true);
+            spawnedSlots.Add(questObj.gameObject);
         }
 
         previousButton.SetActive(currentIndex > 0);
@@ -231,24 +245,38 @@ public class RBookHandler : MonoBehaviour
     {
         foreach (var q in questSteps)
         {
-            GameObject obj = Instantiate(questPrefab, gameObject.transform);
-            var textMesh = obj.GetComponent<TextMeshProUGUI>();
-            textMesh.text = q.StepName;
-            questTexts.Add(q.QuestId, textMesh);
-            questTextList.Add(textMesh);
-            obj.SetActive(false);
+            if (questTexts.ContainsKey(q.QuestId))
+            {
+                var textMesh = GetNewTextMesh(q.StepName);
+                questTexts[q.QuestId].Add(textMesh);
+            }
+            else
+            {
+                List<TextMeshProUGUI> t = new();
+                var textMesh = GetNewTextMesh(q.StepName);
+                RectTransform rt = textMesh.GetComponent<RectTransform>();
+                rt.sizeDelta = new Vector2(200, 50);
+                t.Add(textMesh);
+                questTexts.Add(q.QuestId, t);
+            }
         }
 
-        questTextList = questTexts.Values.ToList();
         currentIndex = 0;
         ShowQuest();
     }
 
-    //we need to store active id and text 
+    private TextMeshProUGUI GetNewTextMesh(string id)
+    {
+        GameObject obj = new GameObject();
+        var textMesh = obj.AddComponent<TextMeshProUGUI>();
+        textMesh.text = id;
+        return textMesh;
+    }
+
     private void CheckQuest(string id)
     {
-        TextMeshProUGUI text = questTexts[id];
-        text.fontStyle = FontStyles.Strikethrough;
+        //TextMeshProUGUI text = questTexts[id];
+        //text.fontStyle = FontStyles.Strikethrough;
     }
 
     public void UnlockRecipe(CraftingSO so)

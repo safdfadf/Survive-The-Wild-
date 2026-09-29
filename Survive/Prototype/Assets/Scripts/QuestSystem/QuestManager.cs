@@ -37,7 +37,7 @@ namespace DefaultNamespace.QuestSystem
             }
         }
 
-        private void StartNewQuest() // who will call this function maybe Game manager 
+        private void StartNewQuest() 
         {
             if (_currentQuestIndex + 1 > allQuests.Count) return;
             string id = allQuests[_currentQuestIndex].id;

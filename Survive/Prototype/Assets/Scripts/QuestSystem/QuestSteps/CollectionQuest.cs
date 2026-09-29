@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using DefaultNamespace.EventBus;
 using UnityEngine;
@@ -7,8 +8,23 @@ namespace DefaultNamespace.QuestSystem.QuestSteps
 {
     public class CollectionQuest : QuestStep
     {
-        [SerializeField] private List<CollectionData> requirements;
+        [SerializeField] private List<CraftingSO> requiredData;
+
+        private Dictionary<ObjSo, int> _allRequirements = new();
+
         // step name needs to be set  
+        // collection quest is will be used for to craft something so should i look for craft so ?
+        private void Awake()
+        {
+            foreach (var data in requiredData)
+            {
+                foreach (var ing in data.ingredients)
+                {
+                    _allRequirements.Add(ing.objSo, ing.amount);
+                }
+            }
+        }
+
         private void OnEnable()
         {
             EventManager.Instance.reseourceEvent.onGatherResource += CheckSubmitResource;
@@ -19,46 +35,31 @@ namespace DefaultNamespace.QuestSystem.QuestSteps
             EventManager.Instance.reseourceEvent.onGatherResource -= CheckSubmitResource;
         }
 
+
         private void CheckSubmitResource(GameObject gm)
         {
-            Debug.Log(gm.name + " resource submitted");
             Obj<ObjSo> obj = gm.GetComponent<Obj<ObjSo>>();
             if (obj == null)
-            {
-                Debug.Log("object is null");
                 return;
-            }
+            if (!_allRequirements.ContainsKey(obj.So)) return;
 
-            foreach (var req in requirements.Where(req => req.so == obj.So))
+            if (_allRequirements[obj.So] <= 0)
             {
-                req.amount--;
+                _allRequirements.Remove(obj.So);
             }
-
-            if (!CheckSubmissionCount())
+            else
             {
-                Debug.Log("keep it comming");
-                return;
+                _allRequirements[obj.So]--;
             }
 
-            FinishQuest();
+            CheckToFinish();
         }
 
-        private bool CheckSubmissionCount()
+        private void CheckToFinish()
         {
-            foreach (var req in requirements)
-            {
-                if (req.amount > 0)
-                    return false;
-            }
-
-            return true;
+            if (_allRequirements.Count <= 0)
+                FinishQuest();
         }
     }
 }
 
-[System.Serializable]
-public class CollectionData
-{
-    public ObjSo so;
-    public int amount;
-}

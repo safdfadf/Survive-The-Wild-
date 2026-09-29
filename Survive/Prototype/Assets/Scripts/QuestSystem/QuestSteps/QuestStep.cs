@@ -14,13 +14,13 @@ namespace DefaultNamespace.QuestSystem
 
         public bool IsFinished => isfinished;
         public string StepName => stepName;
-        
+
         public string QuestId => questId;
 
         [SerializeField] public string displayTask;
         // Quest Details : how do we show quest details: quest details should be shown 
 
-        public void Initialize(QuestState questState,QuestInfoSo so)
+        public void Initialize(QuestState questState, QuestInfoSo so)
         {
             _questInfo = so;
             this.questId = so.id;
@@ -33,7 +33,7 @@ namespace DefaultNamespace.QuestSystem
 
                 isfinished = true;
             Debug.Log("Quest " + questId + " finished");
-            EventManager.Instance.questEvent.QuestComplete(questId);
+            EventManager.Instance.questEvent.QuestComplete(stepName);
             EventManager.Instance.playerEvents.AddExperience(_questInfo.ExperienceReward);
             Destroy(gameObject);
         }

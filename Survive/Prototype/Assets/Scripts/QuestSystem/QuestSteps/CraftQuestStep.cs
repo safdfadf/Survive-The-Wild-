@@ -1,4 +1,5 @@
 ﻿using System;
+using DefaultNamespace.EventBus;
 using DefaultNamespace.QuestSystem;
 using UnityEngine;
 
@@ -11,12 +12,12 @@ namespace QuestSystem.QuestSteps
 
         private void OnEnable()
         {
-            
+            EventManager.Instance.CraftEvents.OnCraft += CheckSubmitResource;
         }
 
         private void OnDisable()
         {
-            
+            EventManager.Instance.CraftEvents.OnCraft -= CheckSubmitResource;
         }
 
         private void CheckSubmitResource(ObjSo craftedObj)

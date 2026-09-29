@@ -218,7 +218,7 @@ public class CraftingHandler : MonoBehaviour
         obj.So = so.resSo;
         EventManager.Instance.CraftEvents.ObjectCraft(obj.So);
         _playerInventory.AddWorldItem(result);
-        ConsumeIngredients(); // enable this 
+        //     ConsumeIngredients(); // enable this 
         craftButton.gameObject.SetActive(false);
     }
 

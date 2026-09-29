@@ -14,7 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ingredients:
   - objSo: {fileID: 11400000, guid: b7215a070f1ca7b459087577a8b803e1, type: 2}
-    amount: 1
+    amount: 3
+  - objSo: {fileID: 11400000, guid: a139dfa28208d0842a55488f2a319a42, type: 2}
+    amount: 3
   resSo: {fileID: 11400000, guid: 491fdbea3f370d84d88e6169b25468c1, type: 2}
+  hasUpgrades: 0
+  upgrades: []
   structureType: 0
   isChildStructure: 0
