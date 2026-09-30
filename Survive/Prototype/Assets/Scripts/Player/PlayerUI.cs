@@ -60,7 +60,13 @@ public class PlayerUI : MonoBehaviour
 
     [Header("Wound Status")] [SerializeField]
     private GameObject WoundStatusPrefab;
-
+    [Header("SleepScreen")]
+    [SerializeField] private Transform SleepParent;
+    [SerializeField]public Slider SleepSlider;
+    [SerializeField] private Button WakeUpButton;
+    [SerializeField] private TextMeshProUGUI sleepStart;
+    [SerializeField] private TextMeshProUGUI sleepEnd;
+    
     [SerializeField] private Transform StatusParent;
     private PlayerNoiseEmitter _playerNoiseEmitter;
     private MovementHandler _movementHandler;
@@ -68,17 +74,18 @@ public class PlayerUI : MonoBehaviour
     private RBookHandler _rBookHandler;
 
     private List<GameObject> _activeWoundsUI = new();
-
+    private PlayerVitalStats _playerVitalStats;
     private void Awake()
     {
         _playerNoiseEmitter = GetComponent<PlayerNoiseEmitter>();
         _movementHandler = GetComponent<MovementHandler>();
+        _rBookHandler = recipeBookUI.GetComponent<RBookHandler>();
+       _playerVitalStats = GetComponent<PlayerVitalStats>();
         rscInvButton.onClick.AddListener(ShowRscInv);
         wpnInvButton.onClick.AddListener(ShowWpnInv);
         craftingButton.onClick.AddListener(EnableCraftingUI);
         bodyStatButton.onClick.AddListener(EnableBodyStatusUI);
         recipeBookButton.onClick.AddListener(EnableRecipeBook);
-        _rBookHandler = recipeBookUI.GetComponent<RBookHandler>();
         InitSliders();
     }
 
@@ -274,5 +281,30 @@ public class PlayerUI : MonoBehaviour
         if (effect.icon != null)
             woundUI.SetImage(effect.icon);
         return woundUI;
+    }
+
+    public void StartSleepUI(float sleepStartTime, float sleepEndTime)
+    {
+        SleepParent.gameObject.SetActive(true);
+        
+        SleepSlider.value = 0f;
+        SleepSlider.maxValue = sleepEndTime - sleepStartTime;
+
+        sleepStart.text = FormatTime(sleepStartTime);
+        sleepEnd.text = FormatTime(sleepEndTime);
+
+        WakeUpButton.onClick.RemoveAllListeners();
+        WakeUpButton.onClick.AddListener(() => _playerVitalStats.WakeUp());
+    }
+    private string FormatTime(float minutes)
+    {
+        int hour = Mathf.FloorToInt(minutes / 60f) % 24;
+        int min = Mathf.FloorToInt(minutes % 60f);
+        return $"{hour:D2}:{min:D2}";
+    }
+
+    public void EndSleepUI()
+    {
+        SleepParent.gameObject.SetActive(false);
     }
 }

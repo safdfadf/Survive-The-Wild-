@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using FoodSystem;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -41,6 +42,14 @@ public class PlayerVitalStats : MonoBehaviour
 
     private MovementHandler _movementHandler;
     private PlayerBody _playerBody;
+
+    private bool _isSleeping = false;
+    private float _originalTimeScale;
+    [SerializeField] private float sleepTimeScale = 20f; // how fast time moves during sleep
+    [SerializeField] private float energyRestorePerMinute = 5f;
+    [SerializeField] private float dangerThreshold = 0.1f; // 10% of max nutrients
+    [SerializeField] private float maxSleepHours = 8f; // configurable
+    private float _sleepStartTime;
 
     private void Awake()
     {
@@ -109,8 +118,7 @@ public class PlayerVitalStats : MonoBehaviour
 
         if (_currentEnergy <= 0)
         {
-            // currently there is no impact on health 
-            // Sleep();
+            Sleep();
         }
     }
 
@@ -172,6 +180,93 @@ public class PlayerVitalStats : MonoBehaviour
     {
         _currentHealth -= amount;
         _playerUI.HealthSlider(_currentHealth / maxHealth);
+    }
+
+    private void Sleep()
+    {
+        if (_isSleeping) return;
+        // update ui 
+
+        _isSleeping = true;
+
+        _originalTimeScale = TimeManager.Instance.timeScale;
+        TimeManager.Instance.timeScale = (int)sleepTimeScale;
+        StartCoroutine(SleepRoutine());
+    }
+
+    private IEnumerator SleepRoutine()
+    {
+        float maxSleepMinutes = maxSleepHours * 60f;
+
+        float sleepEndTime = (_sleepStartTime + maxSleepMinutes) % 1440f;
+
+        _playerUI.StartSleepUI(_sleepStartTime, sleepEndTime);
+        while (_isSleeping)
+        {
+            _currentEnergy = Mathf.Clamp(
+                _currentEnergy + energyRestorePerMinute * Time.deltaTime,
+                0f, maxEnergy
+            );
+
+            if (_currentStamina < _currentEnergy)
+                _currentStamina = _currentEnergy;
+
+            _playerUI.EnergySlider(_currentEnergy / maxEnergy);
+            _playerUI.StaminaSlider(_currentStamina / maxStamina);
+
+            if (IsDangerState())
+            {
+                WakeUp();
+                yield break;
+            }
+
+
+            if (_currentEnergy >= maxEnergy)
+            {
+                WakeUp();
+                yield break;
+            }
+
+            // Check max sleep duration
+            float currentTime = TimeManager.Instance.GetTimeInMinutes();
+            float sleptMinutes = (currentTime - _sleepStartTime + 1440f) % 1440f;
+            _playerUI.SleepSlider.value = sleptMinutes;
+            if (sleptMinutes >= maxSleepMinutes)
+            {
+                WakeUp();
+                yield break;
+            }
+
+            yield return null;
+        }
+    }
+
+    private bool IsDangerState()
+    {
+        float p = _currentProtein / maxProtein;
+        float c = _currentCarb / maxCarb;
+        float f = _currentFat / maxFat;
+        float h = _currentHydration / maxHydration;
+
+        float avg = (p + c + f + h) / 4f;
+
+        bool avgLow = avg <= dangerThreshold;
+        bool healthLow = (_currentHealth / maxHealth) <= dangerThreshold;
+
+        return avgLow || healthLow;
+    }
+
+    public void WakeUp()
+    {
+        _isSleeping = false;
+
+
+        TimeManager.Instance.timeScale = (int)_originalTimeScale;
+
+        _playerUI.EnergySlider(_currentEnergy / maxEnergy);
+        _playerUI.StaminaSlider(_currentStamina / maxStamina);
+        _playerUI.EndSleepUI();
+        Debug.Log("Player woke up");
     }
 
     public void KillPlayer()
