@@ -79,7 +79,9 @@ public class
     public virtual void SubmitResource(ObjSo objSo) // ingredient is a data type contains resource and amount 
     {
         if (!CheckSubmitResource(objSo))
+        {
             return;
+        }
 
 
         Ingredient ing = GetIngredient(objSo);

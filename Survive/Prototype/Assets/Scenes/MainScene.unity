@@ -13689,7 +13689,7 @@ MonoBehaviour:
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 0
-  m_Spacing: 0
+  m_Spacing: 164
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 0
@@ -14549,7 +14549,10 @@ MonoBehaviour:
   worldStorage: {fileID: 2144131478}
   ArrowSo: {fileID: 0}
   testResource:
-  - {fileID: 11400000, guid: 27c789396ea0e234f9d51213578af493, type: 2}
+  - {fileID: 11400000, guid: b7215a070f1ca7b459087577a8b803e1, type: 2}
+  - {fileID: 11400000, guid: a139dfa28208d0842a55488f2a319a42, type: 2}
+  - {fileID: 11400000, guid: a139dfa28208d0842a55488f2a319a42, type: 2}
+  - {fileID: 11400000, guid: a139dfa28208d0842a55488f2a319a42, type: 2}
   - {fileID: 11400000, guid: b7215a070f1ca7b459087577a8b803e1, type: 2}
   - {fileID: 11400000, guid: b7215a070f1ca7b459087577a8b803e1, type: 2}
 --- !u!114 &848024449
@@ -14627,7 +14630,7 @@ MonoBehaviour:
   currentLevelText: {fileID: 1898062004}
   WoundStatusPrefab: {fileID: 2251338005642499602, guid: 6898e6c8dc7316e4ba920e84c43229e8, type: 3}
   SleepParent: {fileID: 81262004}
-  SleepSlider: {fileID: 0}
+  SleepSlider: {fileID: 671802425}
   WakeUpButton: {fileID: 1317028896}
   sleepStart: {fileID: 1150947399}
   sleepEnd: {fileID: 1257262811}

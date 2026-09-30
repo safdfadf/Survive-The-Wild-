@@ -50,6 +50,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 923861d195e106741a2c2f0447411a4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  objSo: {fileID: 11400000, guid: b7215a070f1ca7b459087577a8b803e1, type: 2}
+  amount: 2
 --- !u!54 &2030872394806986108
 Rigidbody:
   m_ObjectHideFlags: 0

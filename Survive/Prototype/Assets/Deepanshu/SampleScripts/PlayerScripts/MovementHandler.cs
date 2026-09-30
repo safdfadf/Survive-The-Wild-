@@ -112,7 +112,8 @@ public class MovementHandler : MonoBehaviour
 
         pitch = Mathf.Clamp(pitch, -30, 30);
 
-        SpineController.transform.localRotation = !rotateX ? Quaternion.Euler(0f, 0, pitch) : Quaternion.Euler(pitch, 0, 0);
+        SpineController.transform.localRotation =
+            !rotateX ? Quaternion.Euler(0f, 0, pitch) : Quaternion.Euler(pitch, 0, 0);
     }
 
     private void Start()
@@ -127,8 +128,8 @@ public class MovementHandler : MonoBehaviour
         MovePlayer();
         RotatePlayer();
         ExtraGravity();
-        ShootRay(); 
-        CollectCheck();// this should be more then collect 
+        ShootRay();
+        CollectCheck(); // this should be more then collect 
     }
 
     private void OnEnable()
@@ -335,17 +336,15 @@ public class MovementHandler : MonoBehaviour
         ClearHighlight(lastInteractable);
     }
 
-    private void CollectCheck()// here only task we do is collection but i would like it to do 
-    // different tasks 
+    private void CollectCheck() // here only task we do is collection but i would like it to do 
+        // different tasks 
     {
-        if (currentlyHighlighted != null && Input.GetKeyDown(KeyCode.E))
+        if (currentlyHighlighted != null && Input.GetKeyDown(KeyCode.E)) // ToDo: use new input system
         {
             IInteractable interactable = currentlyHighlighted.GetComponent<IInteractable>();
-            if (interactable != null && interactable.canBeCollected)
+            if (interactable != null)
             {
-                // _playerInventory.AddWorldItem(interactable.Gm);
                 interactable.ExecuteAction();
-               // EventManager.Instance.reseourceEvent.GatherResource(interactable.Gm);
                 ClearHighlight(interactable);
             }
         }
@@ -365,6 +364,7 @@ public class MovementHandler : MonoBehaviour
     {
         if (interactable == null) return;
         IInteractionUI ac = interactable.Gm.GetComponent<IInteractionUI>();
+        Debug.Log(interactable.Gm);
         if (!ac.canDisplay) return;
         UIManager.instance.ActivateUi(ac);
     }

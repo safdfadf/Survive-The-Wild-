@@ -187,6 +187,7 @@ public class PlayerVitalStats : MonoBehaviour
 
     private void Sleep()
     {
+        Debug.Log("trigger");
         if (_isSleeping) return;
         // update ui 
 
@@ -226,6 +227,8 @@ public class PlayerVitalStats : MonoBehaviour
 
             if (_currentEnergy >= maxEnergy)
             {
+                //notify player 
+                UIManager.instance.DisplayNotification("Energy is full");
                 WakeUp();
                 yield break;
             }

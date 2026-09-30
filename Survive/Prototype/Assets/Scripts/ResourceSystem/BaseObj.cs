@@ -28,6 +28,7 @@ public class BaseObj : Obj<ObjSo>
 
     private void DropObject()
     {
+        int num = 0;
         if (objSo == null) return;
         for (var i = amount; i >= 0; i--)
         {
@@ -44,8 +45,11 @@ public class BaseObj : Obj<ObjSo>
             {
                 Debug.Log(baseObj.name + " is missing Collider");
             }
+
+            num++;
         }
 
+        print(num);
         GlobalPool.instance.Return(So.prefab, gameObject);
     }
 }
