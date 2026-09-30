@@ -10,14 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f2cee1ac6d1f451ea90efb5e688ac9ad, type: 3}
-  m_Name: Mission1
+  m_Name: Mission3
   m_EditorClassIdentifier: 
-  <id>k__BackingField: Mission1
-  displayName: 'Collect '
+  <id>k__BackingField: Mission3
+  displayName: Hunt a Rabbit
   PlayerLevelRequired: 1
   QuestSteps:
-  - {fileID: 8698992301795059399, guid: 40a4451f004b92541ba172e370b405ac, type: 3}
-  - {fileID: 8267339032128751719, guid: 0882df6859c994f40838a32652571df4, type: 3}
+  - {fileID: 8267339032128751719, guid: 4a8c6fe4577409544a67527d5cfd2122, type: 3}
   RewardData:
-    LevelExp: 40
-    RewardRecipe: {fileID: 0}
+    LevelExp: 20
+    RewardRecipe: {fileID: 11400000, guid: 1a298092ace585741a429f1f80d0e88d, type: 2}

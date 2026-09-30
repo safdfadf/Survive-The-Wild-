@@ -3,14 +3,14 @@ using UnityEngine;
 
 namespace DefaultNamespace.QuestSystem
 {
-    public class Quest 
+    public class Mission
     {
         public int currentQuestIndex;
         public QuestInfoSo questInfo;
-        public QuestState questState; // do i need quest state ?
+        public QuestState questState;
         public List<QuestStep> _currentQuestSteps = new();
 
-        public Quest(QuestInfoSo questInfo)
+        public Mission(QuestInfoSo questInfo)
         {
             this.questInfo = questInfo;
             questState = QuestState.RequirementNotMet;
@@ -28,15 +28,16 @@ namespace DefaultNamespace.QuestSystem
 
         public void SpawnQuest(Transform transform)
         {
-            foreach (var o in questInfo.QuestSteps)
+            foreach (var q in questInfo.QuestSteps)
             {
-                GameObject obj = Object.Instantiate(o, transform);
+                GameObject obj = Object.Instantiate(q, transform);
                 QuestStep step = obj.GetComponent<QuestStep>();
-                step.Initialize(questState,questInfo);
-                obj.SetActive(false);
+                step.Initialize(questState, questInfo);
+                step.gameObject.SetActive(false);
                 _currentQuestSteps.Add(step);
             }
 
+            Debug.Log(_currentQuestSteps.Count);
             RBookHandler uiHandler = Object.FindAnyObjectByType<RBookHandler>();
             uiHandler.SetQuestSteps(_currentQuestSteps);
             currentQuestIndex = 0;
@@ -58,8 +59,9 @@ namespace DefaultNamespace.QuestSystem
             ActivateNextQuest();
         }
 
-        public void ActivateNextQuest()
+        private void ActivateNextQuest()
         {
+            Debug.Log(_currentQuestSteps.Count);
             QuestStep currentSteps = _currentQuestSteps[currentQuestIndex];
             currentSteps.gameObject.SetActive(true);
         }
@@ -72,7 +74,7 @@ namespace DefaultNamespace.QuestSystem
         public GameObject GetCurrentQuest()
         {
             GameObject questPrefab = questInfo.QuestSteps[GetCurrentQuestIndex()];
-            return questPrefab;
+            return questPrefab.gameObject;
         }
 
         public void UpdateQuestInfo(int playerLevel)

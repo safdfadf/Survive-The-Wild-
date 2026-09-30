@@ -11,6 +11,7 @@ namespace DefaultNamespace.EventBus
         public ResourceEvents reseourceEvent;
         public PlayerEvents playerEvents;
         public CraftEvents CraftEvents;
+        public AnimalEvents AnimalEvents;
         private void Awake()
         {
             if (Instance == null)
@@ -25,6 +26,7 @@ namespace DefaultNamespace.EventBus
             reseourceEvent = new ResourceEvents();
             playerEvents = new PlayerEvents();
             CraftEvents = new CraftEvents();
+            AnimalEvents = new AnimalEvents();
         }
     }
 }

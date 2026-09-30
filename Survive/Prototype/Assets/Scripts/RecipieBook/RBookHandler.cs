@@ -50,12 +50,12 @@ public class RBookHandler : MonoBehaviour
 
     private void OnEnable()
     {
-        EventManager.Instance.questEvent.onQuestComplete += CheckQuest;
+        EventManager.Instance.questEvent.OnQuestStepComplete += CheckQuest;
     }
 
     private void OnDisable()
     {
-        EventManager.Instance.questEvent.onQuestComplete -= CheckQuest;
+        EventManager.Instance.questEvent.OnQuestStepComplete -= CheckQuest;
     }
 
     public void ToggleRBook()
@@ -141,7 +141,7 @@ public class RBookHandler : MonoBehaviour
             if (index >= activeList.Count) break;
 
             GameObject r = Instantiate(recipiePrefab, currentTransform);
-            r.GetComponent<RecipieUI>().Initialize(activeList[index], _craftingHandler);
+            r.GetComponent<RecipeUI>().Initialize(activeList[index], _craftingHandler);
             spawnedSlots.Add(r);
         }
 
@@ -243,6 +243,7 @@ public class RBookHandler : MonoBehaviour
 
     public void SetQuestSteps(List<QuestStep> questSteps)
     {
+        questTextList.Clear();
         foreach (var q in questSteps)
         {
             if (questTexts.ContainsKey(q.QuestId))
@@ -255,7 +256,7 @@ public class RBookHandler : MonoBehaviour
                 List<TextMeshProUGUI> t = new();
                 var textMesh = GetNewTextMesh(q.StepName);
                 RectTransform rt = textMesh.GetComponent<RectTransform>();
-                rt.sizeDelta = new Vector2(200, 50);
+                rt.sizeDelta = new Vector2(300, 50);
                 t.Add(textMesh);
                 questTexts.Add(q.QuestId, t);
             }
@@ -275,11 +276,28 @@ public class RBookHandler : MonoBehaviour
 
     private void CheckQuest(string id)
     {
-        //TextMeshProUGUI text = questTexts[id];
-        //text.fontStyle = FontStyles.Strikethrough;
+        // we dont just need 
+        foreach (var obj in questTextList)
+        {
+            var textMesh = obj.GetComponent<TextMeshProUGUI>();
+            if (textMesh.text == id)
+            {
+                //maybe an animation or something 
+            }
+        }
     }
 
-    public void UnlockRecipe(CraftingSO so)
+    public void AddNewRecipe(RecipeData data)
     {
+        GameObject prefab = data.craftingSo.resSo.prefab;
+        if (prefab.TryGetComponent<BaseWeapon>(out _))
+        {
+            _weaponRecipes.Add(data);
+        }
+        //   else if (prefab.TryGetComponent<Trap>(out _))
+        //              trapRecipes.Add(so);
+        else if (prefab.TryGetComponent<BaseStructure>(out _))
+            _baseRecipes.Add(data);
+        // notify player 
     }
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-public class RecipieUI : MonoBehaviour
+public class RecipeUI : MonoBehaviour
 {
     [SerializeField] private GameObject textPrefab;
     [SerializeField] private Image image;

@@ -126,7 +126,6 @@ public class AnimalBase : MonoBehaviour, IInteractionUI, IInteractable
         {
             Death();
         }
-      
     }
 
     private void PlayBloodVfx()
@@ -146,6 +145,7 @@ public class AnimalBase : MonoBehaviour, IInteractionUI, IInteractable
     protected virtual void Death()
     {
         Debug.Log("Death");
+        EventManager.Instance.AnimalEvents.AnimalDeath(this);
         ToggleCollider(true);
         animator.SetBool("Death", true);
         agent.enabled = false;
@@ -416,7 +416,10 @@ public class AnimalBase : MonoBehaviour, IInteractionUI, IInteractable
             box.ToggleCollider(!toggle);
         }
     }
-    public virtual void HerdCall(){}
+
+    public virtual void HerdCall()
+    {
+    }
 }
 
 [System.Serializable]

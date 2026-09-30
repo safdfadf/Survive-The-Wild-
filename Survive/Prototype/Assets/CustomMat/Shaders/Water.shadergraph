@@ -1300,8 +1300,8 @@
     "m_ObjectId": "091c1d8c5dd4463fbbc3ecd5dabd2ac7",
     "m_Title": "Base",
     "m_Position": {
-        "x": -3192.000244140625,
-        "y": 886.000244140625
+        "x": -3192.0,
+        "y": 886.0
     }
 }
 
@@ -1579,7 +1579,7 @@
     "m_ObjectId": "16cd77a8787648b0a62d327fcda5ea7d",
     "m_Title": "Normal",
     "m_Position": {
-        "x": -3207.000244140625,
+        "x": -3207.0,
         "y": -2279.0
     }
 }
@@ -4096,7 +4096,7 @@
     "m_ObjectId": "61e90cd657664c0dbe99c7ee65314a31",
     "m_Title": "Poristion",
     "m_Position": {
-        "x": -3616.000244140625,
+        "x": -3616.0,
         "y": -572.0
     }
 }
@@ -4570,8 +4570,8 @@
     "m_ObjectId": "7d9ec535bb234cf09dea4db71181e0c4",
     "m_Title": "Dissolve",
     "m_Position": {
-        "x": -2873.000244140625,
-        "y": -3153.000244140625
+        "x": -2873.0,
+        "y": -3153.0
     }
 }
 

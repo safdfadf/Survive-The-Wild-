@@ -38,18 +38,21 @@ public class CraftingHandler : MonoBehaviour
     private CraftingSO _currentSo;
     private BuildingHandler _buildingHandler;
     private List<InventoryItem> _currentItems = new();
-    private List<RecipeData> _recipeData = new();
+    private List<RecipeData> _recipeData = new(); // all base recipes
+    [SerializeField] private bool isTesting = false;
 
     private void OnEnable()
     {
         EventBus.OnCraftResource += AddIngredient;
         EventBus.OnUnCraftResource += RemoveResource;
+        EventManager.Instance.questEvent.OnMissionComplete += UnLockRecipe;
     }
 
     private void OnDisable()
     {
         EventBus.OnCraftResource -= AddIngredient;
         EventBus.OnUnCraftResource -= RemoveResource;
+        EventManager.Instance.questEvent.OnMissionComplete -= UnLockRecipe;
     }
 
     private void Awake()
@@ -204,6 +207,7 @@ public class CraftingHandler : MonoBehaviour
         {
             SpawnStructure(so);
             recipeBook.ToggleRBook();
+            EventManager.Instance.CraftEvents.ObjectCraft(so.resSo);
             return;
         }
 
@@ -218,8 +222,9 @@ public class CraftingHandler : MonoBehaviour
         obj.So = so.resSo;
         EventManager.Instance.CraftEvents.ObjectCraft(obj.So);
         _playerInventory.AddWorldItem(result);
-        //     ConsumeIngredients(); // enable this 
         craftButton.gameObject.SetActive(false);
+        if (!isTesting)
+            ConsumeIngredients(); // enable this 
     }
 
     private void ConsumeIngredients() // in consume ingredient we need 
@@ -261,5 +266,33 @@ public class CraftingHandler : MonoBehaviour
         int col = _ingredientVisualIndex % rowSize;
 
         return new Vector3(col * spacing, 0, row * spacing);
+    }
+
+    private void UnLockRecipe(RewardData reward)
+    {
+        CraftingSO so = reward.RewardRecipe;
+        if (so == null || IsAnUpgrade(so)) return;
+        RecipeData newRecipe = new RecipeData(so);
+        newRecipe.isLocked = false;
+        recipeBook.AddNewRecipe(newRecipe);
+        UIManager.instance.DisplayNotification("New Recipe Available");
+    }
+
+    private bool IsAnUpgrade(CraftingSO so)
+    {
+        // check  in base recipes if upgrade is there  
+        foreach (var data in _recipeData)
+        {
+            foreach (var ups in data.upgrades)
+            {
+                if (ups.craftingSo != so) continue;
+                ups.isLocked = false; // unlock upgrade
+                UIManager.instance.DisplayNotification("New " +
+                                                       ups.craftingSo.resSo.itemName + " Upgrade Available");
+                return true;
+            }
+        }
+
+        return false;
     }
 }

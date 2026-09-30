@@ -16,5 +16,8 @@ MonoBehaviour:
   displayName: Build Fire
   PlayerLevelRequired: 1
   QuestSteps:
-  - {fileID: 0}
-  ExperienceReward: 0
+  - {fileID: 8698992301795059399, guid: 3e050ecdef1c6a144b2eaab41d21da51, type: 3}
+  - {fileID: 8267339032128751719, guid: 4c121449c1f10634ca8a13eec64d4416, type: 3}
+  RewardData:
+    LevelExp: 20
+    RewardRecipe: {fileID: 11400000, guid: 1a298092ace585741a429f1f80d0e88d, type: 2}

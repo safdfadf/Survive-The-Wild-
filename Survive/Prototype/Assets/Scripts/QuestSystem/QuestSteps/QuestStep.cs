@@ -6,7 +6,7 @@ namespace DefaultNamespace.QuestSystem
 {
     public class QuestStep : MonoBehaviour
     {
-        [SerializeField] private string stepName;
+        [SerializeField] protected string stepName;
         protected bool isfinished;
         protected string questId;
         protected QuestState questState;
@@ -34,8 +34,8 @@ namespace DefaultNamespace.QuestSystem
                 isfinished = true;
             Debug.Log("Quest " + questId + " finished");
             EventManager.Instance.questEvent.QuestComplete(stepName);
-            EventManager.Instance.playerEvents.AddExperience(_questInfo.ExperienceReward);
-            Destroy(gameObject);
+         //   EventManager.Instance.playerEvents.AddExperience(_questInfo.ExperienceReward);
+         Destroy(gameObject);
         }
     }
 }

@@ -8,9 +8,9 @@ namespace DefaultNamespace.QuestSystem
     public class QuestManager : MonoBehaviour
     {
         [SerializeField] private List<QuestInfoSo> allQuests = new();
-        private Dictionary<string, Quest> questsMap = new();
+        private Dictionary<string, Mission> questsMap = new();
         private int _currentQuestIndex = 0;
-        private Quest _currentQuest;
+        private Mission _currentMission;
 
         private void Awake()
         {
@@ -20,46 +20,47 @@ namespace DefaultNamespace.QuestSystem
 
         private void OnEnable()
         {
-            EventManager.Instance.questEvent.onQuestComplete += FinishQuest;
+            EventManager.Instance.questEvent.OnQuestStepComplete += FinishQuest;
         }
 
         private void OnDisable()
         {
-            EventManager.Instance.questEvent.onQuestComplete -= FinishQuest;
+            EventManager.Instance.questEvent.OnQuestStepComplete -= FinishQuest;
         }
 
         private void CreateQuestMap()
         {
             foreach (var questInfo in allQuests)
             {
-                Quest q = new Quest(questInfo);
+                Mission q = new Mission(questInfo);
                 questsMap.Add(questInfo.id, q);
             }
         }
 
-        private void StartNewQuest() 
+        private void StartNewQuest()
         {
             if (_currentQuestIndex + 1 > allQuests.Count) return;
             string id = allQuests[_currentQuestIndex].id;
-            _currentQuest = questsMap[id];
-            if (_currentQuest is not { questState: QuestState.CanStart } || !_currentQuest.CanStartQuest())
+            _currentMission = questsMap[id];
+            if (_currentMission is not { questState: QuestState.CanStart } || !_currentMission.CanStartQuest())
             {
                 return;
             }
 
             _currentQuestIndex++;
-            _currentQuest.SpawnQuest(transform);
+            _currentMission.SpawnQuest(transform);
         }
 
         private void FinishQuest(string id) // will be called by Quest Step 
         {
-            Quest q = questsMap[id];
+            Mission q = questsMap[id];
             if (q.IsNextQuestAvailable())
             {
                 q.UpdateQuest();
             }
             else
             {
+                EventManager.Instance.questEvent.MissionComplete(q.questInfo.RewardData);
                 StartNewQuest();
             }
         }
