@@ -37,7 +37,6 @@ namespace DefaultNamespace.QuestSystem
                 _currentQuestSteps.Add(step);
             }
 
-            Debug.Log(_currentQuestSteps.Count);
             RBookHandler uiHandler = Object.FindAnyObjectByType<RBookHandler>();
             uiHandler.SetQuestSteps(_currentQuestSteps);
             currentQuestIndex = 0;
@@ -61,7 +60,6 @@ namespace DefaultNamespace.QuestSystem
 
         private void ActivateNextQuest()
         {
-            Debug.Log(_currentQuestSteps.Count);
             QuestStep currentSteps = _currentQuestSteps[currentQuestIndex];
             currentSteps.gameObject.SetActive(true);
         }

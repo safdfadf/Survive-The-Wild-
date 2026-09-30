@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using DefaultNamespace.EventBus;
 using FoodSystem;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -69,12 +70,14 @@ public class PlayerVitalStats : MonoBehaviour
     {
         EventBus.On5SecondsPassed += UpdateStats;
         EventBus.On5SecondsPassed += UpdateHealth;
+        EventManager.Instance.playerEvents.OnTriggerPlayerSleep += Sleep;
     }
 
     private void OnDisable()
     {
         EventBus.On5SecondsPassed -= UpdateStats;
         EventBus.On5SecondsPassed -= UpdateHealth;
+        EventManager.Instance.playerEvents.OnTriggerPlayerSleep -= Sleep;
     }
 
     private void LateUpdate()

@@ -105,7 +105,6 @@ public class CraftingHandler : MonoBehaviour
             {
                 _recipeData[i].upgrades.Add(upgrade);
                 _recipeData.Remove(upgrade);
-                Debug.Log(upgrade.craftingSo);
             }
         }
     }

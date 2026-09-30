@@ -252,21 +252,6 @@ public class PlayerUI : MonoBehaviour
         fatBar.value = fat;
         hydroBar.value = hydro;
     }
-
-    public void ApplyBandageUi(GameObject prefab)
-    {
-    }
-
-    public void ApplyWoundUI(Material mat)
-    {
-        Debug.Log("ApplyWoundUI");
-    }
-
-    public void ApplyOriginalUI()
-    {
-        Debug.Log("ApplyOriginalUI");
-    }
-
     public void UpdateLevel(int xp, int level)
     {
         currentLevelText.text = level.ToString();

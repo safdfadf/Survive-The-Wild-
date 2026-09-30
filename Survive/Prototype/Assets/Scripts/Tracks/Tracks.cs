@@ -37,16 +37,22 @@ public class Tracks : MonoBehaviour, IInteractable // tracks are not collectable
     public GameObject Gm { get; set; }
     public bool isHit { get; set; }
     public Vector3 hitPos { get; set; }
+
+
     private Material _originalMaterial;
 
     private void Awake()
     {
-        outlineMe = true;
+        outlineMe = true; // we are using Ienteractable to outline 
         cam = Camera.main;
         _meshRenderer = GetComponentsInChildren<MeshRenderer>();
         _originalMaterial = GetComponentInChildren<MeshRenderer>().material;
         menu.SetActive(false);
         RenderGlowMaterial();
+    }
+
+    public void ExecuteAction()
+    {
     }
 
     private void OnEnable()

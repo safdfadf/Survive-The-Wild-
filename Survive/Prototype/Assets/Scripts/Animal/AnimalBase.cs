@@ -62,6 +62,8 @@ public class AnimalBase : MonoBehaviour, IInteractionUI, IInteractable
     public GameObject Gm { get; set; }
     public bool isHit { get; set; }
     public Vector3 hitPos { get; set; }
+
+
     public bool IsAggresive { get; set; }
 
     protected virtual void Awake()
@@ -86,6 +88,7 @@ public class AnimalBase : MonoBehaviour, IInteractionUI, IInteractable
         outlineMe = false;
         Gm = gameObject;
         obj = gameObject;
+        Description = "Skin";
     }
 
     private void Start()
@@ -382,6 +385,10 @@ public class AnimalBase : MonoBehaviour, IInteractionUI, IInteractable
     }
 
     public void Harvest()
+    {
+    }
+
+    public void ExecuteAction()
     {
         BaseWeapon weapon = PlayerRepository.instance.GetCurrentWeapon();
 

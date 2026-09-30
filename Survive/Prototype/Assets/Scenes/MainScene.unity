@@ -593,7 +593,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &81262004
 RectTransform:
   m_ObjectHideFlags: 0
@@ -13783,7 +13783,7 @@ GameObject:
   - component: {fileID: 671802424}
   - component: {fileID: 671802425}
   m_Layer: 5
-  m_Name: SleepTime
+  m_Name: SleepSlider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14574,6 +14574,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 216e04e6bf4425b4e82d0a2b088a9b57, type: 2}
   - {fileID: 11400000, guid: 83c00074e48f06f4184745b285ad46e1, type: 2}
   - {fileID: 11400000, guid: 99e2760eda071a149a9d1e487765f408, type: 2}
+  - {fileID: 11400000, guid: 6f11bc854c5f41d4c985af30b38f51c5, type: 2}
   craftingUITransform: {fileID: 1849152900}
   testingSo:
   - {fileID: 11400000, guid: 15af8bb8594c95447afdf7794853d300, type: 2}
@@ -14625,6 +14626,11 @@ MonoBehaviour:
   levelSlider: {fileID: 468699249}
   currentLevelText: {fileID: 1898062004}
   WoundStatusPrefab: {fileID: 2251338005642499602, guid: 6898e6c8dc7316e4ba920e84c43229e8, type: 3}
+  SleepParent: {fileID: 81262004}
+  SleepSlider: {fileID: 0}
+  WakeUpButton: {fileID: 1317028896}
+  sleepStart: {fileID: 1150947399}
+  sleepEnd: {fileID: 1257262811}
   StatusParent: {fileID: 1883415640}
 --- !u!114 &848024451
 MonoBehaviour:
@@ -14696,6 +14702,10 @@ MonoBehaviour:
   hydrationDecayTimer: 1
   staminaDrainRate: 10
   staminaRegenRate: 0.01
+  sleepTimeScale: 20
+  energyRestorePerMinute: 5
+  dangerThreshold: 0.1
+  maxSleepHours: 8
 --- !u!114 &848024455
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15636,7 +15646,7 @@ RectTransform:
   m_Father: {fileID: 1950928141}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -18413,7 +18423,7 @@ GameObject:
   - component: {fileID: 1257262812}
   - component: {fileID: 1257262811}
   m_Layer: 5
-  m_Name: MaxSleep
+  m_Name: EndSleepTime
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

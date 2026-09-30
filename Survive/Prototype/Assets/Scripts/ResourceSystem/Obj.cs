@@ -1,3 +1,4 @@
+using DefaultNamespace.EventBus;
 using DefaultNamespace.Interface;
 using DefaultNamespace.ResourceSystem;
 using Player;
@@ -12,12 +13,13 @@ public abstract class Obj<TSo> : MonoBehaviour, IsoInitializer<TSo>, IInteractab
     public bool isHit { get; set; }
     public Vector3 hitPos { get; set; }
 
+
     public Rigidbody rb { get; set; }
     protected Camera cam;
 
     public ResourceUI resourceUI { get; set; }
     public bool outlineMe { get; set; }
-    public bool canBeCollected { get; set; }// one way to do this is 
+    public bool canBeCollected { get; set; } // one way to do this is 
     public TSo So { get; set; }
 
     public bool canCraft { get; set; }
@@ -71,6 +73,12 @@ public abstract class Obj<TSo> : MonoBehaviour, IsoInitializer<TSo>, IInteractab
     public virtual void UseMe()
     {
         PlayerRepository.instance.RemoveResourceFromInventory(this as Obj<ObjSo>, true);
+    }
+
+    public void ExecuteAction()
+    {
+        EventManager.Instance.reseourceEvent.GatherResource(gameObject);
+        ;
     }
 
     protected virtual void SetUiBools()

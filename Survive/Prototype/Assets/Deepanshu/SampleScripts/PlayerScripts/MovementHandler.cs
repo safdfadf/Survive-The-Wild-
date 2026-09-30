@@ -127,8 +127,8 @@ public class MovementHandler : MonoBehaviour
         MovePlayer();
         RotatePlayer();
         ExtraGravity();
-        ShootRay(); // condition needed 
-        CollectCheck();
+        ShootRay(); 
+        CollectCheck();// this should be more then collect 
     }
 
     private void OnEnable()
@@ -335,7 +335,8 @@ public class MovementHandler : MonoBehaviour
         ClearHighlight(lastInteractable);
     }
 
-    private void CollectCheck()
+    private void CollectCheck()// here only task we do is collection but i would like it to do 
+    // different tasks 
     {
         if (currentlyHighlighted != null && Input.GetKeyDown(KeyCode.E))
         {
@@ -343,7 +344,8 @@ public class MovementHandler : MonoBehaviour
             if (interactable != null && interactable.canBeCollected)
             {
                 // _playerInventory.AddWorldItem(interactable.Gm);
-                EventManager.Instance.reseourceEvent.GatherResource(interactable.Gm);
+                interactable.ExecuteAction();
+               // EventManager.Instance.reseourceEvent.GatherResource(interactable.Gm);
                 ClearHighlight(interactable);
             }
         }
@@ -361,7 +363,7 @@ public class MovementHandler : MonoBehaviour
 
     private void ActivateUI(IInteractable interactable)
     {
-        if (interactable == null || interactable.Gm == null) return;
+        if (interactable == null) return;
         IInteractionUI ac = interactable.Gm.GetComponent<IInteractionUI>();
         if (!ac.canDisplay) return;
         UIManager.instance.ActivateUi(ac);

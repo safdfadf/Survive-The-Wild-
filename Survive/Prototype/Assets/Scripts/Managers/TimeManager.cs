@@ -6,25 +6,28 @@ using UnityEngine.Serialization;
 public class TimeManager : MonoBehaviour
 {
     public static TimeManager Instance;
-    public int timeScale { get; private set;}= 2;
+    public int timeScale { get;  set; } = 2;
 
     private int _startHour = 4;
 
-     private float _currentTimeInMinutes;
-     private int _lastHour;
+    private float _currentTimeInMinutes;
+    private int _lastHour;
 
 
-    private int CurrentHour=> Mathf.FloorToInt(_currentTimeInMinutes / 60f)%24;
+    private int CurrentHour => Mathf.FloorToInt(_currentTimeInMinutes / 60f) % 24;
     public int CurrentMinute => Mathf.FloorToInt(_currentTimeInMinutes) % 60;
+
     public float CurrentTime => _currentTimeInMinutes;
+
     // here create a function that invokes an event after every randon duration of time 
-    [Header("Random Event Interval (minutes)")]
-    [SerializeField] private int minRandomIntervalMinutes = 2;
+    [Header("Random Event Interval (minutes)")] [SerializeField]
+    private int minRandomIntervalMinutes = 2;
+
     [SerializeField] private int maxRandomIntervalMinutes = 10;
-    
+
     private float _nextRandomEventTime;
     private float _lastFiveSecondCheck;
-    
+
     private void Awake()
     {
         if (Instance == null)
@@ -35,9 +38,9 @@ public class TimeManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
         _currentTimeInMinutes = _startHour * 60;
         ScheduleNextRandomEvent();
-        
     }
 
     public int GetCurrentHour()
@@ -57,26 +60,27 @@ public class TimeManager : MonoBehaviour
             _lastHour = currentHour;
             EventBus.OnHourChanged?.Invoke(currentHour);
         }
+
         HandleRandomEvent();
-        HandleFiveSecondEvent(); 
+        HandleFiveSecondEvent();
     }
+
     public float GetTimeInMinutes()
     {
         return _currentTimeInMinutes;
     }
+
     public string GetTimeString()
     {
         return $"{CurrentHour:D2}:{CurrentMinute:D2}";
     }
+
     private void HandleRandomEvent()
     {
-        // Trigger when we "pass" the scheduled time.
-        // Must handle wrap-around (e.g., next time is 10 but current is 1435).
         if (HasPassedTime(_currentTimeInMinutes, _nextRandomEventTime))
         {
-            EventBus.OnRndmTimePassed?.Invoke(); 
+            EventBus.OnRndmTimePassed?.Invoke();
             ScheduleNextRandomEvent();
-//            Debug.Log("invoking rndm event");
         }
     }
 
@@ -86,19 +90,16 @@ public class TimeManager : MonoBehaviour
 
         // schedule from NOW
         _nextRandomEventTime = (_currentTimeInMinutes + interval) % 1440f;
-
-       
-
     }
 
 
     private bool HasPassedTime(float current, float target)
     {
-      
         float forwardToTarget = (target - current + 1440f) % 1440f;
         // if forward distance is very small, we're at/after target in this frame
         return forwardToTarget <= (Time.deltaTime * timeScale + 0.01f);
     }
+
     private void HandleFiveSecondEvent()
     {
         // Convert in‑game minutes to seconds
@@ -110,5 +111,5 @@ public class TimeManager : MonoBehaviour
             EventBus.On5SecondsPassed?.Invoke();
         }
     }
-
+    
 }

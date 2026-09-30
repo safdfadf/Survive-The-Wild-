@@ -8,4 +8,6 @@ public interface IInteractable
      public GameObject Gm{get; set; }
      public bool isHit { get; set; }
      public Vector3 hitPos{get;set;}
+     public void ExecuteAction();
+     
 }

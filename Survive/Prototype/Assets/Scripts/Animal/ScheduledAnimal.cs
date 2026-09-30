@@ -84,6 +84,7 @@ public class ScheduledAnimal : AnimalBase
     {
         base.TakeDamage(atk);
         AnimalData.isLeader = true;
+        // call audio and an hurt anim and then run 
         ActivateState(AlarmState);
     }
 

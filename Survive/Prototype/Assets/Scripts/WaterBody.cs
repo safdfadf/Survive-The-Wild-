@@ -15,6 +15,7 @@ namespace DefaultNamespace
         public GameObject Gm { get; set; }
         public bool isHit { get; set; }
         public Vector3 hitPos { get; set; }
+      
         public bool canDisplay { get; set; }
         public string useMeDescription { get; set; }
         public string Description { get; set; }
@@ -79,6 +80,11 @@ namespace DefaultNamespace
             CheckForPoisoning();
             PlayerRepository.instance.ConsumeFood(data);
         }
+        public void ExecuteAction()
+        {
+          // if container exist then collect
+        }
+
 
         private void CheckForPoisoning()
         {
