@@ -70,6 +70,8 @@ public abstract class Obj<TSo> : MonoBehaviour, IsoInitializer<TSo>, IInteractab
     {
     }
 
+  
+
     public virtual void UseMe()
     {
         PlayerRepository.instance.RemoveResourceFromInventory(this as Obj<ObjSo>, true);

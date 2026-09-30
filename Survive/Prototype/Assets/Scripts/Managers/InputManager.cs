@@ -89,7 +89,8 @@ public class InputManager : MonoBehaviour
             {
                 EventBus.onAttack.Invoke();
             }
-        }; _inventoryToggle = ctx => { _playerUI.ToggleInventory(); };
+        }; 
+        _inventoryToggle = ctx => { _playerUI.ToggleInventory(); };
         _resourceMenuToggle = ctx => ToggleCollectableMenu();
         _toggleTarckMenu = ctx => ToggleTracksMenu();
     }
