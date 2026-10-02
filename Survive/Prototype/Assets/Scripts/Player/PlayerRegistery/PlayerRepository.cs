@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Player
 {
-    public class PlayerRepository:MonoBehaviour
+    public class PlayerRepository : MonoBehaviour
     {
         public static PlayerRepository instance;
         private PlayerScentEmitter _playerScentEmitter;
@@ -14,6 +14,7 @@ namespace Player
         private PlayerInventory _playerInventory;
         private PlayerVitalStats _playerVitalStats;
         private PlayerBody _playerBody;
+        public GameObject waterBody => _movementHandler.waterBody;
 
         private void Awake()
         {
@@ -25,6 +26,7 @@ namespace Player
             {
                 Destroy(gameObject);
             }
+
             _playerScentEmitter = GetComponent<PlayerScentEmitter>();
             _playerNoiseEmitter = GetComponent<PlayerNoiseEmitter>();
             _movementHandler = GetComponent<MovementHandler>();
@@ -35,32 +37,31 @@ namespace Player
 
         private void LateUpdate()
         {
-            
         }
 
         public float GetScentIntensity(Vector3 position)
         {
-           return _playerScentEmitter.GetIntensityAt(position);
+            return _playerScentEmitter.GetIntensityAt(position);
         }
 
         public float GetNoiseIntensity(Vector3 position)
         {
-            
-           return _playerNoiseEmitter.GetNoiseIntensityAt(position);
+            return _playerNoiseEmitter.GetNoiseIntensityAt(position);
         }
 
         public float GetCurrentNoise()
         {
-          return _playerNoiseEmitter.GetCurrentNoise();
+            return _playerNoiseEmitter.GetCurrentNoise();
         }
+
         public Transform GetPlayerTransform()
         {
-          return _movementHandler.GetPlayerTransform();
+            return _movementHandler.GetPlayerTransform();
         }
 
         public bool GetIsSprinting()
         {
-           return _movementHandler._isSprinting;
+            return _movementHandler._isSprinting;
         }
 
         public bool GetIsCrouching()
@@ -73,12 +74,12 @@ namespace Player
             return _movementHandler._isWalking;
         }
 
-        public void RemoveResourceFromInventory(Obj<ObjSo> resource,bool isToBeDestroy)
+        public void RemoveResourceFromInventory(Obj<ObjSo> resource, bool isToBeDestroy)
         {
-            _playerInventory.RemoveResource(resource,isToBeDestroy);
+            _playerInventory.RemoveResource(resource, isToBeDestroy);
         }
 
-       
+
         public void ConsumeFood(FoodConsumptionData so)
         {
             _playerVitalStats.ConsumeFood(so);
@@ -88,6 +89,7 @@ namespace Player
         {
             return _movementHandler.isHuntingSenseActive;
         }
+
         public void CanPlayerMove(bool isLocked)
         {
             _movementHandler.CanMove(isLocked);
@@ -102,6 +104,7 @@ namespace Player
         {
             _playerBody.HealPlayer(effect);
         }
+
         public Transform GetApproachPos()
         {
             return _movementHandler.animalApproachPos;
@@ -123,7 +126,7 @@ namespace Player
             _movementHandler.isAttacking = isAttacking;
         }
 
-        
+
         public GameObject GetResource(ObjSo so)
         {
             return _playerInventory.GetResource(so);
@@ -131,13 +134,12 @@ namespace Player
 
         public BaseWeapon GetCurrentWeapon()
         {
-           return _movementHandler.CurrentWeapon;
+            return _movementHandler.CurrentWeapon;
         }
 
         public Vector3 GetPlayerUiPos()
         {
             return _movementHandler.uiPos.position;
         }
-
     }
 }

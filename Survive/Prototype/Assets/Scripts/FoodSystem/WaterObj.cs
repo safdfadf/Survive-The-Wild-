@@ -18,6 +18,8 @@ namespace FoodSystem
             rb = null;
             Gm = gameObject;
             So = waterSo;
+            Description = "Drink";
+            // set use me discription
             data.NutrientsCount = waterSo.nutrientsCount;
         }
 
@@ -28,10 +30,9 @@ namespace FoodSystem
 
         public override void UseMe()
         {
-            // trigger drink animation 
-            // trigger audio 
-
-            PlayerRepository.instance.ConsumeFood(data);
+            // when collect is collect
+            // we need to check if container is present 
+            // if container is present then store water 
         }
 
 
@@ -40,6 +41,11 @@ namespace FoodSystem
             canCraft = false;
             canHarvest = false;
             canUse = true;
+        }
+
+        protected override void HandleAction()
+        {
+            PlayerRepository.instance.ConsumeFood(data);
         }
     }
 }

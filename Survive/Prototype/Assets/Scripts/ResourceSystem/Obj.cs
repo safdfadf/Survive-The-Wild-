@@ -34,7 +34,7 @@ public abstract class Obj<TSo> : MonoBehaviour, IsoInitializer<TSo>, IInteractab
 
     protected virtual void Awake()
     {
-        Description = "Collect";
+        Description = "";
         canDisplay = true;
         outlineMe = true;
         canBeCollected = true;
@@ -79,8 +79,13 @@ public abstract class Obj<TSo> : MonoBehaviour, IsoInitializer<TSo>, IInteractab
 
     public void ExecuteAction()
     {
+       
+        HandleAction();
+    }
+
+    protected virtual void HandleAction()
+    {
         EventManager.Instance.reseourceEvent.GatherResource(gameObject);
-        ;
     }
 
     protected virtual void SetUiBools()

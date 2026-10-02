@@ -15,7 +15,7 @@ namespace DefaultNamespace
         public GameObject Gm { get; set; }
         public bool isHit { get; set; }
         public Vector3 hitPos { get; set; }
-      
+
         public bool canDisplay { get; set; }
         public string useMeDescription { get; set; }
         public string Description { get; set; }
@@ -42,11 +42,7 @@ namespace DefaultNamespace
             canBeCollected = false;
             outlineMe = false;
             Gm = gameObject;
-            useMeDescription = "Drink";
-            Description = "Take";
-            canHarvest = false;
-            canCraft = false;
-            canUse = true;
+            Description = "Drink";
             canDisplay = true;
             obj = emptyobj;
             data.NutrientsCount = waterSo.nutrientsCount;
@@ -58,7 +54,7 @@ namespace DefaultNamespace
             emptyobj.transform.position = PlayerRepository.instance.GetPlayerUiPos();
         }
 
-        private void WashYourself() // it can be used in two ways one wash your self and consume me 
+        private void WashYourself() // function for use me 
         {
         }
 
@@ -77,18 +73,22 @@ namespace DefaultNamespace
 
         public void UseMe()
         {
+        }
+
+        public void ExecuteAction()
+        {
             CheckForPoisoning();
             PlayerRepository.instance.ConsumeFood(data);
         }
-        public void ExecuteAction()
-        {
-          // if container exist then collect
-        }
 
+        public FoodConsumptionData GetWater()
+        {
+            CheckForPoisoning();
+            return data;
+        }
 
         private void CheckForPoisoning()
         {
-            // if current water state is unsfae
             if (waterState == WaterState.Safe) return;
 
             float poisonChance = 0f;

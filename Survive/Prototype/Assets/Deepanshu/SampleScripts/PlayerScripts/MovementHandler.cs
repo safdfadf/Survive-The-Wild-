@@ -1,13 +1,15 @@
 using System;
 using System.Collections;
+using DefaultNamespace;
 using DefaultNamespace.EventBus;
 using DefaultNamespace.Interface;
+using FoodSystem;
 using Player;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 using UnityEngine.Serialization;
 
-public class MovementHandler : MonoBehaviour
+public class MovementHandler : MonoBehaviour //TODo: Make a separate script for Collection 
 {
     public float radius;
     public float maxDistance;
@@ -87,6 +89,8 @@ public class MovementHandler : MonoBehaviour
     private Quaternion camStartRot = Quaternion.Euler(0f, 0f, 0f);
     private Quaternion camEndRot = Quaternion.Euler(50f, 0f, 0f);
 
+    public GameObject waterBody;
+
     private void Awake()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -118,7 +122,6 @@ public class MovementHandler : MonoBehaviour
 
     private void Start()
     {
-//        resourceInventory.gameObject.SetActive(false);
         crosshair = _ui.GetCrosshair();
         crosshair.SetActive(false);
     }
@@ -301,8 +304,11 @@ public class MovementHandler : MonoBehaviour
 
         if (Physics.SphereCast(ray, radius, out RaycastHit hit, maxDistance))
         {
+            if (hit.collider.gameObject.layer == 10)
+                waterBody = hit.collider.gameObject;
+
             BaseStructure structure = hit.collider.GetComponent<BaseStructure>();
-            if (structure != null && structure.isActiveAndEnabled) // ray hits structure which is in ghost mode 
+            if (structure != null && structure.isActiveAndEnabled)
             {
                 ObjSo so = GetRequiredResources(structure);
                 _playerInventory.SetSubmitResource(so, structure);
@@ -336,8 +342,7 @@ public class MovementHandler : MonoBehaviour
         ClearHighlight(lastInteractable);
     }
 
-    private void CollectCheck() // here only task we do is collection but i would like it to do 
-        // different tasks 
+    private void CollectCheck()
     {
         if (currentlyHighlighted != null && Input.GetKeyDown(KeyCode.E)) // ToDo: use new input system
         {
@@ -481,11 +486,6 @@ public class MovementHandler : MonoBehaviour
     public Transform GetPlayerTransform()
     {
         return gameObject.transform;
-    }
-
-    public bool IsSprinting()
-    {
-        return _isSprinting;
     }
 
     public void SetBending(bool isBending)

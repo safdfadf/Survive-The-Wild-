@@ -32,9 +32,7 @@ namespace DefaultNamespace.CraftingSystem.Building
 
         public void ExecuteAction()
         {
-            print("executing action");
             if (!IsAssembled) return;
-            print("trigger sleep");
             EventManager.Instance.playerEvents.TriggerSleep();
         }
 

@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62df55132cbfbec469527465c09f5352, type: 3}
+  m_Name: Coconut
+  m_EditorClassIdentifier: 
+  <itemName>k__BackingField: Coconut
+  prefab: {fileID: 8799293136514672852, guid: 35e933cec6da0674ba26a444460d7ab8, type: 3}
+  sprite: {fileID: 21300000, guid: db952a5412675044da122806fee8f9bb, type: 3}
+  amount: 0
+  size: {x: 2, y: 2}
+  appearanceProb: 0
+  nutrientsCount:
+    calories: 0
+    protien: 0
+    carb: 0
+    hydration: 40
+    fat: 0
+  regionType: 0
+  cooked: {fileID: 0}
+  burnt: {fileID: 0}
+  rotten: {fileID: 0}

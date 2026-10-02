@@ -15,8 +15,6 @@ namespace FoodSystem
         public float cookTime = 10;
 
         [SerializeField] public float burnTime = 20;
-        public FoodConsumptionData counsmptionData { get; set; }
-
         [SerializeField] private Material cookedMaterial;
         [SerializeField] private Material burntMaterial;
         private MeshRenderer[] _mrs;
@@ -33,15 +31,13 @@ namespace FoodSystem
         public CookState cookState;
         public BurntState burntState;
 
-        [FormerlySerializedAs("currentStateData")]
-        public StateData currentState;
+        public StateData currentState { get; set; }
 
         protected override void Awake()
         {
-            canUse = true;
+            base.Awake();
             Gm = gameObject;
             useMeDescription = "Eat";
-            base.Awake();
             _mrs = gameObject.GetComponentsInChildren<MeshRenderer>();
             currentState = rawState;
         }
@@ -50,9 +46,9 @@ namespace FoodSystem
         {
             So = so;
             FoodSo s = So as FoodSo;
-            counsmptionData = new FoodConsumptionData();
+            //     counsmptionData = new FoodConsumptionData();
             if (s == null) return;
-            counsmptionData.NutrientsCount = s.nutrientsCount;
+            //     counsmptionData.NutrientsCount = s.nutrientsCount;
             data.NutrientsCount = s.nutrientsCount;
         }
 
