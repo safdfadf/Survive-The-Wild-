@@ -22,7 +22,7 @@ public class CampFire : BaseStructure, ICook // this will be base class for all 
     private bool _canIgnite;
     private bool _isBurning;
     private bool _canCook;
-    private List<Food> _foodInSpot = new();
+    private List<ICookable> _foodInSpot = new();
     private Transform[] fxObjects;
 
     protected override void Awake()
@@ -203,20 +203,21 @@ public class CampFire : BaseStructure, ICook // this will be base class for all 
         }
     }
 
-    public void ExecuteCooking(Food food)
+    public void StoreObjForCooking(Obj<ObjSo> obj)
     {
+        Food food = obj.GetComponent<Food>();
         if (food == null)
         {
             print("food is null");
         }
 
-        //still need a 
         _canCook = true;
         _foodInSpot.Add(food);
     }
 
     private void CookFoods(float deltaTime)
     {
+        // here it will simply be start cooking 
         if (!_canCook)
         {
             Debug.Log("returning");
@@ -225,24 +226,7 @@ public class CampFire : BaseStructure, ICook // this will be base class for all 
 
         foreach (var food in _foodInSpot)
         {
-            if (food == null || !food.canCookMe) return;
-
-            if (food.currentState == food.rawState)
-            {
-                food.cookTime -= deltaTime;
-                if (food.cookTime <= 0)
-                {
-                    food.ApplyState(food.cookState);
-                }
-            }
-            else if (food.currentState == food.cookState)
-            {
-                food.burnTime -= deltaTime;
-                if (food.burnTime <= 0)
-                {
-                    food.ApplyState(food.burntState);
-                }
-            }
+            food.ExecuteCooking(deltaTime);
         }
     }
 }

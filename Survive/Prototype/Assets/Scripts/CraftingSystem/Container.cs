@@ -8,7 +8,7 @@ namespace DefaultNamespace.CraftingSystem
 {
     public class Container : Obj<ObjSo>
     {
-        private bool isContainerFilled;
+        public bool IsContainerFilled { get; private set; }
         private FoodConsumptionData foodConsumptionData;
 
         protected override void Awake()
@@ -17,7 +17,7 @@ namespace DefaultNamespace.CraftingSystem
             useMeDescription = "Drink";
         }
 
-        protected override void SetUiBools()
+        public override void SetUiBools()
         {
             canCraft = false;
             canHarvest = false;
@@ -26,10 +26,10 @@ namespace DefaultNamespace.CraftingSystem
 
         public override void UseMe()
         {
-            if (isContainerFilled)
+            if (IsContainerFilled)
             {
                 PlayerRepository.instance.ConsumeFood(foodConsumptionData);
-                isContainerFilled = false;
+                IsContainerFilled = false;
             }
             else if (PlayerRepository.instance.waterBody != null)
             {
@@ -44,7 +44,7 @@ namespace DefaultNamespace.CraftingSystem
 
         private void StoreWater()
         {
-            isContainerFilled = true;
+            IsContainerFilled = true;
             var obj = PlayerRepository.instance.waterBody;
             var waterBody = obj.GetComponent<WaterBody>();
             foodConsumptionData = waterBody.GetWater();

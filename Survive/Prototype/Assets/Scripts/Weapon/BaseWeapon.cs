@@ -96,7 +96,7 @@ public class BaseWeapon : Obj<ObjSo>
         _activeBehaviour.DeliverDamage();
     }
 
-    protected override void SetUiBools()
+    public override void SetUiBools()
     {
         canCraft = true;
         canHarvest = false;

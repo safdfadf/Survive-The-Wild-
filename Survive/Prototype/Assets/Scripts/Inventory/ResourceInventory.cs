@@ -228,9 +228,12 @@ public class ResourceInventory : MonoBehaviour
         {
             GameObject obj = Instantiate(heldItem.so.prefab, slot.worldPosition, Quaternion.identity);
             Obj<ObjSo> food = obj.GetComponent<Obj<ObjSo>>();
+            // here we assume held item is food but in case of container held item is water  
             food.So = heldItem.so;
+
             ICook cook = slot.cookingData.handler.GetComponent<ICook>();
-            cook.ExecuteCooking(food as Food);
+            cook.StoreObjForCooking(food);
+
             slot.ToggleAlpha(false);
             Destroy(heldItem.gameObject);
         }

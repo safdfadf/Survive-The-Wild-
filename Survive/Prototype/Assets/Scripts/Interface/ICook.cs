@@ -3,5 +3,5 @@ using UnityEngine;
 
 public interface ICook
 {
-    public void ExecuteCooking(Food food);
+    public void StoreObjForCooking(Obj<ObjSo> obj);
 }

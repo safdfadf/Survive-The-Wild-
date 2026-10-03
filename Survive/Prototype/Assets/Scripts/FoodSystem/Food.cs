@@ -7,7 +7,7 @@ using UnityEngine.Serialization;
 
 namespace FoodSystem
 {
-    public class Food : Obj<ObjSo> //Todo: after being collected start a timer if food gets rotten 
+    public class Food : Obj<ObjSo>, ICookable //Todo: after being collected start a timer if food gets rotten 
     {
         private int _health;
 
@@ -19,7 +19,7 @@ namespace FoodSystem
         [SerializeField] private Material burntMaterial;
         private MeshRenderer[] _mrs;
         private Material[] _materials;
-        private FoodConsumptionData data = new();
+        public FoodConsumptionData data = new();
 
         public bool canCookMe;
 
@@ -58,7 +58,7 @@ namespace FoodSystem
             base.UseMe();
         }
 
-        public void ApplyState(StateData state)
+        private void ApplyState(StateData state)
         {
             currentState = state;
             foreach (var r in _mrs)
@@ -73,11 +73,32 @@ namespace FoodSystem
             data.SelfAttack = atk;
         }
 
-        protected override void SetUiBools()
+        public override void SetUiBools()
         {
             canCraft = false;
             canHarvest = false;
             canUse = true;
+        }
+
+        public void ExecuteCooking(float deltaTime)
+        {
+            if (!canCookMe) return;
+            if (currentState == rawState)
+            {
+                cookTime -= deltaTime;
+                if (cookTime <= 0)
+                {
+                    ApplyState(cookState);
+                }
+            }
+            else if (currentState == cookState)
+            {
+                burnTime -= deltaTime;
+                if (burnTime <= 0)
+                {
+                    ApplyState(burntState);
+                }
+            }
         }
     }
 }

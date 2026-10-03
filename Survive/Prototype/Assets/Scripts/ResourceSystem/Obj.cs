@@ -35,16 +35,6 @@ public abstract class Obj<TSo> : MonoBehaviour, IsoInitializer<TSo>, IInteractab
     protected virtual void Awake()
     {
         Description = "";
-        canDisplay = true;
-        outlineMe = true;
-        canBeCollected = true;
-        rb = GetComponent<Rigidbody>();
-        if (rb == null)
-        {
-            rb = gameObject.AddComponent<Rigidbody>();
-            rb.isKinematic = true;
-        }
-
         resourceUI = GetComponent<ResourceUI>();
         cam = Camera.main;
         SetUiBools();
@@ -70,7 +60,6 @@ public abstract class Obj<TSo> : MonoBehaviour, IsoInitializer<TSo>, IInteractab
     {
     }
 
-  
 
     public virtual void UseMe()
     {
@@ -79,7 +68,6 @@ public abstract class Obj<TSo> : MonoBehaviour, IsoInitializer<TSo>, IInteractab
 
     public void ExecuteAction()
     {
-       
         HandleAction();
     }
 
@@ -88,7 +76,7 @@ public abstract class Obj<TSo> : MonoBehaviour, IsoInitializer<TSo>, IInteractab
         EventManager.Instance.reseourceEvent.GatherResource(gameObject);
     }
 
-    protected virtual void SetUiBools()
+    public virtual void SetUiBools() // ToDo: show this in inspector instead of script 
     {
         canCraft = true;
         canHarvest = true;

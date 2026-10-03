@@ -10,9 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1d05360676185cb47b7b6275576162c5, type: 3}
-  m_Name: ContainerRecipe
+  m_Name: StewRecipe
   m_EditorClassIdentifier: 
-  ingredients: []
+  ingredients:
+  - objSo: {fileID: 11400000, guid: 3483a145ec13d574482cbee18e863b4c, type: 2}
+    amount: 1
+  - objSo: {fileID: 11400000, guid: 27c789396ea0e234f9d51213578af493, type: 2}
+    amount: 1
   resSo: {fileID: 0}
   hasUpgrades: 0
   upgrades: []

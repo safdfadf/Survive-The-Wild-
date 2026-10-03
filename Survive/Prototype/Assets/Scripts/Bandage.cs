@@ -20,7 +20,7 @@ public class Bandage : Obj<ObjSo>, IHeal
         PlayerRepository.instance.HealPlayer(EffectsSo);
         base.UseMe();
     }
-    protected override void SetUiBools()
+    public override void SetUiBools()
     {
         canCraft = true;
         canHarvest = false;

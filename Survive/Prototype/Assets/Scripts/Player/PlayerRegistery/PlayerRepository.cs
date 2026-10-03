@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Effect;
 using FoodSystem;
 using UnityEngine;
@@ -14,6 +15,7 @@ namespace Player
         private PlayerInventory _playerInventory;
         private PlayerVitalStats _playerVitalStats;
         private PlayerBody _playerBody;
+        private CraftingHandler _craftingHandler;
         public GameObject waterBody => _movementHandler.waterBody;
 
         private void Awake()
@@ -33,6 +35,7 @@ namespace Player
             _playerInventory = GetComponent<PlayerInventory>();
             _playerVitalStats = GetComponent<PlayerVitalStats>();
             _playerBody = GetComponent<PlayerBody>();
+            _craftingHandler = GetComponent<CraftingHandler>();
         }
 
         private void LateUpdate()
@@ -140,6 +143,11 @@ namespace Player
         public Vector3 GetPlayerUiPos()
         {
             return _movementHandler.uiPos.position;
+        }
+
+        public CraftingSO CheckForRecipeMatch(List<Ingredient> ingredients)
+        {
+            return _craftingHandler.MatchForRecipe(ingredients);
         }
     }
 }

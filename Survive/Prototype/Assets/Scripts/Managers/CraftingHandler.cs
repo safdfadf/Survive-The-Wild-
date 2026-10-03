@@ -146,7 +146,7 @@ public class CraftingHandler : MonoBehaviour
         RectTransform rectTransform = uiPrefab.GetComponent<RectTransform>();
         rectTransform.position = craftingUITransform.position;
         _currentItems.Add(uiPrefab);
-        CheckForRecipe();
+        CheckForRecipe(_currentIngredients);
     }
 
     private void RemoveResource(ObjSo So, InventoryItem item)
@@ -167,11 +167,11 @@ public class CraftingHandler : MonoBehaviour
         _resourceInventory.TryPlaceItem(So, item);
     }
 
-    private void CheckForRecipe()
+    public void CheckForRecipe(List<Ingredient> ingredients)
     {
         foreach (CraftingSO So in craftingSo)
         {
-            if (Matches(So.ingredients, _currentIngredients))
+            if (Matches(So.ingredients, ingredients))
             {
                 _currentSo = So;
                 craftButton.gameObject.SetActive(true);
@@ -198,6 +198,22 @@ public class CraftingHandler : MonoBehaviour
         }
 
         return true;
+    }
+
+    public CraftingSO
+        MatchForRecipe(List<Ingredient> current) // if all the ingredient in current match craftingSo.ingrediesnt 
+    {
+        foreach (var so in craftingSo)
+        {
+            for (int i = so.ingredients.Length - 1; i >= 0; i--)
+            {
+                if (so.ingredients[i].objSo != current[i].objSo) continue;
+                if (so.ingredients[i].amount != current[i].amount) continue;
+                return so;
+            }
+        }
+
+        return null;
     }
 
     public void Craft(CraftingSO so)
