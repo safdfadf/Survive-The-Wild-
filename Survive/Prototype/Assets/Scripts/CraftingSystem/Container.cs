@@ -9,12 +9,12 @@ namespace DefaultNamespace.CraftingSystem
     public class Container : Obj<ObjSo>
     {
         public bool IsContainerFilled { get; private set; }
-        private FoodConsumptionData foodConsumptionData;
+        public FoodConsumptionData foodConsumptionData { get; private set; }
 
         protected override void Awake()
         {
             base.Awake();
-            useMeDescription = "Drink";
+            useMeDescription = "Collect Water";
         }
 
         public override void SetUiBools()
@@ -30,6 +30,7 @@ namespace DefaultNamespace.CraftingSystem
             {
                 PlayerRepository.instance.ConsumeFood(foodConsumptionData);
                 IsContainerFilled = false;
+                useMeDescription = "Collect Water";
             }
             else if (PlayerRepository.instance.waterBody != null)
             {
@@ -48,6 +49,7 @@ namespace DefaultNamespace.CraftingSystem
             var obj = PlayerRepository.instance.waterBody;
             var waterBody = obj.GetComponent<WaterBody>();
             foodConsumptionData = waterBody.GetWater();
+            useMeDescription = "Drink";
         }
     }
 }

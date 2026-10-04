@@ -2,6 +2,6 @@
 {
     public interface ICookable
     {
-        public void ExecuteCooking(float deltaTime);
+        public virtual void ExecuteCooking(float deltaTime){}
     }
 }

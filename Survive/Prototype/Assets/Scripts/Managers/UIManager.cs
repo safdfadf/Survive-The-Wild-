@@ -283,7 +283,7 @@ public class UIManager : MonoBehaviour
         Vector2 startPos = new Vector2(showPoint, rect.anchoredPosition.y);
         Vector2 targetPos = new Vector2(hidePoint, rect.anchoredPosition.y);
 
-        
+
         rect.anchoredPosition = Vector2.zero;
         float t = 0;
         while (t < 1f)

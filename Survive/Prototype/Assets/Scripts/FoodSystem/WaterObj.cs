@@ -6,7 +6,7 @@ namespace FoodSystem
     public class WaterObj : Food
     {
         [SerializeField] private Material waterMat;
-
+        [SerializeField] private ParticleSystem steamParticles;
         public override void SetUiBools()
         {
             canCraft = false;
@@ -14,7 +14,16 @@ namespace FoodSystem
             canUse = false;
             canDisplay = false;
         }
-        // should i let it handle it boiling 
+
+        public override void ExecuteCooking(float deltaTime)
+        {
+            cookTime -= deltaTime;
+            if (cookTime <= 0)
+            {
+               //boil;
+               // remove poison probability 
+            }
+        }
     }
 }
 

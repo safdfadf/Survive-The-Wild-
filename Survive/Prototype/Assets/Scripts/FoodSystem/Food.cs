@@ -46,9 +46,7 @@ namespace FoodSystem
         {
             So = so;
             FoodSo s = So as FoodSo;
-            //     counsmptionData = new FoodConsumptionData();
             if (s == null) return;
-            //     counsmptionData.NutrientsCount = s.nutrientsCount;
             data.NutrientsCount = s.nutrientsCount;
         }
 
@@ -58,7 +56,7 @@ namespace FoodSystem
             base.UseMe();
         }
 
-        private void ApplyState(StateData state)
+        protected virtual void ApplyState(StateData state)
         {
             currentState = state;
             foreach (var r in _mrs)
@@ -80,7 +78,7 @@ namespace FoodSystem
             canUse = true;
         }
 
-        public void ExecuteCooking(float deltaTime)
+        public virtual void ExecuteCooking(float deltaTime)
         {
             if (!canCookMe) return;
             if (currentState == rawState)

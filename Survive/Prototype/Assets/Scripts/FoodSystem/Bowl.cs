@@ -4,17 +4,13 @@ using DefaultNamespace.CraftingSystem;
 using JetBrains.Annotations;
 using Player;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace FoodSystem
 {
     public class Bowl : Obj<ObjSo>, ICook, ICookable
     {
         [SerializeField] private GameObject bowlInside;
-
-        [SerializeField] private ParticleSystem boilingParticles;
-
-        // this script will also craft new food like stew 
-        [SerializeField] private GameObject WaterPrefab;
         [SerializeField] private FoodSo waterSo;
         [SerializeField] [ItemCanBeNull] private List<Transform> waterTransform;
 
@@ -28,7 +24,6 @@ namespace FoodSystem
             useMeDescription = "Drink";
         }
 
-        // how slots will be used : Slots will be used 
         public void StoreObjForCooking(Obj<ObjSo> obj)
         {
             if (_ingredients.Count >= 2)
@@ -45,7 +40,7 @@ namespace FoodSystem
                     return;
                 }
 
-                SpawnWaterInBow();
+                SpawnWaterInBow(container);
             }
             else if (obj.TryGetComponent<Food>(out var food))
             {
@@ -64,6 +59,8 @@ namespace FoodSystem
 
         public void ExecuteCooking(float deltaTime)
         {
+            if (_foodInBowl == null) return;
+            _foodInBowl.ExecuteCooking(deltaTime);
         }
 
         private void OnTriggerEnter(Collider other)
@@ -77,9 +74,9 @@ namespace FoodSystem
         }
 
 
-        private void SpawnWaterInBow()
+        private void SpawnWaterInBow(Container container)
         {
-            GameObject water = Instantiate(WaterPrefab, waterTransform[0]);
+            GameObject water = Instantiate(waterSo.prefab, waterTransform[0]);
             Food waterObj = water.GetComponent<Food>();
             waterObj.Initialize(waterSo);
             _hasWater = true;
@@ -88,6 +85,8 @@ namespace FoodSystem
             ing.amount = 1;
             _ingredients.Add(ing);
             canUse = true;
+            _foodInBowl = waterObj;
+            _foodInBowl.data = container.foodConsumptionData;
         }
 
         public override void SetUiBools()
@@ -101,6 +100,8 @@ namespace FoodSystem
         {
             var so = PlayerRepository.instance.CheckForRecipeMatch(_ingredients);
             if (so == null) return;
+
+
             var obj = GlobalPool.instance.Get(so.resSo.prefab, waterTransform[0].position);
             _foodInBowl = obj.GetComponent<Food>();
             // player needs to cook this 
