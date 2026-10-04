@@ -18,6 +18,6 @@ MonoBehaviour:
   canBreak: 0
   breakableData:
     Health: 0
-    resourceSo: {fileID: 0}
+    objSo: {fileID: 0}
   regionType: 0
   spawnProb: 10

@@ -10,11 +10,22 @@ public class EnvironSo : ScriptableObject, ISpawnedItem
     public bool canBreak;
     public BreakableObjects breakableData;
     public RegionType regionType;
-    [FormerlySerializedAs("appearanceProb")] public float spawnProb;
+
+    [FormerlySerializedAs("appearanceProb")]
+    public float spawnProb;
+
     public int Amount => amount;
 
     public GameObject Prefab => prefab;
     public float SpawningProbability => spawnProb;
+
+    private void OnValidate()
+    {
+#if UNITY_EDITOR
+        id = this.name;
+        UnityEditor.EditorUtility.SetDirty(this);
+#endif
+    }
 }
 
 [System.Serializable]

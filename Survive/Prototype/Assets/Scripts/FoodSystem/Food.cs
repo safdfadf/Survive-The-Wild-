@@ -56,7 +56,7 @@ namespace FoodSystem
             base.UseMe();
         }
 
-        protected virtual void ApplyState(StateData state)
+        private void ApplyState(StateData state)
         {
             currentState = state;
             foreach (var r in _mrs)
@@ -95,6 +95,7 @@ namespace FoodSystem
                 if (burnTime <= 0)
                 {
                     ApplyState(burntState);
+                    canCookMe = false;
                 }
             }
         }

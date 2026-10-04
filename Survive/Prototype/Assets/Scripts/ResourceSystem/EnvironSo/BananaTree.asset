@@ -18,6 +18,6 @@ MonoBehaviour:
   canBreak: 1
   breakableData:
     Health: 30
-    resourceSo: {fileID: 11400000, guid: 99b4fa9569c655b4ba09a5d674e287d4, type: 2}
+    objSo: {fileID: 11400000, guid: 99b4fa9569c655b4ba09a5d674e287d4, type: 2}
   regionType: 0
   spawnProb: 0.7

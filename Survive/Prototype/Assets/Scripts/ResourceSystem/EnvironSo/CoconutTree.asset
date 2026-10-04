@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 717ee1b6075e99d4198864d02c4f3538, type: 3}
-  m_Name: Tree
+  m_Name: CoconutTree
   m_EditorClassIdentifier: 
-  id: Tree
-  prefab: {fileID: 3905233918672894876, guid: c8a61c65cdc03f040814c3a095f3646b, type: 3}
-  amount: 30
+  id: CoconutTree
+  prefab: {fileID: 3148007380182072751, guid: 6c8c9dca215afe84d8379d1721aa4baa, type: 3}
+  amount: 10
   canBreak: 1
   breakableData:
     Health: 30

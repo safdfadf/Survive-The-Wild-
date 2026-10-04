@@ -4,7 +4,7 @@ namespace FoodSystem
 {
     public class Coconut : Food
     {
-        [SerializeField] private FoodSo splitCoconut;
+        [SerializeField] private ObjSo splitCoconut;
         [SerializeField] private Material harvestedMaterial;
         private Material _originalMaterial;
 
@@ -22,6 +22,13 @@ namespace FoodSystem
             renderer.material = harvestedMaterial;
             canUse = true;
             useMeDescription = "Drink";
+        }
+
+        public override void UseMe()
+        {
+            // Add Split Coconut to the inventory 
+
+            base.UseMe();
         }
     }
 }

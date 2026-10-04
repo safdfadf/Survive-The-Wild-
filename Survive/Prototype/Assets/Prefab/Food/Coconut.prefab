@@ -68,13 +68,8 @@ MonoBehaviour:
     isPoison: 0
     effect: {fileID: 0}
     material: {fileID: 0}
-  currentState:
-    sanityEffect: 0
-    isPoison: 0
-    effect: {fileID: 0}
-    material: {fileID: 0}
-  splitCoconut: {fileID: 0}
-  harvestedMaterial: {fileID: 0}
+  splitCoconut: {fileID: 11400000, guid: caf770fec88825046bb806771ab6f634, type: 2}
+  harvestedMaterial: {fileID: 2100000, guid: 7ddd1cc1565b9e84eb15d935c0289207, type: 2}
 --- !u!135 &4609708846112415036
 SphereCollider:
   m_ObjectHideFlags: 0

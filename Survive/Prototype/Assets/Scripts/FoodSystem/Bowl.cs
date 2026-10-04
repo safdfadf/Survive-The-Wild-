@@ -10,18 +10,17 @@ namespace FoodSystem
 {
     public class Bowl : Obj<ObjSo>, ICook, ICookable
     {
-        [SerializeField] private GameObject bowlInside;
         [SerializeField] private FoodSo waterSo;
-        [SerializeField] [ItemCanBeNull] private List<Transform> waterTransform;
+        private List<Transform> waterTransform;
 
         private List<Ingredient> _ingredients = new();
-        private bool _hasWater;
         private Food _foodInBowl;
 
         protected override void Awake()
         {
             base.Awake();
             useMeDescription = "Drink";
+            waterTransform.Add(transform);
         }
 
         public void StoreObjForCooking(Obj<ObjSo> obj)
@@ -50,9 +49,12 @@ namespace FoodSystem
 
         private void SubmitFood(Food food)
         {
-            Ingredient foodIng = new();
-            foodIng.objSo = food.So;
-            foodIng.amount = 1;
+            Ingredient foodIng = new()
+            {
+                objSo = food.So,
+                amount = 1
+            };
+            food.gameObject.transform.position = waterTransform[0].position;
             _ingredients.Add(foodIng);
             CheckForRecipeMatch();
         }
@@ -79,10 +81,11 @@ namespace FoodSystem
             GameObject water = Instantiate(waterSo.prefab, waterTransform[0]);
             Food waterObj = water.GetComponent<Food>();
             waterObj.Initialize(waterSo);
-            _hasWater = true;
-            Ingredient ing = new();
-            ing.objSo = waterSo;
-            ing.amount = 1;
+            Ingredient ing = new()
+            {
+                objSo = waterSo,
+                amount = 1
+            };
             _ingredients.Add(ing);
             canUse = true;
             _foodInBowl = waterObj;
@@ -104,7 +107,6 @@ namespace FoodSystem
 
             var obj = GlobalPool.instance.Get(so.resSo.prefab, waterTransform[0].position);
             _foodInBowl = obj.GetComponent<Food>();
-            // player needs to cook this 
         }
     }
 }
