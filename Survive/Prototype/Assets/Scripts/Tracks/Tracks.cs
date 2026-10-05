@@ -45,6 +45,8 @@ public class Tracks : MonoBehaviour, IInteractable // tracks are not collectable
     {
         outlineMe = true; // we are using Ienteractable to outline 
         cam = Camera.main;
+        canBeCollected = false;
+        canDisplay = false;
         _meshRenderer = GetComponentsInChildren<MeshRenderer>();
         _originalMaterial = GetComponentInChildren<MeshRenderer>().material;
         menu.SetActive(false);
@@ -53,6 +55,28 @@ public class Tracks : MonoBehaviour, IInteractable // tracks are not collectable
 
     public void ExecuteAction()
     {
+    }
+
+    public bool canDisplay { get; set; }
+    public string useMeDescription { get; set; }
+    public string Description { get; set; }
+    public bool canUse { get; set; }
+    public bool canHarvest { get; set; }
+    public bool canCraft { get; set; }
+
+    public void Craft()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Harvest()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void UseMe()
+    {
+        throw new NotImplementedException();
     }
 
     private void OnEnable()

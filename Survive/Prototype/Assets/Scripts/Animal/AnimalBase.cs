@@ -8,7 +8,7 @@ using Player;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class AnimalBase : MonoBehaviour, IInteractionUI, IInteractable
+public class AnimalBase : MonoBehaviour, IInteractable
 {
     [Header("Movement Info")] [SerializeField]
     protected float walkSpeed;

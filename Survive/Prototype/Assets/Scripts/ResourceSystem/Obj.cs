@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-public abstract class Obj<TSo> : MonoBehaviour, IsoInitializer<TSo>, IInteractable, IInteractionUI
+public abstract class Obj<TSo> : MonoBehaviour, IsoInitializer<TSo>, IInteractable
 {
     protected PosInChunk CashedPosInChunk;
     public GameObject Gm { get; set; }
@@ -27,8 +27,6 @@ public abstract class Obj<TSo> : MonoBehaviour, IsoInitializer<TSo>, IInteractab
     public string useMeDescription { get; set; }
     public string Description { get; set; }
     public bool canUse { get; set; }
-    public GameObject obj { get; set; }
-
     public InventoryItem InventoryItem { get; set; }
     public bool canDisplay { get; set; }
 
@@ -38,7 +36,6 @@ public abstract class Obj<TSo> : MonoBehaviour, IsoInitializer<TSo>, IInteractab
         resourceUI = GetComponent<ResourceUI>();
         cam = Camera.main;
         SetUiBools();
-        obj = this.gameObject;
         canDisplay = true;
         outlineMe = true;
     }
@@ -81,8 +78,8 @@ public abstract class Obj<TSo> : MonoBehaviour, IsoInitializer<TSo>, IInteractab
 
     public virtual void SetUiBools() // ToDo: show this in inspector instead of script 
     {
-        canCraft = true;
-        canHarvest = true;
-        canUse = true;
+        canCraft = false;
+        canHarvest = false;
+        canUse = false;
     }
 }

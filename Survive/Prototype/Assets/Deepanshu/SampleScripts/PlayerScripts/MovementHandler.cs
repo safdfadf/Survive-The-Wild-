@@ -370,9 +370,8 @@ public class MovementHandler : MonoBehaviour //TODo: Make a separate script for 
     private void ActivateUI(IInteractable interactable)
     {
         if (interactable == null) return;
-        IInteractionUI ac = interactable.Gm.GetComponent<IInteractionUI>();
-        if (!ac.canDisplay) return;
-        UIManager.instance.ActivateUi(ac);
+        if (!interactable.canDisplay) return;
+        UIManager.instance.ActivateUi(interactable);
     }
 
     private void ClearHighlight(IInteractable interactable)

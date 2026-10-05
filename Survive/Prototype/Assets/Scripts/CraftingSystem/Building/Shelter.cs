@@ -5,7 +5,7 @@ using UnityEngine;
 namespace DefaultNamespace.CraftingSystem.Building
 {
     // so interaction system should be changed a little 
-    public class Shelter : BaseStructure, IInteractable, IInteractionUI
+    public class Shelter : BaseStructure, IInteractable
     {
         public bool canDisplay { get; set; }
         public string useMeDescription { get; set; }

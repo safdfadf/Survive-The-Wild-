@@ -44,7 +44,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Transform questUiParent;
     private Dictionary<string, TextMeshProUGUI> questsUI = new();
 
-    private IInteractionUI _currentTarget;
+    private IInteractable _currentTarget;
     private float currentScale;
     private List<Button> _activeButtons = new();
     private List<Button> _allButtons = new();
@@ -168,7 +168,7 @@ public class UIManager : MonoBehaviour
         cookingSlots.Clear();
     }
 
-    public void ActivateUi(IInteractionUI interactionUI)
+    public void ActivateUi(IInteractable interactionUI)
     {
         _currentTarget = interactionUI;
         if (_currentTarget == null)
@@ -205,9 +205,9 @@ public class UIManager : MonoBehaviour
 
     private void SetMainMenuPos()
     {
-        if (_currentTarget == null || _currentTarget.obj == null) return;
-        if (!_currentTarget.obj.activeSelf) return;
-        Vector2 canvasPos = WorldToCanvasPosition(_currentTarget.obj.transform.position);
+        if (_currentTarget == null || _currentTarget.Gm == null) return;
+        if (!_currentTarget.Gm.activeSelf) return;
+        Vector2 canvasPos = WorldToCanvasPosition(_currentTarget.Gm.transform.position);
         RectTransform rect = objectMenu.GetComponent<RectTransform>();
         rect.anchoredPosition = canvasPos;
     }

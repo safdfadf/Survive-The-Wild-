@@ -10,4 +10,14 @@ public interface IInteractable
      public Vector3 hitPos{get;set;}
      public void ExecuteAction();
      
+     public bool canDisplay { get; set; }
+     public string useMeDescription{get;set;}
+     public string Description{get;set;}
+     public bool canUse{get;set;}
+     public bool canHarvest{get;set;}
+     public bool canCraft{get;set;}
+     public void Craft();
+     public void Harvest();
+     public void UseMe();
+     
 }

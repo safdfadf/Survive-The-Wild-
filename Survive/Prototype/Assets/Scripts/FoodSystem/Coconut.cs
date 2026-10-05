@@ -38,7 +38,6 @@ namespace FoodSystem
             if (InventoryItem != null)
                 Destroy(InventoryItem.gameObject);
             EventManager.Instance.reseourceEvent.GatherResource(o);
-            obj = null;
             Gm = null;
             Destroy(gameObject);
         }

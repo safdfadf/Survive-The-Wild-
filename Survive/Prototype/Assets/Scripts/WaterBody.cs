@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace DefaultNamespace
 {
-    public class WaterBody : MonoBehaviour, IInteractionUI, IInteractable // this script will be explored later 
+    public class WaterBody : MonoBehaviour, IInteractable // this script will be explored later 
     {
         public bool outlineMe { get; set; }
         public bool canBeCollected { get; set; }
@@ -26,7 +26,7 @@ namespace DefaultNamespace
         public WaterState waterState;
         [SerializeField] private FoodSo waterSo;
         [SerializeField] private GameObject emptyobj;
-        public GameObject obj { get; set; }
+      
 
         private Vector3 lastValidPos;
         private FoodConsumptionData data = new();
@@ -44,7 +44,6 @@ namespace DefaultNamespace
             Gm = gameObject;
             Description = "Drink";
             canDisplay = true;
-            obj = emptyobj;
             data.NutrientsCount = waterSo.nutrientsCount;
         }
 
