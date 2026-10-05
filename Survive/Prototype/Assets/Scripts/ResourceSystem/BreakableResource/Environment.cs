@@ -51,18 +51,19 @@ public class Environment : MonoBehaviour, ItakeDamage, IsoInitializer<EnvironSo>
         if (environSo == null) return;
     }
 
-    private void SpawnObj()//use probablility  
+    private void SpawnObj()
     {
         foreach (var so in objSos)
         {
             for (int i = 0; i < so.amount; i++)
             {
                 if (Random.value > so.appearanceProb)
-                    continue;   
+                    continue;
+
                 Vector3 pos = GetPosition();
                 if (pos == Vector3.zero) continue;
                 GameObject gm = Instantiate(so.prefab, gameObject.transform, true);
-                Obj<ObjSo> obj = gm.GetComponent< Obj<ObjSo>>();
+                Obj<ObjSo> obj = gm.GetComponent<Obj<ObjSo>>();
                 obj.Initialize(so);
                 gm.transform.position = pos;
             }

@@ -11,7 +11,7 @@ namespace FoodSystem
     public class Bowl : Obj<ObjSo>, ICook, ICookable
     {
         [SerializeField] private FoodSo waterSo;
-        private List<Transform> waterTransform;
+        private List<Transform> waterTransform = new();
 
         private List<Ingredient> _ingredients = new();
         private Food _foodInBowl;

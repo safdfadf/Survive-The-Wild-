@@ -241,7 +241,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   resourceDropCount: 0
   dropOffset: {x: 0, y: 0, z: 0}
-  foodSos:
+  objSos:
   - {fileID: 11400000, guid: affdcf91cf120344bbb5c5fb935c9985, type: 2}
   pos:
   - pos: {fileID: 3806813210104397940}
@@ -250,6 +250,11 @@ MonoBehaviour:
     isAvailable: 1
   - pos: {fileID: 1096591179397196070}
     isAvailable: 1
+  damagedVersions: []
+  damageStage1: 25
+  damageStage2: 60
+  damageStage3: 90
+  requiredAbility: {fileID: 0}
 --- !u!1 &5331147424833766460
 GameObject:
   m_ObjectHideFlags: 0

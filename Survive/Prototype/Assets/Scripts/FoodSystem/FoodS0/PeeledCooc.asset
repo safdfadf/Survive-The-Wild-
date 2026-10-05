@@ -10,19 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 62df55132cbfbec469527465c09f5352, type: 3}
-  m_Name: Rasberry
+  m_Name: PeeledCooc
   m_EditorClassIdentifier: 
-  <itemName>k__BackingField: Rasberry
-  prefab: {fileID: 3968307702440492694, guid: d179316e35a349c47bf3bde99a3bb35d, type: 3}
-  sprite: {fileID: 0}
-  amount: 4
-  size: {x: 1, y: 1}
+  <itemName>k__BackingField: PeeledCooc
+  prefab: {fileID: 413445787180230788, guid: 722a589e2bf44f1449ed385e3d403d0c, type: 3}
+  sprite: {fileID: 21300000, guid: 06756a8b367206446ad8595513a8c994, type: 3}
+  amount: 1
+  size: {x: 2, y: 2}
   appearanceProb: 1
   nutrientsCount:
     calories: 0
     protien: 0
     carb: 0
-    hydration: 0
+    hydration: 40
     fat: 0
   regionType: 0
   cooked: {fileID: 0}

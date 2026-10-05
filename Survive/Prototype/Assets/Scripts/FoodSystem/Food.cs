@@ -15,18 +15,12 @@ namespace FoodSystem
         public float cookTime = 10;
 
         [SerializeField] public float burnTime = 20;
-        [SerializeField] private Material cookedMaterial;
-        [SerializeField] private Material burntMaterial;
         private MeshRenderer[] _mrs;
         private Material[] _materials;
         public FoodConsumptionData data = new();
 
         public bool canCookMe;
 
-        [Header("De buff Probability")] [SerializeField]
-        private float minpoisonProbab;
-
-        [SerializeField] private float maxpoisonProbab;
         [Header("StateData")] public RawState rawState;
         public CookState cookState;
         public BurntState burntState;

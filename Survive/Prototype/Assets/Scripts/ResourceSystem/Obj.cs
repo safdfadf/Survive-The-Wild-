@@ -34,11 +34,13 @@ public abstract class Obj<TSo> : MonoBehaviour, IsoInitializer<TSo>, IInteractab
 
     protected virtual void Awake()
     {
-        Description = "";
+        Description = "Collect";
         resourceUI = GetComponent<ResourceUI>();
         cam = Camera.main;
         SetUiBools();
         obj = this.gameObject;
+        canDisplay = true;
+        outlineMe = true;
     }
 
     public virtual void Initialize(TSo so)
@@ -64,6 +66,7 @@ public abstract class Obj<TSo> : MonoBehaviour, IsoInitializer<TSo>, IInteractab
     public virtual void UseMe()
     {
         PlayerRepository.instance.RemoveResourceFromInventory(this as Obj<ObjSo>, true);
+        Destroy(gameObject);
     }
 
     public void ExecuteAction()

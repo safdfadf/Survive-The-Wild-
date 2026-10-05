@@ -205,7 +205,8 @@ public class UIManager : MonoBehaviour
 
     private void SetMainMenuPos()
     {
-        if (_currentTarget == null) return;
+        if (_currentTarget == null || _currentTarget.obj == null) return;
+        if (!_currentTarget.obj.activeSelf) return;
         Vector2 canvasPos = WorldToCanvasPosition(_currentTarget.obj.transform.position);
         RectTransform rect = objectMenu.GetComponent<RectTransform>();
         rect.anchoredPosition = canvasPos;

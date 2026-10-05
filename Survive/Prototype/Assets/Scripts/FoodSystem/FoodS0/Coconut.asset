@@ -15,9 +15,9 @@ MonoBehaviour:
   <itemName>k__BackingField: Coconut
   prefab: {fileID: 8799293136514672852, guid: 35e933cec6da0674ba26a444460d7ab8, type: 3}
   sprite: {fileID: 21300000, guid: db952a5412675044da122806fee8f9bb, type: 3}
-  amount: 0
+  amount: 1
   size: {x: 2, y: 2}
-  appearanceProb: 0.2
+  appearanceProb: 1
   nutrientsCount:
     calories: 0
     protien: 0

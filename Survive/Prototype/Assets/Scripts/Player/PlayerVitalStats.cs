@@ -175,7 +175,7 @@ public class PlayerVitalStats : MonoBehaviour
 
         UpdateHealth();
         _playerUI.HealthSlider(_currentHealth / maxHealth);
-        if (so.SelfAttack.Effects != null)
+        if (so.SelfAttack != null && so.SelfAttack.Effects != null)
             _playerBody.TakeDamage(so.SelfAttack);
     }
 

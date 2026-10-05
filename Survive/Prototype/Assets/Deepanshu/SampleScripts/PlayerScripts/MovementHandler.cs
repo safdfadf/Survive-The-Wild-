@@ -1,9 +1,11 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using DefaultNamespace;
 using DefaultNamespace.EventBus;
 using DefaultNamespace.Interface;
 using FoodSystem;
+using NUnit.Framework;
 using Player;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
@@ -322,7 +324,7 @@ public class MovementHandler : MonoBehaviour //TODo: Make a separate script for 
                 renderer = hit.collider.GetComponentInChildren<MeshRenderer>();
             }
 
-            if (interactable != null && renderer != null)
+            if (interactable != null && renderer != null && interactable.Gm != null)
             {
                 if (currentlyHighlighted != hit.collider.gameObject)
                 {
@@ -369,37 +371,35 @@ public class MovementHandler : MonoBehaviour //TODo: Make a separate script for 
     {
         if (interactable == null) return;
         IInteractionUI ac = interactable.Gm.GetComponent<IInteractionUI>();
-        Debug.Log(interactable.Gm);
         if (!ac.canDisplay) return;
         UIManager.instance.ActivateUi(ac);
     }
 
     private void ClearHighlight(IInteractable interactable)
     {
-        if (currentlyHighlighted != null)
+        if (currentlyHighlighted == null) return;
+        MeshRenderer renderer = currentlyHighlighted.GetComponent<MeshRenderer>();
+        if (renderer == null) // ToDo: remove this 
         {
-            MeshRenderer renderer = currentlyHighlighted.GetComponent<MeshRenderer>();
-            if (renderer == null)
-            {
-                renderer = currentlyHighlighted.GetComponentInChildren<MeshRenderer>();
-            }
-
-            if (renderer != null && _originalMaterials != null)
-            {
-                renderer.materials = _originalMaterials;
-            }
-
-            UIManager.instance.DeactivateUi();
-            _originalMaterials = null;
-            if (interactable == null)
-            {
-                Debug.Log("interactable is null");
-                return;
-            }
-
-            interactable.isHit = false;
-            currentlyHighlighted = null;
+            renderer = currentlyHighlighted.GetComponentInChildren<MeshRenderer>();
         }
+
+        _originalMaterials = renderer.materials;
+        List<Material> matList = new List<Material>(_originalMaterials);
+        int removeIndex = renderer.materials.Length - 1;
+        matList.RemoveAt(removeIndex);
+        renderer.materials = matList.ToArray();
+
+        UIManager.instance.DeactivateUi();
+        _originalMaterials = null;
+        if (interactable == null)
+        {
+            Debug.Log("interactable is null");
+            return;
+        }
+
+        interactable.isHit = false;
+        currentlyHighlighted = null;
     }
 
     void DrawSphereCast(Vector3 origin, Vector3 direction, float radius, float distance)
