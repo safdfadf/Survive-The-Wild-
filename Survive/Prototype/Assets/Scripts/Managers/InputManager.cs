@@ -188,7 +188,6 @@ public class InputManager : MonoBehaviour
     private void ToggleTracksMenu()
     {
         EventBus.OnToggleTracksMenu?.Invoke(); // interaction
-        _playerInventory.SubmitResource(); // Intercation
     }
 
     public void Scroll(InputAction.CallbackContext ctx)

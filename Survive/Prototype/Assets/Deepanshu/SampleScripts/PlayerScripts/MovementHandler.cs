@@ -314,7 +314,6 @@ public class MovementHandler : MonoBehaviour //TODo: Make a separate script for 
             {
                 ObjSo so = GetRequiredResources(structure);
                 _playerInventory.SetSubmitResource(so, structure);
-                structure.ToggleDescription(true);
             }
 
             IInteractable interactable = hit.collider.GetComponent<IInteractable>();
@@ -349,11 +348,9 @@ public class MovementHandler : MonoBehaviour //TODo: Make a separate script for 
         if (currentlyHighlighted != null && Input.GetKeyDown(KeyCode.E)) // ToDo: use new input system
         {
             IInteractable interactable = currentlyHighlighted.GetComponent<IInteractable>();
-            if (interactable != null)
-            {
-                interactable.ExecuteAction();
-                ClearHighlight(interactable);
-            }
+            if (interactable == null) return;
+            interactable.ExecuteAction();
+            ClearHighlight(interactable);
         }
     }
 
@@ -383,20 +380,17 @@ public class MovementHandler : MonoBehaviour //TODo: Make a separate script for 
             renderer = currentlyHighlighted.GetComponentInChildren<MeshRenderer>();
         }
 
-        _originalMaterials = renderer.materials;
-        List<Material> matList = new List<Material>(_originalMaterials);
-        int removeIndex = renderer.materials.Length - 1;
-        matList.RemoveAt(removeIndex);
-        renderer.materials = matList.ToArray();
+        if (interactable.outlineMe)
+        {
+            _originalMaterials = renderer.materials;
+            List<Material> matList = new List<Material>(_originalMaterials);
+            int removeIndex = renderer.materials.Length - 1;
+            matList.RemoveAt(removeIndex);
+            renderer.materials = matList.ToArray();
+        }
 
         UIManager.instance.DeactivateUi();
         _originalMaterials = null;
-        if (interactable == null)
-        {
-            Debug.Log("interactable is null");
-            return;
-        }
-
         interactable.isHit = false;
         currentlyHighlighted = null;
     }

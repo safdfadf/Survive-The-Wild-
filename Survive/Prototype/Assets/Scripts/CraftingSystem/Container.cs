@@ -17,7 +17,7 @@ namespace DefaultNamespace.CraftingSystem
             useMeDescription = "Collect Water";
         }
 
-        public override void SetUiBools()
+        protected override void SetUiBools()
         {
             canCraft = false;
             canHarvest = false;

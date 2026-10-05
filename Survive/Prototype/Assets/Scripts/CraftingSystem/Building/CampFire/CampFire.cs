@@ -45,9 +45,11 @@ public class CampFire : BaseStructure, ICook // this will be base class for all 
 
     private void RemoveFood(GameObject food)
     {
+        // this is being triggered every time 
         Food f = food.GetComponent<Food>();
-        f.canCookMe = false;
-        if (_foodInSpot.Contains(f))
+
+        //f.canCookMe = false;
+        if (f != null && _foodInSpot.Contains(f))
         {
             UIManager.instance.DisplayCookingSpots(cookingSpots, gameObject);
             _foodInSpot.Remove(f);
@@ -69,26 +71,33 @@ public class CampFire : BaseStructure, ICook // this will be base class for all 
         Debug.Log("Campfire assembled. Combustible phase started." + _requiredIngredients.Length);
 
         _structureUI.SetDescription(_requiredIngredients[0].objSo.name, _requiredIngredients[0].amount);
-        _structureUI.ToggleDescription(true);
+        Description = _requiredIngredients[0].objSo.name + _requiredIngredients[0].amount;
     }
 
     public override void SubmitResource(ObjSo objSo)
     {
+        print("trying to submit resource");
         if (!IsAssembled)
         {
             base.SubmitResource(objSo);
             return;
         }
 
+        Debug.Log("To ignite");
         Ingredient ing = GetCombustibleIngredient(objSo);
-        if (ing == null) return;
+        if (ing == null)
+        {
+            print("ing is null");
+            return;
+        }
 
         ing.amount--;
 
         if (CheckCombustibleSubmitted())
         {
             _canIgnite = true;
-            _structureUI.SetDescription("Press E to Ignite", 0);
+            //_structureUI.SetDescription("Press E to Ignite", 0);
+            Description = "Ignite";
         }
         else
         {
@@ -130,12 +139,18 @@ public class CampFire : BaseStructure, ICook // this will be base class for all 
         }
     }
 
+    public override void ExecuteAction()
+    {
+        base.ExecuteAction();
+        if (!_canIgnite) return;
+        Ignite();
+    }
+
     private void Ignite() // now how ignite function will be called, we can still call E  
     {
         if (!_canIgnite || _isBurning || IsPlayerInRange) return;
 
         _isBurning = true;
-
         Debug.Log("Campfire ignited!");
         StartCoroutine(FireCoroutine());
     }
@@ -217,7 +232,6 @@ public class CampFire : BaseStructure, ICook // this will be base class for all 
 
     private void CookFoods(float deltaTime)
     {
-        // here it will simply be start cooking 
         if (!_canCook)
         {
             Debug.Log("returning");

@@ -65,7 +65,7 @@ namespace FoodSystem
             data.SelfAttack = atk;
         }
 
-        public override void SetUiBools()
+        protected override void SetUiBools()
         {
             canCraft = false;
             canHarvest = false;

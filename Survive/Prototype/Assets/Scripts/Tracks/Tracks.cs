@@ -45,8 +45,7 @@ public class Tracks : MonoBehaviour, IInteractable // tracks are not collectable
     {
         outlineMe = true; // we are using Ienteractable to outline 
         cam = Camera.main;
-        canBeCollected = false;
-        canDisplay = false;
+      
         _meshRenderer = GetComponentsInChildren<MeshRenderer>();
         _originalMaterial = GetComponentInChildren<MeshRenderer>().material;
         menu.SetActive(false);
@@ -187,4 +186,15 @@ public class Tracks : MonoBehaviour, IInteractable // tracks are not collectable
             renderer.material = glowMaterial;
         }
     }
+
+    protected virtual void SetBools()
+    {
+        canBeCollected = false;
+        canDisplay = false;
+        Description = "Analyze";
+        canCraft = false;
+        canHarvest = false;
+        outlineMe = true;
+    }
+    
 }

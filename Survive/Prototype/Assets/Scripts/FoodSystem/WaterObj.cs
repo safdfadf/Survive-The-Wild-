@@ -7,7 +7,7 @@ namespace FoodSystem
     {
         [SerializeField] private Material waterMat;
         [SerializeField] private ParticleSystem steamParticles;
-        public override void SetUiBools()
+        protected override void SetUiBools()
         {
             canCraft = false;
             canHarvest = false;

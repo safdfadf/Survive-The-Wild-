@@ -76,10 +76,10 @@ public abstract class Obj<TSo> : MonoBehaviour, IsoInitializer<TSo>, IInteractab
         EventManager.Instance.reseourceEvent.GatherResource(gameObject);
     }
 
-    public virtual void SetUiBools() // ToDo: show this in inspector instead of script 
+    protected virtual void SetUiBools() // ToDo: show this in inspector instead of script 
     {
-        canCraft = false;
-        canHarvest = false;
-        canUse = false;
+        canCraft = true;
+        canHarvest = true;
+        canUse = true;
     }
 }

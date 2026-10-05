@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
+using DefaultNamespace.EventBus;
 using UnityEngine;
 using UnityEngine.Serialization;
 
 public class
-    BaseStructure : Environment
+    BaseStructure : Environment, IInteractable
 {
     protected bool IsAssembled;
     public BuildingRecipe craftingRecipe { get; private set; }
@@ -21,20 +22,40 @@ public class
     protected List<BaseStructure> childStructures = new();
     private Collider[] col;
 
+    public bool outlineMe { get; set; }
+    public bool canBeCollected { get; set; }
+    public GameObject Gm { get; set; }
+    public bool isHit { get; set; }
+    public Vector3 hitPos { get; set; }
+
+
+    public bool canDisplay { get; set; }
+    public string useMeDescription { get; set; }
+    public string Description { get; set; }
+    public bool canUse { get; set; }
+    public bool canHarvest { get; set; }
+    public bool canCraft { get; set; }
+
     protected override void Awake()
     {
+        base.Awake();
         _structureUI = GetComponent<StructureUI>();
         _meshRenderer = GetComponentInChildren<MeshRenderer>();
-        if (_meshRenderer == null)
-        {
-            Debug.LogError($"{name} has no MeshRenderer");
-        }
-
         _currentMaterial = _meshRenderer.material;
         _originalMaterial = _meshRenderer.material;
         _structureUI.ToggleDescription(false);
         col = GetComponentsInChildren<Collider>();
-        base.Awake();
+        Gm = gameObject;
+        SetBools();
+    }
+
+    public virtual void ExecuteAction()
+    {
+        ObjSo so = GetNextRequiredResource();
+        if (!IsAssembled || so != null)
+        {
+            EventManager.Instance.StructureEvents.SubmitResource();
+        }
     }
 
     private void Assemble()
@@ -83,16 +104,11 @@ public class
             return;
         }
 
-
         Ingredient ing = GetIngredient(objSo);
         if (ing == null) return;
-        Debug.Log("sumit resource");
         ing.amount--;
-        if (CheckSubmited())
-        {
-            Debug.Log("submitted");
-            Assemble();
-        }
+        if (!CheckSubmited()) return;
+        Assemble();
     }
 
     protected bool
@@ -150,7 +166,7 @@ public class
         {
             if (ing.amount > 0)
             {
-                _structureUI.SetDescription(ing.objSo.name, ing.amount);
+                Description = ing.objSo.name + " x " + ing.amount; // update ui 
                 return ing.objSo;
             }
         }
@@ -187,12 +203,6 @@ public class
         _invalidMat = mat;
     }
 
-    public void ToggleDescription(bool valid)
-    {
-        if (IsAssembled) return;
-        _structureUI.ToggleDescription(valid);
-    }
-
     public void DisabelAllColliders()
     {
         foreach (var c in col)
@@ -209,10 +219,28 @@ public class
         }
     }
 
-
-    public void UnregisterChild(BaseStructure child)
+    public void Craft()
     {
-        childStructures.Remove(child);
+        throw new NotImplementedException();
+    }
+
+    public void Harvest()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void UseMe()
+    {
+        throw new NotImplementedException();
+    }
+
+    private void SetBools()
+    {
+        canDisplay = true;
+        canCraft = false;
+        canHarvest = false;
+        canUse = false;
+        outlineMe = false;
     }
 }
 

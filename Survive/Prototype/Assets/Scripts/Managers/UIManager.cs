@@ -161,7 +161,6 @@ public class UIManager : MonoBehaviour
 
     public void ClearAllCookingSpots()
     {
-        Debug.Log("clear cooking spots");
         foreach (var spot in cookingSlots)
             Destroy(spot.gameObject);
 

@@ -92,7 +92,7 @@ namespace FoodSystem
             _foodInBowl.data = container.foodConsumptionData;
         }
 
-        public override void SetUiBools()
+        protected override void SetUiBools()
         {
             canCraft = false;
             canHarvest = false;

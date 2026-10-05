@@ -85,7 +85,6 @@ public class RecipeUI : MonoBehaviour
         foreach (var ing in _currentCraftingSo.craftingSo.ingredients)
         {
             Name.text = _currentCraftingSo.craftingSo.resSo.itemName;
-            Debug.Log("create textmeh");
             GameObject textObj = Instantiate(textPrefab, parent);
             TextMeshProUGUI tmp = textObj.GetComponent<TextMeshProUGUI>();
             tmp.text = ing.objSo.prefab.name.ToString() + " * " + ing.amount.ToString();

@@ -32,11 +32,13 @@ public class PlayerInventory : MonoBehaviour
     private void OnEnable()
     {
         EventManager.Instance.reseourceEvent.onGatherResource += AddWorldItem;
+        EventManager.Instance.StructureEvents.OnSubmitResource += SubmitResource;
     }
 
     private void OnDisable()
     {
         EventManager.Instance.reseourceEvent.onGatherResource -= AddWorldItem;
+        EventManager.Instance.StructureEvents.OnSubmitResource -= SubmitResource;
     }
 
     private void Start()
@@ -83,9 +85,12 @@ public class PlayerInventory : MonoBehaviour
 
         if (worldObj.TryGetComponent<Food>(out var food))
         {
-         
             FoodSo foodSo = food.So as FoodSo;
-            if( foodSo == null){print("so is nll");}
+            if (foodSo == null)
+            {
+                print("so is nll");
+            }
+
             AddToResPool(food.So, worldObj);
             MakeUI(foodSo, food);
             return;
@@ -117,12 +122,12 @@ public class PlayerInventory : MonoBehaviour
     {
         if (res.InventoryItem != null)
         {
-         
             InventoryItem i = res.InventoryItem;
             i.gameObject.SetActive(true);
             _weaponInventory.AddWeapon(so as WeaponSo, i);
             return;
         }
+
         GameObject uiObj = Instantiate(uiItemPrefab);
         InventoryItem item = uiObj.GetComponent<InventoryItem>();
         SetInventoryItem(res, so, item);
@@ -184,6 +189,7 @@ public class PlayerInventory : MonoBehaviour
             SpawnObject(So);
         }
     }
+
     private void SpawnObject(ObjSo So)
     {
         GameObject
@@ -197,19 +203,21 @@ public class PlayerInventory : MonoBehaviour
     {
         _weaponInventory.EquipNextWeapon(scrollUp);
     }
+
     public void SetSubmitResource(ObjSo So, BaseStructure structure)
     {
         _requestedObj = So;
         _currentStructure = structure;
     }
 
-    public void SubmitResource() // function is used to assemble structures 
+    private void SubmitResource() // function is used to assemble structures 
     {
         if (_requestedObj == null || _currentStructure == null) return;
         if (!resourcePool.ContainsKey(_requestedObj)) return;
         Obj<ObjSo> res = resourcePool[_requestedObj][0].GetComponent<Obj<ObjSo>>();
         RemoveResource(res, true);
         _currentStructure.SubmitResource(_requestedObj);
+        print("submitted resource");
     }
 
     public void MakeItemAndCraft(Obj<ObjSo> obj)

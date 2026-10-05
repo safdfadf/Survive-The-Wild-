@@ -7,11 +7,13 @@ namespace DefaultNamespace.EventBus
     public class EventManager : MonoBehaviour
     {
         public static EventManager Instance;
-        public QuestEvent questEvent ;
+        public QuestEvent questEvent;
         public ResourceEvents reseourceEvent;
         public PlayerEvents playerEvents;
         public CraftEvents CraftEvents;
         public AnimalEvents AnimalEvents;
+        public StructureEvents StructureEvents;
+
         private void Awake()
         {
             if (Instance == null)
@@ -22,11 +24,18 @@ namespace DefaultNamespace.EventBus
             {
                 Destroy(gameObject);
             }
+
+            InitializeEvents();
+        }
+
+        private void InitializeEvents()
+        {
             questEvent = new QuestEvent();
             reseourceEvent = new ResourceEvents();
             playerEvents = new PlayerEvents();
             CraftEvents = new CraftEvents();
             AnimalEvents = new AnimalEvents();
+            StructureEvents = new StructureEvents();
         }
     }
 }

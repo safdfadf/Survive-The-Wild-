@@ -388,7 +388,7 @@ public class AnimalBase : MonoBehaviour, IInteractable
     {
     }
 
-    public void ExecuteAction()
+    public virtual void ExecuteAction()
     {
         BaseWeapon weapon = PlayerRepository.instance.GetCurrentWeapon();
 
