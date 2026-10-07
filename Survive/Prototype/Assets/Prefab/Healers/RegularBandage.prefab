@@ -1307,7 +1307,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -4876910973669133978, guid: b85d16ae88ac8a744b3ef88e809b3429, type: 3}
+  - {fileID: 2100000, guid: 84ffc08921ab9db4b8b2e0a602431b5d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1416,9 +1416,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dee520b27554bfc489dba9830b552004, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canHarvest: 0
-  description: Collect
-  useMeDescription: 
   effectsSo: {fileID: 11400000, guid: e1547f690d3ccd143b21ab9c12a3bd70, type: 2}
 --- !u!1 &7663275863110032566
 GameObject:

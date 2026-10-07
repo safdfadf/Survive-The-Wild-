@@ -19,5 +19,11 @@ namespace DefaultNamespace.Weapon.WeaponAnims
         {
             StartCoroutine(animator.ResetFireArrow());
         }
+
+        public void UnEquip()
+        {
+            animator.HandWeaponEquip(false);
+        }
+        
     }
 }

@@ -21,10 +21,13 @@ public class InventoryItem : MonoBehaviour
     [SerializeField] protected Button craftButton;
     [SerializeField] protected Button harvest;
     [SerializeField] protected Button removeButton;
-    public Obj<ObjSo> _currentObj{get; private set; }
+    public Obj<ObjSo> _currentObj { get; private set; }
     public Button useMe;
 
     private List<Button> _activeButtons = new();
+    private float _spacingBetweenSlotX;
+    private float _spacingBetweenSlotY;
+    [SerializeField] private GameObject ItemGm;
 
     private void Awake()
     {
@@ -33,7 +36,6 @@ public class InventoryItem : MonoBehaviour
         if (rect != null)
             removeButton.onClick.AddListener(Remove);
         _activeButtons = new List<Button> { craftButton, harvest, useMe, removeButton };
-    //    Toggle();
     }
 
     public void SetItem(Sprite sprite, GameObject Obj)
@@ -60,16 +62,18 @@ public class InventoryItem : MonoBehaviour
             textMesh.text = _currentObj.useMeDescription;
             useMe.onClick.AddListener(() => _currentObj.UseMe());
         }
+        // Increase the size 
+        rect.sizeDelta = new Vector2(
+            so.size.x * 60,
+            so.size.y *60
+        );
+        // why do we multiply it with space between spaces 
     }
 
     public void Craft()
     {
-        IsInCraftingList = true; // we might need to move this 
+        IsInCraftingList = true;
         EventBus.OnCraftResource.Invoke(so, this);
-    }
-
-    public void Harvest()
-    {
     }
 
     private void Remove() // only this will call to go back to the inventory 
@@ -89,5 +93,4 @@ public class InventoryItem : MonoBehaviour
     {
         menu?.SetActive(!menu.activeSelf);
     }
-    
 }

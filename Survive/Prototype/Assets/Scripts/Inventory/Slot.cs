@@ -20,6 +20,8 @@ public class Slot : MonoBehaviour, IPointerClickHandler
     public Vector3 worldPosition { get; set; }
     public CookingData cookingData { get; set; }
     public int cookingSpotIndex = -1; // index in CampFire.cookingSpots
+    public float spacingX { get; set; }
+    public float spacingY { get; set; }
 
     private void Awake()
     {
@@ -27,23 +29,15 @@ public class Slot : MonoBehaviour, IPointerClickHandler
         isOccupied = false;
         _img = GetComponentInChildren<Image>();
         _regularColor = _img.color;
-      
+
         ToggleAlpha(false);
     }
 
-    public void PlaceItem(InventoryItem item)
+    public void InitializeSlot(Vector2Int GridPosition, float X, float Y)
     {
-        item.rect.SetParent(rect);
-        item.rect.anchoredPosition = Vector2.zero;
-        item.rect.localRotation = Quaternion.identity;
-
-        isOccupied = true;
-        occupiedItem = item;
-    }
-
-    public void RegularColor()
-    {
-        ToggleAlpha(false);
+        gridPosition = GridPosition;
+        spacingX = X;
+        spacingY = Y;
     }
 
     public void Valid()
@@ -83,7 +77,7 @@ public class Slot : MonoBehaviour, IPointerClickHandler
     {
         Color c = _img.color;
         c.a = isOn ? 1 : 0;
-        _img.color = c;
+      //  _img.color = c;
     }
 
     public void SetRegularColor()

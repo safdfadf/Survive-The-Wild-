@@ -5,6 +5,8 @@ namespace DefaultNamespace.Weapon
     public class Throw : ProjectileParent
     {
         [SerializeField] private Transform rayOrigin;
+        [SerializeField] private Transform shootTranform;
+        [SerializeField] private GameObject mesh;
         private Vector3 direction = new Vector3(-65f, 0f, 180f);
         private Quaternion originalDirection;
 
@@ -60,14 +62,17 @@ namespace DefaultNamespace.Weapon
         {
             Vector3 dir = (aimTarget.position - weapon.transform.position).normalized;
             RestPoint = gameObject.transform;
-            ArrowMove spear = weapon.gameObject.AddComponent<ArrowMove>();
+            ArrowMove spear = weapon.gameObject.GetComponent<ArrowMove>();
             spear.rayOrigin = rayOrigin;
             spear.InitDamage(data.weaponSo.damage);
             weapon.transform.SetParent(null);
-            spear.transform.rotation = weapon.transform.rotation;
-            spear.ShootArrow(dir, 20);
-
+            mesh.transform.rotation = shootTranform.rotation;
+            spear.enabled = true;
             _animator.Shoot();
+            spear.ShootArrow(dir, 20);
+            isAiming = false;
+            _animator.ToggleAiming(false);
+            OnUnEquip();
         }
 
         public override void OnEquip()
@@ -80,6 +85,7 @@ namespace DefaultNamespace.Weapon
         {
             weapon.transform.rotation = originalDirection;
             originalDirection = weapon.transform.rotation;
+            _animator.UnEquip();
             base.OnUnEquip();
         }
     }

@@ -41,7 +41,7 @@ public class ResourceInventory : MonoBehaviour
                     return;
                 }
 
-                slot.gridPosition = new Vector2Int(x, y);
+                slot.InitializeSlot(new Vector2Int(x, y), spacingBtwSlotsX, spacingBtwSlotsY);
                 slot.rect = slot.gameObject.GetComponent<RectTransform>();
                 slot.rect.anchoredPosition = new Vector2(
                     x * spacingBtwSlotsX,
@@ -167,6 +167,7 @@ public class ResourceInventory : MonoBehaviour
         }
     }
 
+
     private void ClearArea(Vector2Int origin, Vector2Int size, InventoryItem item)
     {
         for (int x = 0; x < size.x; x++)
@@ -220,7 +221,7 @@ public class ResourceInventory : MonoBehaviour
         if (CanPlaceItem(heldItem, pos))
         {
             PlaceItemAt(heldItem, pos, heldItem.size);
-            heldItem.origin = pos;
+            //    heldItem.origin = pos;
             heldItem = null;
             ClearPreviewColors();
         }

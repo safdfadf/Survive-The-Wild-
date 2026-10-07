@@ -14567,7 +14567,7 @@ MonoBehaviour:
   craftingUITransform: {fileID: 1849152900}
   testingSo:
   - {fileID: 11400000, guid: 15af8bb8594c95447afdf7794853d300, type: 2}
-  - {fileID: 11400000, guid: 9752ee708873a9a4ab53dd37a570a44c, type: 2}
+  - {fileID: 11400000, guid: 1de441cde152cd7438817d5f6665d3ee, type: 2}
   - {fileID: 11400000, guid: 1a298092ace585741a429f1f80d0e88d, type: 2}
   tableOffset: {x: 0, y: 0, z: -0.1}
   craftButton: {fileID: 1605686666}
@@ -21786,10 +21786,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59e5d42132c108b4cbe4f7834bff8281, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 7
-  height: 9
-  spacingBtwSlotsX: 60
-  spacingBtwSlotsY: 60
+  width: 9
+  height: 10
+  spacingBtwSlotsX: 50
+  spacingBtwSlotsY: 50
   slotPrefab: {fileID: -6353334126858889220, guid: 18af1eef7d6a9c946b7416166c5175ed, type: 3}
   parent: {fileID: 290522204}
 --- !u!1 &1654567091
