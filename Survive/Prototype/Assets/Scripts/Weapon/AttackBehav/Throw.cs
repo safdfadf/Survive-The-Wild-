@@ -72,6 +72,7 @@ namespace DefaultNamespace.Weapon
             spear.ShootArrow(dir, 20);
             isAiming = false;
             _animator.ToggleAiming(false);
+            _animator.RestShootable();
             OnUnEquip();
         }
 
