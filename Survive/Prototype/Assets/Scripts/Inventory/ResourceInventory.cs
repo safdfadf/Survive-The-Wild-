@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using DefaultNamespace.EventBus;
 using FoodSystem;
+using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
@@ -26,6 +28,12 @@ public class ResourceInventory : MonoBehaviour
     [SerializeField] private GameObject parent;
     private Slot[,] slots;
     private Dictionary<ObjSo, List<InventoryItem>> resources = new();
+
+    [Header("Ui")] [SerializeField] private GameObject menuParent;
+    [SerializeField] private Button CraftButton;
+    [SerializeField] private Button HarvestButton;
+    [SerializeField] private Button UseMeButton;
+    [SerializeField] private Button RemoveButton;
 
     private void Awake()
     {
@@ -53,6 +61,8 @@ public class ResourceInventory : MonoBehaviour
                 slots[x, y] = slot;
             }
         }
+
+        menuParent.transform.SetAsLastSibling();
     }
 
     private void OnEnable()
@@ -217,7 +227,7 @@ public class ResourceInventory : MonoBehaviour
 
     public void OnSlotClicked(Slot slot) // here we can check if the clicked slot is a cokking slot 
     {
-        Vector2Int pos = slot.gridPosition;
+        var pos = slot.gridPosition;
 
         if (heldItem == null)
         {
@@ -227,12 +237,14 @@ public class ResourceInventory : MonoBehaviour
                 img.raycastTarget = false;
             heldItem.rect.SetParent(inventoryRect);
             heldItem.rect.SetAsLastSibling(); // keep on top
+            heldItem.DeactivateMenu();
             return;
         }
 
         if (CanPlaceItem(heldItem, pos))
         {
             PlaceItemAt(heldItem, pos, heldItem.size);
+            heldItem.SetMenuPos(); // place menu at new pos 
             heldItem.origin = pos;
             heldItem = null;
             ClearPreviewColors();
@@ -303,5 +315,52 @@ public class ResourceInventory : MonoBehaviour
             Debug.Log((resources[obj.So].Count));
             resources.Remove(obj.So);
         }
+    }
+
+    public void ActivateSubMenu(UnityAction remove, UnityAction Craft, Obj<ObjSo> currentObj)
+    {
+        List<Button> deactiveButton = new() { CraftButton, HarvestButton, UseMeButton };
+        RemoveButton.onClick.AddListener(remove);
+        if (currentObj.CanCraft)
+        {
+            CraftButton.onClick.AddListener(Craft);
+            deactiveButton.Remove(CraftButton);
+        }
+
+        if (currentObj.CanHarvest)
+        {
+            HarvestButton.onClick.AddListener(currentObj.Harvest);
+            deactiveButton.Remove(HarvestButton);
+        }
+
+        if (currentObj.CanUse)
+        {
+            deactiveButton.Remove(UseMeButton);
+            TextMeshProUGUI textMesh = UseMeButton.gameObject.GetComponentInChildren<TextMeshProUGUI>();
+            textMesh.text = currentObj.UseMeDescription;
+            UseMeButton.onClick.AddListener(currentObj.UseMe);
+        }
+
+        foreach (var button in deactiveButton)
+        {
+            button.gameObject.SetActive(false);
+        }
+
+        menuParent.gameObject.SetActive(true);
+    }
+
+    public void DeactivateSubMenu()
+    {
+        CraftButton.onClick.RemoveAllListeners();
+        HarvestButton.onClick.RemoveAllListeners();
+        UseMeButton.onClick.RemoveAllListeners();
+        RemoveButton.onClick.RemoveAllListeners();
+        menuParent.gameObject.SetActive(false);
+    }
+
+    public void SetMenuPos(Vector3 position)
+    {
+        RectTransform rect = menuParent.GetComponent<RectTransform>();
+        rect.position = position;
     }
 }

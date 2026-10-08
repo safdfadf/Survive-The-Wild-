@@ -157,7 +157,7 @@ public class PlayerInventory : MonoBehaviour
         Image image = item.GetComponent<Image>();
         item.icon = image;
         item.so = So;
-        item.SetItem(So.sprite, res.gameObject);
+        item.SetItem(So.sprite, res.gameObject, _resourceInventory);
         res.InventoryItem = item;
     }
 

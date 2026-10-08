@@ -169,7 +169,11 @@ public class InputManager : MonoBehaviour
         foreach (var result in results)
         {
             Slot slot = result.gameObject.GetComponent<Slot>();
-            if (slot == null) return;
+            if (slot == null)
+            {
+                print("slot us byk");
+                return;
+            }
             InventoryItem item = slot.occupiedItem;
             if (item != null)
             {

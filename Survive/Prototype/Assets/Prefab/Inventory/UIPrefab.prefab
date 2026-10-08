@@ -492,6 +492,7 @@ MonoBehaviour:
   removeButton: {fileID: 4060660166945521379}
   useMe: {fileID: 8269586118966388877}
   ItemGm: {fileID: 0}
+  parentTransform: {fileID: 963697348900484495}
 --- !u!1 &5970677341338355630
 GameObject:
   m_ObjectHideFlags: 0
