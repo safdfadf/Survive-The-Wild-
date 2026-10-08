@@ -134,12 +134,10 @@ public class CraftingHandler : MonoBehaviour
         var existing = _currentIngredients.Find(i => i.objSo == So);
         if (existing != null)
         {
-            Debug.Log("old ingi");
             existing.amount++;
         }
         else
         {
-            Debug.Log("new ingi");
             _currentIngredients.Add(new Ingredient { objSo = So, amount = 1 });
         }
 

@@ -57,7 +57,9 @@ public class InventoryItem : MonoBehaviour
     public void Craft()
     {
         IsInCraftingList = true;
+
         EventBus.OnCraftResource.Invoke(so, this);
+        SetMenuPos();
     }
 
     private void Remove() // only this will call to go back to the inventory 
@@ -65,6 +67,7 @@ public class InventoryItem : MonoBehaviour
         if (IsInCraftingList)
         {
             IsInCraftingList = false;
+            // set position menu pos 
             EventBus.OnUnCraftResource.Invoke(so, this);
         }
         else
@@ -102,7 +105,17 @@ public class InventoryItem : MonoBehaviour
     {
         Slot slot = gameObject.GetComponentInParent<Slot>();
         RectTransform slotRect = slot.GetComponent<RectTransform>();
-        Vector3 finalPos = slotRect.position + new Vector3(100, 0, 0);
-        _inventory.SetMenuPos(finalPos);
+        Vector3 finalPos;
+        if (IsInCraftingList)
+        {
+            print("set menu pos");
+            finalPos = rect.transform.position + new Vector3(100, 0, 0);
+            _inventory.SetMenuPos(finalPos);
+        }
+        else
+        {
+            finalPos = slotRect.position + new Vector3(100, 0, 0);
+            _inventory.SetMenuPos(finalPos);
+        }
     }
 }

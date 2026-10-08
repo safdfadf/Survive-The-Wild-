@@ -5,13 +5,11 @@ namespace FoodSystem
 {
     public class PeeledCoco : Food
     {
-        // Role: this coco when can not be harvested further and can only be eaten  
         [SerializeField] private ObjSo Bowl;
 
         protected override void Awake()
         {
             base.Awake();
-            CanUse = true;
             UseMeDescription = "Drink";
         }
 

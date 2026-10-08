@@ -13,8 +13,10 @@ MonoBehaviour:
   m_Name: ContainerRecipe
   m_EditorClassIdentifier: 
   ingredients:
-  - objSo: {fileID: 0}
-    amount: 0
+  - objSo: {fileID: 11400000, guid: caf770fec88825046bb806771ab6f634, type: 2}
+    amount: 2
+  - objSo: {fileID: 11400000, guid: fb90724a3af42ad44a8eff5d99fae24d, type: 2}
+    amount: 1
   resSo: {fileID: 11400000, guid: 22befa885b7c9654fbfe0a59e5cba832, type: 2}
   hasUpgrades: 0
   upgrades: []

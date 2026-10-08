@@ -844,9 +844,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 923861d195e106741a2c2f0447411a4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canHarvest: 0
-  description: Collect
-  useMeDescription: 
+  craft: 1
+  harvest: 0
+  useMe: 0
+  objSo: {fileID: 0}
+  amount: 0
 --- !u!54 &7061241789987525559
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -158,6 +158,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 923861d195e106741a2c2f0447411a4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  craft: 1
+  harvest: 0
+  useMe: 0
+  objSo: {fileID: 0}
+  amount: 0
 --- !u!136 &2287666020611818371
 CapsuleCollider:
   m_ObjectHideFlags: 0

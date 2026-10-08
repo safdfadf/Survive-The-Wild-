@@ -320,7 +320,14 @@ public class ResourceInventory : MonoBehaviour
     public void ActivateSubMenu(UnityAction remove, UnityAction Craft, Obj<ObjSo> currentObj)
     {
         List<Button> deactiveButton = new() { CraftButton, HarvestButton, UseMeButton };
+        foreach (var button in deactiveButton)
+        {
+            button.gameObject.SetActive(true);
+        }
+
         RemoveButton.onClick.AddListener(remove);
+        print(currentObj + "C " + currentObj.CanCraft + "H" + currentObj.CanHarvest + "U" + currentObj.CanUse);
+
         if (currentObj.CanCraft)
         {
             CraftButton.onClick.AddListener(Craft);
@@ -333,6 +340,7 @@ public class ResourceInventory : MonoBehaviour
             deactiveButton.Remove(HarvestButton);
         }
 
+        // we are removing them from the list but 
         if (currentObj.CanUse)
         {
             deactiveButton.Remove(UseMeButton);
@@ -351,10 +359,12 @@ public class ResourceInventory : MonoBehaviour
 
     public void DeactivateSubMenu()
     {
-        CraftButton.onClick.RemoveAllListeners();
-        HarvestButton.onClick.RemoveAllListeners();
-        UseMeButton.onClick.RemoveAllListeners();
-        RemoveButton.onClick.RemoveAllListeners();
+        var buttons = menuParent.GetComponentsInChildren<Button>();
+        foreach (var button in buttons)
+        {
+            button.onClick.RemoveAllListeners();
+        }
+
         menuParent.gameObject.SetActive(false);
     }
 

@@ -165,6 +165,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22dd3719034e4678b7f4a2bada81e3d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  craft: 1
+  harvest: 0
+  useMe: 0
   waterSo: {fileID: 11400000, guid: 3483a145ec13d574482cbee18e863b4c, type: 2}
 --- !u!135 &3938708458774412732
 SphereCollider:

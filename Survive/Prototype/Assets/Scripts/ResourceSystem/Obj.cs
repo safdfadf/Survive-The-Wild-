@@ -74,16 +74,20 @@ public abstract class Obj<TSo> : MonoBehaviour, IsoInitializer<TSo>, IInteractab
     public virtual void Craft()
     {
         PlayerRepository.instance.CraftWorldItem(gameObject);
+        // move to crafting menu 
+        
     }
 
     public virtual void Harvest()
     {
+        // deactive sub menu 
     }
-
+ 
 
     public virtual void UseMe()
     {
         PlayerRepository.instance.RemoveResourceFromInventory(this as Obj<ObjSo>, true);
+        //deActive menu 
         Destroy(gameObject);
     }
 

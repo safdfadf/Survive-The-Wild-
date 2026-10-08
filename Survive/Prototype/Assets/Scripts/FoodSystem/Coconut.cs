@@ -12,12 +12,10 @@ namespace FoodSystem
         private float fallChance = .1f; // change it t0 .8f
         [SerializeField] private ObjSo peeledCoco;
 
-        protected override void Awake() 
+        protected override void Awake()
         {
             base.Awake();
-            CanUse = false;
             canCookMe = false;
-            CanHarvest = true;
         }
 
         private void OnEnable()
