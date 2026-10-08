@@ -264,11 +264,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2fc8069ea801c64caec67dfd6e9cb6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canHarvest: 0
-  description: Collect
-  useMeDescription: 
+  craft: 0
+  harvest: 0
+  useMe: 1
   cookTime: 10
   burnTime: 20
+  canCookMe: 0
+  rawState:
+    sanityEffect: 0
+    isPoison: 0
+    effect: {fileID: 0}
+    material: {fileID: 0}
+  cookState:
+    sanityEffect: 0
+    isPoison: 0
+    effect: {fileID: 0}
+    material: {fileID: 0}
+  burntState:
+    sanityEffect: 0
+    isPoison: 0
+    effect: {fileID: 0}
+    material: {fileID: 0}
 --- !u!65 &-3510832990237337109
 BoxCollider:
   m_ObjectHideFlags: 0

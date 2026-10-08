@@ -43,8 +43,8 @@ public class BaseWeapon : Obj<ObjSo>
     protected override void Awake()
     {
         base.Awake();
-        useMeDescription = "EquipMe";
-        canUse = true;
+        UseMeDescription = "EquipMe";
+        CanUse = true;
         playerInventory = GetComponentInParent<PlayerInventory>();
         behaviours = GetComponentsInChildren<WeaponBehaviour>();
 
@@ -96,12 +96,6 @@ public class BaseWeapon : Obj<ObjSo>
         _activeBehaviour.DeliverDamage();
     }
 
-    protected override void SetUiBools()
-    {
-        canCraft = true;
-        canHarvest = false;
-        canUse = true;
-    }
 
     public void SwitchWeaponBehavior(InputAction.CallbackContext ctx)
     {
@@ -110,13 +104,15 @@ public class BaseWeapon : Obj<ObjSo>
             _activeBehaviour.OnInput(ctx);
             return;
         }
-        if (ctx.interaction is TapInteraction  && ctx.phase == InputActionPhase.Performed)
+
+        if (ctx.interaction is TapInteraction && ctx.phase == InputActionPhase.Performed)
         {
             Debug.Log("Tap → Melee");
             _activeBehaviour = _meleeAtk;
             _activeBehaviour.OnInput(ctx);
             return;
         }
+
         if (ctx.interaction is HoldInteraction && ctx.phase == InputActionPhase.Performed)
         {
             Debug.Log("Hold Start → Projectile");

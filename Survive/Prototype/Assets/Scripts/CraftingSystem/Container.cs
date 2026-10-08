@@ -14,15 +14,10 @@ namespace DefaultNamespace.CraftingSystem
         protected override void Awake()
         {
             base.Awake();
-            useMeDescription = "Collect Water";
+            UseMeDescription = "Collect Water";
         }
 
-        protected override void SetUiBools()
-        {
-            canCraft = false;
-            canHarvest = false;
-            canUse = true;
-        }
+      
 
         public override void UseMe()
         {
@@ -30,7 +25,7 @@ namespace DefaultNamespace.CraftingSystem
             {
                 PlayerRepository.instance.ConsumeFood(foodConsumptionData);
                 IsContainerFilled = false;
-                useMeDescription = "Collect Water";
+                UseMeDescription = "Collect Water";
             }
             else if (PlayerRepository.instance.waterBody != null)
             {
@@ -49,7 +44,7 @@ namespace DefaultNamespace.CraftingSystem
             var obj = PlayerRepository.instance.waterBody;
             var waterBody = obj.GetComponent<WaterBody>();
             foodConsumptionData = waterBody.GetWater();
-            useMeDescription = "Drink";
+            UseMeDescription = "Drink";
         }
     }
 }

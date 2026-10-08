@@ -31,7 +31,7 @@ namespace FoodSystem
         {
             base.Awake();
             Gm = gameObject;
-            useMeDescription = "Eat";
+            UseMeDescription = "Eat";
             _mrs = gameObject.GetComponentsInChildren<MeshRenderer>();
             currentState = rawState;
         }
@@ -65,12 +65,7 @@ namespace FoodSystem
             data.SelfAttack = atk;
         }
 
-        protected override void SetUiBools()
-        {
-            canCraft = false;
-            canHarvest = false;
-            canUse = true;
-        }
+       
 
         public virtual void ExecuteCooking(float deltaTime)
         {

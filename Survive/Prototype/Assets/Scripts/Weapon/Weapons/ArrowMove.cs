@@ -18,8 +18,8 @@ public class ArrowMove : Obj<ObjSo>
     protected override void Awake()
     {
         Gm = gameObject;
-        canBeCollected = false;
-        outlineMe = false;
+        CanBeCollected = false;
+        OutlineMe = false;
     }
 
     private void Start()
@@ -31,7 +31,7 @@ public class ArrowMove : Obj<ObjSo>
     public void InitDamage(int damage)
     {
         _dmg = damage;
-        canBeCollected = true;
+        CanBeCollected = true;
     }
 
     private void Update()

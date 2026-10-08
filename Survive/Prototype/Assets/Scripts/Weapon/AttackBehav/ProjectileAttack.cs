@@ -50,7 +50,7 @@ namespace DefaultNamespace.Weapon
                 Debug.Log("no arrow found");
             }
 
-            Arrow.canBeCollected = false;
+            Arrow.CanBeCollected = false;
             CurrentArrow.transform.SetParent(RestPoint, false);
             CurrentArrow.transform.localPosition = Vector3.zero;
             CurrentArrow.transform.localRotation = Quaternion.identity;

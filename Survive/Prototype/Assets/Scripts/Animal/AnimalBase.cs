@@ -47,18 +47,18 @@ public class AnimalBase : MonoBehaviour, IInteractable
 
     protected Bounds Bounds;
 
-    public bool canDisplay { get; set; }
-    public string useMeDescription { get; set; }
+    public bool CanDisplay { get; set; }
+    public string UseMeDescription { get; set; }
     public string Description { get; set; }
-    public bool canUse { get; set; }
-    public bool canHarvest { get; set; }
-    public bool canCraft { get; set; }
+    public bool CanUse { get; set; }
+    public bool CanHarvest { get; set; }
+    public bool CanCraft { get; set; }
 
     public GameObject obj { get; set; }
     public bool IsUnscheduled { get; protected set; } = false;
 
-    public bool outlineMe { get; set; }
-    public bool canBeCollected { get; set; }
+    public bool OutlineMe { get; set; }
+    public bool CanBeCollected { get; set; }
     public GameObject Gm { get; set; }
     public bool isHit { get; set; }
     public Vector3 hitPos { get; set; }
@@ -79,13 +79,13 @@ public class AnimalBase : MonoBehaviour, IInteractable
             h.Initialize(this);
         }
 
-        canDisplay = false;
+        CanDisplay = false;
 
-        canUse = false;
-        canHarvest = true;
-        canCraft = false;
-        canBeCollected = false;
-        outlineMe = false;
+        CanUse = false;
+        CanHarvest = true;
+        CanCraft = false;
+        CanBeCollected = false;
+        OutlineMe = false;
         Gm = gameObject;
         obj = gameObject;
         Description = "Skin";
@@ -153,7 +153,7 @@ public class AnimalBase : MonoBehaviour, IInteractable
         animator.SetBool("Death", true);
         agent.enabled = false;
         agent.speed = 0;
-        canDisplay = true;
+        CanDisplay = true;
         PlayBloodVfx();
     }
 

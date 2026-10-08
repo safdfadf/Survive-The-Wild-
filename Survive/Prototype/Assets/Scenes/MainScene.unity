@@ -14541,6 +14541,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b7215a070f1ca7b459087577a8b803e1, type: 2}
   - {fileID: 11400000, guid: b7215a070f1ca7b459087577a8b803e1, type: 2}
   - {fileID: 11400000, guid: 27c789396ea0e234f9d51213578af493, type: 2}
+  - {fileID: 11400000, guid: b7215a070f1ca7b459087577a8b803e1, type: 2}
 --- !u!114 &848024449
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14565,10 +14566,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 99e2760eda071a149a9d1e487765f408, type: 2}
   - {fileID: 11400000, guid: 6f11bc854c5f41d4c985af30b38f51c5, type: 2}
   craftingUITransform: {fileID: 1849152900}
-  testingSo:
-  - {fileID: 11400000, guid: 15af8bb8594c95447afdf7794853d300, type: 2}
-  - {fileID: 11400000, guid: 1de441cde152cd7438817d5f6665d3ee, type: 2}
-  - {fileID: 11400000, guid: 1a298092ace585741a429f1f80d0e88d, type: 2}
+  testingSo: []
   tableOffset: {x: 0, y: 0, z: -0.1}
   craftButton: {fileID: 1605686666}
   recipeBook: {fileID: 535103729}

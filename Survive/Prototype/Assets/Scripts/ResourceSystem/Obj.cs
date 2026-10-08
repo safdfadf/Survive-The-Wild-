@@ -13,22 +13,43 @@ public abstract class Obj<TSo> : MonoBehaviour, IsoInitializer<TSo>, IInteractab
     public bool isHit { get; set; }
     public Vector3 hitPos { get; set; }
 
+    [Header("Ui Setting")] [SerializeField]
+    private bool craft;
+
+    [SerializeField] private bool harvest;
+    [SerializeField] private bool useMe;
 
     public Rigidbody rb { get; set; }
     protected Camera cam;
 
     public ResourceUI resourceUI { get; set; }
-    public bool outlineMe { get; set; }
-    public bool canBeCollected { get; set; } // one way to do this is 
+    public bool OutlineMe { get; set; }
+    public bool CanBeCollected { get; set; } // one way to do this is 
     public TSo So { get; set; }
 
-    public bool canCraft { get; set; }
-    public bool canHarvest { get; set; }
-    public string useMeDescription { get; set; }
+    public bool CanCraft
+    {
+        get => craft;
+        set => craft = value;
+    }
+
+    public bool CanHarvest
+    {
+        get => harvest;
+        set => harvest = value;
+    }
+
+    public string UseMeDescription { get; set; }
     public string Description { get; set; }
-    public bool canUse { get; set; }
+
+    public bool CanUse
+    {
+        get => useMe;
+        set => craft = value;
+    }
+
     public InventoryItem InventoryItem { get; set; }
-    public bool canDisplay { get; set; }
+    public bool CanDisplay { get; set; }
 
     protected virtual void Awake()
     {
@@ -36,8 +57,8 @@ public abstract class Obj<TSo> : MonoBehaviour, IsoInitializer<TSo>, IInteractab
         resourceUI = GetComponent<ResourceUI>();
         cam = Camera.main;
         SetUiBools();
-        canDisplay = true;
-        outlineMe = true;
+        CanDisplay = true;
+        OutlineMe = true;
     }
 
     public virtual void Initialize(TSo so)
@@ -78,8 +99,5 @@ public abstract class Obj<TSo> : MonoBehaviour, IsoInitializer<TSo>, IInteractab
 
     protected virtual void SetUiBools() // ToDo: show this in inspector instead of script 
     {
-        canCraft = true;
-        canHarvest = true;
-        canUse = true;
     }
 }

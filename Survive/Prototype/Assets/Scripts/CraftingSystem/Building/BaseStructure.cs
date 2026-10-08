@@ -22,19 +22,19 @@ public class
     protected List<BaseStructure> childStructures = new();
     private Collider[] col;
 
-    public bool outlineMe { get; set; }
-    public bool canBeCollected { get; set; }
+    public bool OutlineMe { get; set; }
+    public bool CanBeCollected { get; set; }
     public GameObject Gm { get; set; }
     public bool isHit { get; set; }
     public Vector3 hitPos { get; set; }
 
 
-    public bool canDisplay { get; set; }
-    public string useMeDescription { get; set; }
+    public bool CanDisplay { get; set; }
+    public string UseMeDescription { get; set; }
     public string Description { get; set; }
-    public bool canUse { get; set; }
-    public bool canHarvest { get; set; }
-    public bool canCraft { get; set; }
+    public bool CanUse { get; set; }
+    public bool CanHarvest { get; set; }
+    public bool CanCraft { get; set; }
 
     protected override void Awake()
     {
@@ -236,11 +236,11 @@ public class
 
     private void SetBools()
     {
-        canDisplay = true;
-        canCraft = false;
-        canHarvest = false;
-        canUse = false;
-        outlineMe = false;
+        CanDisplay = true;
+        CanCraft = false;
+        CanHarvest = false;
+        CanUse = false;
+        OutlineMe = false;
     }
 }
 

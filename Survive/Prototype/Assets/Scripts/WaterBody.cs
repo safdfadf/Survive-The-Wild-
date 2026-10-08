@@ -10,18 +10,18 @@ namespace DefaultNamespace
 {
     public class WaterBody : MonoBehaviour, IInteractable // this script will be explored later 
     {
-        public bool outlineMe { get; set; }
-        public bool canBeCollected { get; set; }
+        public bool OutlineMe { get; set; }
+        public bool CanBeCollected { get; set; }
         public GameObject Gm { get; set; }
         public bool isHit { get; set; }
         public Vector3 hitPos { get; set; }
 
-        public bool canDisplay { get; set; }
-        public string useMeDescription { get; set; }
+        public bool CanDisplay { get; set; }
+        public string UseMeDescription { get; set; }
         public string Description { get; set; }
-        public bool canUse { get; set; }
-        public bool canHarvest { get; set; }
-        public bool canCraft { get; set; }
+        public bool CanUse { get; set; }
+        public bool CanHarvest { get; set; }
+        public bool CanCraft { get; set; }
         public WaterBodyType bodyType;
         public WaterState waterState;
         [SerializeField] private FoodSo waterSo;
@@ -39,11 +39,11 @@ namespace DefaultNamespace
 
         private void Awake()
         {
-            canBeCollected = false;
-            outlineMe = false;
+            CanBeCollected = false;
+            OutlineMe = false;
             Gm = gameObject;
             Description = "Drink";
-            canDisplay = true;
+            CanDisplay = true;
             data.NutrientsCount = waterSo.nutrientsCount;
         }
 

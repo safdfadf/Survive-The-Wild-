@@ -89,7 +89,7 @@ public class InputManager : MonoBehaviour
             {
                 EventBus.onAttack.Invoke();
             }
-        }; 
+        };
         _inventoryToggle = ctx => { _playerUI.ToggleInventory(); };
         _resourceMenuToggle = ctx => ToggleCollectableMenu();
         _toggleTarckMenu = ctx => ToggleTracksMenu();
@@ -120,7 +120,7 @@ public class InputManager : MonoBehaviour
         _controls.PlayerInteract.Shoot.performed += OnInteract;
         _controls.PlayerInteract.Shoot.canceled += OnInteract;
 
-    //    _controls.PlayerInteract.CursorOnOf.performed += _cursorToggle;
+        //    _controls.PlayerInteract.CursorOnOf.performed += _cursorToggle;
         _controls.PlayerInteract.Inventory.performed += _inventoryToggle;
         _controls.PlayerInteract.ResourceMenu.performed += _resourceMenuToggle;
         _controls.PlayerInteract.Interact.performed += _toggleTarckMenu;
@@ -148,7 +148,7 @@ public class InputManager : MonoBehaviour
         _controls.PlayerInteract.Shoot.performed -= _shootPerformed;
         _controls.PlayerInteract.Shoot.canceled -= _shootPerformed;
         _controls.PlayerInteract.Scroll.canceled -= Scroll;
-     //   _controls.PlayerInteract.CursorOnOf.performed -= _cursorToggle;
+        //   _controls.PlayerInteract.CursorOnOf.performed -= _cursorToggle;
         _controls.PlayerInteract.Inventory.performed -= _inventoryToggle;
         _controls.PlayerInteract.ResourceMenu.performed -= _resourceMenuToggle;
         _controls.PlayerMovement.HunerSense.performed -= _toggleHuntetSenses;
@@ -168,7 +168,9 @@ public class InputManager : MonoBehaviour
 
         foreach (var result in results)
         {
-            InventoryItem item = result.gameObject.GetComponentInParent<InventoryItem>();
+            Slot slot = result.gameObject.GetComponent<Slot>();
+            if (slot == null) return;
+            InventoryItem item = slot.occupiedItem;
             if (item != null)
             {
                 item.Toggle();
@@ -182,7 +184,6 @@ public class InputManager : MonoBehaviour
         BaseWeapon weapon = _player.CurrentWeapon;
         if (weapon == null) return;
         weapon.SwitchWeaponBehavior(ctx);
-       
     }
 
     private void ToggleTracksMenu()

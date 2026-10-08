@@ -356,7 +356,7 @@ public class MovementHandler : MonoBehaviour //TODo: Make a separate script for 
 
     private void ApplyOutline(MeshRenderer renderer, IInteractable interactable)
     {
-        if (!interactable.outlineMe) return;
+        if (!interactable.OutlineMe) return;
         _originalMaterials = renderer.materials;
         Material[] newMaterials = new Material[_originalMaterials.Length + 1];
         _originalMaterials.CopyTo(newMaterials, 0);
@@ -367,7 +367,7 @@ public class MovementHandler : MonoBehaviour //TODo: Make a separate script for 
     private void ActivateUI(IInteractable interactable)
     {
         if (interactable == null) return;
-        if (!interactable.canDisplay) return;
+        if (!interactable.CanDisplay) return;
         UIManager.instance.ActivateUi(interactable);
     }
 
@@ -380,7 +380,7 @@ public class MovementHandler : MonoBehaviour //TODo: Make a separate script for 
             renderer = currentlyHighlighted.GetComponentInChildren<MeshRenderer>();
         }
 
-        if (interactable.outlineMe)
+        if (interactable.OutlineMe)
         {
             _originalMaterials = renderer.materials;
             List<Material> matList = new List<Material>(_originalMaterials);

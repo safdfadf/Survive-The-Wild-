@@ -1693,9 +1693,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dee520b27554bfc489dba9830b552004, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canHarvest: 0
-  description: Collect
-  useMeDescription: 
+  craft: 0
+  harvest: 0
+  useMe: 1
   effectsSo: {fileID: 0}
 --- !u!1 &7663275863110032566
 GameObject:

@@ -133,6 +133,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54dce543634373946bd645317fa94e63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  craft: 1
+  harvest: 0
+  useMe: 1
   ability: {fileID: 11400000, guid: 704126e62b7d502428b912f629fb1b74, type: 2}
   RightHandRotAngle: {x: 0, y: 0, z: 0}
   RightHandAngle: {x: 0, y: 0, z: 0}

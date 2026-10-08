@@ -176,24 +176,24 @@ public class UIManager : MonoBehaviour
             return;
         }
 
-        if (_currentTarget.canCraft)
+        if (_currentTarget.CanCraft)
         {
             _activeButtons.Add(craftButton);
             craftButton.gameObject.SetActive(true);
             craftButton.onClick.AddListener(_currentTarget.Craft);
         }
 
-        if (_currentTarget.canHarvest)
+        if (_currentTarget.CanHarvest)
         {
             _activeButtons.Add(harvestButton);
             harvestButton.onClick.AddListener(_currentTarget.Harvest);
         }
 
-        if (_currentTarget.canUse)
+        if (_currentTarget.CanUse)
         {
             _activeButtons.Add(useMe);
             TextMeshProUGUI textMesh = useMe.gameObject.GetComponentInChildren<TextMeshProUGUI>();
-            textMesh.text = _currentTarget.useMeDescription;
+            textMesh.text = _currentTarget.UseMeDescription;
             useMe.onClick.AddListener(() => _currentTarget.UseMe());
         }
 
@@ -241,7 +241,7 @@ public class UIManager : MonoBehaviour
     {
         if (_currentTarget == null) return;
         TextMeshProUGUI textMesh = useMe.gameObject.GetComponentInChildren<TextMeshProUGUI>();
-        textMesh.text = _currentTarget.useMeDescription;
+        textMesh.text = _currentTarget.UseMeDescription;
         description.text = _currentTarget.Description;
     }
 

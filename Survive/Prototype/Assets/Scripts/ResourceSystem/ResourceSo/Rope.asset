@@ -16,5 +16,5 @@ MonoBehaviour:
   prefab: {fileID: 8924393967249425686, guid: 50b428886ba357945ad82aff62dcb31e, type: 3}
   sprite: {fileID: 21300000, guid: 9a6df6a32c075354ea4e44b3669c7020, type: 3}
   amount: 4
-  size: {x: 0, y: 0}
+  size: {x: 1, y: 1}
   appearanceProb: 0.4

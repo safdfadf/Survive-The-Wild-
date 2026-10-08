@@ -308,6 +308,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 408d9a9edeed43d789f7a2141bb54192, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  craft: 0
+  harvest: 0
+  useMe: 1
 --- !u!135 &5516998832790640439
 SphereCollider:
   m_ObjectHideFlags: 0

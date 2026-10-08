@@ -15,11 +15,11 @@ namespace FoodSystem
 
         private List<Ingredient> _ingredients = new();
         private Food _foodInBowl;
-
+        
         protected override void Awake()
         {
             base.Awake();
-            useMeDescription = "Drink";
+            UseMeDescription = "Drink";
             waterTransform.Add(transform);
         }
 
@@ -87,18 +87,10 @@ namespace FoodSystem
                 amount = 1
             };
             _ingredients.Add(ing);
-            canUse = true;
+            CanUse = true;
             _foodInBowl = waterObj;
             _foodInBowl.data = container.foodConsumptionData;
         }
-
-        protected override void SetUiBools()
-        {
-            canCraft = false;
-            canHarvest = false;
-            canUse = false;
-        }
-
         private void CheckForRecipeMatch()
         {
             var so = PlayerRepository.instance.CheckForRecipeMatch(_ingredients);

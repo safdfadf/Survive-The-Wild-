@@ -11,8 +11,8 @@ namespace FoodSystem
         protected override void Awake()
         {
             base.Awake();
-            canUse = true;
-            useMeDescription = "Drink";
+            CanUse = true;
+            UseMeDescription = "Drink";
         }
 
         public override void UseMe()

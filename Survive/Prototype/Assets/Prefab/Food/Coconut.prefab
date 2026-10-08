@@ -46,6 +46,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ceeb0a89ceb405bb8fcb636c42b1658, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  craft: 0
+  harvest: 1
+  useMe: 0
   cookTime: 10
   burnTime: 20
   canCookMe: 0

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using DefaultNamespace.EventBus;
 using Player;
 using TMPro;
 using UnityEngine;
@@ -43,29 +44,30 @@ public class InventoryItem : MonoBehaviour
         icon.sprite = sprite;
         gm = Obj;
         _currentObj = Obj.GetComponent<Obj<ObjSo>>();
-        if (_currentObj.canCraft)
+        if (_currentObj.CanCraft)
         {
             craftButton.onClick.AddListener(Craft);
             _activeButtons.Add(craftButton);
         }
 
-        if (_currentObj.canHarvest)
+        if (_currentObj.CanHarvest)
         {
-            craftButton.onClick.AddListener(_currentObj.Harvest);
+            harvest.onClick.AddListener(_currentObj.Harvest);
             _activeButtons.Add(harvest);
         }
 
-        if (_currentObj.canUse)
+        if (_currentObj.CanUse)
         {
             _activeButtons.Add(useMe);
             TextMeshProUGUI textMesh = useMe.gameObject.GetComponentInChildren<TextMeshProUGUI>();
-            textMesh.text = _currentObj.useMeDescription;
+            textMesh.text = _currentObj.UseMeDescription;
             useMe.onClick.AddListener(() => _currentObj.UseMe());
         }
+
         // Increase the size 
         rect.sizeDelta = new Vector2(
             so.size.x * 60,
-            so.size.y *60
+            so.size.y * 60
         );
         // why do we multiply it with space between spaces 
     }
@@ -92,5 +94,6 @@ public class InventoryItem : MonoBehaviour
     public void Toggle()
     {
         menu?.SetActive(!menu.activeSelf);
+        EventManager.Instance.reseourceEvent.MenuToggle();
     }
 }

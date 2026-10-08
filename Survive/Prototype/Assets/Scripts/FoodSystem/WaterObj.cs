@@ -9,10 +9,10 @@ namespace FoodSystem
         [SerializeField] private ParticleSystem steamParticles;
         protected override void SetUiBools()
         {
-            canCraft = false;
-            canHarvest = false;
-            canUse = false;
-            canDisplay = false;
+            CanCraft = false;
+            CanHarvest = false;
+            CanUse = false;
+            CanDisplay = false;
         }
 
         public override void ExecuteCooking(float deltaTime)

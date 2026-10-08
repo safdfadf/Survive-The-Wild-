@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using DefaultNamespace.EventBus;
 using FoodSystem;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -51,6 +53,16 @@ public class ResourceInventory : MonoBehaviour
                 slots[x, y] = slot;
             }
         }
+    }
+
+    private void OnEnable()
+    {
+        EventManager.Instance.reseourceEvent.onMenuToggle += ToggleRaycastTarget;
+    }
+
+    private void OnDisable()
+    {
+        EventManager.Instance.reseourceEvent.onMenuToggle -= ToggleRaycastTarget;
     }
 
     private void LateUpdate()
@@ -221,7 +233,7 @@ public class ResourceInventory : MonoBehaviour
         if (CanPlaceItem(heldItem, pos))
         {
             PlaceItemAt(heldItem, pos, heldItem.size);
-            //    heldItem.origin = pos;
+            heldItem.origin = pos;
             heldItem = null;
             ClearPreviewColors();
         }
@@ -229,7 +241,6 @@ public class ResourceInventory : MonoBehaviour
         {
             GameObject obj = Instantiate(heldItem.so.prefab, slot.worldPosition, Quaternion.identity);
             Obj<ObjSo> food = obj.GetComponent<Obj<ObjSo>>();
-            // here we assume held item is food but in case of container held item is water  
             food.So = heldItem.so;
 
             ICook cook = slot.cookingData.handler.GetComponent<ICook>();
@@ -244,15 +255,12 @@ public class ResourceInventory : MonoBehaviour
         }
     }
 
-    private Slot SlotAtCurrentPos(Vector3 localPos)
+    public void ToggleRaycastTarget()
     {
-        int x = Mathf.RoundToInt(localPos.x / spacingBtwSlotsX);
-        int y = Mathf.RoundToInt(localPos.y / spacingBtwSlotsY);
-
-        if (x < 0 || y < 0 || x >= width || y >= height)
-            return null;
-
-        return slots[x, y];
+        foreach (var slot in slots)
+        {
+            slot.ToggleRaycastTarget();
+        }
     }
 
     public InventoryItem GetInventoryItem(InventoryItem i)

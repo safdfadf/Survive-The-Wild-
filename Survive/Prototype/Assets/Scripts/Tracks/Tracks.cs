@@ -32,8 +32,8 @@ public class Tracks : MonoBehaviour, IInteractable // tracks are not collectable
     [Header("Tracks data info")] private TrackData trackData = new();
 
     public ResourceUI resourceUI { get; }
-    public bool outlineMe { get; set; }
-    public bool canBeCollected { get; set; }
+    public bool OutlineMe { get; set; }
+    public bool CanBeCollected { get; set; }
     public GameObject Gm { get; set; }
     public bool isHit { get; set; }
     public Vector3 hitPos { get; set; }
@@ -43,7 +43,7 @@ public class Tracks : MonoBehaviour, IInteractable // tracks are not collectable
 
     private void Awake()
     {
-        outlineMe = true; // we are using Ienteractable to outline 
+        OutlineMe = true; // we are using Ienteractable to outline 
         cam = Camera.main;
       
         _meshRenderer = GetComponentsInChildren<MeshRenderer>();
@@ -56,12 +56,12 @@ public class Tracks : MonoBehaviour, IInteractable // tracks are not collectable
     {
     }
 
-    public bool canDisplay { get; set; }
-    public string useMeDescription { get; set; }
+    public bool CanDisplay { get; set; }
+    public string UseMeDescription { get; set; }
     public string Description { get; set; }
-    public bool canUse { get; set; }
-    public bool canHarvest { get; set; }
-    public bool canCraft { get; set; }
+    public bool CanUse { get; set; }
+    public bool CanHarvest { get; set; }
+    public bool CanCraft { get; set; }
 
     public void Craft()
     {
@@ -189,12 +189,12 @@ public class Tracks : MonoBehaviour, IInteractable // tracks are not collectable
 
     protected virtual void SetBools()
     {
-        canBeCollected = false;
-        canDisplay = false;
+        CanBeCollected = false;
+        CanDisplay = false;
         Description = "Analyze";
-        canCraft = false;
-        canHarvest = false;
-        outlineMe = true;
+        CanCraft = false;
+        CanHarvest = false;
+        OutlineMe = true;
     }
     
 }

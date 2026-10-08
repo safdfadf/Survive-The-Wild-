@@ -29,7 +29,6 @@ public class Slot : MonoBehaviour, IPointerClickHandler
         isOccupied = false;
         _img = GetComponentInChildren<Image>();
         _regularColor = _img.color;
-
         ToggleAlpha(false);
     }
 
@@ -52,12 +51,10 @@ public class Slot : MonoBehaviour, IPointerClickHandler
         _img.color = Color.red;
     }
 
-    public void ClearSlot()
+    public void ToggleRaycastTarget()
     {
-        foreach (Transform child in itemAnchor)
-            Destroy(child.gameObject);
-
-        isOccupied = false;
+        _img.raycastTarget = !_img.raycastTarget;
+        print(_img.raycastTarget);
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -77,7 +74,7 @@ public class Slot : MonoBehaviour, IPointerClickHandler
     {
         Color c = _img.color;
         c.a = isOn ? 1 : 0;
-      //  _img.color = c;
+        _img.color = c;
     }
 
     public void SetRegularColor()
