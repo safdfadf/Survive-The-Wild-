@@ -12481,7 +12481,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bodyType: 1
-  waterState: 0
+  waterState: 1
   waterSo: {fileID: 11400000, guid: 3483a145ec13d574482cbee18e863b4c, type: 2}
   emptyobj: {fileID: 438041936}
   minPoisonAmount: 0
@@ -12506,8 +12506,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.9999996, y: 0.6949799, z: 0.9999996}
-  m_Center: {x: 0, y: 0.30411947, z: 0}
+  m_Size: {x: 0.9999996, y: 0.84175843, z: 0.9999996}
+  m_Center: {x: 0, y: 0.022965368, z: 0}
 --- !u!1 &486052455
 GameObject:
   m_ObjectHideFlags: 0
@@ -14856,7 +14856,7 @@ Transform:
   m_GameObject: {fileID: 848024441}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 138.6, y: 0.97, z: 47.71}
+  m_LocalPosition: {x: 138.6, y: 0.97, z: 101.55}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -14947,7 +14947,7 @@ MonoBehaviour:
   playerCamera: {fileID: 1600046406}
   outlineMaterial: {fileID: 2100000, guid: 8c1b75c026f87744da9bda914587f738, type: 2}
   SpineController: {fileID: 745162831564011877}
-  waterBody: {fileID: 0}
+  ContactWithWater: {fileID: 0}
 --- !u!114 &848024447
 MonoBehaviour:
   m_ObjectHideFlags: 0

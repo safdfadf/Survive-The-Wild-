@@ -16,7 +16,7 @@ namespace Player
         private PlayerVitalStats _playerVitalStats;
         private PlayerBody _playerBody;
         private CraftingHandler _craftingHandler;
-        public GameObject waterBody => _movementHandler.waterBody;
+        public GameObject ContactWithWater => _movementHandler.ContactWithWater;
 
         private void Awake()
         {

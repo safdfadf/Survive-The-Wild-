@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DefaultNamespace.CraftingSystem;
 using DefaultNamespace.EventBus;
 using FoodSystem;
 using TMPro;
@@ -124,7 +125,12 @@ public class ResourceInventory : MonoBehaviour
         {
             for (int y = 0; y < size.y; y++)
             {
-                if (origin.x + x > width || origin.y + y > height) return;
+                int gx = origin.x + x;
+                int gy = origin.y + y;
+
+                // Skip if out of bounds
+                if (gx < 0 || gy < 0 || gx >= width || gy >= height)
+                    continue;
                 Slot s = slots[origin.x + x, origin.y + y];
 
                 if (canPlace)
@@ -198,7 +204,6 @@ public class ResourceInventory : MonoBehaviour
             var s = slots[origin.x + x, origin.y + y];
             if (s.occupiedItem == item) // only clear if it's the same item
             {
-                print("clearing areal for slots");
                 s.isOccupied = false;
                 s.occupiedItem = null;
             }
@@ -218,9 +223,9 @@ public class ResourceInventory : MonoBehaviour
         return item;
     }
 
-    private bool CanPlaceItem(InventoryItem item, Vector2Int gridPos)
+    private bool CanPlaceItem(InventoryItem item, Slot slot)
     {
-        if (!IsAreaFree(gridPos.x, gridPos.y, item.size))
+        if (!IsAreaFree(slot.gridPosition.x, slot.gridPosition.y, item.size) || slot.cookingData != null)
             return false;
 
         return true;
@@ -229,7 +234,6 @@ public class ResourceInventory : MonoBehaviour
     public void OnSlotClicked(Slot slot) // here we can check if the clicked slot is a cokking slot 
     {
         var pos = slot.gridPosition;
-
         if (heldItem == null)
         {
             heldItem = PickUpItem(pos);
@@ -242,7 +246,7 @@ public class ResourceInventory : MonoBehaviour
             return;
         }
 
-        if (CanPlaceItem(heldItem, pos))
+        if (CanPlaceItem(heldItem, slot))
         {
             PlaceItemAt(heldItem, pos, heldItem.size);
             heldItem.SetMenuPos(); // place menu at new pos 
@@ -250,15 +254,25 @@ public class ResourceInventory : MonoBehaviour
             heldItem = null;
             ClearPreviewColors();
         }
+
+
         else if (slot.cookingData != null)
         {
-            GameObject obj = Instantiate(heldItem.so.prefab, slot.worldPosition + new Vector3(0, 0.25f, 0),
+            if (heldItem._currentObj.TryGetComponent<Container>(out var container))
+            {
+                var c = slot.cookingData.handler.GetComponent<ICook>();
+                c.StoreObjForCooking(container);
+                // held item should return at its original pos 
+                return;
+            }
+
+            GameObject gm = Instantiate(heldItem.so.prefab, slot.worldPosition + new Vector3(0, 0.25f, 0),
                 Quaternion.identity);
-            Obj<ObjSo> food = obj.GetComponent<Obj<ObjSo>>();
-            food.So = heldItem.so;
+            Obj<ObjSo> obj = gm.GetComponent<Obj<ObjSo>>();
+            obj.So = heldItem.so;
 
             ICook cook = slot.cookingData.handler.GetComponent<ICook>();
-            cook.StoreObjForCooking(food); // store object for cooking how does it work for bowl 
+            cook.StoreObjForCooking(obj); // store object for cooking how does it work for bowl 
 
             slot.ToggleAlpha(false);
             Destroy(heldItem.gameObject);
@@ -328,7 +342,6 @@ public class ResourceInventory : MonoBehaviour
         }
 
         RemoveButton.onClick.AddListener(remove);
-        print(currentObj + "C " + currentObj.CanCraft + "H" + currentObj.CanHarvest + "U" + currentObj.CanUse);
 
         if (currentObj.CanCraft)
         {

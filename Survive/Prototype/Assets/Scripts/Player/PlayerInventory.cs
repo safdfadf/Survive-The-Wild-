@@ -215,7 +215,6 @@ public class PlayerInventory : MonoBehaviour
         Obj<ObjSo> res = resourcePool[_requestedObj][0].GetComponent<Obj<ObjSo>>();
         RemoveResource(res, true);
         _currentStructure.SubmitResource(_requestedObj);
-        print("submitted resource");
     }
 
     public void MakeItemAndCraft(Obj<ObjSo> obj)

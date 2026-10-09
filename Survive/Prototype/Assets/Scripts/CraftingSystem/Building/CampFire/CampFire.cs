@@ -220,7 +220,13 @@ public class CampFire : BaseStructure, ICook // this will be base class for all 
 
     public void StoreObjForCooking(Obj<ObjSo> obj)
     {
-        ICookable cookable = obj.GetComponent<ICookable>();
+        print("Add stuff for cooking in campfire");
+        var cookable = obj.GetComponent<ICookable>();
+        if (cookable == null)
+        {
+            Debug.LogWarning("Cookable is null");
+        }
+
         _canCook = true;
         _foodInSpot.Add(cookable);
     }
@@ -235,7 +241,8 @@ public class CampFire : BaseStructure, ICook // this will be base class for all 
 
         foreach (var food in _foodInSpot)
         {
-            food.ExecuteCooking(deltaTime);
+            if (food != null)
+                food.ExecuteCooking(deltaTime);
         }
     }
 }

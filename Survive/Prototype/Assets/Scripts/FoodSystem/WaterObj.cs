@@ -7,23 +7,41 @@ namespace FoodSystem
     {
         [SerializeField] private Material waterMat;
         [SerializeField] private ParticleSystem steamParticles;
+        private bool _isCooking = false;
+
         protected override void SetUiBools()
         {
-            CanCraft = false;
-            CanHarvest = false;
-            CanUse = false;
             CanDisplay = false;
         }
 
         public override void ExecuteCooking(float deltaTime)
         {
+            if (!canCookMe) return;
+
+            if (!_isCooking)
+            {
+                steamParticles.Play();
+                _isCooking = true;
+            }
+
             cookTime -= deltaTime;
+
             if (cookTime <= 0)
             {
-               //boil;
-               // remove poison probability 
-               // here we simply update the data 
+                FinishCooking();
             }
+        }
+
+        private void FinishCooking()
+        {
+            canCookMe = false;
+
+            if (steamParticles.isPlaying)
+                steamParticles.Stop();
+
+            data.SelfAttack = null;
+            data.SanityEffect = cookState.sanityEffect;
+            currentState = cookState;
         }
     }
 }

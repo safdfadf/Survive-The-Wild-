@@ -91,7 +91,7 @@ public class MovementHandler : MonoBehaviour //TODo: Make a separate script for 
     private Quaternion camStartRot = Quaternion.Euler(0f, 0f, 0f);
     private Quaternion camEndRot = Quaternion.Euler(50f, 0f, 0f);
 
-    public GameObject waterBody;
+    [FormerlySerializedAs("waterBody")] public GameObject ContactWithWater;
 
     private void Awake()
     {
@@ -306,8 +306,7 @@ public class MovementHandler : MonoBehaviour //TODo: Make a separate script for 
 
         if (Physics.SphereCast(ray, radius, out RaycastHit hit, maxDistance))
         {
-            if (hit.collider.gameObject.layer == 10)
-                waterBody = hit.collider.gameObject;
+            ContactWithWater = hit.collider.gameObject.layer == 10 ? hit.collider.gameObject : null;
 
             BaseStructure structure = hit.collider.GetComponent<BaseStructure>();
             if (structure != null && structure.isActiveAndEnabled)
@@ -325,7 +324,6 @@ public class MovementHandler : MonoBehaviour //TODo: Make a separate script for 
 
             if (interactable != null && renderer != null && interactable.Gm != null)
             {
-                print(interactable.Gm);
                 if (currentlyHighlighted != hit.collider.gameObject)
                 {
                     ClearHighlight(lastInteractable);

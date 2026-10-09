@@ -131,7 +131,7 @@ GameObject:
   - component: {fileID: 497211264679601749}
   - component: {fileID: 3938708458774412732}
   m_Layer: 0
-  m_Name: SplitCoconut
+  m_Name: Bowl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -169,6 +169,7 @@ MonoBehaviour:
   harvest: 0
   useMe: 0
   waterSo: {fileID: 11400000, guid: 3483a145ec13d574482cbee18e863b4c, type: 2}
+  waterObj: {fileID: 6135149187666116891, guid: 2b281f687ef84584984f7dc116aaf2f5, type: 3}
 --- !u!135 &3938708458774412732
 SphereCollider:
   m_ObjectHideFlags: 0

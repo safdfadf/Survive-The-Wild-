@@ -132,20 +132,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19a9bd6144364aa8abb20fd6db1974b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  craft: 0
+  harvest: 0
+  useMe: 0
   cookTime: 10
   burnTime: 20
-  cookedMaterial: {fileID: 0}
-  burntMaterial: {fileID: 0}
   canCookMe: 0
-  minpoisonProbab: 0
-  maxpoisonProbab: 0
   rawState:
     sanityEffect: 0
     isPoison: 0
     effect: {fileID: 0}
     material: {fileID: -876546973899608171, guid: 44ab1d96d88eea84eaa8401b7e99e343, type: 3}
   cookState:
-    sanityEffect: 0
+    sanityEffect: 20
     isPoison: 0
     effect: {fileID: 0}
     material: {fileID: -876546973899608171, guid: 44ab1d96d88eea84eaa8401b7e99e343, type: 3}
@@ -173,7 +172,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4167889008730185144
 Transform:
   m_ObjectHideFlags: 0
@@ -272,7 +271,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.56
+      scalar: 0.52
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -443,8 +442,8 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 0.19
-      minScalar: 0.35
+      scalar: 0.15
+      minScalar: 0
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -907,7 +906,7 @@ ParticleSystem:
     sphericalDirectionAmount: 0
     randomPositionAmount: 0
     radius:
-      value: 0.1
+      value: 0.04
       mode: 0
       spread: 0
       speed:
