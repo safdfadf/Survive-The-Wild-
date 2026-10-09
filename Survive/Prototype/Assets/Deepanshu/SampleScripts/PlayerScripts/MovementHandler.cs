@@ -325,6 +325,7 @@ public class MovementHandler : MonoBehaviour //TODo: Make a separate script for 
 
             if (interactable != null && renderer != null && interactable.Gm != null)
             {
+                print(interactable.Gm);
                 if (currentlyHighlighted != hit.collider.gameObject)
                 {
                     ClearHighlight(lastInteractable);
@@ -366,7 +367,11 @@ public class MovementHandler : MonoBehaviour //TODo: Make a separate script for 
 
     private void ActivateUI(IInteractable interactable)
     {
-        if (interactable == null) return;
+        if (interactable == null)
+        {
+            return;
+        }
+
         if (!interactable.CanDisplay) return;
         UIManager.instance.ActivateUi(interactable);
     }
@@ -543,5 +548,18 @@ public class MovementHandler : MonoBehaviour //TODo: Make a separate script for 
         Vector3 ab = Vector3.Lerp(a, b, t);
         Vector3 bc = Vector3.Lerp(b, c, t);
         return Vector3.Lerp(ab, bc, t);
+    }
+
+    private void Carry()
+    {
+        if (CurrentWeapon != null)
+        {
+            CurrentWeapon.UnEquipMe();
+        }
+        // animator.CarryObject
+    }
+
+    private void DropObjFromHand()
+    {
     }
 }

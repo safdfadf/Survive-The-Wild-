@@ -30,6 +30,14 @@ namespace FoodSystem
 
         public override void Harvest()
         {
+            for (int i = 0; i < So.amount; i++)
+            {
+                SpawnHarvestCoco();
+            }
+        }
+
+        private void SpawnHarvestCoco()
+        {
             GameObject o = GlobalPool.instance.Get(peeledCoco.prefab, transform.position);
             Food food = o.GetComponent<Food>();
             food.Initialize(peeledCoco);
@@ -37,6 +45,7 @@ namespace FoodSystem
                 Destroy(InventoryItem.gameObject);
             EventManager.Instance.reseourceEvent.GatherResource(o);
             Gm = null;
+            base.Harvest();
             Destroy(gameObject);
         }
 

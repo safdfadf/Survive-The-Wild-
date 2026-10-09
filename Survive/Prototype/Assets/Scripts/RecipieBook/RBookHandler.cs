@@ -176,7 +176,6 @@ public class RBookHandler : MonoBehaviour
 
     private void ShowBaseBuildRecipe()
     {
-        Debug.Log("Show Base Build Recipe");
         activeList = _baseRecipes;
         currentIndex = 0;
         ShowRecipes();

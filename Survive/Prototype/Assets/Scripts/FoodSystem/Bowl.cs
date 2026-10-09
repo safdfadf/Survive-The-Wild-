@@ -21,8 +21,9 @@ namespace FoodSystem
             base.Awake();
             UseMeDescription = "Drink";
             waterTransform.Add(transform);
+            // if it is empty it can be collected 
         }
-
+    
         public void StoreObjForCooking(Obj<ObjSo> obj)
         {
             if (_ingredients.Count >= 2)

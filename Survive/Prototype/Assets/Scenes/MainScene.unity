@@ -11881,7 +11881,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 438041937}
-  m_Layer: 3
+  m_Layer: 10
   m_Name: Empty obj
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12358,7 +12358,7 @@ GameObject:
   - component: {fileID: 478308936}
   - component: {fileID: 478308937}
   - component: {fileID: 478308939}
-  m_Layer: 3
+  m_Layer: 10
   m_Name: Lake
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12506,8 +12506,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 0.25, z: 1}
-  m_Center: {x: 0, y: 0.08162951, z: 0}
+  m_Size: {x: 0.9999996, y: 0.6949799, z: 0.9999996}
+  m_Center: {x: 0, y: 0.30411947, z: 0}
 --- !u!1 &486052455
 GameObject:
   m_ObjectHideFlags: 0
@@ -14985,8 +14985,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a139dfa28208d0842a55488f2a319a42, type: 2}
   - {fileID: 11400000, guid: b7215a070f1ca7b459087577a8b803e1, type: 2}
   - {fileID: 11400000, guid: b7215a070f1ca7b459087577a8b803e1, type: 2}
-  - {fileID: 11400000, guid: 27c789396ea0e234f9d51213578af493, type: 2}
   - {fileID: 11400000, guid: b7215a070f1ca7b459087577a8b803e1, type: 2}
+  - {fileID: 11400000, guid: b7215a070f1ca7b459087577a8b803e1, type: 2}
+  - {fileID: 11400000, guid: 671caf966bfc2c9429d038dee289b140, type: 2}
 --- !u!114 &848024449
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15010,8 +15011,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 83c00074e48f06f4184745b285ad46e1, type: 2}
   - {fileID: 11400000, guid: 99e2760eda071a149a9d1e487765f408, type: 2}
   - {fileID: 11400000, guid: 6f11bc854c5f41d4c985af30b38f51c5, type: 2}
+  - {fileID: 11400000, guid: 9ac5b5a469ea27a4cb8d88d16be1e210, type: 2}
   craftingUITransform: {fileID: 1849152900}
-  testingSo: []
+  testingSo:
+  - {fileID: 11400000, guid: 9ac5b5a469ea27a4cb8d88d16be1e210, type: 2}
   tableOffset: {x: 0, y: 0, z: -0.1}
   craftButton: {fileID: 1605686666}
   recipeBook: {fileID: 535103729}

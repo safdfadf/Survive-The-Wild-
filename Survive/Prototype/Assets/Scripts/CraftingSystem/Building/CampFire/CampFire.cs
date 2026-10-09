@@ -220,14 +220,9 @@ public class CampFire : BaseStructure, ICook // this will be base class for all 
 
     public void StoreObjForCooking(Obj<ObjSo> obj)
     {
-        Food food = obj.GetComponent<Food>();
-        if (food == null)
-        {
-            print("food is null");
-        }
-
+        ICookable cookable = obj.GetComponent<ICookable>();
         _canCook = true;
-        _foodInSpot.Add(food);
+        _foodInSpot.Add(cookable);
     }
 
     private void CookFoods(float deltaTime)

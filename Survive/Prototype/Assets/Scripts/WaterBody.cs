@@ -26,7 +26,7 @@ namespace DefaultNamespace
         public WaterState waterState;
         [SerializeField] private FoodSo waterSo;
         [SerializeField] private GameObject emptyobj;
-      
+
 
         private Vector3 lastValidPos;
         private FoodConsumptionData data = new();
@@ -51,10 +51,12 @@ namespace DefaultNamespace
         {
             if (!isHit) return;
             emptyobj.transform.position = PlayerRepository.instance.GetPlayerUiPos();
+            Gm = emptyobj;// test
         }
 
         private void WashYourself() // function for use me 
         {
+            // remove player's scent 
         }
 
         public void FillContainer()

@@ -6,6 +6,7 @@ namespace DefaultNamespace.EventBus
     {
         public Action<int> OnAddExperience;
         public Action OnTriggerPlayerSleep;
+        public Action OnDropObjFromHand;
         public void AddExperience(int experience)
         {
             OnAddExperience(experience);

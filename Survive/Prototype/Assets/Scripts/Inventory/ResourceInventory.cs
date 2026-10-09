@@ -166,7 +166,7 @@ public class ResourceInventory : MonoBehaviour
             for (int y = 0; y < size.y; y++)
             {
                 if (slots[startX + x, startY + y].isOccupied)
-                    return false; // continue 
+                    return false;
             }
         }
 
@@ -198,6 +198,7 @@ public class ResourceInventory : MonoBehaviour
             var s = slots[origin.x + x, origin.y + y];
             if (s.occupiedItem == item) // only clear if it's the same item
             {
+                print("clearing areal for slots");
                 s.isOccupied = false;
                 s.occupiedItem = null;
             }
@@ -251,12 +252,13 @@ public class ResourceInventory : MonoBehaviour
         }
         else if (slot.cookingData != null)
         {
-            GameObject obj = Instantiate(heldItem.so.prefab, slot.worldPosition, Quaternion.identity);
+            GameObject obj = Instantiate(heldItem.so.prefab, slot.worldPosition + new Vector3(0, 0.25f, 0),
+                Quaternion.identity);
             Obj<ObjSo> food = obj.GetComponent<Obj<ObjSo>>();
             food.So = heldItem.so;
 
             ICook cook = slot.cookingData.handler.GetComponent<ICook>();
-            cook.StoreObjForCooking(food);
+            cook.StoreObjForCooking(food); // store object for cooking how does it work for bowl 
 
             slot.ToggleAlpha(false);
             Destroy(heldItem.gameObject);

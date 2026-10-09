@@ -66,8 +66,7 @@ public class CraftingHandler : MonoBehaviour
     }
 
     private void Start()
-    {
-        foreach (var so in testingSo)
+    {   foreach (var so in testingSo)
         {
             for (int i = 0; i < so.resSo.Amount; i++)
             {
@@ -224,6 +223,7 @@ public class CraftingHandler : MonoBehaviour
             return;
         }
 
+        print("crafting");
         GameObject prefab = so.resSo.prefab;
         GameObject result = Instantiate(prefab, new Vector3(0, 0, 0), Quaternion.identity);
         Obj<ObjSo> obj = result.GetComponent<Obj<ObjSo>>();

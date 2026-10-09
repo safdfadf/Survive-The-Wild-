@@ -7,7 +7,7 @@ public class FrameStructure : BaseStructure
     protected override void OnStructureAssembled()
     {
         base.OnStructureAssembled();
-        // Show sockets or hint UI if you want
+        // Show sockets or hint UI if needed
         // e.g. UIManager.instance.ShowSockets(sockets);
     }
 

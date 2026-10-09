@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using DefaultNamespace.EventBus;
+using DefaultNamespace.ResourceSystem;
 using Player;
 using TMPro;
 using UnityEngine;
@@ -42,6 +43,16 @@ public class InventoryItem : MonoBehaviour
         _activeButtons = new List<Button> { craftButton, harvest, useMe, removeButton };
     }
 
+    private void OnEnable()
+    {
+        EventManager.Instance.UiEvents.onRemoveMenu += DeactivateMenu;
+    }
+
+    private void OnDisable()
+    {
+        EventManager.Instance.UiEvents.onRemoveMenu -= DeactivateMenu;
+    }
+
     public void SetItem(Sprite sprite, GameObject Obj, ResourceInventory inventory)
     {
         _inventory = inventory;
@@ -57,7 +68,7 @@ public class InventoryItem : MonoBehaviour
     public void Craft()
     {
         IsInCraftingList = true;
-
+        EventManager.Instance.UiEvents.RemoveMenu();
         EventBus.OnCraftResource.Invoke(so, this);
         SetMenuPos();
     }
@@ -68,10 +79,12 @@ public class InventoryItem : MonoBehaviour
         {
             IsInCraftingList = false;
             // set position menu pos 
+            SetMenuPos();
             EventBus.OnUnCraftResource.Invoke(so, this);
         }
         else
         {
+            SetMenuPos();
             PlayerRepository.instance.RemoveResourceFromInventory(_currentObj, true);
         }
     }

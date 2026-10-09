@@ -259,11 +259,9 @@ public class ChunkManager : MonoBehaviour
                 break;
             case RegionType.Swamp:
                 _currentRegion = RegionType.Swamp;
-                Debug.Log("Spawning Swamp");
                 break;
             case RegionType.Sawana:
                 _currentRegion = RegionType.Sawana;
-                Debug.Log("Spawning Sawana");
                 break;
         }
     }

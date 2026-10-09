@@ -127,13 +127,12 @@ public class PlayerInventory : MonoBehaviour
             _weaponInventory.AddWeapon(so as WeaponSo, i);
             return;
         }
-
         GameObject uiObj = Instantiate(uiItemPrefab);
         InventoryItem item = uiObj.GetComponent<InventoryItem>();
         SetInventoryItem(res, so, item);
         if (res.TryGetComponent<BaseWeapon>(out var weapon))
         {
-            _movementHandler.InitializeWeapon(weapon); // maybe this is not the best place to init it 
+            _movementHandler.InitializeWeapon(weapon); // this is not the best place to init it 
             _weaponInventory.AddWeapon(so as WeaponSo, item);
             return;
         }
@@ -143,7 +142,6 @@ public class PlayerInventory : MonoBehaviour
 
     private void MoveTo(GameObject obj) // we are moving physical objs here they should be in a list 
     {
-        // someList.Add(Objs), instead of int dictionary should simpley store objs 
         obj.transform.position = worldStorage.transform.position;
         obj.transform.SetParent(worldStorage.transform);
         obj.SetActive(false);

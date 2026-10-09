@@ -13,6 +13,7 @@ namespace DefaultNamespace.EventBus
         public CraftEvents CraftEvents;
         public AnimalEvents AnimalEvents;
         public StructureEvents StructureEvents;
+        public UIEvents UiEvents;
 
         private void Awake()
         {
@@ -36,6 +37,7 @@ namespace DefaultNamespace.EventBus
             CraftEvents = new CraftEvents();
             AnimalEvents = new AnimalEvents();
             StructureEvents = new StructureEvents();
+            UiEvents = new UIEvents();
         }
     }
 }

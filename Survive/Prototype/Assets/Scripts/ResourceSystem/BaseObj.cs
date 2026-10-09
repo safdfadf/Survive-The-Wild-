@@ -24,6 +24,7 @@ public class BaseObj : Obj<ObjSo>
     {
         // ToDo:harvest screen
         DropObject();
+        base.Harvest();
     }
 
     private void DropObject()

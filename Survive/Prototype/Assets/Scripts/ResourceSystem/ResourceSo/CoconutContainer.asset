@@ -15,6 +15,6 @@ MonoBehaviour:
   <itemName>k__BackingField: CoconutContainer
   prefab: {fileID: 9095710154168897894, guid: 721400ef7ea615545992c141a7cf22bc, type: 3}
   sprite: {fileID: 21300000, guid: 50520a65e2592914186b414ff181ce1d, type: 3}
-  amount: 0
+  amount: 1
   size: {x: 2, y: 2}
   appearanceProb: 0

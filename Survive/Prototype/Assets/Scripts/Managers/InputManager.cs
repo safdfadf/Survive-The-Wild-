@@ -73,9 +73,12 @@ public class InputManager : MonoBehaviour
         _crouchCanceled = ctx => _player.IsCrouching = false;
 
         _jumpPerformed = ctx => _player.Jump();
-        _toggleHuntetSenses = ctx => _player.ToggleHunterSense();
-        // call player to eable inventory and then ask inventory to open recipe 
-        //    _toggleRecipeBook = ctx => _playerUI.EnableRecipeBook();
+        _toggleHuntetSenses = ctx =>
+        {
+            _player.ToggleHunterSense(); // maybe use a different 
+            // drop object in hand
+            
+        };
 
 
         _aimStarted = ctx => { UIManager.instance.ActivateSubMenu(); };
@@ -174,6 +177,7 @@ public class InputManager : MonoBehaviour
                 print("slot us byk");
                 return;
             }
+
             InventoryItem item = slot.occupiedItem;
             if (item != null)
             {
