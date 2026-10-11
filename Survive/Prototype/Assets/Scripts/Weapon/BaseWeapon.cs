@@ -79,6 +79,7 @@ public class BaseWeapon : Obj<ObjSo>
 
     public override void UseMe()
     {
+        // if player is empty handed only then allow equip
         isEquipped = true;
         _activeBehaviour.OnEquip();
         player.EquipItem(this);

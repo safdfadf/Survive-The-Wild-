@@ -60,6 +60,7 @@ public class InventoryItem : MonoBehaviour
         icon.sprite = sprite;
         gm = Obj;
         _currentObj = Obj.GetComponent<Obj<ObjSo>>();
+        isIsolated = _currentObj.IsIsolated;
         rect.sizeDelta = new Vector2(
             so.size.x * 60,
             so.size.y * 60

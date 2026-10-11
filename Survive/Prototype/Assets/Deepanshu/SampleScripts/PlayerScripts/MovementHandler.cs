@@ -34,6 +34,7 @@ public class MovementHandler : MonoBehaviour //TODo: Make a separate script for 
 
     [SerializeField] private float hourlyScentInc = 0.01f;
     [SerializeField] private float moveScentInc = 0.005f;
+
     public Transform uiPos;
 
     [FormerlySerializedAs("animalApproachPoint")]
@@ -45,6 +46,8 @@ public class MovementHandler : MonoBehaviour //TODo: Make a separate script for 
     public bool isHuntingSenseActive { get; set; }
 
     [SerializeField] private Transform aimTarget;
+
+    [SerializeField] private Transform heavyObjsPos;
 
     // References //
     public Camera playerCamera;
@@ -92,7 +95,7 @@ public class MovementHandler : MonoBehaviour //TODo: Make a separate script for 
     private Quaternion camStartRot = Quaternion.Euler(0f, 0f, 0f);
     private Quaternion camEndRot = Quaternion.Euler(50f, 0f, 0f);
 
-    [FormerlySerializedAs("waterBody")] public GameObject ContactWithWater;
+    public GameObject ContactWithWater { get; private set; }
     private List<HeavyObjs> inHandObjs = new();
 
     private void Awake()
@@ -461,6 +464,7 @@ public class MovementHandler : MonoBehaviour //TODo: Make a separate script for 
 
     public void EquipItem(BaseWeapon weapon)
     {
+        DropAll();
         CurrentWeapon = weapon;
         if (CurrentWeapon.isLeftHanded)
         {
@@ -555,6 +559,10 @@ public class MovementHandler : MonoBehaviour //TODo: Make a separate script for 
         inHandObjs.Add(obj);
         CurrentWeapon?.UnEquipMe();
         animator.StartCarryAnim();
+        obj.transform.position = Vector3.zero;
+        obj.gameObject.transform.SetParent(heavyObjsPos);
+        obj.gameObject.transform.position = heavyObjsPos.position;
+        obj.gameObject.transform.rotation = heavyObjsPos.rotation;
     }
 
     public void DropAll()

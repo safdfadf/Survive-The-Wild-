@@ -26,7 +26,8 @@ public abstract class Obj<TSo> : MonoBehaviour, IsoInitializer<TSo>, IInteractab
     public bool OutlineMe { get; set; }
     public bool CanBeCollected { get; set; } // one way to do this is 
     public TSo So { get; set; }
-  
+    [SerializeField] private bool isIsolated;
+    public bool IsIsolated => isIsolated;
 
     public bool CanCraft
     {

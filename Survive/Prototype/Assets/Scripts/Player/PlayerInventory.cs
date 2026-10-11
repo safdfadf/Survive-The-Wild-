@@ -118,13 +118,12 @@ public class PlayerInventory : MonoBehaviour
 
     private void HandleHeavyObjs(HeavyObjs heavyObjs)
     {
+       // _movementHandler.CanCarry(currentWeight); if max limit reached 
         _movementHandler.Carry(heavyObjs);
         ObjSo so = heavyObjs.So as ObjSo;
         AddToResPool(so, heavyObjs.gameObject);
         MakeUI(so, heavyObjs);
-        heavyObjs.InventoryItem.isIsolated = true;
         heavyObjs.InventoryItem.gameObject.SetActive(false);
-        // this would still be incomplete 
     }
 
     private void AddToResPool(ObjSo objSo, GameObject obj)
