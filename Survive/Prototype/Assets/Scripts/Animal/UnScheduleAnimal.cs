@@ -28,6 +28,7 @@ public class UnScheduleAnimal : AnimalBase // these animals do not have a schedu
 
     protected override void IsPlayerAround()
     {
+        
         Collider[] hits = Physics.OverlapSphere(transform.position, alertRadius, playerMask);
 
         if (hits.Length == 0)
@@ -69,11 +70,7 @@ public class UnScheduleAnimal : AnimalBase // these animals do not have a schedu
         return;
     }
 
-    protected override void DoDamage() 
-    {
-        LookAtPlayer();
-        base.DoDamage();
-    }
+  
 
 
     private void OnDrawGizmosSelected()

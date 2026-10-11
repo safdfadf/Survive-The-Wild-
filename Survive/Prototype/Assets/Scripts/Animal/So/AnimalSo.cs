@@ -15,7 +15,7 @@ public class AnimalSo : ScriptableObject
     public List<GameObject> TrackMesh;
     public float spawnProbability;
     public bool isAggresive;
-   
+    public bool inZoneTravel;
 
     private void OnValidate()
     {

@@ -349,6 +349,14 @@ public class AnimalBase : MonoBehaviour, IInteractable
         }
     }
 
+    public IEnumerator LookAttack()
+    {
+        // this is specifically for animals that only attack when their radius is breached 
+        LookAttack();
+        DoDamage();
+        yield break;
+    }
+
     public void GetOutOfChunk()
     {
         Debug.Log("pos failed Remove Animal");

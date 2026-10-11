@@ -23,3 +23,4 @@ MonoBehaviour:
   - {fileID: 6128482553316515338, guid: 8cb10271f3165da44b531f6fef55711b, type: 3}
   spawnProbability: 0
   isAggresive: 1
+  inZoneTravel: 0

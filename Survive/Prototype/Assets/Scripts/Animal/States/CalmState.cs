@@ -26,14 +26,12 @@ namespace Animal.States
         public override void UpdateState() // for now updating every 5 secs
         {
             if (data != null && data.isZoneTraveling || Animal == null) return;
-            
+
             if (!ChunkManager.Instance.IsPosInPlayerChunk(Animal.transform.position))
                 return;
-            if (Time.time >= nextActionTime)
-            {
-                if (Random.value > 0.5f)
-                    MoveToNextPosition();
-            }
+            if (!(Time.time >= nextActionTime)) return;
+            if (Random.value > 0.5f && Animal.AnimalSo.inZoneTravel)
+                MoveToNextPosition();
         }
 
         public override void ExitState()
@@ -45,11 +43,11 @@ namespace Animal.States
             nextActionTime = Time.time + Random.Range(minIntervalTime, maxIntervalTime);
         }
 
-        private void MoveToNextPosition()
+        private void MoveToNextPosition() // ToDO : animals who does not do zone traveling ? 
         {
             Chunk chunk = ChunkManager.Instance.GetChunkAtPos(Animal.transform.position);
             Vector3 pos = RetPosOnNv.ReturnRandomNavMeshPos(chunk.bounds);
-          //  Animal.MoveTo(pos);
+            //  Animal.MoveTo(pos);
             ScheduleNextAction();
         }
     }

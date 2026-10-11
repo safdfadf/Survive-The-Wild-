@@ -22,3 +22,4 @@ MonoBehaviour:
   TrackMesh: []
   spawnProbability: 6
   isAggresive: 1
+  inZoneTravel: 0
