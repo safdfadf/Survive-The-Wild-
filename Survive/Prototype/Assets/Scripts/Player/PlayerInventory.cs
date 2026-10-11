@@ -118,7 +118,7 @@ public class PlayerInventory : MonoBehaviour
 
     private void HandleHeavyObjs(HeavyObjs heavyObjs)
     {
-       // _movementHandler.CanCarry(currentWeight); if max limit reached 
+        // _movementHandler.CanCarry(currentWeight); if max limit reached 
         _movementHandler.Carry(heavyObjs);
         ObjSo so = heavyObjs.So as ObjSo;
         AddToResPool(so, heavyObjs.gameObject);
@@ -184,7 +184,7 @@ public class PlayerInventory : MonoBehaviour
     public void RemoveResource(Obj<ObjSo> resource, bool isToBeDestroy)
     {
         ObjSo So = resource.So;
-
+        print("remove resource");
         if (!resourcePool.ContainsKey(So)) return;
 
         if (resourcePool[So].Contains(resource.gameObject))
@@ -206,19 +206,16 @@ public class PlayerInventory : MonoBehaviour
         }
         else
         {
-            SpawnObject(So);
+            PlaceItemInRealWorld(resource);
         }
 
         currentWeight -= So.Weight;
     }
 
-    private void SpawnObject(ObjSo So)
+    private void PlaceItemInRealWorld(Obj<ObjSo> obj)
     {
-        GameObject
-            obj = GlobalPool.instance.Get(So.prefab,
-                Vector3.forward); // ToDo: instead of vector3 forward replace with something else 
-        Obj<ObjSo> res = obj.GetComponent<Obj<ObjSo>>();
-        res.Initialize(So);
+        obj.transform.position = Vector3.zero; // replace with real world pos 
+        obj.transform.rotation = Quaternion.identity;
     }
 
     public void EquipItem(bool scrollUp)

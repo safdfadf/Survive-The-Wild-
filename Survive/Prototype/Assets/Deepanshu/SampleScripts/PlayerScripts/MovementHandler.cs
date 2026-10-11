@@ -570,7 +570,15 @@ public class MovementHandler : MonoBehaviour //TODo: Make a separate script for 
         if (inHandObjs.Count == 0) return;
         foreach (var obj in inHandObjs)
         {
+            Destroy(obj.InventoryItem);
             _playerInventory.RemoveResource(obj, false);
+        }
+
+        for (int i = inHandObjs.Count - 1; i >= 0; i--)
+        {
+            Destroy(inHandObjs[i].InventoryItem);
+            _playerInventory.RemoveResource(inHandObjs[i], false);
+            Destroy(inHandObjs[i]);
         }
 
         inHandObjs.Clear();
