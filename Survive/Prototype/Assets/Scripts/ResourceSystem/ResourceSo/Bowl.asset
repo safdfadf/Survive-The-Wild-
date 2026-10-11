@@ -18,3 +18,4 @@ MonoBehaviour:
   amount: 0
   size: {x: 2, y: 2}
   appearanceProb: 0
+  Weight: 0

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using DefaultNamespace.EventBus;
+using DefaultNamespace.ResourceSystem;
 using FoodSystem;
 using Inventory;
 using Mono.Cecil;
@@ -23,6 +24,7 @@ public class PlayerInventory : MonoBehaviour
     private ObjSo _requestedObj;
     private BaseStructure _currentStructure;
     private int _funcCount;
+    public float currentWeight;
 
     private void Awake()
     {
@@ -74,6 +76,13 @@ public class PlayerInventory : MonoBehaviour
 
     public void AddWorldItem(GameObject worldObj)
     {
+        if (worldObj.TryGetComponent<HeavyObjs>(out var heavyObjs))
+        {
+            // if it is a heay objetc 
+            HandleHeavyObjs(heavyObjs);
+            return;
+        }
+
         MoveTo(worldObj);
         if (worldObj.TryGetComponent<BaseWeapon>(out var weapon))
         {
@@ -107,26 +116,40 @@ public class PlayerInventory : MonoBehaviour
         Debug.LogWarning("Unknown world item type picked up.");
     }
 
+    private void HandleHeavyObjs(HeavyObjs heavyObjs)
+    {
+        _movementHandler.Carry(heavyObjs);
+        ObjSo so = heavyObjs.So as ObjSo;
+        AddToResPool(so, heavyObjs.gameObject);
+        MakeUI(so, heavyObjs);
+        heavyObjs.InventoryItem.isIsolated = true;
+        heavyObjs.InventoryItem.gameObject.SetActive(false);
+        // this would still be incomplete 
+    }
+
     private void AddToResPool(ObjSo objSo, GameObject obj)
     {
         if (resourcePool.ContainsKey(objSo))
         {
             resourcePool[objSo].Add(obj);
+            currentWeight += objSo.Weight;
             return;
         }
 
         resourcePool.Add(objSo, new List<GameObject> { obj });
+        currentWeight += objSo.Weight;
     }
 
     private void MakeUI(ObjSo so, Obj<ObjSo> res)
     {
         if (res.InventoryItem != null)
         {
-            InventoryItem i = res.InventoryItem;
+            var i = res.InventoryItem;
             i.gameObject.SetActive(true);
             _weaponInventory.AddWeapon(so as WeaponSo, i);
             return;
         }
+
         GameObject uiObj = Instantiate(uiItemPrefab);
         InventoryItem item = uiObj.GetComponent<InventoryItem>();
         SetInventoryItem(res, so, item);
@@ -186,6 +209,8 @@ public class PlayerInventory : MonoBehaviour
         {
             SpawnObject(So);
         }
+
+        currentWeight -= So.Weight;
     }
 
     private void SpawnObject(ObjSo So)
@@ -208,7 +233,7 @@ public class PlayerInventory : MonoBehaviour
         _currentStructure = structure;
     }
 
-    private void SubmitResource() // function is used to assemble structures 
+    private void SubmitResource()
     {
         if (_requestedObj == null || _currentStructure == null) return;
         if (!resourcePool.ContainsKey(_requestedObj)) return;

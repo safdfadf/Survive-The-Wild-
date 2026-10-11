@@ -18,6 +18,7 @@ public class InventoryItem : MonoBehaviour
     public ObjSo so { get; set; }
     public GameObject gm { get; set; }
 
+    public bool isIsolated { get; set; }
     public bool IsInCraftingList { get; set; }
     [SerializeField] protected GameObject menu;
     [SerializeField] protected Button craftButton;

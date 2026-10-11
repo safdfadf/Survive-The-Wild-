@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using DefaultNamespace;
 using DefaultNamespace.EventBus;
 using DefaultNamespace.Interface;
+using DefaultNamespace.ResourceSystem;
 using FoodSystem;
 using NUnit.Framework;
 using Player;
@@ -92,6 +93,7 @@ public class MovementHandler : MonoBehaviour //TODo: Make a separate script for 
     private Quaternion camEndRot = Quaternion.Euler(50f, 0f, 0f);
 
     [FormerlySerializedAs("waterBody")] public GameObject ContactWithWater;
+    private List<HeavyObjs> inHandObjs = new();
 
     private void Awake()
     {
@@ -548,16 +550,21 @@ public class MovementHandler : MonoBehaviour //TODo: Make a separate script for 
         return Vector3.Lerp(ab, bc, t);
     }
 
-    private void Carry()
+    public void Carry(HeavyObjs obj)
     {
-        if (CurrentWeapon != null)
-        {
-            CurrentWeapon.UnEquipMe();
-        }
-        // animator.CarryObject
+        inHandObjs.Add(obj);
+        CurrentWeapon?.UnEquipMe();
+        animator.StartCarryAnim();
     }
 
-    private void DropObjFromHand()
+    public void DropAll()
     {
+        if (inHandObjs.Count == 0) return;
+        foreach (var obj in inHandObjs)
+        {
+            _playerInventory.RemoveResource(obj, false);
+        }
+
+        inHandObjs.Clear();
     }
 }

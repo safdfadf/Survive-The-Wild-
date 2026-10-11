@@ -9,10 +9,10 @@ public class PlayerAnimator : MonoBehaviour
 
     private void Awake()
     {
-        upperBodyLayerIndex = animator.GetLayerIndex("UpperBody"); 
+        upperBodyLayerIndex = animator.GetLayerIndex("UpperBody");
     }
-    
-    public void MovePlayer(float forward,float starfe)
+
+    public void MovePlayer(float forward, float starfe)
     {
         // this relies on 2 inputs to make sure animation stop if input is not being
         animator.SetFloat("Forward", forward);
@@ -21,7 +21,7 @@ public class PlayerAnimator : MonoBehaviour
 
     public void TriggerSprint(bool isSprinting)
     {
-        animator.SetBool("Sprint",isSprinting);
+        animator.SetBool("Sprint", isSprinting);
     }
 
     public void BowLayer(bool equipped)
@@ -31,10 +31,12 @@ public class PlayerAnimator : MonoBehaviour
         float newWeight = Mathf.Lerp(currentWeight, targetWeight, Time.deltaTime * 10f);
         animator.SetLayerWeight(upperBodyLayerIndex, newWeight);
     }
+
     public void DrawArrow(bool toggle)
     {
-        animator.SetBool("BowEquipped",toggle);
+        animator.SetBool("BowEquipped", toggle);
     }
+
     public void Aim(bool isAiming)
     {
         animator.SetBool("Aim", isAiming);
@@ -42,8 +44,7 @@ public class PlayerAnimator : MonoBehaviour
 
     public void FireArrow(bool isFire)
     {
-        animator.SetBool("Fire",isFire);
-      
+        animator.SetBool("Fire", isFire);
     }
 
     public IEnumerator ResetFireArrow()
@@ -54,8 +55,9 @@ public class PlayerAnimator : MonoBehaviour
 
     public void HandWeaponEquip(bool isEquipped)
     {
-        animator.SetBool("SwordEquip",isEquipped);
+        animator.SetBool("SwordEquip", isEquipped);
     }
+
     public void SwordAttack()
     {
         animator.SetTrigger("SwordAttack");
@@ -69,5 +71,15 @@ public class PlayerAnimator : MonoBehaviour
     public void Stab()
     {
         animator.SetTrigger("Stab");
+    }
+
+    public void StartCarryAnim()
+    {
+        animator.SetBool("Carry", true);
+    }
+
+    public void StopCarryAnim()
+    {
+        animator.SetBool("Carry", false);
     }
 }

@@ -9,6 +9,7 @@ public class ObjSo : ScriptableObject, ISpawnedItem
     public int amount; // ToDo: replace this with range (min and max)
     public Vector2Int size;
     public float appearanceProb;
+    public float Weight;
     public GameObject Prefab => prefab;
     public int Amount => amount;
     public float SpawningProbability => appearanceProb;

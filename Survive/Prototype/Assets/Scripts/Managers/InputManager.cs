@@ -75,9 +75,8 @@ public class InputManager : MonoBehaviour
         _jumpPerformed = ctx => _player.Jump();
         _toggleHuntetSenses = ctx =>
         {
-            _player.ToggleHunterSense(); // maybe use a different 
-            // drop object in hand
-            
+            _player.ToggleHunterSense(); // maybe use a different input
+            _player.DropAll();
         };
 
 

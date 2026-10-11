@@ -18,6 +18,7 @@ MonoBehaviour:
   amount: 1
   size: {x: 2, y: 2}
   appearanceProb: 1
+  Weight: 0
   nutrientsCount:
     calories: 0
     protien: 0

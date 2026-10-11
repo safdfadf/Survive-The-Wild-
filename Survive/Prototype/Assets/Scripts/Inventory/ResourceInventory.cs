@@ -143,7 +143,8 @@ public class ResourceInventory : MonoBehaviour
 
     public void TryPlaceItem(ObjSo So, InventoryItem itemPrefab) // called by player inventory
     {
-        Vector2Int size = So.size;
+        if (itemPrefab.isIsolated) return;
+        var size = So.size;
         for (int x = 0; x < width; x++)
         {
             for (int y = 0; y < height; y++)
