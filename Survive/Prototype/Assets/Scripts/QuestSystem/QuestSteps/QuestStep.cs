@@ -34,7 +34,7 @@ namespace DefaultNamespace.QuestSystem
                 isfinished = true;
             Debug.Log("Quest " + questId + " finished");
             EventManager.Instance.questEvent.QuestComplete(stepName);
-         //   EventManager.Instance.playerEvents.AddExperience(_questInfo.ExperienceReward);
+            //   EventManager.Instance.playerEvents.AddExperience(_questInfo.ExperienceReward); 
          Destroy(gameObject);
         }
     }

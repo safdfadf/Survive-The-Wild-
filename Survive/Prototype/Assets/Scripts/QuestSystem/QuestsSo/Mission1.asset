@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Mission1
   m_EditorClassIdentifier: 
   <id>k__BackingField: Mission1
-  displayName: 'Collect '
+  missionName: Craft Your First Tool
   PlayerLevelRequired: 1
   QuestSteps:
   - {fileID: 8698992301795059399, guid: 40a4451f004b92541ba172e370b405ac, type: 3}
@@ -21,3 +21,4 @@ MonoBehaviour:
   RewardData:
     LevelExp: 40
     RewardRecipe: {fileID: 0}
+  missionSprite: {fileID: 21300000, guid: 3fb39015df977db4f91860ce41629fd2, type: 3}

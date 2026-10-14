@@ -21,6 +21,7 @@ namespace DefaultNamespace.QuestSystem.QuestSteps
                     _allRequirements.Add(ing.objSo, ing.amount);
                 }
             }
+
             SetQuestStepName();
         }
 
@@ -67,12 +68,12 @@ namespace DefaultNamespace.QuestSystem.QuestSteps
             {
                 foreach (var ing in data.ingredients)
                 {
-                    string n = "Collect "+ing.objSo.itemName + " x " + ing.amount;
+                    string n = "Collect " + ing.objSo.itemName + " x " + ing.amount;
                     names.Add(n);
                 }
             }
 
-            stepName = string.Join(", ", names.ToArray());
+            stepName = string.Join(" ", names.ToArray());
         }
     }
 }

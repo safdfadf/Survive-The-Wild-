@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Mission2
   m_EditorClassIdentifier: 
   <id>k__BackingField: Mission2
-  displayName: Build Fire
+  missionName: 
   PlayerLevelRequired: 1
   QuestSteps:
   - {fileID: 8698992301795059399, guid: 3e050ecdef1c6a144b2eaab41d21da51, type: 3}
@@ -21,3 +21,4 @@ MonoBehaviour:
   RewardData:
     LevelExp: 20
     RewardRecipe: {fileID: 11400000, guid: 1a298092ace585741a429f1f80d0e88d, type: 2}
+  missionSprite: {fileID: 0}

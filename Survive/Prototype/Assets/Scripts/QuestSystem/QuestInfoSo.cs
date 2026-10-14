@@ -7,10 +7,11 @@ namespace DefaultNamespace.QuestSystem
     public class QuestInfoSo : ScriptableObject
     {
         [field: SerializeField] public string id { get; private set; }
-        public string displayName;
+        public string missionName;
         public int PlayerLevelRequired;
         public GameObject[] QuestSteps;
         public RewardData RewardData;
+        public Sprite missionSprite;
 
         private void OnValidate()
         {

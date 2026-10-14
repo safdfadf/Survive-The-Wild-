@@ -339,9 +339,9 @@ MonoBehaviour:
   followPoint: {fileID: 0}
   _animalAttack:
     damage: 0
-    effects:
-    - {fileID: 11400000, guid: 8da14ff072eddd14da365420c417d922, type: 2}
-  animalAtkBehaviour: {fileID: 0}
+    effects: {fileID: 0}
+    bleedingProbability: 0
+  animalAtkBehaviour: {fileID: 11400000, guid: 297906e6cdb32c643b37482b5d53c8ce, type: 2}
   requiredAbility: {fileID: 11400000, guid: 704126e62b7d502428b912f629fb1b74, type: 2}
   AnimalSo: {fileID: 0}
   alertRadius: 1.5

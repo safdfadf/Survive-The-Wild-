@@ -37,9 +37,8 @@ namespace DefaultNamespace.QuestSystem
                 _currentQuestSteps.Add(step);
             }
 
-            RBookHandler uiHandler = Object.FindAnyObjectByType<RBookHandler>();
-            uiHandler.SetQuestSteps(_currentQuestSteps);
             currentQuestIndex = 0;
+            UIManager.instance.SetNewMission(questInfo, _currentQuestSteps[currentQuestIndex]);
             ActivateNextQuest();
         }
 
@@ -54,7 +53,7 @@ namespace DefaultNamespace.QuestSystem
                 }
             }
 
-            UIManager.instance.AddQuestName(_currentQuestSteps);
+            UIManager.instance.UpdateQuestStep(_currentQuestSteps[currentQuestIndex]);
             ActivateNextQuest();
         }
 

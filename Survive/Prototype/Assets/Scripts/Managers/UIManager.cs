@@ -5,6 +5,7 @@ using DefaultNamespace.QuestSystem;
 using Player;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
@@ -40,9 +41,24 @@ public class UIManager : MonoBehaviour
     [SerializeField] private int showPoint;
     [SerializeField] private int hidePoint;
 
-    [Header("Quest")] [SerializeField] private TextMeshProUGUI questsText;
-    [SerializeField] private Transform questUiParent;
-    private Dictionary<string, TextMeshProUGUI> questsUI = new();
+
+    [Header("Mission Ui")] [SerializeField]
+    private Transform missionUiParent;
+
+    [SerializeField] private Image missionImage;
+    [SerializeField] private TextMeshProUGUI tittle;
+    [SerializeField] private TextMeshProUGUI questStepText;
+    [SerializeField] private float missionDisplayPos;
+    [SerializeField] private float missionRemovePos;
+    [SerializeField] private float questDisplayPos;
+
+    [FormerlySerializedAs("questTargetPos")] [SerializeField]
+    private float questRemovePos;
+
+    private QuestInfoSo currentMission;
+    private QuestStep currentQuestStep;
+    private RectTransform _missionParentRect;
+    private RectTransform _questStepRect;
 
     private IInteractable _currentTarget;
     private float currentScale;
@@ -63,6 +79,8 @@ public class UIManager : MonoBehaviour
         ToggleInteractButton(false);
         _allButtons = new List<Button> { craftButton, harvestButton, useMe, removeButton };
         _activeButtons.Add(removeButton);
+        _missionParentRect = missionUiParent.GetComponent<RectTransform>();
+        _questStepRect = questStepText.GetComponent<RectTransform>();
     }
 
     private void LateUpdate()
@@ -254,21 +272,23 @@ public class UIManager : MonoBehaviour
 
     public void AddQuestName(List<QuestStep> questSteps)
     {
-        foreach (var step in questSteps)
-        {
-            if (step.IsFinished) // update list
+        /*
+            foreach (var step in questSteps)
             {
-                if (questsUI.TryGetValue(step.StepName, out var value))
-                    Destroy(value);
+                if (step.IsFinished) // update list
+                {
+                    if (questsUI.TryGetValue(step.StepName, out var value))
+                        Destroy(value);
+                }
+                else
+                {
+                    var obj = Instantiate(questsText.gameObject, questUiParent);
+                    var textMesh = obj.GetComponent<TextMeshProUGUI>();
+                    textMesh.text = step.StepName;
+                    questsUI.Add(step.StepName, textMesh);
+                }
             }
-            else
-            {
-                var obj = Instantiate(questsText.gameObject, questUiParent);
-                var textMesh = obj.GetComponent<TextMeshProUGUI>();
-                textMesh.text = step.StepName;
-                questsUI.Add(step.StepName, textMesh);
-            }
-        }
+        */
     }
 
     public void DisplayNotification(string discription)
@@ -298,6 +318,72 @@ public class UIManager : MonoBehaviour
         {
             t += Time.deltaTime * .05f;
             rect.anchoredPosition = Vector2.Lerp(targetPos, startPos, t);
+        }
+    }
+
+    public void SetNewMission(QuestInfoSo questSo, QuestStep currentStep)
+    {
+        StartCoroutine(NewMissionRoutine(questSo, currentStep));
+    }
+
+    private IEnumerator NewMissionRoutine(QuestInfoSo questSo, QuestStep currentStep)
+    {
+        if (currentMission != null && currentMission != questSo)
+        {
+            tittle.fontStyle = FontStyles.Strikethrough;
+            questStepText.fontStyle = FontStyles.Strikethrough;
+            tittle.text = questSo.missionName;
+            yield return new WaitForSeconds(1f);
+            ToggleMission(_missionParentRect, missionDisplayPos, missionRemovePos);
+        }
+
+        missionImage.sprite = questSo.missionSprite;
+        tittle.text = questSo.missionName;
+        questStepText.text = currentStep.StepName;
+        tittle.fontStyle = FontStyles.Normal;
+        questStepText.fontStyle = FontStyles.Normal;
+        currentMission = questSo;
+        currentQuestStep = currentStep;
+        yield return new WaitForSeconds(.5f);
+        ToggleMission(_missionParentRect, missionRemovePos, missionDisplayPos);
+        yield return new WaitForSeconds(2f);
+        ToggleMission(_missionParentRect, missionDisplayPos, missionRemovePos);
+    }
+
+    public void UpdateQuestStep(QuestStep newStep)
+    {
+        StartCoroutine(QuestStepRoutine(newStep));
+    }
+
+    private IEnumerator QuestStepRoutine(QuestStep newStep)
+    {
+        if (currentQuestStep != null && currentQuestStep != newStep)
+        {
+            questStepText.fontStyle = FontStyles.Strikethrough;
+            yield return new WaitForSeconds(2f);
+            ToggleMission(_questStepRect, questDisplayPos, questRemovePos);
+        }
+
+        currentQuestStep = newStep;
+        questStepText.text = newStep.StepName;
+        questStepText.fontStyle = FontStyles.Normal;
+        ToggleMission(_questStepRect, questRemovePos, questDisplayPos);
+    }
+
+
+    private void ToggleMission(RectTransform rect, float start, float target)
+    {
+        Vector2 startPos = new();
+        Vector2 targetPos = new();
+        startPos = new Vector2(start, rect.position.y);
+        targetPos = new Vector2(target, rect.position.y);
+
+        rect.anchoredPosition = Vector2.zero;
+        float t = 0;
+        while (t < 1f)
+        {
+            t += Time.deltaTime * 1.5f;
+            rect.position = Vector2.Lerp(startPos, targetPos, t);
         }
     }
 }

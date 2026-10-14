@@ -13,10 +13,11 @@ MonoBehaviour:
   m_Name: Mission3
   m_EditorClassIdentifier: 
   <id>k__BackingField: Mission3
-  displayName: Hunt a Rabbit
+  missionName: 
   PlayerLevelRequired: 1
   QuestSteps:
   - {fileID: 8267339032128751719, guid: 4a8c6fe4577409544a67527d5cfd2122, type: 3}
   RewardData:
     LevelExp: 20
     RewardRecipe: {fileID: 11400000, guid: 1a298092ace585741a429f1f80d0e88d, type: 2}
+  missionSprite: {fileID: 0}

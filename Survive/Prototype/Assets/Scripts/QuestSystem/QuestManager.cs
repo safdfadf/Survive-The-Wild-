@@ -56,11 +56,13 @@ namespace DefaultNamespace.QuestSystem
             Mission q = questsMap[id];
             if (q.IsNextQuestAvailable())
             {
+                // ui manager will remove last quest and add a next one  one 
                 q.UpdateQuest();
             }
             else
             {
                 EventManager.Instance.questEvent.MissionComplete(q.questInfo.RewardData);
+                // ask ui manager to do mission complete and  level experience ui  
                 StartNewQuest();
             }
         }
