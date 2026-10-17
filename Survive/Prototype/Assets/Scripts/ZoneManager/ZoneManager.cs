@@ -1,9 +1,29 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.AI;
+using UnityEngine.Splines;
 
 public class ZoneManager : MonoBehaviour
 {
+    [Header("Lake Properties")] [SerializeField]
+    private Transform circleCenter;
+
+    [SerializeField] private float circleRadius = 10f;
+
+// Arc to exclude (in degrees)
+    [SerializeField] private float excludeStartAngle = 30;
+    [SerializeField] private float excludeEndAngle;
+    [SerializeField] private float excludeStartAngleB = 300f;
+    [SerializeField] private float excludeEndAngleB = 340f;
+
+// Offset for valid drinking positions
+    [SerializeField] private float drinkOffset = 0f;
+    [SerializeField] private int pointsCount = 20;
+
+    [Header("River Properties")] [SerializeField]
+    private Spline[] splines;
+
     public GameObject zonePrefab;
     public static ZoneManager Instance;
     private Dictionary<Activity, List<Zone>> _zoneByType = new();
@@ -28,6 +48,7 @@ public class ZoneManager : MonoBehaviour
 
     private void StoreDrinkingZone()
     {
+        // instead of this what we do is we ask 
         _drinkingZone = FindObjectsByType<Zone>(FindObjectsSortMode.InstanceID)
             .Where(z => z.WaterBody != null).ToList();
         if (!_zoneByType.ContainsKey(Activity.Drinking))
@@ -39,7 +60,7 @@ public class ZoneManager : MonoBehaviour
         }
     }
 
-    private void CreateZone(Activity type, Vector3 position) // this function will creteate zones
+    private Zone CreateZone(Activity type, Vector3 position) // this function will creteate zones
     {
         var zoneGo = Instantiate(zonePrefab, position, Quaternion.identity);
         Zone zone = zoneGo.GetComponent<Zone>();
@@ -50,6 +71,7 @@ public class ZoneManager : MonoBehaviour
         if (!_zoneByType.ContainsKey(type))
             _zoneByType[type] = new List<Zone>(); // checks if there is a list by that key if not it creates the list
         _zoneByType[type].Add(zone); // added to the available zones  
+        return zone;
     }
 
     public Zone GetAvailableZone(Activity type, string species, int startHour, int endHour, Bounds regionBounds)
@@ -68,18 +90,93 @@ public class ZoneManager : MonoBehaviour
             }
         }
 
-        // Create new zone inside region bounds
-        Vector3 origin = regionBounds.center;
+        if (type == Activity.Drinking)
+        {
+            // create more drinking zones 
+            // CreateLakeZone();
+            return null;
+        }
 
-        origin.y = 0f;
-
-        Vector3 newPos = RetPosOnNv.ReturnRandomNavMeshPos(regionBounds);
-         if (!regionBounds.Contains(newPos)) {Debug.Log(" zone position is outside region bounds: {newPos}\"");return null;}
-
-        CreateZone(type, newPos);
-        Zone newZone = _zoneByType[type].Last();
+        Zone newZone = CreateMoreZones(regionBounds, type);
         newZone.ReserveTime(species, startHour, endHour);
         return newZone;
     }
 
+    private Zone CreateMoreZones(Bounds regionBounds, Activity type)
+    {
+        var origin = regionBounds.center;
+
+        origin.y = 0f;
+        var newPos = RetPosOnNv.ReturnRandomNavMeshPos(regionBounds);
+        // id this position lies in the bounderies of water body
+        Vector3 flatPos = new Vector3(newPos.x, regionBounds.center.y, newPos.z); // specificlly check x and z
+
+        if (!regionBounds.Contains(flatPos))
+        {
+            Debug.Log($"Zone position is outside region bounds: {newPos}");
+            return null;
+        }
+
+        return CreateZone(type, newPos);
+    }
+
+    private void CreateLakeZone() // creates one zone at a time
+    {
+        while (true)
+        {
+            var position = circleCenter.position;
+            float angle = 0;
+            var canPassThrough = false;
+            while (!canPassThrough)
+            {
+                float value = Random.Range(0, 360);
+                var t = value / (float)(pointsCount - 1);
+                angle = t * 360f;
+                if (!IsAngleInArc(angle, excludeStartAngle, excludeEndAngle) &&
+                    !IsAngleInArc(angle, excludeStartAngleB, excludeEndAngleB)) canPassThrough = true;
+            }
+
+            var rad = angle * Mathf.Deg2Rad;
+
+            var pos = new Vector3(position.x + Mathf.Cos(rad) * (circleRadius + drinkOffset), position.y,
+                position.z + Mathf.Sin(rad) * (circleRadius + drinkOffset));
+            Debug.DrawLine(position, pos, Color.red, 5f);
+            if (NavMesh.SamplePosition(pos, out NavMeshHit hit, 50, NavMesh.AllAreas))
+            {
+                print("hit");
+                CreateZone(Activity.Drinking, hit.position);
+            }
+            else
+            {
+                continue;
+            }
+
+            break;
+        }
+    }
+
+    private void CreateRiverZone()
+    {
+    }
+
+    private bool IsAngleInArc(float angle, float start, float end)
+    {
+        angle = NormalizeAngle(angle);
+        start = NormalizeAngle(start);
+        end = NormalizeAngle(end);
+
+        // Normal arc (no wrap)
+        if (start <= end)
+            return angle >= start && angle <= end;
+
+        // Wrapped arc (e.g., 300 → 40)
+        return angle >= start || angle <= end;
+    }
+
+    float NormalizeAngle(float a)
+    {
+        a %= 360f;
+        if (a < 0f) a += 360f;
+        return a;
+    }
 }

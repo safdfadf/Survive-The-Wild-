@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Mission2
   m_EditorClassIdentifier: 
   <id>k__BackingField: Mission2
-  missionName: 
+  missionName: 'Build A Camp Fire '
   PlayerLevelRequired: 1
   QuestSteps:
   - {fileID: 8698992301795059399, guid: 3e050ecdef1c6a144b2eaab41d21da51, type: 3}

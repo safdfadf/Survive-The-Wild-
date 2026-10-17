@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using DefaultNamespace;
 using TMPro;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Serialization;
+using UnityEngine.Splines;
 using Random = UnityEngine.Random;
 
 public enum WaterBodyType
@@ -17,10 +19,11 @@ public enum WaterBodyType
 
 public class Zone : MonoBehaviour
 {
+    // how does this adjusts itsekf for  water bodies 
     [SerializeField] public Activity zoneType;
     [SerializeField] private List<Vector3> zonePosition = new();
-
-
+    [SerializeField] private SplineContainer splineGm;
+    private Spline riverSpline => splineGm.Spline;
     private HashSet<Vector3> occupiedPositions = new();
 
     private int maxPosition = 6;
@@ -33,6 +36,18 @@ public class Zone : MonoBehaviour
     public bool HasAvailablePosition => zonePosition.Any(pos => !occupiedPositions.Contains(pos));
     private Dictionary<int, string> hourlyOccupancy = new(); // hour → species
     public WaterBody WaterBody { get; private set; }
+    [SerializeField] private Transform circleCenter;
+    [SerializeField] private float circleRadius = 10f;
+
+// Arc to exclude (in degrees)
+    [SerializeField] private float excludeStartAngle = 30;
+    [SerializeField] private float excludeEndAngle;
+    [SerializeField] private float excludeStartAngleB = 300f;
+    [SerializeField] private float excludeEndAngleB = 340f;
+
+// Offset for valid drinking positions
+    [SerializeField] private float drinkOffset = 0f;
+    [SerializeField] private int pointsCount = 20;
 
     private void Awake()
     {
@@ -41,6 +56,7 @@ public class Zone : MonoBehaviour
         GenerateZonePosition();
         TypeText = gameObject.GetComponentInChildren<TextMeshProUGUI>();
     }
+
     public void SetZoneText(Activity zone)
     {
         TypeText.text = zone.ToString();
@@ -53,7 +69,7 @@ public class Zone : MonoBehaviour
             switch (WaterBody.bodyType)
             {
                 case WaterBodyType.Lake:
-                    GenerateLakePos();
+                    //       GenerateLakePos();
                     break;
                 case WaterBodyType.River:
                     GenerateRiverPos();
@@ -116,30 +132,62 @@ public class Zone : MonoBehaviour
 
     private void GenerateLakePos()
     {
-        Collider _meshCollider = GetComponent<Collider>();
-        Bounds bounds = _meshCollider.bounds;
-        Vector3 min = bounds.min;
-        Vector3 max = bounds.max;
-        int maxPos = 10;
+        List<float> angles = new();
+        zonePosition.Clear();
+        var position = circleCenter.position;
 
-        for (int i = 0; i < maxPos; i++)
+        for (var i = 0; i < pointsCount; i++)
         {
-            float t = i / (float)(maxPos - 1);
+            var t = i / (float)(pointsCount - 1);
+            var angle = t * 360f;
 
-            // Sample along each edge
-            List<Vector3> positions = new();
-            positions.Add(new Vector3(Mathf.Lerp(min.x, max.x, t), min.y, min.z - edgeOffset));
-            positions.Add(new Vector3(Mathf.Lerp(min.x, max.x, t), min.y, max.z + edgeOffset));
-            positions.Add(new Vector3(min.x - edgeOffset, min.y, Mathf.Lerp(min.z, max.z, t)));
-            positions.Add(new Vector3(max.x + edgeOffset, min.y, Mathf.Lerp(min.z, max.z, t)));
-            foreach (var pos in positions)
+            angles.Add(angle);
+            if (IsAngleInArc(angle, excludeStartAngle, excludeEndAngle))
             {
-                if (NavMesh.SamplePosition(pos, out NavMeshHit hit, 2f, NavMesh.AllAreas))
-                {
-                    zonePosition.Add(hit.position);
-                }
+                continue;
+            }
+
+            if (IsAngleInArc(angle, excludeStartAngleB, excludeEndAngleB))
+            {
+                continue;
+            }
+
+            var rad = angle * Mathf.Deg2Rad;
+
+            var pos = new Vector3(
+                position.x + Mathf.Cos(rad) * (circleRadius + drinkOffset),
+                position.y,
+                position.z + Mathf.Sin(rad) * (circleRadius + drinkOffset)
+            );
+            Debug.DrawLine(position, pos, Color.red, 5f);
+            if (NavMesh.SamplePosition(pos, out NavMeshHit hit, 50, NavMesh.AllAreas))
+            {
+                zonePosition.Add(hit.position);
             }
         }
+
+        print(zonePosition.Count);
+    }
+
+    private bool IsAngleInArc(float angle, float start, float end)
+    {
+        angle = NormalizeAngle(angle);
+        start = NormalizeAngle(start);
+        end = NormalizeAngle(end);
+
+        // Normal arc (no wrap)
+        if (start <= end)
+            return angle >= start && angle <= end;
+
+        // Wrapped arc (e.g., 300 → 40)
+        return angle >= start || angle <= end;
+    }
+
+    float NormalizeAngle(float a)
+    {
+        a %= 360f;
+        if (a < 0f) a += 360f;
+        return a;
     }
 
     public Vector3? RequestPosition()
@@ -172,10 +220,62 @@ public class Zone : MonoBehaviour
 
     void OnDrawGizmos()
     {
-        Gizmos.color = Color.green;
-        foreach (var pos in zonePosition)
+        if (circleCenter != null)
         {
-            Gizmos.DrawSphere(pos, 1f);
+            //    Gizmos.color = Color.green;
+            //  DrawCircle(circleCenter.position, circleRadius);
+
+            Gizmos.color = Color.red;
+            //  DrawArc(circleCenter.position, circleRadius, excludeStartAngle, excludeEndAngle);
+            //    DrawArc(circleCenter.position, circleRadius, excludeStartAngleB, excludeEndAngleB);
+            Gizmos.color = Color.blue;
+            foreach (var pos in zonePosition)
+            {
+                Gizmos.DrawSphere(pos, 10);
+            }
+        }
+    }
+
+    private void DrawCircle(Vector3 center, float radius, int segments = 100)
+    {
+        Vector3 prevPoint = Vector3.zero;
+        for (int i = 0; i <= segments; i++)
+        {
+            float angle = (i / (float)segments) * 360f;
+            float rad = angle * Mathf.Deg2Rad;
+
+            Vector3 point = new Vector3(
+                center.x + Mathf.Cos(rad) * radius,
+                center.y,
+                center.z + Mathf.Sin(rad) * radius
+            );
+
+            if (i > 0)
+                Gizmos.DrawLine(prevPoint, point);
+
+            prevPoint = point;
+        }
+    }
+
+    private void DrawArc(Vector3 center, float radius, float startAngle, float endAngle, int segments = 50)
+    {
+        Vector3 prevPoint = Vector3.zero;
+        for (int i = 0; i <= segments; i++)
+        {
+            float t = i / (float)segments;
+            float angle = Mathf.Lerp(startAngle, endAngle, t);
+            float rad = angle * Mathf.Deg2Rad;
+
+            Vector3 point = new Vector3(
+                center.x + Mathf.Cos(rad) * radius,
+                center.y,
+                center.z + Mathf.Sin(rad) * radius
+            );
+
+            if (i > 0)
+                Gizmos.DrawLine(prevPoint, point);
+
+            prevPoint = point;
         }
     }
 
@@ -203,42 +303,36 @@ public class Zone : MonoBehaviour
 
     private void GenerateRiverPos()
     {
-        MeshCollider meshCollider = GetComponent<MeshCollider>();
-        if (meshCollider == null)
+        print("generate river pos");
+        zonePosition.Clear();
+        for (int i = 0; i < pointsCount; i++)
         {
-            Debug.LogWarning("MeshCollider missing on river zone.");
-            return;
+            float t = i / (float)(pointsCount - 1);
+
+
+            Vector3 pos = riverSpline.EvaluatePosition(t);
+            Vector3 tan = riverSpline.EvaluateTangent(t);
+            Vector3 tangent = tan.normalized;
+            // Stable sideways direction
+            Vector3 normal = Vector3.Cross(Vector3.up, tangent).normalized;
+
+            // Offset toward land
+
+            Vector3 rightPos = pos + normal * drinkOffset + splineGm.transform.position;
+            Vector3 leftPos = pos - normal * drinkOffset + splineGm.transform.position;
+            var drinkPos = leftPos;
+            if (NavMesh.SamplePosition(drinkPos, out NavMeshHit hit, 50f, NavMesh.AllAreas))
+            {
+                zonePosition.Add(hit.position);
+            }
+
+            print(zonePosition.Count);
         }
 
-        Bounds bounds = meshCollider.bounds;
-        Vector3 min = bounds.min;
-        Vector3 max = bounds.max;
-
-        int samplesAlongLength = 10;
-        float edgeBias = 0.8f; // 0 = center, 1 = edge
-
-        for (int i = 0; i < samplesAlongLength; i++)
+        foreach (var pos in zonePosition)
         {
-            float t = i / (float)(samplesAlongLength - 1);
-            float x = Mathf.Lerp(min.x, max.x, t);
-
-            // Sample near both edges by biasing toward min.z and max.z
-            float zNear = Mathf.Lerp(bounds.center.z, min.z, edgeBias);
-            float zFar = Mathf.Lerp(bounds.center.z, max.z, edgeBias);
-
-            Vector3[] candidates = new[]
-            {
-                new Vector3(x, bounds.center.y, zNear),
-                new Vector3(x, bounds.center.y, zFar)
-            };
-
-            foreach (var pos in candidates)
-            {
-                if (NavMesh.SamplePosition(pos, out NavMeshHit hit, 15, NavMesh.AllAreas))
-                {
-                    zonePosition.Add(hit.position);
-                }
-            }
+            var obj = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            obj.transform.position = pos;
         }
     }
 

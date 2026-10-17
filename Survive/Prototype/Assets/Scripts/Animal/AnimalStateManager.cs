@@ -41,7 +41,8 @@ public class AnimalStateManager : MonoBehaviour //ToDo : Change script name to p
             }
         }
 
-        _animalData.Add(index, new List<AnimalData> { activeAnimal });
+        _animalData.Add(index, new List<AnimalData> { activeAnimal }); // it basically stores animal in the same zone 
+        index++;
     }
 
 
@@ -53,7 +54,7 @@ public class AnimalStateManager : MonoBehaviour //ToDo : Change script name to p
 
     private void Update()
     {
-        CheckPlayerNoise();
+        // CheckPlayerNoise();
     }
 
     private void OnEnable()
@@ -188,7 +189,6 @@ public class AnimalStateManager : MonoBehaviour //ToDo : Change script name to p
 
     private void ChangeToAlertState(AnimalData data)
     {
-
         AnimalState newState = data.GetAlertState();
         if (_currentState != null && _currentState.Equals(newState)) return;
         _currentState = newState;

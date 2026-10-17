@@ -4,7 +4,7 @@ using UnityEngine.AI;
 
 public static class RetPosOnNv
 {
-    public static IEnumerator  GenerateCachedPositions(Chunk chunk, int count)
+    public static IEnumerator GenerateCachedPositions(Chunk chunk, int count)
     {
         Bounds bounds = chunk.bounds;
 
@@ -12,43 +12,49 @@ public static class RetPosOnNv
         {
             Vector3 pos = ReturnRandomNavMeshPos(bounds);
 
-            if (pos != Vector3.zero )
+            if (pos != Vector3.zero)
             {
                 chunk.cashedPos.Add(new PosInChunk(pos));
             }
+
             // Yield every few iterations to avoid FPS spikes
             if (i % 5 == 0)
                 yield return null;
         }
     }
 
-    public static Vector3 ReturnRandomNavMeshPos( Bounds regionBounds)
+    public static Vector3 ReturnRandomNavMeshPos(Bounds regionBounds)
     {
-        float maxY = Terrain.activeTerrain != null
-            ? Terrain.activeTerrain.terrainData.size.y + Terrain.activeTerrain.transform.position.y
-            : 200f;
-
         for (int attempt = 0; attempt < 20; attempt++)
         {
             float x = Random.Range(regionBounds.min.x, regionBounds.max.x);
             float z = Random.Range(regionBounds.min.z, regionBounds.max.z);
-
+            Terrain selectedTerrain = GetCurrentTerrain(x, z);
             // start above the world, then sample nearest navmesh
-            Vector3 samplePoint = new Vector3(x, maxY, z);
+            //    float y = selectedTerrain.SampleHeight(new Vector3(x, 0, z));
+            var y = selectedTerrain != null
+                ? selectedTerrain.terrainData.size.y + selectedTerrain.transform.position.y
+                : 200f;
+            Vector3 samplePoint = new Vector3(x, y, z);
 
-            if (NavMesh.SamplePosition(samplePoint, out NavMeshHit hit, maxY, NavMesh.AllAreas))
+            if (NavMesh.SamplePosition(samplePoint, out NavMeshHit hit, y, NavMesh.AllAreas))
             {
                 // ignore Y when checking bounds, since bounds is 3D
                 Vector3 p = hit.position;
                 p.y = regionBounds.center.y; // temporary for bounds check
                 if (regionBounds.Contains(p))
+                {
+//                    Debug.Log(hit.position);
                     return hit.position;
+                }
             }
         }
 
-      //  Debug.Log($"Failed to find valid NavMesh position inside bounds: {regionBounds}");
+        //  Debug.Log($"Failed to find valid NavMesh position inside bounds: {regionBounds}");
+        Debug.Log(regionBounds.center);
         return regionBounds.center;
     }
+
     public static bool TryGetNavMeshPoint(Vector3 target, out Vector3 navPoint)
     {
         NavMeshHit hit;
@@ -64,15 +70,57 @@ public static class RetPosOnNv
         navPoint = Vector3.zero;
         return false;
     }
+
     public static Vector3 GetRandomPosOnTerrain(Bounds regionBounds)
     {
-        float x = Random.Range(regionBounds.min.x, regionBounds.max.x);
-        float z = Random.Range(regionBounds.min.z, regionBounds.max.z);
-        
-        float y = Terrain.activeTerrain.SampleHeight(new Vector3(x, 0, z));
-        y+= Terrain.activeTerrain.transform.position.y;
+        var x = Random.Range(regionBounds.min.x, regionBounds.max.x);
+        var z = Random.Range(regionBounds.min.z, regionBounds.max.z);
+
+        Terrain[] terrains = Terrain.activeTerrains;
+
+        Terrain selectedTerrain = null;
+
+        foreach (var terrain in terrains)
+        {
+            var tPos = terrain.transform.position;
+            var tSize = terrain.terrainData.size;
+
+            // Check if x,z lies inside terrain bounds
+            if (x >= tPos.x && x <= tPos.x + tSize.x &&
+                z >= tPos.z && z <= tPos.z + tSize.z)
+            {
+                selectedTerrain = terrain;
+                break;
+            }
+        }
+
+        if (selectedTerrain == null)
+        {
+            return new Vector3(x, 0, z);
+        }
+
+        var y = 0f;
+
+        y = selectedTerrain.SampleHeight(new Vector3(x, 0, z))
+            + selectedTerrain.transform.position.y;
         return new Vector3(x, y, z);
     }
 
-    
+    private static Terrain GetCurrentTerrain(float x, float z)
+    {
+        foreach (var terrain in Terrain.activeTerrains)
+        {
+            var tPos = terrain.transform.position;
+            var tSize = terrain.terrainData.size;
+
+            // Check if x,z lies inside terrain bounds
+            if (x >= tPos.x && x <= tPos.x + tSize.x &&
+                z >= tPos.z && z <= tPos.z + tSize.z)
+            {
+                return terrain;
+            }
+        }
+
+        return null;
+    }
 }

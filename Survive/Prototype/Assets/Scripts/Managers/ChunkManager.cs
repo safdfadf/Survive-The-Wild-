@@ -76,18 +76,36 @@ public class ChunkManager : MonoBehaviour
 
     private void GenerateChunks()
     {
-        Terrain terrain = Terrain.activeTerrain;
-        Vector3 size = terrain.terrainData.size;
+        Terrain[] terrains = Terrain.activeTerrains;
+        // Compute world bounds
+        float minX = float.MaxValue;
+        float maxX = float.MinValue;
+        float minZ = float.MaxValue;
+        float maxZ = float.MinValue;
 
-        int chunksX = Mathf.CeilToInt(size.x / chunkSide); // no. of chunk on x axis
-        int chunksZ = Mathf.CeilToInt(size.z / chunkSide); // no. of chunk on z axis 
+        foreach (Terrain t in terrains)
+        {
+            Vector3 pos = t.transform.position;
+            Vector3 size = t.terrainData.size;
 
+            minX = Mathf.Min(minX, pos.x);
+            maxX = Mathf.Max(maxX, pos.x + size.x);
+
+            minZ = Mathf.Min(minZ, pos.z);
+            maxZ = Mathf.Max(maxZ, pos.z + size.z);
+        }
+
+        float worldWidth = maxX - minX;
+        float worldDepth = maxZ - minZ;
+
+        int chunksX = Mathf.CeilToInt(worldWidth / chunkSide);
+        int chunksZ = Mathf.CeilToInt(worldDepth / chunkSide);
         for (int x = 0; x < chunksX; x++)
         {
             for (int z = 0; z < chunksZ; z++)
             {
                 Vector3 center = new Vector3(x * chunkSide + chunkSide / 2, 0, z * chunkSide + chunkSide / 2);
-                Bounds bounds = new Bounds(center, new Vector3(chunkSide, 1000f, chunkSide));
+                Bounds bounds = new Bounds(center, new Vector3(chunkSide, 0, chunkSide));
 
                 Chunk chunk = new Chunk
                 {
@@ -98,7 +116,7 @@ public class ChunkManager : MonoBehaviour
                 };
                 for (int i = 0; i < cashedPosCount; i++)
                 {
-                    Vector3 pos = RetPosOnNv.GetRandomPosOnTerrain(chunk.bounds);
+                    var pos = RetPosOnNv.GetRandomPosOnTerrain(chunk.bounds);
                     chunk.cashedPos.Add(new PosInChunk(pos));
                 }
 
@@ -244,33 +262,20 @@ public class ChunkManager : MonoBehaviour
         }
 
         if (chunk.isEmptyChunk) return;
+        _currentRegion = chunk.regionType;
+        EventBus.CreateAnimalData.Invoke(_currentRegion, GetTestBounds()); // create animal data
 
-        switch (chunk.regionType)
-        {
-            case RegionType.Forest:
-                _currentRegion = RegionType.Forest;
-
-                EventBus.CreateAnimalData.Invoke(_currentRegion, GetTestBounds()); // create animal data
-
-                GenericSpawner.Instance.SpawnInChunk<EnvironSo, Environment>(
-                    SoProvider.instance.GetEnvironmentSo(chunk.regionType), chunk, chunk.objectInChunk);
-                GenericSpawner.Instance.SpawnInChunk<ObjSo, Obj<ObjSo>>(SoProvider.instance.GetResourceSo(),
-                    chunk, chunk.objectInChunk);
-                break;
-            case RegionType.Swamp:
-                _currentRegion = RegionType.Swamp;
-                break;
-            case RegionType.Sawana:
-                _currentRegion = RegionType.Sawana;
-                break;
-        }
+        GenericSpawner.Instance.SpawnInChunk<EnvironSo, Environment>(
+            SoProvider.instance.GetEnvironmentSo(chunk.regionType), chunk, chunk.objectInChunk);
+        GenericSpawner.Instance.SpawnInChunk<ObjSo, Obj<ObjSo>>(SoProvider.instance.GetResourceSo(),
+            chunk, chunk.objectInChunk);
     }
 
     private void GenerateRegionBound()
     {
         foreach (var kvp in AllChunks)
         {
-            Chunk chunk = kvp.Value;
+            var chunk = kvp.Value;
             if (!regionBounds.ContainsKey(chunk.regionType))
             {
                 regionBounds[chunk.regionType] = chunk.bounds;
@@ -464,20 +469,26 @@ public class ChunkManager : MonoBehaviour
             );
         }
 
-        /*    if (regionBounds == null || regionBounds.Count == 0)
-                return;
+        if (regionBounds == null || regionBounds.Count == 0)
+            return;
 
-            foreach (var kvp in regionBounds)
-            {
-                RegionType region = kvp.Key;
-                Bounds bounds = kvp.Value;
+        DrawRegions();
+    }
 
-                Gizmos.color = GetRegionColor(region);
+    private void DrawRegions()
+    {
+        foreach (var kvp in regionBounds)
+        {
+            RegionType region = kvp.Key;
+            Bounds bounds = kvp.Value;
 
-                Gizmos.DrawWireCube(
-                    bounds.center,
-                    new Vector3(bounds.size.x, 2f, bounds.size.z)
-                );*/
+            Gizmos.color = GetRegionColor(region);
+
+            Gizmos.DrawWireCube(
+                bounds.center,
+                new Vector3(bounds.size.x, 2f, bounds.size.z)
+            );
+        }
     }
 
     public Vector3 GetAvailablePosinChunk(Chunk chunk)

@@ -9,7 +9,7 @@ namespace FoodSystem
     {
         private bool isOnGround;
         private Rigidbody _rigidbody;
-        private float fallChance = .1f; // change it t0 .8f
+        private float fallChance = 1f; // change it t0 .8f
         [SerializeField] private ObjSo peeledCoco;
 
         protected override void Awake()
