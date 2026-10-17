@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Serialization;
 using UnityEngine.Splines;
 
 public class ZoneManager : MonoBehaviour
@@ -11,18 +12,19 @@ public class ZoneManager : MonoBehaviour
 
     [SerializeField] private float circleRadius = 10f;
 
-// Arc to exclude (in degrees)
+    [SerializeField] private float circleOffset;
     [SerializeField] private float excludeStartAngle = 30;
     [SerializeField] private float excludeEndAngle;
     [SerializeField] private float excludeStartAngleB = 300f;
     [SerializeField] private float excludeEndAngleB = 340f;
 
-// Offset for valid drinking positions
-    [SerializeField] private float drinkOffset = 0f;
+    [FormerlySerializedAs("drinkOffset")] [SerializeField]
+    private float riverOffset = 0f;
+
     [SerializeField] private int pointsCount = 20;
 
     [Header("River Properties")] [SerializeField]
-    private Spline[] splines;
+    private SplineContainer[] splines;
 
     public GameObject zonePrefab;
     public static ZoneManager Instance;
@@ -92,8 +94,16 @@ public class ZoneManager : MonoBehaviour
 
         if (type == Activity.Drinking)
         {
-            // create more drinking zones 
-            // CreateLakeZone();
+            int r = Random.Range(0, 2);
+            if (r == 0)
+            {
+                CreateLakeZone();
+            }
+            else
+            {
+                CreateRiverZone();
+            }
+
             return null;
         }
 
@@ -138,8 +148,8 @@ public class ZoneManager : MonoBehaviour
 
             var rad = angle * Mathf.Deg2Rad;
 
-            var pos = new Vector3(position.x + Mathf.Cos(rad) * (circleRadius + drinkOffset), position.y,
-                position.z + Mathf.Sin(rad) * (circleRadius + drinkOffset));
+            var pos = new Vector3(position.x + Mathf.Cos(rad) * (circleRadius + circleOffset), position.y,
+                position.z + Mathf.Sin(rad) * (circleRadius + circleOffset));
             Debug.DrawLine(position, pos, Color.red, 5f);
             if (NavMesh.SamplePosition(pos, out NavMeshHit hit, 50, NavMesh.AllAreas))
             {
@@ -157,6 +167,27 @@ public class ZoneManager : MonoBehaviour
 
     private void CreateRiverZone()
     {
+        float totalRivers = splines.Length;
+        SplineContainer chosenSpline = splines[(int)Random.Range(0, totalRivers)];
+        // now since we have 
+        float t = Random.Range(0, 20) / (float)(pointsCount - 1);
+
+
+        Vector3 pos = chosenSpline.Spline.EvaluatePosition(t);
+        Vector3 tan = chosenSpline.Spline.EvaluateTangent(t);
+        Vector3 tangent = tan.normalized;
+        // Stable sideways direction
+        Vector3 normal = Vector3.Cross(Vector3.up, tangent).normalized;
+
+        // Offset toward land
+
+        Vector3 rightPos = pos + normal * riverOffset + chosenSpline.gameObject.transform.position;
+        Vector3 leftPos = pos - normal * riverOffset + chosenSpline.gameObject.transform.position;
+        var drinkPos = leftPos;
+        if (NavMesh.SamplePosition(drinkPos, out NavMeshHit hit, 50f, NavMesh.AllAreas))
+        {
+            CreateZone(Activity.Drinking, hit.position);
+        }
     }
 
     private bool IsAngleInArc(float angle, float start, float end)

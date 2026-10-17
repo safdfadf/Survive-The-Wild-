@@ -64,21 +64,6 @@ public class Zone : MonoBehaviour
 
     private void GenerateZonePosition()
     {
-        if (_isDrinkingZone)
-        {
-            switch (WaterBody.bodyType)
-            {
-                case WaterBodyType.Lake:
-                    //       GenerateLakePos();
-                    break;
-                case WaterBodyType.River:
-                    GenerateRiverPos();
-                    break;
-            }
-
-            return;
-        }
-
         GenerateGrndPos();
     }
 
