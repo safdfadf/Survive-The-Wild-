@@ -12,15 +12,19 @@ namespace DefaultNamespace.Weapon
     public class ThrustAttack : WeaponBehaviour
     {
         private ThrustAnims _thrustAnims;
+        private Quaternion rotation;
 
         private void Awake()
         {
             _thrustAnims = GetComponent<ThrustAnims>();
+            // for th
         }
 
         private void LateUpdate()
         {
             Player.SetSpineControl(true, true);
+            rotation = Quaternion.Euler(0f, 0f, 70);
+            // weapon.gameObject.transform.rotation = rotation;
         }
 
         public override void OnInput(InputAction.CallbackContext ctx)
@@ -51,6 +55,8 @@ namespace DefaultNamespace.Weapon
         public override void OnEquip()
         {
             animator.HandWeaponEquip(true);
+
+            weapon.transform.localRotation = rotation;
         }
 
         public override void OnUnEquip()

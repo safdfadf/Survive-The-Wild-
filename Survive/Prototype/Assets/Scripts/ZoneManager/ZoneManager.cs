@@ -1,9 +1,11 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Serialization;
 using UnityEngine.Splines;
+using Random = UnityEngine.Random;
 
 public class ZoneManager : MonoBehaviour
 {
@@ -33,6 +35,11 @@ public class ZoneManager : MonoBehaviour
     private float _zoneRadius = 10f;
     private List<Zone> _drinkingZone = new();
 
+    [SerializeField] float riverWidth = 8f; // total width of river
+    [SerializeField] float riverHeight = 5f; // vertical height of bounds
+
+    [SerializeField] float step = 0.05f; // spline sampling resolution
+
     // here tell the chunk manager that we dont need to spawn environment here or spawn water body specific environment
     private void Awake()
     {
@@ -44,8 +51,17 @@ public class ZoneManager : MonoBehaviour
         {
             Destroy(this);
         }
+    }
 
-        StoreDrinkingZone();
+    private void Start()
+    {
+        SetEmptyZone();
+    }
+
+    private void SetEmptyZone()
+    {
+        RiverBodyBounds();
+        LakeBodyBounds();
     }
 
     private void StoreDrinkingZone()
@@ -154,7 +170,8 @@ public class ZoneManager : MonoBehaviour
             if (NavMesh.SamplePosition(pos, out NavMeshHit hit, 50, NavMesh.AllAreas))
             {
                 print("hit");
-                CreateZone(Activity.Drinking, hit.position);
+                Zone lake = CreateZone(Activity.Drinking, hit.position);
+                // take radius of the circle and create bounds and ask chunk manager 
             }
             else
             {
@@ -170,18 +187,18 @@ public class ZoneManager : MonoBehaviour
         float totalRivers = splines.Length;
         SplineContainer chosenSpline = splines[(int)Random.Range(0, totalRivers)];
         // now since we have 
-        float t = Random.Range(0, 20) / (float)(pointsCount - 1);
+        var t = Random.Range(0, 20) / (float)(pointsCount - 1);
 
 
         Vector3 pos = chosenSpline.Spline.EvaluatePosition(t);
         Vector3 tan = chosenSpline.Spline.EvaluateTangent(t);
-        Vector3 tangent = tan.normalized;
+        var tangent = tan.normalized;
         // Stable sideways direction
         Vector3 normal = Vector3.Cross(Vector3.up, tangent).normalized;
 
         // Offset toward land
 
-        Vector3 rightPos = pos + normal * riverOffset + chosenSpline.gameObject.transform.position;
+        var rightPos = pos + normal * riverOffset + chosenSpline.gameObject.transform.position;
         Vector3 leftPos = pos - normal * riverOffset + chosenSpline.gameObject.transform.position;
         var drinkPos = leftPos;
         if (NavMesh.SamplePosition(drinkPos, out NavMeshHit hit, 50f, NavMesh.AllAreas))
@@ -190,17 +207,59 @@ public class ZoneManager : MonoBehaviour
         }
     }
 
+    private void RiverBodyBounds()
+    {
+        foreach (var Sc in splines)
+        {
+            var spline = Sc.Spline;
+
+            for (float t = 0; t < 1f; t += step)
+            {
+                // Current and next point
+                Vector3 p0 = (Vector3)spline.EvaluatePosition(t) + Sc.transform.position;
+                Vector3 p1 = (Vector3)spline.EvaluatePosition(t + step) + Sc.transform.position;
+
+                // Segment midpoint
+                Vector3 mid = (p0 + p1) * 0.5f;
+
+                // Tangent direction
+                Vector3 tangent = (p1 - p0).normalized;
+
+                // Perpendicular sideways direction
+                Vector3 normal = Vector3.Cross(Vector3.up, tangent).normalized;
+
+                // Bounds size
+                Vector3 size = new Vector3(
+                    riverWidth, // width across river
+                    riverHeight, // height
+                    (p1 - p0).magnitude // length of this segment
+                );
+
+                // Create bounds
+                Bounds segmentBounds = new Bounds(mid, size);
+
+                // Send to chunk manager
+                ChunkManager.Instance.SetEmptyChunk(segmentBounds);
+            }
+        }
+    }
+
+    private void LakeBodyBounds()
+    {
+        Bounds lakeBounds = new Bounds(circleCenter.position,
+            new Vector3(circleRadius, 1, circleRadius));
+        ChunkManager.Instance.SetEmptyChunk(lakeBounds);
+    }
+
     private bool IsAngleInArc(float angle, float start, float end)
     {
         angle = NormalizeAngle(angle);
         start = NormalizeAngle(start);
         end = NormalizeAngle(end);
 
-        // Normal arc (no wrap)
         if (start <= end)
             return angle >= start && angle <= end;
 
-        // Wrapped arc (e.g., 300 → 40)
         return angle >= start || angle <= end;
     }
 

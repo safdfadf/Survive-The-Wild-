@@ -113,5 +113,6 @@ namespace DefaultNamespace
                 data.SelfAttack = attack;
             }
         }
+
     }
 }

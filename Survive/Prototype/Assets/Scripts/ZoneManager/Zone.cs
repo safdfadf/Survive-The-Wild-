@@ -300,9 +300,6 @@ public class Zone : MonoBehaviour
             Vector3 tangent = tan.normalized;
             // Stable sideways direction
             Vector3 normal = Vector3.Cross(Vector3.up, tangent).normalized;
-
-            // Offset toward land
-
             Vector3 rightPos = pos + normal * drinkOffset + splineGm.transform.position;
             Vector3 leftPos = pos - normal * drinkOffset + splineGm.transform.position;
             var drinkPos = leftPos;
@@ -330,12 +327,5 @@ public class Zone : MonoBehaviour
         }
 
         return false;
-    }
-
-    private void RefuzeEnviornment()
-    {
-        MeshCollider meshCol = GetComponent<MeshCollider>();
-        Bounds zoneBounds = meshCol.bounds;
-        ChunkRepo.instance.SetEmptyChunk(zoneBounds);
     }
 }

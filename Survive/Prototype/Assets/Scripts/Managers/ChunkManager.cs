@@ -36,6 +36,8 @@ public class ChunkManager : MonoBehaviour
     [SerializeField] private float chunkUpdateInterval = 0.5f;
     private Coroutine chunkRoutine;
 
+    private List<Chunk> emptyChunks = new();
+
     private void OnEnable()
     {
         if (chunkRoutine != null)
@@ -459,10 +461,18 @@ public class ChunkManager : MonoBehaviour
         {
             Chunk chunk = kvp.Value;
 
-            // Active chunks = green
             Gizmos.color = chunk.isActive ? Color.red : Color.gray;
 
-            // Draw chunk bounds
+            Gizmos.DrawWireCube(
+                chunk.bounds.center,
+                new Vector3(chunk.bounds.size.x, 1f, chunk.bounds.size.z)
+            );
+        }
+
+        foreach (var chunk in emptyChunks)
+        {
+            Gizmos.color =  Color.green;
+
             Gizmos.DrawWireCube(
                 chunk.bounds.center,
                 new Vector3(chunk.bounds.size.x, 1f, chunk.bounds.size.z)
@@ -527,6 +537,12 @@ public class ChunkManager : MonoBehaviour
             {
                 chunk.isEmptyChunk = true;
             }
+        }
+
+        foreach (var c in AllChunks.Values)
+        {
+            if (c.isEmptyChunk)
+                emptyChunks.Add(c);
         }
     }
 }
