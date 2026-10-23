@@ -45,13 +45,13 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _ScreenIntensity: 40.3
+    - _ScreenIntensity: 0
     - _ScreenPower: 1
     m_Colors:
     - _Color: {r: 1, g: 0, b: 0, a: 0}
-    - _MaskOffset: {r: 1, g: 1, b: 0, a: 0}
-    - _MaskTilling: {r: 2.21, g: 1, b: 0, a: 0}
+    - _MaskOffset: {r: 2, g: 2, b: 0, a: 0}
+    - _MaskTilling: {r: 1, g: 1, b: 0, a: 0}
     - _Offset: {r: 1, g: 1, b: 0, a: 0}
-    - _Tilling: {r: 1.6, g: 1, b: 0, a: 0}
+    - _Tilling: {r: 1, g: 1, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
