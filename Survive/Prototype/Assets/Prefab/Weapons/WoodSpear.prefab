@@ -173,8 +173,9 @@ MonoBehaviour:
   craft: 1
   harvest: 0
   useMe: 1
+  isIsolated: 0
   ability: {fileID: 0}
-  RightHandRotAngle: {x: 0, y: 0, z: 0}
+  RightHandRotAngle: {x: 0, y: 0, z: 70}
   RightHandAngle: {x: 0, y: 0, z: 0}
   inventoryRotAngle: 0
   isLeftHanded: 0
@@ -266,6 +267,7 @@ MonoBehaviour:
   craft: 0
   harvest: 0
   useMe: 0
+  isIsolated: 0
   TestHitPoint: {fileID: 0}
   offset: {x: 0, y: 0, z: 0}
   mask:
