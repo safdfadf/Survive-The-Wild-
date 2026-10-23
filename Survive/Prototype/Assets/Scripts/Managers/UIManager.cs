@@ -52,9 +52,12 @@ public class UIManager : MonoBehaviour
     [SerializeField] private float missionRemovePos;
     [SerializeField] private float questDisplayPos;
 
-    [FormerlySerializedAs("questTargetPos")] [SerializeField]
-    private float questRemovePos;
+    [SerializeField] private float questRemovePos;
 
+    [Header("LoadingScreen")] [SerializeField]
+    private Slider loadingSlider;
+
+    [SerializeField] private GameObject blurScreen;
     private QuestInfoSo currentMission;
     private QuestStep currentQuestStep;
     private RectTransform _missionParentRect;
@@ -385,5 +388,32 @@ public class UIManager : MonoBehaviour
             t += Time.deltaTime * 1.5f;
             rect.position = Vector2.Lerp(startPos, targetPos, t);
         }
+    }
+    
+    public void ShowLoadingScreen(float value)
+    {
+        blurScreen.SetActive(true);
+        loadingSlider.gameObject.SetActive(true);
+
+        loadingSlider.value = 0f;
+
+        StartCoroutine(FillSlider(value));
+    }
+
+    private IEnumerator FillSlider(float duration)
+    {
+        var elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            loadingSlider.value = Mathf.Clamp01(elapsed / duration);
+
+            yield return null;
+        }
+
+        loadingSlider.value = 1f;
+        blurScreen.SetActive(false);
+        loadingSlider.gameObject.SetActive(false);
     }
 }

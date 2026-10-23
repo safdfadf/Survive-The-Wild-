@@ -39,7 +39,7 @@ public class AnimalData
 
 
         _dailySchedule = scheduleManager.GetSchedule(animalSo.id, regionBounds);
-
+        Debug.Log(animalSo.id);
         foreach (var schedule in _dailySchedule)
         {
             switch (schedule.zoneType)

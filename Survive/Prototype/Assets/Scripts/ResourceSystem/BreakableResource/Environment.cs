@@ -134,16 +134,18 @@ public class Environment : MonoBehaviour, ItakeDamage, IsoInitializer<EnvironSo>
             {
                 baseObj.Initialize(environSo.breakableData.objSo);
                 Rigidbody rb = result.GetComponent<Rigidbody>();
-                rb.isKinematic = false;
                 Collider collider = result.GetComponent<Collider>();
                 if (collider != null)
                 {
                     collider.enabled = true;
+                    collider.isTrigger = false;
                 }
                 else
                 {
                     Debug.Log(result.name + " is missing Collider");
                 }
+
+                rb.isKinematic = false;
             }
         }
 

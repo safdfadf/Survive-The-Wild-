@@ -4,8 +4,6 @@ using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-
-//ToDo: remove this class 
 public class BaseObj : Obj<ObjSo>
 {
     private float timeCount;
@@ -22,7 +20,7 @@ public class BaseObj : Obj<ObjSo>
 
     public override void Harvest()
     {
-        // ToDo:harvest screen
+        UIManager.instance.ShowLoadingScreen(2f);
         DropObject();
         base.Harvest();
     }
@@ -52,5 +50,17 @@ public class BaseObj : Obj<ObjSo>
 
         print(num);
         GlobalPool.instance.Return(So.prefab, gameObject);
+    }
+
+    private void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.layer == LayerMask.NameToLayer("Ground"))
+        {
+            var collider = gameObject.GetComponent<Collider>();
+            collider.isTrigger = true;
+            var rb = gameObject.GetComponent<Rigidbody>();
+            if (rb == null) return;
+            rb.isKinematic = true;
+        }
     }
 }

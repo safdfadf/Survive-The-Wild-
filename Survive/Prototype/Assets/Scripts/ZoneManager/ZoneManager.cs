@@ -40,7 +40,12 @@ public class ZoneManager : MonoBehaviour
 
     [SerializeField] float step = 0.05f; // spline sampling resolution
 
+
+    private List<Bounds> _waterBounds = new();
+
     // here tell the chunk manager that we dont need to spawn environment here or spawn water body specific environment
+    private int debugCount;
+
     private void Awake()
     {
         if (Instance == null)
@@ -64,20 +69,6 @@ public class ZoneManager : MonoBehaviour
         LakeBodyBounds();
     }
 
-    private void StoreDrinkingZone()
-    {
-        // instead of this what we do is we ask 
-        _drinkingZone = FindObjectsByType<Zone>(FindObjectsSortMode.InstanceID)
-            .Where(z => z.WaterBody != null).ToList();
-        if (!_zoneByType.ContainsKey(Activity.Drinking))
-            _zoneByType[Activity.Drinking] = new List<Zone>();
-
-        foreach (var zone in _drinkingZone)
-        {
-            _zoneByType[Activity.Drinking].Add(zone);
-        }
-    }
-
     private Zone CreateZone(Activity type, Vector3 position) // this function will creteate zones
     {
         var zoneGo = Instantiate(zonePrefab, position, Quaternion.identity);
@@ -99,28 +90,30 @@ public class ZoneManager : MonoBehaviour
 
         foreach (var zone in _zoneByType[type])
         {
-            if (regionBounds.Contains(zone.transform.position) &&
-                zone.HasAvailablePosition &&
-                zone.IsAvailableForTime(species, startHour, endHour))
+            if
+                (zone.HasAvailablePosition &&
+                 zone.IsAvailableForTime(species, startHour, endHour))
             {
                 zone.ReserveTime(species, startHour, endHour);
                 return zone;
+            }
+            else
+            {
+                print(regionBounds.Contains(zone.transform.position));
             }
         }
 
         if (type == Activity.Drinking)
         {
-            int r = Random.Range(0, 2);
+            var r = Random.Range(0, 2);
             if (r == 0)
             {
-                CreateLakeZone();
+                return CreateLakeZone();
             }
             else
             {
-                CreateRiverZone();
+                return CreateRiverZone();
             }
-
-            return null;
         }
 
         Zone newZone = CreateMoreZones(regionBounds, type);
@@ -130,11 +123,19 @@ public class ZoneManager : MonoBehaviour
 
     private Zone CreateMoreZones(Bounds regionBounds, Activity type)
     {
+        print("create more zone" + type);
         var origin = regionBounds.center;
 
         origin.y = 0f;
         var newPos = RetPosOnNv.ReturnRandomNavMeshPos(regionBounds);
-        // id this position lies in the bounderies of water body
+        bool posValid = false;
+        if (type != Activity.Drinking) // if type is not drinking then male prosition is not on water body
+            while (!posValid)
+            {
+                newPos = RetPosOnNv.ReturnRandomNavMeshPos(regionBounds);
+                posValid = CheckIfPosLiesInWaterBody(newPos);
+            }
+
         Vector3 flatPos = new Vector3(newPos.x, regionBounds.center.y, newPos.z); // specificlly check x and z
 
         if (!regionBounds.Contains(flatPos))
@@ -146,8 +147,20 @@ public class ZoneManager : MonoBehaviour
         return CreateZone(type, newPos);
     }
 
-    private void CreateLakeZone() // creates one zone at a time
+    private bool CheckIfPosLiesInWaterBody(Vector3 position)
     {
+        foreach (var bounds in _waterBounds)
+        {
+            if (bounds.Contains(position))
+                return false;
+        }
+
+        return true;
+    }
+
+    private Zone CreateLakeZone() // creates one zone at a time
+    {
+        // depnding 
         while (true)
         {
             var position = circleCenter.position;
@@ -170,20 +183,15 @@ public class ZoneManager : MonoBehaviour
             if (NavMesh.SamplePosition(pos, out NavMeshHit hit, 50, NavMesh.AllAreas))
             {
                 print("hit");
-                Zone lake = CreateZone(Activity.Drinking, hit.position);
+                return CreateZone(Activity.Drinking, hit.position);
                 // take radius of the circle and create bounds and ask chunk manager 
             }
-            else
-            {
-                continue;
-            }
-
-            break;
         }
     }
 
-    private void CreateRiverZone()
+    private Zone CreateRiverZone()
     {
+        print("Creating river zone");
         float totalRivers = splines.Length;
         SplineContainer chosenSpline = splines[(int)Random.Range(0, totalRivers)];
         // now since we have 
@@ -203,8 +211,10 @@ public class ZoneManager : MonoBehaviour
         var drinkPos = leftPos;
         if (NavMesh.SamplePosition(drinkPos, out NavMeshHit hit, 50f, NavMesh.AllAreas))
         {
-            CreateZone(Activity.Drinking, hit.position);
+            return CreateZone(Activity.Drinking, hit.position);
         }
+
+        return null;
     }
 
     private void RiverBodyBounds()
@@ -215,30 +225,23 @@ public class ZoneManager : MonoBehaviour
 
             for (float t = 0; t < 1f; t += step)
             {
-                // Current and next point
                 Vector3 p0 = (Vector3)spline.EvaluatePosition(t) + Sc.transform.position;
                 Vector3 p1 = (Vector3)spline.EvaluatePosition(t + step) + Sc.transform.position;
 
-                // Segment midpoint
                 Vector3 mid = (p0 + p1) * 0.5f;
 
-                // Tangent direction
                 Vector3 tangent = (p1 - p0).normalized;
 
-                // Perpendicular sideways direction
                 Vector3 normal = Vector3.Cross(Vector3.up, tangent).normalized;
 
-                // Bounds size
                 Vector3 size = new Vector3(
                     riverWidth, // width across river
                     riverHeight, // height
                     (p1 - p0).magnitude // length of this segment
                 );
 
-                // Create bounds
                 Bounds segmentBounds = new Bounds(mid, size);
-
-                // Send to chunk manager
+                _waterBounds.Add(segmentBounds);
                 ChunkManager.Instance.SetEmptyChunk(segmentBounds);
             }
         }
@@ -248,6 +251,7 @@ public class ZoneManager : MonoBehaviour
     {
         Bounds lakeBounds = new Bounds(circleCenter.position,
             new Vector3(circleRadius, 1, circleRadius));
+        _waterBounds.Add(lakeBounds);
         ChunkManager.Instance.SetEmptyChunk(lakeBounds);
     }
 

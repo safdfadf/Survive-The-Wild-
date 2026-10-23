@@ -7,6 +7,7 @@ using UnityEngine.Serialization;
 public class
     BaseStructure : Environment, IInteractable
 {
+    // once the object has been assembled i should set construct to false
     protected bool IsAssembled;
     public BuildingRecipe craftingRecipe { get; private set; }
 
@@ -70,6 +71,7 @@ public class
 
     protected virtual void OnStructureAssembled()
     {
+        CanDisplay = false;
     }
 
     public void InitializeStructure(CraftingSO so)

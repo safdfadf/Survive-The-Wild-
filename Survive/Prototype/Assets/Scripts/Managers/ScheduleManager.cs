@@ -20,7 +20,6 @@ public class ScheduleManager
 
     private List<Schedule> GenerateRandomSchedule(string species) // create blocks at 5 Am 
     {
-        // Activities available for random selection
         List<Activity> activities = new List<Activity>
         {
             Activity.Feeding,
@@ -28,22 +27,13 @@ public class ScheduleManager
             Activity.Resting
         };
 
-        int blockCount = UnityEngine.Random.Range(3, 8);
-
-        List<Activity> chosen = new List<Activity>();
-        chosen.Add(Activity.Resting);
-
-        for (int i = 1; i < blockCount; i++)
-        {
-            Activity a = activities[UnityEngine.Random.Range(0, activities.Count)];
-            chosen.Add(a);
-        }
-
+        int blockCount = activities.Count;
+        
         List<Schedule> schedule = new List<Schedule>();
         schedule.Add(new Schedule
         {
             specie = species,
-            zoneType = chosen[0],
+            zoneType = activities[0], //resting 
             startHour = 0,
             endHour = 5
         });
@@ -68,7 +58,7 @@ public class ScheduleManager
             schedule.Add(new Schedule
             {
                 specie = species,
-                zoneType = chosen[i],
+                zoneType = activities[i],
                 startHour = start,
                 endHour = end
             });
@@ -112,6 +102,7 @@ public class ScheduleManager
         }
 
         var schedule = _scheduleTemplate[species];
+        Debug.Log(schedule.Count);
         foreach (var entry in schedule)
         {
             entry.assignedZone = ZoneManager.Instance.GetAvailableZone(

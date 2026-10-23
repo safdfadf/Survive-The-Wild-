@@ -66,7 +66,8 @@ public class CraftingHandler : MonoBehaviour
     }
 
     private void Start()
-    {   foreach (var so in testingSo)
+    {
+        foreach (var so in testingSo)
         {
             for (int i = 0; i < so.resSo.Amount; i++)
             {
@@ -235,8 +236,9 @@ public class CraftingHandler : MonoBehaviour
         EventManager.Instance.CraftEvents.ObjectCraft(obj.So);
         _playerInventory.AddWorldItem(result);
         craftButton.gameObject.SetActive(false);
-        if (!isTesting)
-            ConsumeIngredients(); // enable this 
+        if (isTesting) return;
+        ConsumeIngredients(); // enable this 
+        UIManager.instance.ShowLoadingScreen(2f);
     }
 
     private void ConsumeIngredients() // in consume ingredient we need 

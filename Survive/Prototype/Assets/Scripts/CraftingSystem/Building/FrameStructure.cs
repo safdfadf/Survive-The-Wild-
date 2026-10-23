@@ -35,4 +35,5 @@ public class FrameStructure : BaseStructure
         if (!childStructures.Contains(child))
             childStructures.Add(child);
     }
+    // once assembled either change 
 }

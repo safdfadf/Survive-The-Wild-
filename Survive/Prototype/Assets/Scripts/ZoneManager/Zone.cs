@@ -30,9 +30,7 @@ public class Zone : MonoBehaviour
     private float disBtwPos = 5;
 
     private TextMeshProUGUI TypeText;
-    private bool _isDrinkingZone;
-    private int edgeOffset = 5;
-    private int _attempts = 0;
+   private int _attempts = 0;
     public bool HasAvailablePosition => zonePosition.Any(pos => !occupiedPositions.Contains(pos));
     private Dictionary<int, string> hourlyOccupancy = new(); // hour → species
     public WaterBody WaterBody { get; private set; }
@@ -52,7 +50,6 @@ public class Zone : MonoBehaviour
     private void Awake()
     {
         WaterBody = GetComponent<WaterBody>();
-        _isDrinkingZone = WaterBody != null;
         GenerateZonePosition();
         TypeText = gameObject.GetComponentInChildren<TextMeshProUGUI>();
     }
