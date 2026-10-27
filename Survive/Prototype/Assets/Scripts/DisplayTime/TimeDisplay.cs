@@ -11,7 +11,7 @@ public class TimeDisplay : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void Update()// instead of updating every frame update it when phone is active 
     {
        if(gameObject.activeInHierarchy)
         currenTime.text = TimeManager.Instance.GetTimeString();

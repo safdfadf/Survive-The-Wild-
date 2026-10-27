@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Serialization;
+using UnityEditor;
 
 [CreateAssetMenu(fileName = "EnvironSo", menuName = "Scriptable Objects/EnvironSo")]
 public class EnvironSo : ScriptableObject, ISpawnedItem
@@ -23,7 +24,7 @@ public class EnvironSo : ScriptableObject, ISpawnedItem
     {
 #if UNITY_EDITOR
         id = this.name;
-        UnityEditor.EditorUtility.SetDirty(this);
+        EditorUtility.SetDirty(this);
 #endif
     }
 }

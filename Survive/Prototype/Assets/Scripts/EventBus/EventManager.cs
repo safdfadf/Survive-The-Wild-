@@ -14,7 +14,7 @@ namespace DefaultNamespace.EventBus
         public AnimalEvents AnimalEvents;
         public StructureEvents StructureEvents;
         public UIEvents UiEvents;
-
+        public TimeEvents TimeEvents;
         private void Awake()
         {
             if (Instance == null)
@@ -38,6 +38,7 @@ namespace DefaultNamespace.EventBus
             AnimalEvents = new AnimalEvents();
             StructureEvents = new StructureEvents();
             UiEvents = new UIEvents();
+            TimeEvents = new TimeEvents();
         }
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Animal.States;
+using DefaultNamespace.EventBus;
 using Player;
 using UnityEngine;
 
@@ -52,24 +53,15 @@ public class AnimalStateManager : MonoBehaviour //ToDo : Change script name to p
         _animalHandler = GetComponent<AnimalHandler>();
     }
 
-    private void Update()
-    {
-        // CheckPlayerNoise();
-    }
-
     private void OnEnable()
     {
-        //   EventBus.OnWindChanged += CheckPlayerScent;
-        //   EventBus.On5SecondsPassed += CheckPlayerNoise;
+        EventManager.Instance.TimeEvents.onOneSecondPass += CheckPlayerNoise;
     }
 
     private void OnDisable()
     {
-        // EventBus.OnWindChanged -= CheckPlayerScent;
-        // EventBus.On5SecondsPassed -= CheckPlayerNoise;
+        EventManager.Instance.TimeEvents.onOneSecondPass -= CheckPlayerNoise;
     }
-    //1) every time wind direction changes 
-    //2) Noise system: every time player makes a sound more _ decimal animal in range will be able to hear it and change the state  
 
     private void CheckPlayerScent(Vector3 windDirection, float windSpeed)
     {
@@ -106,12 +98,12 @@ public class AnimalStateManager : MonoBehaviour //ToDo : Change script name to p
     private void CheckPlayerNoise()
     {
         Bounds bounds = ChunkManager.Instance.CurrentBounds;
-        Transform playerTransform = _playerRepository.GetPlayerTransform();
-        Vector3 playerPos = playerTransform.position;
+        var playerTransform = _playerRepository.GetPlayerTransform();
+        var playerPos = playerTransform.position;
 
-        bool isSprinting = _playerRepository.GetIsSprinting();
-        bool isMoving = _playerRepository.GetIsWalking();
-        bool isCrouching = _playerRepository.GetIsCrouching();
+        var isSprinting = _playerRepository.GetIsSprinting();
+        var isMoving = _playerRepository.GetIsWalking();
+        var isCrouching = _playerRepository.GetIsCrouching();
 
         Vector2 p = new Vector2(playerPos.x, playerPos.z);
         foreach (var kvp in _animalData)
@@ -143,7 +135,6 @@ public class AnimalStateManager : MonoBehaviour //ToDo : Change script name to p
             else if (isMoving && !isCrouching && dist <= walkAlertRange)
                 shouldAlert = true;
 
-            // Suspicion accumulation
             if (shouldAlert)
             {
                 float fillRate = 1f / alertToAlarmTime;

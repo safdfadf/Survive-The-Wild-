@@ -42,8 +42,6 @@ public class ZoneManager : MonoBehaviour
 
 
     private List<Bounds> _waterBounds = new();
-
-    // here tell the chunk manager that we dont need to spawn environment here or spawn water body specific environment
     private int debugCount;
 
     private void Awake()
@@ -123,7 +121,6 @@ public class ZoneManager : MonoBehaviour
 
     private Zone CreateMoreZones(Bounds regionBounds, Activity type)
     {
-        print("create more zone" + type);
         var origin = regionBounds.center;
 
         origin.y = 0f;

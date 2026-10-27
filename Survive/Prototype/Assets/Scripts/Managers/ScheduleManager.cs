@@ -102,7 +102,6 @@ public class ScheduleManager
         }
 
         var schedule = _scheduleTemplate[species];
-        Debug.Log(schedule.Count);
         foreach (var entry in schedule)
         {
             entry.assignedZone = ZoneManager.Instance.GetAvailableZone(

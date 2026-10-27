@@ -1,9 +1,26 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
 public static class RetPosOnNv
 {
+    private static List<Terrain> validTerrains = new();
+
+    public static void RemoveInvalidTerrains(Terrain[] invalidTerrains)
+    {
+        foreach (var t in Terrain.activeTerrains)
+        {
+            validTerrains.Add(t);
+        }
+
+        foreach (var t in invalidTerrains)
+        {
+            if (validTerrains.Contains(t))
+                validTerrains.Remove(t);
+        }
+    }
+
     public static IEnumerator GenerateCachedPositions(Chunk chunk, int count)
     {
         Bounds bounds = chunk.bounds;
@@ -23,6 +40,7 @@ public static class RetPosOnNv
         }
     }
 
+    // when getting a random mesh i need to remove specific terrain from active terrain list; 
     public static Vector3 ReturnRandomNavMeshPos(Bounds regionBounds)
     {
         for (int attempt = 0; attempt < 20; attempt++)
@@ -76,7 +94,7 @@ public static class RetPosOnNv
         var x = Random.Range(regionBounds.min.x, regionBounds.max.x);
         var z = Random.Range(regionBounds.min.z, regionBounds.max.z);
 
-        Terrain[] terrains = Terrain.activeTerrains;
+        List<Terrain> terrains = validTerrains;
 
         Terrain selectedTerrain = null;
 
@@ -108,7 +126,7 @@ public static class RetPosOnNv
 
     private static Terrain GetCurrentTerrain(float x, float z)
     {
-        foreach (var terrain in Terrain.activeTerrains)
+        foreach (var terrain in validTerrains)
         {
             var tPos = terrain.transform.position;
             var tSize = terrain.terrainData.size;

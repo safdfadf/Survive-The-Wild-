@@ -1,10 +1,6 @@
-﻿using System;
-using DefaultNamespace.Weapon.WeaponAnims;
-using Player;
-using UnityEditor.PackageManager.UI;
+﻿using Player;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Interactions;
+
 
 namespace DefaultNamespace.Weapon
 {
@@ -77,7 +73,6 @@ namespace DefaultNamespace.Weapon
             weapon.crosshair.SetActive(false);
         }
 
-     
 
         public override void OnEquip()
         {

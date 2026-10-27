@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using DefaultNamespace.EventBus;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -6,7 +8,7 @@ using UnityEngine.Serialization;
 public class TimeManager : MonoBehaviour
 {
     public static TimeManager Instance;
-    public int timeScale { get;  set; } = 2;
+    public int timeScale { get; set; } = 2;
 
     private int _startHour = 4;
 
@@ -43,13 +45,22 @@ public class TimeManager : MonoBehaviour
         ScheduleNextRandomEvent();
     }
 
+    private void Start()
+    {
+        StartCoroutine(OneSecondCheck());
+    }
+
     public int GetCurrentHour()
     {
         return CurrentHour;
     }
 
-    // Update is called once per frame
     void Update()
+    {
+        UpdateTime();
+    }
+
+    private void UpdateTime()
     {
         _currentTimeInMinutes += Time.deltaTime * timeScale;
         _currentTimeInMinutes %= 1440f; // Wrap around 24 hours
@@ -111,5 +122,13 @@ public class TimeManager : MonoBehaviour
             EventBus.On5SecondsPassed?.Invoke();
         }
     }
-    
+
+    private IEnumerator OneSecondCheck()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(1);
+            EventManager.Instance.TimeEvents.oneSecondPass();
+        }
+    }
 }

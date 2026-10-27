@@ -1,8 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using FoodSystem;
+using Unity.Jobs;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 [System.Serializable]
 public struct RegionSeed
@@ -34,9 +37,13 @@ public class ChunkManager : MonoBehaviour
     private RegionType _currentRegion = RegionType.Null;
 
     [SerializeField] private float chunkUpdateInterval = 0.5f;
+    [SerializeField] private Terrain[] invalidTerrain;
     private Coroutine chunkRoutine;
-
     private List<Chunk> emptyChunks = new();
+    // create another list or hashset ofdesired chunks these will ne neighbour chunks or active chunks 
+
+    private HashSet<Chunk> desiredChunks = new();
+    private Vector2Int previousChunk;
 
     private void OnEnable()
     {
@@ -55,25 +62,94 @@ public class ChunkManager : MonoBehaviour
             Destroy(gameObject);
         }
 
+        RetPosOnNv.RemoveInvalidTerrains(invalidTerrain);
         GenerateChunks();
-    }
-
-    private IEnumerator ChunkUpdateRoutine()
-    {
-        while (true)
-        {
-            _playerPos = GetChunkIndex(player.transform.position);
-            ActivateNearbyChunks();
-            Vector2Int newPos = GetChunkIndex(player.transform.position);
-
-            yield return new WaitForSeconds(chunkUpdateInterval);
-        }
     }
 
     private void Start()
     {
         _currentChunk = GetChunkAtPos(player.transform.position);
         chunkRoutine = StartCoroutine(ChunkUpdateRoutine());
+    }
+
+    private IEnumerator ChunkUpdateRoutine()
+    {
+        while (true) // this update every frame
+        {
+            Vector2Int currentChunk =
+                GetChunkIndex(player.transform.position);
+
+            if (currentChunk != previousChunk)
+            {
+                previousChunk = currentChunk;
+                UpdateDesiredChunks(currentChunk);
+            }
+
+            yield return new WaitForSeconds(chunkUpdateInterval);
+        }
+    }
+
+    
+    private void UpdateDesiredChunks(Vector2Int playerChunk)
+    {
+        desiredChunks.Clear();
+
+        var chunkRadius = Mathf.CeilToInt(radius);
+
+        for (var x = -chunkRadius; x <= chunkRadius; x++)
+        {
+            for (var z = -chunkRadius; z <= chunkRadius; z++)
+            {
+                Vector2Int index = new Vector2Int(
+                    playerChunk.x + x,
+                    playerChunk.y + z);
+
+                if (AllChunks.TryGetValue(index, out var chunk))
+                {
+                    desiredChunks.Add(chunk);
+                }
+            }
+        }
+
+        foreach (Chunk chunk in desiredChunks)
+        {
+            if (activeChunks.Contains(chunk))
+                continue;
+
+            chunk.isActive = true;
+
+            activeChunks.Add(chunk);
+            activeChunks.Add(chunk);
+
+            SpawnChunk(chunk);
+            ActivateTracks(chunk);
+
+            EventBus.OnChunkChanged?.Invoke(chunk);
+            EventBus.OnGpuDeactivateInChunk?.Invoke(chunk);
+        }
+
+        // Deactivate chunks no longer desired
+        List<Chunk> chunksToRemove = new();
+
+        foreach (Chunk chunk in activeChunks)
+        {
+            if (desiredChunks.Contains(chunk))
+                continue;
+
+            chunk.isActive = false;
+
+            DespawnChunk(chunk);
+
+            chunksToRemove.Add(chunk);
+        }
+
+        foreach (Chunk chunk in chunksToRemove)
+        {
+            activeChunks.Remove(chunk);
+            activeChunks.Remove(chunk);
+        }
+
+        UpdateCurrentBounds();
     }
 
     private void GenerateChunks()
@@ -251,7 +327,7 @@ public class ChunkManager : MonoBehaviour
         {
             if (!chunks.isActive) // all the chunks that are in active are 
             {
-                EventBus.OnGpuActivateInChunk?.Invoke(chunks);
+                //  EventBus.OnGpuActivateInChunk?.Invoke(chunks);
             }
         }
     }
@@ -267,10 +343,24 @@ public class ChunkManager : MonoBehaviour
         _currentRegion = chunk.regionType;
         EventBus.CreateAnimalData.Invoke(_currentRegion, GetTestBounds()); // create animal data
 
-        GenericSpawner.Instance.SpawnInChunk<EnvironSo, Environment>(
-            SoProvider.instance.GetEnvironmentSo(chunk.regionType), chunk, chunk.objectInChunk);
+        //   GenericSpawner.Instance.SpawnInChunk<EnvironSo, Environment>(
+        //     SoProvider.instance.GetEnvironmentSo(chunk.regionType), chunk, chunk.objectInChunk);
         GenericSpawner.Instance.SpawnInChunk<ObjSo, Obj<ObjSo>>(SoProvider.instance.GetResourceSo(),
             chunk, chunk.objectInChunk);
+    }
+
+    private void OnDrawGizmos()
+    {
+        print(desiredChunks.Count);
+        foreach (var chunk in desiredChunks)
+        {
+            Gizmos.color = Color.yellow;
+
+            Gizmos.DrawWireCube(
+                chunk.bounds.center,
+                new Vector3(chunk.bounds.size.x, 1f, chunk.bounds.size.z)
+            );
+        }
     }
 
     private void GenerateRegionBound()
@@ -415,8 +505,8 @@ public class ChunkManager : MonoBehaviour
     private IEnumerator SpawnTracksWithDelay(GameObject so, TrackData data, Chunk chunk)
     {
         yield return new WaitForSeconds(2f);
-        GameObject obj = GlobalPool.instance.Get(so, data.pos);
-        Tracks track = obj.GetComponent<Tracks>();
+        var obj = GlobalPool.instance.Get(so, data.pos);
+        var track = obj.GetComponent<Tracks>();
         track.Initialize(data);
         chunk.activeTracks.Add(obj);
         Debug.Log(chunk.activeTracks.Count);
@@ -451,7 +541,7 @@ public class ChunkManager : MonoBehaviour
         return animalPos;
     }
 
-
+/*
     private void OnDrawGizmos()
     {
         if (AllChunks == null || AllChunks.Count == 0)
@@ -465,7 +555,7 @@ public class ChunkManager : MonoBehaviour
 
             Gizmos.DrawWireCube(
                 chunk.bounds.center,
-                new Vector3(chunk.bounds.size.x, 1f, chunk.bounds.size.z)
+                new Vector3(chunk.bounds.size.x, 1, chunk.bounds.size.z)
             );
         }
 
@@ -484,6 +574,7 @@ public class ChunkManager : MonoBehaviour
 
         DrawRegions();
     }
+    */
 
     private void DrawRegions()
     {

@@ -25,7 +25,7 @@ public class BuildingHandler : MonoBehaviour
         cam = Camera.main;
     }
 
-    private void Update()
+    private void Update()// 
     {
         if (_currentStructure == null || !_canMove) return;
         UpdateGhostPosition();

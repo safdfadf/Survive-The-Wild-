@@ -30,7 +30,7 @@ public class Zone : MonoBehaviour
     private float disBtwPos = 5;
 
     private TextMeshProUGUI TypeText;
-   private int _attempts = 0;
+    private int _attempts = 0;
     public bool HasAvailablePosition => zonePosition.Any(pos => !occupiedPositions.Contains(pos));
     private Dictionary<int, string> hourlyOccupancy = new(); // hour → species
     public WaterBody WaterBody { get; private set; }
@@ -200,6 +200,7 @@ public class Zone : MonoBehaviour
         occupiedPositions.Remove(pos);
     }
 
+    /*
     void OnDrawGizmos()
     {
         if (circleCenter != null)
@@ -216,7 +217,7 @@ public class Zone : MonoBehaviour
                 Gizmos.DrawSphere(pos, 10);
             }
         }
-    }
+    }*/
 
     private void DrawCircle(Vector3 center, float radius, int segments = 100)
     {
