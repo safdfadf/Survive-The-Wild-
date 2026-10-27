@@ -508,7 +508,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   resourceDropCount: 2
   dropOffset: {x: 0, y: 0.5, z: 0}
-  foodSos: []
+  objSos: []
   pos: []
   damagedVersions: []
   damageStage1: 25

@@ -311,6 +311,7 @@ MonoBehaviour:
   craft: 0
   harvest: 0
   useMe: 1
+  isIsolated: 0
 --- !u!135 &5516998832790640439
 SphereCollider:
   m_ObjectHideFlags: 0

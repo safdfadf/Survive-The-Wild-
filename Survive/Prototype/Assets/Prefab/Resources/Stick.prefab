@@ -584,6 +584,7 @@ MonoBehaviour:
   craft: 1
   harvest: 0
   useMe: 0
+  isIsolated: 0
   objSo: {fileID: 0}
   amount: 0
 --- !u!65 &2145304587800386616

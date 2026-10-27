@@ -135,7 +135,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &8675365709659937439
 Transform:
@@ -168,6 +168,7 @@ MonoBehaviour:
   craft: 1
   harvest: 0
   useMe: 0
+  isIsolated: 0
   waterSo: {fileID: 11400000, guid: 3483a145ec13d574482cbee18e863b4c, type: 2}
   waterObj: {fileID: 6135149187666116891, guid: 2b281f687ef84584984f7dc116aaf2f5, type: 3}
 --- !u!135 &3938708458774412732

@@ -225,6 +225,7 @@ MonoBehaviour:
   craft: 1
   harvest: 1
   useMe: 0
+  isIsolated: 0
   objSo: {fileID: 11400000, guid: a139dfa28208d0842a55488f2a319a42, type: 2}
   amount: 2
 --- !u!54 &-7080896222566540981
