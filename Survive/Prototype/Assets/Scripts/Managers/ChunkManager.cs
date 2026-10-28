@@ -89,7 +89,7 @@ public class ChunkManager : MonoBehaviour
         }
     }
 
-    
+
     private void UpdateDesiredChunks(Vector2Int playerChunk)
     {
         desiredChunks.Clear();
@@ -264,7 +264,6 @@ public class ChunkManager : MonoBehaviour
             .OrderBy(c => Vector3.Distance(player.transform.position, c.bounds.center))
             .ToList();
 
-        // Enforce max active chunk limit
         int allowed = 6;
 
         for (int i = 0; i < chunksToActivate.Count; i++)
@@ -343,19 +342,17 @@ public class ChunkManager : MonoBehaviour
         _currentRegion = chunk.regionType;
         EventBus.CreateAnimalData.Invoke(_currentRegion, GetTestBounds()); // create animal data
 
-        //   GenericSpawner.Instance.SpawnInChunk<EnvironSo, Environment>(
-        //     SoProvider.instance.GetEnvironmentSo(chunk.regionType), chunk, chunk.objectInChunk);
+        GenericSpawner.Instance.SpawnInChunk<EnvironSo, Environment>(
+            SoProvider.instance.GetEnvironmentSo(chunk.regionType), chunk, chunk.objectInChunk);
         GenericSpawner.Instance.SpawnInChunk<ObjSo, Obj<ObjSo>>(SoProvider.instance.GetResourceSo(),
             chunk, chunk.objectInChunk);
     }
 
     private void OnDrawGizmos()
     {
-        print(desiredChunks.Count);
-        foreach (var chunk in desiredChunks)
+        foreach (var chunk in activeChunks)
         {
-            Gizmos.color = Color.yellow;
-
+            Gizmos.color = Color.red;
             Gizmos.DrawWireCube(
                 chunk.bounds.center,
                 new Vector3(chunk.bounds.size.x, 1f, chunk.bounds.size.z)
@@ -635,5 +632,18 @@ public class ChunkManager : MonoBehaviour
             if (c.isEmptyChunk)
                 emptyChunks.Add(c);
         }
+    }
+
+    public void CheckINChunkPOsLies(Vector3 pos)
+    {
+        foreach (var chunk in AllChunks.Values)
+        {
+            if (!chunk.bounds.Contains(pos)) continue;
+            GameObject obj = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            obj.transform.position = chunk.bounds.center;
+            obj.transform.localScale = new Vector3(1, 1, 1);
+            return;
+        }
+        print("this lies no where ");
     }
 }

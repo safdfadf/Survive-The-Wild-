@@ -43,6 +43,7 @@ public class ZoneManager : MonoBehaviour
 
     private List<Bounds> _waterBounds = new();
     private int debugCount;
+    private Activity _lastActivity;
 
     private void Awake()
     {
@@ -86,6 +87,10 @@ public class ZoneManager : MonoBehaviour
         if (!_zoneByType.ContainsKey(type))
             _zoneByType[type] = new List<Zone>();
 
+
+        // when specie is same and their schedule is same why does it creates an extra zone 
+        // 
+        _lastActivity = type;
         foreach (var zone in _zoneByType[type])
         {
             if
@@ -97,7 +102,7 @@ public class ZoneManager : MonoBehaviour
             }
             else
             {
-                print(regionBounds.Contains(zone.transform.position));
+                print(zone.HasAvailablePosition + " " + zone.IsAvailableForTime(species, startHour, endHour));
             }
         }
 

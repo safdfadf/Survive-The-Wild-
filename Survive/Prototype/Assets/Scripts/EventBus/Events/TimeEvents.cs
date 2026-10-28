@@ -8,7 +8,7 @@ namespace DefaultNamespace.EventBus.Events
 
         public void oneSecondPass()
         {
-            onOneSecondPass();
+            onOneSecondPass?.Invoke();
         }
     }
 }

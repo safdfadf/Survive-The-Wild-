@@ -200,24 +200,14 @@ public class Zone : MonoBehaviour
         occupiedPositions.Remove(pos);
     }
 
-    /*
-    void OnDrawGizmos()
+    private void OnDrawGizmos()
     {
-        if (circleCenter != null)
+        foreach (var pos in zonePosition)
         {
-            //    Gizmos.color = Color.green;
-            //  DrawCircle(circleCenter.position, circleRadius);
-
             Gizmos.color = Color.red;
-            //  DrawArc(circleCenter.position, circleRadius, excludeStartAngle, excludeEndAngle);
-            //    DrawArc(circleCenter.position, circleRadius, excludeStartAngleB, excludeEndAngleB);
-            Gizmos.color = Color.blue;
-            foreach (var pos in zonePosition)
-            {
-                Gizmos.DrawSphere(pos, 10);
-            }
+            Gizmos.DrawSphere(pos, 1);
         }
-    }*/
+    }
 
     private void DrawCircle(Vector3 center, float radius, int segments = 100)
     {
@@ -264,7 +254,8 @@ public class Zone : MonoBehaviour
 
     public bool IsAvailableForTime(string species, int startHour, int endHour)
     {
-        for (int hour = startHour; hour < endHour; hour++)
+        print(startHour + "-" + endHour);
+        for (var hour = startHour; hour < endHour; hour++)
         {
             if (hourlyOccupancy.TryGetValue(hour, out var occupant))
             {

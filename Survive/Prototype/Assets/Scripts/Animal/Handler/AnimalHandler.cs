@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using DefaultNamespace.Helpers;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
@@ -106,7 +107,7 @@ public class
     }
 
     private void
-        UpdateAnimalPos(int hour) // every hour check if position of the animal needs to be changed based on schedule
+        UpdateAnimalPos(int hour)
     {
         foreach (var data in _activeData)
         {
@@ -116,14 +117,13 @@ public class
         }
     }
 
-    private void CheckAnimalToSpawn(Chunk chunk) // if animal lies in active chunk spawn it   
+    private void CheckAnimalToSpawn(Chunk chunk)
     {
         foreach (var data in _activeData)
         {
-            if (!data.CurrentPos.HasValue) Debug.Log("currentPOs issue");
-            if (data.CurrentPos.HasValue && chunk.bounds.Contains(data.CurrentPos.Value))
+            if (data.CurrentPos.HasValue &&
+                ChunkHelper.IsInChunkXZ(data.CurrentPos.Value, chunk.bounds))
             {
-                // if data contains the same so , they will make a herd 
                 ActivateAnimal(data);
             }
         }
@@ -158,6 +158,7 @@ public class
 
     private void ActivateAnimal(AnimalData data) // activates the animal and initializes it 
     {
+        print("activate animal");
         foreach (var So in _animalSo)
         {
             if (data.IsSpawned) continue;
@@ -242,5 +243,13 @@ public class
     {
         if (!_activeData.Contains(data)) return;
         _activeData.Remove(data);
+    }
+
+    private bool IsInChunkXZ(Vector3 pos, Bounds bounds)
+    {
+        return pos.x >= bounds.min.x &&
+               pos.x <= bounds.max.x &&
+               pos.z >= bounds.min.z &&
+               pos.z <= bounds.max.z;
     }
 }

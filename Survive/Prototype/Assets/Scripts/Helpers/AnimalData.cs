@@ -39,7 +39,6 @@ public class AnimalData
 
 
         _dailySchedule = scheduleManager.GetSchedule(animalSo.id, regionBounds);
-        Debug.Log(animalSo.id);
         foreach (var schedule in _dailySchedule)
         {
             switch (schedule.zoneType)
@@ -85,7 +84,6 @@ public class AnimalData
         alarmState = new AlarmState(this);
         currentState = calmState;
     }
-
     // spawning solly depends on chunk activation however when schedule changes and if current pos lies in active zone spawn it if animal is not already spawned 
     public void OnHourChanged(int hour)
     {

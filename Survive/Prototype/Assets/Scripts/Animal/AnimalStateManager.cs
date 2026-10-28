@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Animal.States;
 using DefaultNamespace.EventBus;
+using DefaultNamespace.Helpers;
 using Player;
 using UnityEngine;
 
@@ -106,6 +107,7 @@ public class AnimalStateManager : MonoBehaviour //ToDo : Change script name to p
         var isCrouching = _playerRepository.GetIsCrouching();
 
         Vector2 p = new Vector2(playerPos.x, playerPos.z);
+
         foreach (var kvp in _animalData)
         {
             List<AnimalData> group = kvp.Value;
@@ -114,12 +116,11 @@ public class AnimalStateManager : MonoBehaviour //ToDo : Change script name to p
             AnimalData first = group[0];
             if (!first.CurrentPos.HasValue) continue;
 
-            Vector3 firstPos = first.CurrentPos.Value;
+            var firstPos = first.CurrentPos.Value;
 
-            if (!bounds.Contains(firstPos))
+            if (!ChunkHelper.IsInChunkXZ(firstPos, bounds))
             {
-                print("not in bounds");
-
+                print("conyds");
                 continue;
             }
 
@@ -138,11 +139,11 @@ public class AnimalStateManager : MonoBehaviour //ToDo : Change script name to p
             if (shouldAlert)
             {
                 float fillRate = 1f / alertToAlarmTime;
-                first.NoiseSuspicion += fillRate * Time.deltaTime;
+                first.NoiseSuspicion += fillRate * 1;
             }
             else
             {
-                first.NoiseSuspicion -= suspicionDecay * Time.deltaTime;
+                first.NoiseSuspicion -= suspicionDecay * 1;
             }
 
             first.NoiseSuspicion = Mathf.Clamp01(first.NoiseSuspicion);
@@ -168,12 +169,6 @@ public class AnimalStateManager : MonoBehaviour //ToDo : Change script name to p
         AnimalState newState = data.GetCalmState();
         if (_currentState != null && _currentState.Equals(newState)) return;
         _currentState = newState;
-        if (data == null)
-        {
-            Debug.LogWarning("animal is null");
-            return;
-        }
-
         data.isLeader = true;
         data.ChangeState(newState);
     }

@@ -65,6 +65,7 @@ public class AnimalBase : MonoBehaviour, IInteractable
 
 
     public bool IsAggresive { get; set; }
+    private bool drawCircle;
 
     protected virtual void Awake()
     {
@@ -99,13 +100,19 @@ public class AnimalBase : MonoBehaviour, IInteractable
     private void OnEnable()
     {
         EventBus.On5SecondsPassed += UpdateCalmState;
+        EventManager.Instance.TimeEvents.onOneSecondPass += IsPlayerAround;
+    }
+
+    private void OnDisable()
+    {
+        EventBus.On5SecondsPassed -= UpdateCalmState;
+        EventManager.Instance.TimeEvents.onOneSecondPass -= IsPlayerAround;
     }
 
     private void LateUpdate()
     {
         if (isMoving)
             animator.SetFloat("Velocity", agent.velocity.magnitude);
-        IsPlayerAround();
     }
 
     private void UpdateCalmState()
@@ -179,7 +186,7 @@ public class AnimalBase : MonoBehaviour, IInteractable
         EventManager.Instance.reseourceEvent.GatherResource(baseObj.gameObject); //Todo:  remove this 
     }
 
-    public virtual void MoveTo(Vector3 destination, Action onArrived = null, float? speedOverride = null,
+    public void MoveTo(Vector3 destination, Action onArrived = null, float? speedOverride = null,
         bool ovveride = false)
     {
         if (isMoving && !ovveride)
@@ -189,11 +196,6 @@ public class AnimalBase : MonoBehaviour, IInteractable
         }
 
         agent.stoppingDistance = .1f;
-        if (agent == null)
-        {
-            Debug.Log("agent is null");
-            return;
-        }
 
         if (speedOverride > 14 || speedOverride == null)
         {
@@ -216,7 +218,6 @@ public class AnimalBase : MonoBehaviour, IInteractable
     public void MoveToPlayerForAttack()
     {
         Debug.Log("Moving To Player");
-        // keep running after the player until you attack 
         MoveTo(PlayerRepository.instance.GetApproachPos().position, () => DoDamage());
     }
 
@@ -289,25 +290,26 @@ public class AnimalBase : MonoBehaviour, IInteractable
         transform.rotation = Quaternion.LookRotation(dir);
     }
 
+
     public IEnumerator RamAttack()
     {
-        float warningRadius = 10f;
+        var warningRadius = 10f;
         float stopOffset = 1.5f;
-        float waitBeforeNextRam = .5f;
+        var waitBeforeNextRam = .5f;
 
         Transform player = PlayerRepository.instance.GetPlayerTransform();
 
         while (_currentHealth > _maxhealth * 0.10f)
         {
-            bool reached = false;
+            var reached = false;
 
-            while (!reached)
+            while (!reached) // initial attack 
             {
-                Vector3 dirToPlayer = (player.position - transform.position).normalized;
-                Vector3 stopPoint = player.position - dirToPlayer * stopOffset;
+                var dirToPlayer = (player.position - transform.position).normalized;
+                var stopPoint = player.position - dirToPlayer * stopOffset;
 
                 if (RetPosOnNv.TryGetNavMeshPoint(stopPoint, out Vector3 navStopPoint))
-                    agent.SetDestination(navStopPoint);
+                    MoveTo(navStopPoint, null, runSpeed,true);
 
                 if (Vector3.Distance(transform.position, navStopPoint) <= agent.stoppingDistance + 0.2f)
                     reached = true;
@@ -319,8 +321,8 @@ public class AnimalBase : MonoBehaviour, IInteractable
             yield return new WaitForSeconds(1f); // get Away from player 
 
 
-            Vector3 circlePoint = GetRandomPointOnCircle(player.position, warningRadius);
-
+            var circlePoint = GetRandomPointOnCircle(transform.position, warningRadius);
+            drawCircle = true;
             if (!RetPosOnNv.TryGetNavMeshPoint(circlePoint, out Vector3 navCirclePoint))
             {
                 Debug.Log("pos failed Remove Animal");
@@ -347,6 +349,17 @@ public class AnimalBase : MonoBehaviour, IInteractable
             yield return new WaitForSeconds(waitBeforeNextRam);
             Debug.Log("wait before next");
         }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.yellow;
+        if (drawCircle)
+            Gizmos.DrawSphere(transform.position, 10f);
+    }
+
+    private void DrawCircle(float warningRadius, Vector3 position)
+    {
     }
 
     public IEnumerator LookAttack()
