@@ -107,7 +107,6 @@ public class AnimalBase : MonoBehaviour, IInteractable
     {
         EventBus.On5SecondsPassed -= UpdateCalmState;
         SceneRoot.Instance.EventManager.TimeEvents.onOneSecondPass -= IsPlayerAround;
-
     }
 
     private void LateUpdate()
@@ -281,6 +280,7 @@ public class AnimalBase : MonoBehaviour, IInteractable
     public void TriggerAlertAnim()
     {
 //        animator.SetTrigger("Alert");
+        // trigger alarm audio 
     }
 
     protected void LookAtPlayer()
@@ -310,7 +310,7 @@ public class AnimalBase : MonoBehaviour, IInteractable
                 var stopPoint = player.position - dirToPlayer * stopOffset;
 
                 if (RetPosOnNv.TryGetNavMeshPoint(stopPoint, out Vector3 navStopPoint))
-                    MoveTo(navStopPoint, null, runSpeed,true);
+                    MoveTo(navStopPoint, null, runSpeed, true);
 
                 if (Vector3.Distance(transform.position, navStopPoint) <= agent.stoppingDistance + 0.2f)
                     reached = true;
@@ -373,7 +373,6 @@ public class AnimalBase : MonoBehaviour, IInteractable
 
     public void GetOutOfChunk()
     {
-        Debug.Log("pos failed Remove Animal");
         Vector3 pos = ChunkManager.Instance.GetClosestInactiveChunkPosition(transform.position);
         RetPosOnNv.TryGetNavMeshPoint(pos, out Vector3 navMeshHit);
         MoveTo(navMeshHit, () => RemoveAnimal(), null, true);
@@ -381,6 +380,7 @@ public class AnimalBase : MonoBehaviour, IInteractable
 
     protected virtual void RemoveAnimal()
     {
+        
         GlobalPool.instance.Return(AnimalSo.prefab, gameObject);
     }
 

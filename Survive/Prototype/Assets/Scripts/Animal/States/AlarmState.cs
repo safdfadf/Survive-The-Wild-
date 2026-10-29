@@ -7,6 +7,7 @@ namespace Animal.States
     {
         private bool _isAggresive = false;
         private float _attackCoolDown;
+        private int AlarmRadius;
 
         public AlarmState(AnimalData animalData) : base(animalData)
         {
@@ -21,7 +22,8 @@ namespace Animal.States
             Animal = animal;
             if (data is { isLeader: true })
             {
-                Debug.Log(animal.IsAggresive);
+                // Charge Call 
+                HandleAudioCall(AlarmRadius, Animal.AnimalSo.AlarmClip);
                 Animal.HerdCall();
             }
 
@@ -33,16 +35,6 @@ namespace Animal.States
             {
                 RunOutOfActiveChunk();
             }
-        }
-
-        private void HerdCall(AnimalBase animal)
-        {
-            if (data.AnimalHandler.Attacker == null && _isAggresive)
-            {
-                data.AnimalHandler.Attacker = animal;
-            }
-
-            data.AnimalHandler.HerdWarning(animal, data.GetCurrentZone());
         }
 
         public override void UpdateState()
@@ -64,6 +56,5 @@ namespace Animal.States
         {
             Animal.Attack();
         }
-
     }
 }

@@ -145,5 +145,10 @@ namespace Player
         {
             return _craftingHandler.MatchForRecipe(ingredients);
         }
+
+        public bool IsPlayerInRadius(int radius)
+        {
+            return false;
+        }
     }
 }

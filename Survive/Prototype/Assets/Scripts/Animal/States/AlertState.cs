@@ -7,6 +7,7 @@ namespace Animal.States
         private float nextActionTime;
         private float minIntervalTime = 5f;
         private float maxIntervalTime = 20f;
+        private int AlarmRadius;
 
         public AlertState(AnimalData data) : base(data)
         {
@@ -18,14 +19,13 @@ namespace Animal.States
 
         public override void EnterState(AnimalBase animal)
         {
-            ScheduleNextAction();
+            //  ScheduleNextAction();
             Animal = animal;
             AnimalAlert();
         }
 
         public override void UpdateState()
         {
-            // will different animal behave differently in different states or we can add a couple beh and use them for example 
         }
 
         public override void ExitState()
@@ -36,10 +36,13 @@ namespace Animal.States
         {
             nextActionTime = Time.time + Random.Range(minIntervalTime, maxIntervalTime);
         }
+
         private void AnimalAlert()
         {
             if (Animal == null) return;
             Animal.TriggerAlertAnim();
+            // warning Call 
+            HandleAudioCall(AlarmRadius, Animal.AnimalSo.warningClip);
         }
     }
 }

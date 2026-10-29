@@ -18,7 +18,7 @@ public class AnimalSo : ScriptableObject
     public bool inZoneTravel;
     [Header("AudioClip")]
     public AudioClip hurtClip;
-    public AudioClip chargeClip;
+    [FormerlySerializedAs("chargeClip")] public AudioClip AlarmClip;
     public AudioClip warningClip;
     public AudioClip calmClip;
     private void OnValidate()

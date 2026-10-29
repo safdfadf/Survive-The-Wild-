@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using Player;
 using UnityEngine;
 
 namespace DefaultNamespace.Managers
@@ -8,23 +10,46 @@ namespace DefaultNamespace.Managers
     public class AudioManager : MonoBehaviour
     {
         [SerializeField] private List<PlayerSound> _playerAudioClips;
+        private AudioSource _audioSource;
+        private Queue<AnimalAudioRequest> animalQueue = new();
+        private float nextPlayTime;
+        [SerializeField] private float cooldown = 4f;
+        private bool canPlay;
 
-        private void OnEnable()
+        private void Awake()
         {
-            throw new NotImplementedException();
+            _audioSource = GetComponent<AudioSource>();
         }
 
-        public void AnimalSound(AudioClip clip, float volume) // will be used by animal to trigger 
+        public void AnimalSound(AudioClip clip,
+            float volume)
         {
+            animalQueue.Enqueue(
+                new AnimalAudioRequest()
+                {
+                    Clip = clip,
+                    Volume = volume
+                });
+            StopCoroutine(HandleAnimalSound());
         }
 
-        public void PlayAttackSound()
+        private IEnumerator HandleAnimalSound()
         {
+            if (animalQueue.Count == 0) yield break;
+            {
+                var request =
+                    animalQueue.Dequeue();
+
+                _audioSource.PlayOneShot(
+                    request.Clip,
+                    request.Volume);
+
+                yield return new WaitForSeconds(cooldown);
+            }
         }
 
         public void PlayerSound(SoundType soundType)
         {
-            
         }
     }
 }
@@ -43,4 +68,10 @@ public class PlayerSound
 {
     public AudioClip Clip;
     public SoundType Type;
+}
+
+public class AnimalAudioRequest
+{
+    public AudioClip Clip;
+    public float Volume;
 }

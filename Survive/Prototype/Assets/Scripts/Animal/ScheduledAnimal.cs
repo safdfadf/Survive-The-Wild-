@@ -83,7 +83,7 @@ public class ScheduledAnimal : AnimalBase
     public override void TakeDamage(PlayerAttack atk)
     {
         base.TakeDamage(atk);
-        AnimalData.isLeader = true;
+        AnimalData.isLeader = true;// whoever is hurt in herd should call the leader instead of it becoming
         // call audio and an hurt anim and then run 
         ActivateState(AlarmState);
     }
