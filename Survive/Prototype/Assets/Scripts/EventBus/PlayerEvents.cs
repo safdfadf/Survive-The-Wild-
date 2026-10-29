@@ -7,6 +7,8 @@ namespace DefaultNamespace.EventBus
         public Action<int> OnAddExperience;
         public Action OnTriggerPlayerSleep;
         public Action OnDropObjFromHand;
+        public Action<float> OnDrainStamina;
+
         public void AddExperience(int experience)
         {
             OnAddExperience(experience);
@@ -15,6 +17,12 @@ namespace DefaultNamespace.EventBus
         public void TriggerSleep()
         {
             OnTriggerPlayerSleep();
+        }
+
+        
+        public void PayAttackCost(int cost)
+        {
+            OnDrainStamina(cost);
         }
     }
 }

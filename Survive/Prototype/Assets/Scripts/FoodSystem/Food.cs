@@ -1,4 +1,5 @@
 using DefaultNamespace;
+using DefaultNamespace.Managers;
 using Effect;
 using Player;
 using UnityEngine;
@@ -46,6 +47,7 @@ namespace FoodSystem
 
         public override void UseMe()
         {
+            SceneRoot.Instance.AudioManager.PlayerSound(SoundType.Food);
             PlayerRepository.instance.ConsumeFood(data);
             base.UseMe();
         }

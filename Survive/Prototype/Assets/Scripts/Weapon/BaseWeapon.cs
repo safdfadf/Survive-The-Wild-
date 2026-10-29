@@ -98,7 +98,7 @@ public class BaseWeapon : Obj<ObjSo>
     }
 
 
-    public void SwitchWeaponBehavior(InputAction.CallbackContext ctx)
+    public void HandleWeapon(InputAction.CallbackContext ctx)
     {
         if (behaviours.Length == 1) // if there is only one behaviour 
         {

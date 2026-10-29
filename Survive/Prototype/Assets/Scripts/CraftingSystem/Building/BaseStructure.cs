@@ -55,7 +55,7 @@ public class
         ObjSo so = GetNextRequiredResource();
         if (!IsAssembled || so != null)
         {
-            EventManager.Instance.StructureEvents.SubmitResource();
+            SceneRoot.Instance.EventManager.StructureEvents.SubmitResource();
         }
     }
 

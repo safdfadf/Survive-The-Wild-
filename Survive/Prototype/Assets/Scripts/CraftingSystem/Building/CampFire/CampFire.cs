@@ -34,13 +34,13 @@ public class CampFire : BaseStructure, ICook // this will be base class for all 
     private void OnEnable()
     {
         EventBus.OnToggleTracksMenu += Ignite;
-        EventManager.Instance.reseourceEvent.onGatherResource += RemoveFood;
+        SceneRoot.Instance.EventManager.reseourceEvent.onGatherResource += RemoveFood;
     }
 
     private void OnDisable()
     {
         EventBus.OnToggleTracksMenu -= Ignite;
-        EventManager.Instance.reseourceEvent.onGatherResource -= RemoveFood;
+        SceneRoot.Instance.EventManager.reseourceEvent.onGatherResource -= RemoveFood;
     }
 
     private void RemoveFood(GameObject food)

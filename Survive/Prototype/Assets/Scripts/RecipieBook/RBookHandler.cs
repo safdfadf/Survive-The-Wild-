@@ -50,12 +50,12 @@ public class RBookHandler : MonoBehaviour
 
     private void OnEnable()
     {
-        EventManager.Instance.questEvent.OnQuestStepComplete += CheckQuest;
+        SceneRoot.Instance.EventManager.questEvent.OnQuestStepComplete += CheckQuest;
     }
 
     private void OnDisable()
     {
-        EventManager.Instance.questEvent.OnQuestStepComplete -= CheckQuest;
+        SceneRoot.Instance.EventManager.questEvent.OnQuestStepComplete -= CheckQuest;
     }
 
     public void ToggleRBook()

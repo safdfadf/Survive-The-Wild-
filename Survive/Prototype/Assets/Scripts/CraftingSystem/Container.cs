@@ -21,6 +21,7 @@ namespace DefaultNamespace.CraftingSystem
         {
             if (IsContainerFilled)
             {
+                SceneRoot.Instance.AudioManager.PlayerSound(SoundType.Drinking);
                 PlayerRepository.instance.ConsumeFood(foodConsumptionData);
                 IsContainerFilled = false;
                 UseMeDescription = "Collect Water"; // update display 

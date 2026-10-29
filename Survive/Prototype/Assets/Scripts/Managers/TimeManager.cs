@@ -128,7 +128,7 @@ public class TimeManager : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(1);
-            EventManager.Instance.TimeEvents.oneSecondPass();
+            SceneRoot.Instance.EventManager.TimeEvents.oneSecondPass();
         }
     }
 }

@@ -30,14 +30,14 @@ public class PlayerInventory : MonoBehaviour
 
     private void OnEnable()
     {
-        EventManager.Instance.reseourceEvent.onGatherResource += AddWorldItem;
-        EventManager.Instance.StructureEvents.OnSubmitResource += SubmitResource;
+        SceneRoot.Instance.EventManager.reseourceEvent.onGatherResource += AddWorldItem;
+        SceneRoot.Instance.EventManager.StructureEvents.OnSubmitResource += SubmitResource;
     }
 
     private void OnDisable()
     {
-        EventManager.Instance.reseourceEvent.onGatherResource -= AddWorldItem;
-        EventManager.Instance.StructureEvents.OnSubmitResource -= SubmitResource;
+        SceneRoot.Instance.EventManager.reseourceEvent.onGatherResource -= AddWorldItem;
+        SceneRoot.Instance.EventManager.StructureEvents.OnSubmitResource -= SubmitResource;
     }
 
     private void Start()

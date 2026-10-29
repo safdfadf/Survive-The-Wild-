@@ -45,14 +45,14 @@ public class CraftingHandler : MonoBehaviour
     {
         EventBus.OnCraftResource += AddIngredient;
         EventBus.OnUnCraftResource += RemoveResource;
-        EventManager.Instance.questEvent.OnMissionComplete += UnLockRecipe;
+        SceneRoot.Instance.EventManager.questEvent.OnMissionComplete += UnLockRecipe;
     }
 
     private void OnDisable()
     {
         EventBus.OnCraftResource -= AddIngredient;
         EventBus.OnUnCraftResource -= RemoveResource;
-        EventManager.Instance.questEvent.OnMissionComplete -= UnLockRecipe;
+        SceneRoot.Instance.EventManager.questEvent.OnMissionComplete -= UnLockRecipe;
     }
 
     private void Awake()
@@ -220,7 +220,7 @@ public class CraftingHandler : MonoBehaviour
         {
             SpawnStructure(so);
             recipeBook.ToggleRBook();
-            EventManager.Instance.CraftEvents.ObjectCraft(so.resSo);
+            SceneRoot.Instance.EventManager.CraftEvents.ObjectCraft(so.resSo);
             return;
         }
 
@@ -233,7 +233,7 @@ public class CraftingHandler : MonoBehaviour
         }
 
         obj.So = so.resSo;
-        EventManager.Instance.CraftEvents.ObjectCraft(obj.So);
+        SceneRoot.Instance.EventManager.CraftEvents.ObjectCraft(obj.So);
         _playerInventory.AddWorldItem(result);
         craftButton.gameObject.SetActive(false);
         if (isTesting) return;

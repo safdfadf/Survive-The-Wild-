@@ -20,12 +20,12 @@ namespace DefaultNamespace.QuestSystem
 
         private void OnEnable()
         {
-            EventManager.Instance.questEvent.OnQuestStepComplete += FinishQuest;
+            SceneRoot.Instance.EventManager.questEvent.OnQuestStepComplete += FinishQuest;
         }
 
         private void OnDisable()
         {
-            EventManager.Instance.questEvent.OnQuestStepComplete -= FinishQuest;
+            SceneRoot.Instance.EventManager.questEvent.OnQuestStepComplete -= FinishQuest;
         }
 
         private void CreateQuestMap()
@@ -61,7 +61,7 @@ namespace DefaultNamespace.QuestSystem
             }
             else
             {
-                EventManager.Instance.questEvent.MissionComplete(q.questInfo.RewardData);
+                SceneRoot.Instance.EventManager.questEvent.MissionComplete(q.questInfo.RewardData);
                 // ask ui manager to do mission complete and  level experience ui  
                 StartNewQuest();
             }

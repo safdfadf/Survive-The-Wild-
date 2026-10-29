@@ -68,12 +68,12 @@ public class ResourceInventory : MonoBehaviour
 
     private void OnEnable()
     {
-        EventManager.Instance.reseourceEvent.onMenuToggle += ToggleRaycastTarget;
+        SceneRoot.Instance.EventManager.reseourceEvent.onMenuToggle += ToggleRaycastTarget;
     }
 
     private void OnDisable()
     {
-        EventManager.Instance.reseourceEvent.onMenuToggle -= ToggleRaycastTarget;
+        SceneRoot.Instance.EventManager.reseourceEvent.onMenuToggle -= ToggleRaycastTarget;
     }
 
     private void LateUpdate()

@@ -190,7 +190,7 @@ public class InputManager : MonoBehaviour
     {
         BaseWeapon weapon = _player.CurrentWeapon;
         if (weapon == null) return;
-        weapon.SwitchWeaponBehavior(ctx);
+        weapon.HandleWeapon(ctx);
     }
 
     private void ToggleTracksMenu()

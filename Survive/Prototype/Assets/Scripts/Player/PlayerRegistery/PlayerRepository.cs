@@ -38,10 +38,6 @@ namespace Player
             _craftingHandler = GetComponent<CraftingHandler>();
         }
 
-        private void LateUpdate()
-        {
-        }
-
         public float GetScentIntensity(Vector3 position)
         {
             return _playerScentEmitter.GetIntensityAt(position);

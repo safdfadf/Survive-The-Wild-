@@ -100,13 +100,14 @@ public class AnimalBase : MonoBehaviour, IInteractable
     private void OnEnable()
     {
         EventBus.On5SecondsPassed += UpdateCalmState;
-        EventManager.Instance.TimeEvents.onOneSecondPass += IsPlayerAround;
+        SceneRoot.Instance.EventManager.TimeEvents.onOneSecondPass += IsPlayerAround;
     }
 
     private void OnDisable()
     {
         EventBus.On5SecondsPassed -= UpdateCalmState;
-        EventManager.Instance.TimeEvents.onOneSecondPass -= IsPlayerAround;
+        SceneRoot.Instance.EventManager.TimeEvents.onOneSecondPass -= IsPlayerAround;
+
     }
 
     private void LateUpdate()
@@ -155,7 +156,7 @@ public class AnimalBase : MonoBehaviour, IInteractable
     protected virtual void Death()
     {
         Debug.Log("Death");
-        EventManager.Instance.AnimalEvents.AnimalDeath(this);
+        SceneRoot.Instance.EventManager.AnimalEvents.AnimalDeath(this);
         ToggleCollider(true);
         animator.SetBool("Death", true);
         agent.enabled = false;
@@ -183,7 +184,7 @@ public class AnimalBase : MonoBehaviour, IInteractable
         }
 
         GlobalPool.instance.Return(AnimalSo.prefab, gameObject);
-        EventManager.Instance.reseourceEvent.GatherResource(baseObj.gameObject); //Todo:  remove this 
+        SceneRoot.Instance.EventManager.reseourceEvent.GatherResource(baseObj.gameObject); //Todo:  remove this 
     }
 
     public void MoveTo(Vector3 destination, Action onArrived = null, float? speedOverride = null,

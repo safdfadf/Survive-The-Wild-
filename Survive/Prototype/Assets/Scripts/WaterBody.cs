@@ -43,6 +43,8 @@ namespace DefaultNamespace
             OutlineMe = false;
             Gm = gameObject;
             Description = "Drink";
+            CanUse = true;
+            UseMeDescription = "WashYourSelf";
             CanDisplay = true;
             data.NutrientsCount = waterSo.nutrientsCount;
         }
@@ -51,12 +53,13 @@ namespace DefaultNamespace
         {
             if (!isHit) return;
             emptyobj.transform.position = PlayerRepository.instance.GetPlayerUiPos();
-            Gm = emptyobj;// test
+            Gm = emptyobj; // test
         }
 
         private void WashYourself() // function for use me 
         {
-            // remove player's scent 
+            // trigger water splash fx
+            SceneRoot.Instance.AudioManager.PlayerSound(SoundType.WashSelf);
         }
 
         public void FillContainer()
@@ -74,11 +77,13 @@ namespace DefaultNamespace
 
         public void UseMe()
         {
+            WashYourself();
         }
 
         public void ExecuteAction()
         {
             CheckForPoisoning();
+            SceneRoot.Instance.AudioManager.PlayerSound(SoundType.Drinking);
             PlayerRepository.instance.ConsumeFood(data);
         }
 
@@ -113,6 +118,5 @@ namespace DefaultNamespace
                 data.SelfAttack = attack;
             }
         }
-
     }
 }

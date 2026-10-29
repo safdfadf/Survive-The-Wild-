@@ -25,3 +25,7 @@ MonoBehaviour:
   spawnProbability: 0
   isAggresive: 0
   inZoneTravel: 0
+  hurtClip: {fileID: 0}
+  chargeClip: {fileID: 0}
+  warningClip: {fileID: 0}
+  calmClip: {fileID: 0}

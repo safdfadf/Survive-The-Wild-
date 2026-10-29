@@ -22,12 +22,12 @@ namespace QuestSystem.QuestSteps
 
         private void OnEnable()
         {
-            EventManager.Instance.AnimalEvents.onAnimalDeath += CheckSubmission;
+            SceneRoot.Instance.EventManager.AnimalEvents.onAnimalDeath += CheckSubmission;
         }
 
         private void OnDisable()
         {
-            EventManager.Instance.AnimalEvents.onAnimalDeath -= CheckSubmission;
+            SceneRoot.Instance.EventManager.AnimalEvents.onAnimalDeath -= CheckSubmission;
         }
 
         private void CheckSubmission(AnimalBase animal)

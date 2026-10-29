@@ -46,12 +46,12 @@ public class InventoryItem : MonoBehaviour
 
     private void OnEnable()
     {
-        EventManager.Instance.UiEvents.onRemoveMenu += DeactivateMenu;
+        SceneRoot.Instance.EventManager.UiEvents.onRemoveMenu += DeactivateMenu;
     }
 
     private void OnDisable()
     {
-        EventManager.Instance.UiEvents.onRemoveMenu -= DeactivateMenu;
+        SceneRoot.Instance.EventManager.UiEvents.onRemoveMenu -= DeactivateMenu;
     }
 
     public void SetItem(Sprite sprite, GameObject Obj, ResourceInventory inventory)
@@ -70,7 +70,7 @@ public class InventoryItem : MonoBehaviour
     public void Craft()
     {
         IsInCraftingList = true;
-        EventManager.Instance.UiEvents.RemoveMenu();
+        SceneRoot.Instance.EventManager.UiEvents.RemoveMenu();
         EventBus.OnCraftResource.Invoke(so, this);
         SetMenuPos();
     }

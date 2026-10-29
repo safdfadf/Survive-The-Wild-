@@ -21,4 +21,5 @@ MonoBehaviour:
   Weight: 0
   damage: 20
   block: 30
+  staminaCost: 0
   scale: 8

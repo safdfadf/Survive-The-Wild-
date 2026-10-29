@@ -16,7 +16,7 @@ namespace DefaultNamespace.CraftingSystem.Building
         public override void ExecuteAction()
         {
             if (!IsAssembled) return;
-            EventManager.Instance.playerEvents.TriggerSleep();
+            SceneRoot.Instance.EventManager.playerEvents.TriggerSleep();
         }
     }
 }

@@ -6,7 +6,6 @@ namespace DefaultNamespace.EventBus
 {
     public class EventManager : MonoBehaviour
     {
-        public static EventManager Instance;
         public QuestEvent questEvent;
         public ResourceEvents reseourceEvent;
         public PlayerEvents playerEvents;
@@ -15,17 +14,9 @@ namespace DefaultNamespace.EventBus
         public StructureEvents StructureEvents;
         public UIEvents UiEvents;
         public TimeEvents TimeEvents;
+
         private void Awake()
         {
-            if (Instance == null)
-            {
-                Instance = this;
-            }
-            else
-            {
-                Destroy(gameObject);
-            }
-
             InitializeEvents();
         }
 

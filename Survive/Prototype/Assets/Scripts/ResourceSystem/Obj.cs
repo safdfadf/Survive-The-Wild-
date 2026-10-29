@@ -82,14 +82,14 @@ public abstract class Obj<TSo> : MonoBehaviour, IsoInitializer<TSo>, IInteractab
     public virtual void Harvest()
     {
         // deactive sub menu 
-        EventManager.Instance.UiEvents.RemoveMenu();
+        SceneRoot.Instance.EventManager.UiEvents.RemoveMenu();
     }
 
 
     public virtual void UseMe()
     {
         PlayerRepository.instance.RemoveResourceFromInventory(this as Obj<ObjSo>, true);
-        EventManager.Instance.UiEvents.RemoveMenu();
+        SceneRoot.Instance.EventManager.UiEvents.RemoveMenu();
         Destroy(gameObject);
     }
 
@@ -104,7 +104,7 @@ public abstract class Obj<TSo> : MonoBehaviour, IsoInitializer<TSo>, IInteractab
 
     protected virtual void HandleAction()
     {
-        EventManager.Instance.reseourceEvent.GatherResource(gameObject);
+        SceneRoot.Instance.EventManager.reseourceEvent.GatherResource(gameObject);
     }
 
     protected virtual void SetUiBools() // ToDo: show this in inspector instead of script 

@@ -27,12 +27,12 @@ namespace DefaultNamespace.QuestSystem.QuestSteps
 
         private void OnEnable()
         {
-            EventManager.Instance.reseourceEvent.onGatherResource += CheckSubmitResource;
+            SceneRoot.Instance.EventManager.reseourceEvent.onGatherResource += CheckSubmitResource;
         }
 
         private void OnDisable()
         {
-            EventManager.Instance.reseourceEvent.onGatherResource -= CheckSubmitResource;
+            SceneRoot.Instance.EventManager.reseourceEvent.onGatherResource -= CheckSubmitResource;
         }
 
 

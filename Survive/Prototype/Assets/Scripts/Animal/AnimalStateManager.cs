@@ -56,12 +56,12 @@ public class AnimalStateManager : MonoBehaviour //ToDo : Change script name to p
 
     private void OnEnable()
     {
-        EventManager.Instance.TimeEvents.onOneSecondPass += CheckPlayerNoise;
+        SceneRoot.Instance.EventManager.TimeEvents.onOneSecondPass += CheckPlayerNoise;
     }
 
     private void OnDisable()
     {
-        EventManager.Instance.TimeEvents.onOneSecondPass -= CheckPlayerNoise;
+        SceneRoot.Instance.EventManager.TimeEvents.onOneSecondPass -= CheckPlayerNoise;
     }
 
     private void CheckPlayerScent(Vector3 windDirection, float windSpeed)

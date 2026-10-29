@@ -16,7 +16,11 @@ public class AnimalSo : ScriptableObject
     public float spawnProbability;
     public bool isAggresive;
     public bool inZoneTravel;
-
+    [Header("AudioClip")]
+    public AudioClip hurtClip;
+    public AudioClip chargeClip;
+    public AudioClip warningClip;
+    public AudioClip calmClip;
     private void OnValidate()
     {
 #if UNITY_EDITOR

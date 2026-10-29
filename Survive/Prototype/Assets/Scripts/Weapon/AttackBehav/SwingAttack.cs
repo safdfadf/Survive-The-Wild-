@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using DefaultNamespace.EventBus;
 using Player;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -14,14 +15,16 @@ namespace DefaultNamespace.Weapon
         {
             if (isHolding) return;
             animator.SwordAttack(); //ToDo: make it a trigger 
+            SceneRoot.Instance.AudioManager.PlayerSound(SoundType.Attack);
+            SceneRoot.Instance.EventManager.playerEvents.OnDrainStamina(data.weaponSo.staminaCost);
             StartCoroutine(StartAttacking());
         }
 
         public override void OnInput(InputAction.CallbackContext ctx)
         {
-            Debug.Log(weapon.isEquipped +" "+ weapon.RestrictUse);
+            Debug.Log(weapon.isEquipped + " " + weapon.RestrictUse);
             if (!weapon.isEquipped || weapon.RestrictUse) return;
-           if (ctx.interaction is TapInteraction)
+            if (ctx.interaction is TapInteraction)
             {
                 Attack();
             }

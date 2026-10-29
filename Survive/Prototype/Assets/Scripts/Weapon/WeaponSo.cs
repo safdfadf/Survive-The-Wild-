@@ -7,5 +7,6 @@ public class WeaponSo : ObjSo
 {
     [FormerlySerializedAs("maxDamage")] public int damage;
     [FormerlySerializedAs("maxBlock")] public int block;
+    public float staminaCost;
     public int scale;//ui
 }

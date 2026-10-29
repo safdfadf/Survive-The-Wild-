@@ -46,6 +46,7 @@ public class PlayerBody : MonoBehaviour
     {
         _playerVitalStats.DamageToHealth(attack.Damage);
         _damageScreen.TriggerDamageEffect();
+        SceneRoot.Instance.AudioManager.PlayerSound(SoundType.Hurt);
         DOtEffects dot = attack.Effects as DOtEffects;
         if (CheckForActiveEffects(dot, out ActiveEffect existing))
         {
@@ -63,7 +64,8 @@ public class PlayerBody : MonoBehaviour
         else // Regular damage 
         {
             Debug.Log("taking damage" + BleedingEffect);
-            if (Random.value <= attack.BleedingProbab && !CheckForActiveEffects(BleedingEffect, out ActiveEffect activeEffect))
+            if (Random.value <= attack.BleedingProbab &&
+                !CheckForActiveEffects(BleedingEffect, out ActiveEffect activeEffect))
             {
                 Debug.Log("Bleeding effect");
                 ActiveEffect woundEffect = new ActiveEffect(BleedingEffect);

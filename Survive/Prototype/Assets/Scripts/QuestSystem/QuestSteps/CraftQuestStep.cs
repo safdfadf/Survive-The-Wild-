@@ -12,12 +12,12 @@ namespace QuestSystem.QuestSteps
 
         private void OnEnable()
         {
-            EventManager.Instance.CraftEvents.OnCraft += CheckSubmitResource;
+            SceneRoot.Instance.EventManager.CraftEvents.OnCraft += CheckSubmitResource;
         }
 
         private void OnDisable()
         {
-            EventManager.Instance.CraftEvents.OnCraft -= CheckSubmitResource;
+            SceneRoot.Instance.EventManager.CraftEvents.OnCraft -= CheckSubmitResource;
         }
 
         private void CheckSubmitResource(ObjSo craftedObj)

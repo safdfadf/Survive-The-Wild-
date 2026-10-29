@@ -70,14 +70,15 @@ public class PlayerVitalStats : MonoBehaviour
     {
         EventBus.On5SecondsPassed += UpdateStats;
         EventBus.On5SecondsPassed += UpdateHealth;
-        EventManager.Instance.playerEvents.OnTriggerPlayerSleep += Sleep;
+        SceneRoot.Instance.EventManager.playerEvents.OnTriggerPlayerSleep += Sleep;
+        SceneRoot.Instance.EventManager.playerEvents.OnDrainStamina += DrainStamina;
     }
 
     private void OnDisable()
     {
         EventBus.On5SecondsPassed -= UpdateStats;
         EventBus.On5SecondsPassed -= UpdateHealth;
-        EventManager.Instance.playerEvents.OnTriggerPlayerSleep -= Sleep;
+        SceneRoot.Instance.EventManager.playerEvents.OnTriggerPlayerSleep -= Sleep;
     }
 
     private void LateUpdate()
@@ -134,9 +135,25 @@ public class PlayerVitalStats : MonoBehaviour
 
     public void DrainStamina(float dt)
     {
+        if (_currentStamina < -0)
+        {
+            OutOfBreath();
+            return;
+        }
+
+        // based on player stamina level should get some benefits 
         _currentStamina -= staminaDrainRate * dt;
         _currentStamina = Mathf.Clamp(_currentStamina, 0f, _currentEnergy);
         _playerUI.StaminaSlider(_currentStamina / maxStamina);
+    }
+
+    private void OutOfBreath()
+    {
+        SceneRoot.Instance.AudioManager.PlayerSound(SoundType.Winded);
+        while (_currentStamina < maxStamina)
+        {
+            _movementHandler._isSprinting = false;
+        }
     }
 
     private void UpdateStamina()
