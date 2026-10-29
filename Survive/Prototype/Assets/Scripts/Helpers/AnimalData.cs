@@ -84,6 +84,7 @@ public class AnimalData
         alarmState = new AlarmState(this);
         currentState = calmState;
     }
+
     // spawning solly depends on chunk activation however when schedule changes and if current pos lies in active zone spawn it if animal is not already spawned 
     public void OnHourChanged(int hour)
     {
@@ -136,13 +137,9 @@ public class AnimalData
         _lastSegment.EndPos = pos.Value;
         CurrentPos = pos;
 
-        if (IsSpawned)
+        if (IsSpawned) // here if we are zone traveling and if 
         {
-            ScheduledAnimal scheduledAnimal = AnimalInstance.GetComponent<ScheduledAnimal>();
-            isZoneTraveling = true;
-            scheduledAnimal.MoveTo(CurrentPos.Value, onArrived: () =>
-                TrackHandler.instance.CreateTracks(_lastSegment, currentState, AnimalSo));
-            AnimalUI.transform.SetParent(scheduledAnimal.gameObject.transform);
+            HandleZoneTraveling();
             return;
         }
         else if (ChunkRepo.instance.CheckPosInActiveChunk(CurrentPos.Value))
@@ -169,9 +166,21 @@ public class AnimalData
         return _dailySchedule[nextIndex];
     }
 
-    private void LastSchedule(Schedule last)
+    private void HandleZoneTraveling()
     {
-        // through the schedule get the zone pos and release and create tracks 
+        ScheduledAnimal scheduledAnimal = AnimalInstance.GetComponent<ScheduledAnimal>();
+        // if new zone pos is out of active chunk got out of chunk and deactive 
+        if (!ChunkManager.Instance.IsPosInPlayerChunk(CurrentPos.Value))
+        {
+            
+            scheduledAnimal.GetOutOfChunk();
+        }
+
+
+        isZoneTraveling = true;
+        scheduledAnimal.MoveTo(CurrentPos.Value, onArrived: () =>
+            TrackHandler.instance.CreateTracks(_lastSegment, currentState, AnimalSo));
+        AnimalUI.transform.SetParent(scheduledAnimal.gameObject.transform);
     }
 
     private Schedule GetCurrentScheduleEntry(int hour)
