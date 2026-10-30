@@ -2,13 +2,11 @@
 
 namespace Animal.States
 {
-    // depending on the animal it goes to the attacks n no. of times 
     public class AlarmState : AnimalState
     {
-        private bool _isAggresive = false;
         private float _attackCoolDown;
-        private int AlarmRadius;
-
+        private int AlarmRadius = 15;
+        // what should be the radius for alarm state 
         public AlarmState(AnimalData animalData) : base(animalData)
         {
         }
@@ -22,8 +20,9 @@ namespace Animal.States
             Animal = animal;
             if (data is { isLeader: true })
             {
-                // Charge Call 
-                HandleAudioCall(AlarmRadius, Animal.AnimalSo.AlarmClip);
+                Debug.Log("I am the lEader");
+                HandleAudioCall(AlarmRadius,
+                    Animal.AnimalSo.AlarmClip[Random.Range(0, Animal.AnimalSo.AlarmClip.Count)]);
                 Animal.HerdCall();
             }
 

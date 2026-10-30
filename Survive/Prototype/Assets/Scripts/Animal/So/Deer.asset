@@ -25,7 +25,13 @@ MonoBehaviour:
   spawnProbability: 0
   isAggresive: 0
   inZoneTravel: 0
-  hurtClip: {fileID: 0}
-  chargeClip: {fileID: 0}
-  warningClip: {fileID: 0}
-  calmClip: {fileID: 0}
+  hurtClip: []
+  AlarmClip:
+  - {fileID: 0}
+  warningClip:
+  - {fileID: 8300000, guid: a54fb010cd89d46409ac8459d07e4097, type: 3}
+  - {fileID: 8300000, guid: 46d8981a2ae225245bdb163041ad3ab6, type: 3}
+  calmClip:
+  - {fileID: 8300000, guid: 86e8dadc4e609534ebda4c98d019daf6, type: 3}
+  - {fileID: 8300000, guid: dbee688f8c1431f4a9dc561f98aeeb32, type: 3}
+  - {fileID: 8300000, guid: 1308b936b2350674881ff089e571c79b, type: 3}

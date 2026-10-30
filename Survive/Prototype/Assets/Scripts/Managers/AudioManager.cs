@@ -1,20 +1,26 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using Player;
 using UnityEngine;
+using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 namespace DefaultNamespace.Managers
 {
     [RequireComponent(typeof(AudioSource))]
     public class AudioManager : MonoBehaviour
     {
-        [SerializeField] private List<PlayerSound> _playerAudioClips;
+        [SerializeField] private List<PlayerSound> _playerAudioClips = new();
+        [SerializeField] private float volumeConstant;
+        [SerializeField] private float cooldown = 4f;
         private AudioSource _audioSource;
         private Queue<AnimalAudioRequest> animalQueue = new();
         private float nextPlayTime;
-        [SerializeField] private float cooldown = 4f;
         private bool canPlay;
+
+        private float volume;
 
         private void Awake()
         {
@@ -30,7 +36,7 @@ namespace DefaultNamespace.Managers
                     Clip = clip,
                     Volume = volume
                 });
-            StopCoroutine(HandleAnimalSound());
+            StartCoroutine(HandleAnimalSound());
         }
 
         private IEnumerator HandleAnimalSound()
@@ -50,6 +56,14 @@ namespace DefaultNamespace.Managers
 
         public void PlayerSound(SoundType soundType)
         {
+            PlayerSound sound = _playerAudioClips.Find(x => x.Type == soundType);
+
+            if (sound == null || sound.Clips.Count == 0)
+                return;
+
+            AudioClip randomClip = sound.Clips[UnityEngine.Random.Range(0, sound.Clips.Count)];
+
+            _audioSource.PlayOneShot(randomClip, volumeConstant);
         }
     }
 }
@@ -61,12 +75,16 @@ public enum SoundType
     Attack,
     Drinking,
     Food,
-    WashSelf
+    Vomit,
+    WashSelf,
+    Tired,
+    MorningYawn
 }
 
+[System.Serializable]
 public class PlayerSound
 {
-    public AudioClip Clip;
+    [FormerlySerializedAs("Clip")] public List<AudioClip> Clips;
     public SoundType Type;
 }
 

@@ -158,13 +158,12 @@ public class
 
     private void ActivateAnimal(AnimalData data) // activates the animal and initializes it 
     {
-        print("activate animal");
         foreach (var So in _animalSo)
         {
             if (data.IsSpawned) continue;
             if (So == data.AnimalSo)
             {
-                GameObject obj = GlobalPool.instance.Get(So.prefab, data.CurrentPos.Value);
+                var obj = GlobalPool.instance.Get(So.prefab, data.CurrentPos.Value);
                 data.AnimalInstance = obj;
                 data.IsSpawned = true;
                 ScheduledAnimal scheduledAnimal = obj.GetComponent<ScheduledAnimal>();
@@ -233,23 +232,9 @@ public class
         }
     }
 
-    public void LeaderCall(AnimalBase animal, Zone zone)
-    {
-        // since in the herd only one animal is allowed to call 
-        // here whoever comes first becomes 
-    }
-
     public void RemoveAnimalData(AnimalData data)
     {
         if (!_activeData.Contains(data)) return;
         _activeData.Remove(data);
-    }
-
-    private bool IsInChunkXZ(Vector3 pos, Bounds bounds)
-    {
-        return pos.x >= bounds.min.x &&
-               pos.x <= bounds.max.x &&
-               pos.z >= bounds.min.z &&
-               pos.z <= bounds.max.z;
     }
 }

@@ -99,7 +99,7 @@ public class AnimalBase : MonoBehaviour, IInteractable
 
     private void OnEnable()
     {
-        EventBus.On5SecondsPassed += UpdateCalmState;
+        EventBus.On5SecondsPassed += UpdateCalmState;// in game 15 mins 
         SceneRoot.Instance.EventManager.TimeEvents.onOneSecondPass += IsPlayerAround;
     }
 
@@ -118,6 +118,12 @@ public class AnimalBase : MonoBehaviour, IInteractable
     private void UpdateCalmState()
     {
         if (CurrentState == null || CurrentState != CalmState) return;
+        if (AnimalSo == null)
+        {
+            print("can't update calm state Animal So");
+            return;
+        }
+
         CurrentState.UpdateState();
     }
 
@@ -380,7 +386,6 @@ public class AnimalBase : MonoBehaviour, IInteractable
 
     protected virtual void RemoveAnimal()
     {
-        
         GlobalPool.instance.Return(AnimalSo.prefab, gameObject);
     }
 

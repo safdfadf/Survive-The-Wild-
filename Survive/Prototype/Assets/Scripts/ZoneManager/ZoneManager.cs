@@ -184,9 +184,7 @@ public class ZoneManager : MonoBehaviour
             Debug.DrawLine(position, pos, Color.red, 5f);
             if (NavMesh.SamplePosition(pos, out NavMeshHit hit, 50, NavMesh.AllAreas))
             {
-                print("hit");
                 return CreateZone(Activity.Drinking, hit.position);
-                // take radius of the circle and create bounds and ask chunk manager 
             }
         }
     }

@@ -120,7 +120,7 @@ public class AnimalStateManager : MonoBehaviour //ToDo : Change script name to p
 
             if (!ChunkHelper.IsInChunkXZ(firstPos, bounds))
             {
-                print("conyds");
+//                print("conyds");
                 continue;
             }
 

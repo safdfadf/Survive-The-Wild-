@@ -7,7 +7,7 @@ namespace Animal.States
         private float nextActionTime;
         private float minIntervalTime = 5f;
         private float maxIntervalTime = 20f;
-        private int AlarmRadius;
+        private int AlarmRadius = 15;
 
         public AlertState(AnimalData data) : base(data)
         {
@@ -39,10 +39,10 @@ namespace Animal.States
 
         private void AnimalAlert()
         {
-            if (Animal == null) return;
             Animal.TriggerAlertAnim();
-            // warning Call 
-            HandleAudioCall(AlarmRadius, Animal.AnimalSo.warningClip);
+            if (Animal.AnimalSo.warningClip.Count == 0) return;
+            HandleAudioCall(AlarmRadius,
+                Animal.AnimalSo.warningClip[Random.Range(0, Animal.AnimalSo.warningClip.Count)]);
         }
     }
 }

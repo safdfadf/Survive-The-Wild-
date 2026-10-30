@@ -25,13 +25,13 @@ public class ScheduledAnimal : AnimalBase
         AnimalData = animalData;
         AnimalSo = animalData.AnimalSo;
         IsAggresive = AnimalSo.isAggresive;
-        CurrentState = animalData.GetCurrentState();
+        // CurrentState = animalData.GetCurrentState();
         CalmState = animalData.GetCalmState();
         AlertState = animalData.GetAlertState();
         AlarmState = animalData.GetAlarmState();
         currentZone = animalData.GetCurrentZone();
         currentPos = animalData.GetCurrentPosition();
-        ActivateState(CurrentState);
+        ActivateState( animalData.GetCurrentState());
     }
 
     protected override void IsPlayerAround()
@@ -70,7 +70,8 @@ public class ScheduledAnimal : AnimalBase
     public void ActivateState(AnimalState newState)
     {
         if (CurrentState != null && CurrentState == newState) return;
-        CurrentState.ExitState();
+        if (CurrentState != null)
+            CurrentState.ExitState(); 
         CurrentState = newState;
         CurrentState.EnterState(this);
     }
@@ -83,7 +84,7 @@ public class ScheduledAnimal : AnimalBase
     public override void TakeDamage(PlayerAttack atk)
     {
         base.TakeDamage(atk);
-        AnimalData.isLeader = true;// whoever is hurt in herd should call the leader instead of it becoming
+        AnimalData.isLeader = true; // whoever is hurt in herd should call the leader instead of it becoming
         // call audio and an hurt anim and then run 
         ActivateState(AlarmState);
     }
@@ -101,8 +102,7 @@ public class ScheduledAnimal : AnimalBase
         {
             AnimalData.AnimalHandler.Attacker = this;
         }
-        // maye an audio and anim : Warning 
-        
+
         AnimalData.AnimalHandler.HerdWarning(this, AnimalData.GetCurrentZone());
     }
 }

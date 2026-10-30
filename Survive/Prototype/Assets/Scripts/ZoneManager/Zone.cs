@@ -254,7 +254,6 @@ public class Zone : MonoBehaviour
 
     public bool IsAvailableForTime(string species, int startHour, int endHour)
     {
-        print(startHour + "-" + endHour);
         for (var hour = startHour; hour < endHour; hour++)
         {
             if (hourlyOccupancy.TryGetValue(hour, out var occupant))

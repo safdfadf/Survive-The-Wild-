@@ -8,7 +8,8 @@ namespace Animal.States
         private float nextActionTime;
         private float minIntervalTime = 10f;
         private float maxIntervalTime = 20f;
-        private int CalmRadius;
+        private int CalmRadius = 100;
+        private bool canUpdate = false;
 
         public CalmState(AnimalData data) : base(data)
         {
@@ -20,6 +21,7 @@ namespace Animal.States
 
         public override void EnterState(AnimalBase animal)
         {
+            canUpdate = true;
             ScheduleNextAction();
             Animal = animal;
             UpdateState();
@@ -27,14 +29,24 @@ namespace Animal.States
 
         public override void UpdateState() // for now updating every 5 secs
         {
-            if (data != null && data.isZoneTraveling ||
-                !ChunkManager.Instance.IsPosInPlayerChunk(Animal.transform.position) ||
-                !Animal.AnimalSo.inZoneTravel) return;
-            if (Random.value > 0.5f)
+            if (!canUpdate) return;
+            if (data != null && data.isZoneTraveling || Animal == null)
+            {
+                Debug.Log(data.isZoneTraveling);
+                return;
+            }
+
+            if (!(Time.time >= nextActionTime))
+            {
+                return;
+            }
+
+            if (Random.value > 0.5f && Animal.AnimalSo.inZoneTravel)
                 MoveToNextPosition();
 
             if (Random.value > 0.5f)
-                HandleAudioCall(CalmRadius, Animal.AnimalSo.calmClip);
+                Debug.Log("updating Calm State ");
+            HandleAudioCall(CalmRadius, Animal.AnimalSo.calmClip[Random.Range(0, Animal.AnimalSo.calmClip.Count)]);
         }
 
         public override void ExitState()
@@ -48,17 +60,11 @@ namespace Animal.States
 
         private void MoveToNextPosition()
         {
+            Debug.Log("in zone travel");
             Chunk chunk = ChunkManager.Instance.GetChunkAtPos(Animal.transform.position);
             Vector3 pos = RetPosOnNv.ReturnRandomNavMeshPos(chunk.bounds);
             Animal.MoveTo(pos);
             ScheduleNextAction();
-        }
-
-        protected override void HandleAudioCall(int Radius, AudioClip Clip)
-        {
-            if (!PlayerRepository.instance.IsPlayerInRadius(Radius))
-                return; // and if player is in Calm Radius 
-            base.HandleAudioCall(Radius, Clip);
         }
     }
 }
