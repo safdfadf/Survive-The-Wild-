@@ -1,4 +1,4 @@
-using DefaultNamespace.ResourceSystem;
+using SurviveTheWild.ResourceSystem;
 using UnityEngine;
 
 public interface IInteractable

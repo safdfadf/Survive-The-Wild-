@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using DefaultNamespace;
+using SurviveTheWild;
 using TMPro;
 using Unity.Mathematics;
 using UnityEngine;

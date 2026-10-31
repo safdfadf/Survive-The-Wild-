@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using DefaultNamespace.EventBus;
-using DefaultNamespace.QuestSystem;
+using SurviveTheWild.EventBus;
+using SurviveTheWild.QuestSystem;
 using Player;
 using TMPro;
 using UnityEngine;

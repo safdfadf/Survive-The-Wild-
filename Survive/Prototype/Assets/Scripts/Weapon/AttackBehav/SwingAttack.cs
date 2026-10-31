@@ -1,11 +1,11 @@
 ﻿using System.Collections;
-using DefaultNamespace.EventBus;
+using SurviveTheWild.EventBus;
 using Player;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Interactions;
 
-namespace DefaultNamespace.Weapon
+namespace SurviveTheWild.Weapon
 {
     public class SwingAttack : WeaponBehaviour
     {

@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using DefaultNamespace.ResourceSystem;
+using SurviveTheWild.ResourceSystem;
 using Player;
 using TMPro;
 using UnityEngine;
@@ -80,14 +80,14 @@ public class Tracks : MonoBehaviour, IInteractable // tracks are not collectable
 
     private void OnEnable()
     {
-        EventBus.OnToggleTracksMenu += ActivateTrackMenu;
+        EventBus.PressingE += ActivateTrackMenu;
         EventBus.OnHourChanged += OnHourChanged;
     }
 
     private void OnDisable()
     {
         EventBus.OnHourChanged -= OnHourChanged;
-        EventBus.OnToggleTracksMenu -= ActivateTrackMenu;
+        EventBus.PressingE -= ActivateTrackMenu;
     }
 
     private void Update()

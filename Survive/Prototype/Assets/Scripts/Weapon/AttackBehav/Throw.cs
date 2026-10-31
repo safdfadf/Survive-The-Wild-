@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace DefaultNamespace.Weapon
+namespace SurviveTheWild.Weapon
 {
     public class Throw : ProjectileParent
     {

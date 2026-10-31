@@ -1,5 +1,5 @@
-using DefaultNamespace;
-using DefaultNamespace.Managers;
+using SurviveTheWild;
+using SurviveTheWild.Managers;
 using Effect;
 using Player;
 using UnityEngine;

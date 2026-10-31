@@ -1,4 +1,4 @@
-﻿namespace DefaultNamespace.ResourceSystem
+﻿namespace SurviveTheWild.ResourceSystem
 {
     public class HeavyObjs : Obj<ObjSo>
     {

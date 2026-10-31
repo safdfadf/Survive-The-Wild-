@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using DefaultNamespace.EventBus;
-using DefaultNamespace.QuestSystem;
+using SurviveTheWild.EventBus;
+using SurviveTheWild.QuestSystem;
 using UnityEngine;
 
 namespace QuestSystem.QuestSteps

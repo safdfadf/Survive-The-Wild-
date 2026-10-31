@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DefaultNamespace.EventBus
+namespace SurviveTheWild.EventBus
 {
     public class PlayerEvents
     {
@@ -8,7 +8,6 @@ namespace DefaultNamespace.EventBus
         public Action OnTriggerPlayerSleep;
         public Action OnDropObjFromHand;
         public Action<float> OnDrainStamina;
-
         public void AddExperience(int experience)
         {
             OnAddExperience(experience);
@@ -19,7 +18,7 @@ namespace DefaultNamespace.EventBus
             OnTriggerPlayerSleep();
         }
 
-        
+     
         public void PayAttackCost(int cost)
         {
             OnDrainStamina(cost);

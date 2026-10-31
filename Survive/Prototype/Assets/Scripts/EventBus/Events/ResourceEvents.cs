@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace DefaultNamespace.EventBus.Events
+namespace SurviveTheWild.EventBus.Events
 {
     public class ResourceEvents
     {

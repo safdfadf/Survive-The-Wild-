@@ -1,6 +1,6 @@
 using System;
 using System.Collections;
-using DefaultNamespace.EventBus;
+using SurviveTheWild.EventBus;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;

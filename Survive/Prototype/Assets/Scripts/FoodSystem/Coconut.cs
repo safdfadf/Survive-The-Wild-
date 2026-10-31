@@ -1,5 +1,5 @@
 ﻿using System;
-using DefaultNamespace.EventBus;
+using SurviveTheWild.EventBus;
 using UnityEngine;
 using Random = UnityEngine.Random;
 

@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using DefaultNamespace.Weapon;
+using SurviveTheWild.Weapon;
 using Effect;
 using UnityEngine;
 

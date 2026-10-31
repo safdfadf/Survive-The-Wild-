@@ -1,8 +1,8 @@
 ﻿using System;
-using DefaultNamespace.EventBus.Events;
+using SurviveTheWild.EventBus.Events;
 using UnityEngine;
 
-namespace DefaultNamespace.EventBus
+namespace SurviveTheWild.EventBus
 {
     public class EventManager : MonoBehaviour
     {
@@ -14,7 +14,7 @@ namespace DefaultNamespace.EventBus
         public StructureEvents StructureEvents;
         public UIEvents UiEvents;
         public TimeEvents TimeEvents;
-
+        public MiniGamesEvents MiniGamesEvents;
         private void Awake()
         {
             InitializeEvents();

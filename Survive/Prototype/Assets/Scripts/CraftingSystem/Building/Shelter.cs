@@ -1,8 +1,8 @@
-﻿using DefaultNamespace.EventBus;
-using DefaultNamespace.Interface;
+﻿using SurviveTheWild.EventBus;
+using SurviveTheWild.Interface;
 using UnityEngine;
 
-namespace DefaultNamespace.CraftingSystem.Building
+namespace SurviveTheWild.CraftingSystem.Building
 {
     //how will this work with the new interaction system  
     public class Shelter : BaseStructure

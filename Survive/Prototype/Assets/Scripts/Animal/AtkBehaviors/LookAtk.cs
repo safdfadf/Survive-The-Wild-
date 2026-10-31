@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-namespace DefaultNamespace.Animal.AtkBehaviors
+namespace SurviveTheWild.Animal.AtkBehaviors
 {
     [CreateAssetMenu(fileName = "RamAttackBehavior", menuName = "Scriptable Objects/Attacks/LookAtkBehavior")]
     public class LookAtk : AnimalAtkBehaviour

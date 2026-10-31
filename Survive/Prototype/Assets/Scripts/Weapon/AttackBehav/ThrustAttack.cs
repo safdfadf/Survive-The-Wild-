@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections;
-using DefaultNamespace.Weapon.WeaponAnims;
 using Player;
+using SurviveTheWild.Weapon.WeaponAnims;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Interactions;
 
-namespace DefaultNamespace.Weapon
+namespace SurviveTheWild.Weapon
 {
     public class ThrustAttack : WeaponBehaviour
     {

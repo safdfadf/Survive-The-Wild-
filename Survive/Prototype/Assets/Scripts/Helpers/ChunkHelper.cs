@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace DefaultNamespace.Helpers
+namespace SurviveTheWild.Helpers
 {
     public static class ChunkHelper
     {

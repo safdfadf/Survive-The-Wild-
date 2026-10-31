@@ -21,14 +21,14 @@ public class CompassSystem : MonoBehaviour
         EventBus.OnWindChanged += UpdateArcDirection;
     }
 
-    public void Update()// update this every second or even less  
+    public void Update() // update this every second or even less  
     {
         UpdateCompass();
     }
 
     private void UpdateCompass()
     {
-        Transform playerTransform = _playerRepository.GetPlayerTransform();
+        var playerTransform = _playerRepository.GetPlayerTransform();
         var yaw = playerTransform.eulerAngles.y;
         var quat = Quaternion.Euler(0, 0, yaw);
         UIManager.instance.UpdateCompassRing(quat);

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
-using DefaultNamespace.EventBus;
-using DefaultNamespace.ResourceSystem;
+using SurviveTheWild.EventBus;
+using SurviveTheWild.ResourceSystem;
 using Player;
 using TMPro;
 using UnityEngine;

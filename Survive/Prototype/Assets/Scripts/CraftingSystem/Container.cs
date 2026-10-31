@@ -1,10 +1,10 @@
 ﻿using System;
-using DefaultNamespace.Interface;
+using SurviveTheWild.Interface;
 using FoodSystem;
 using Player;
 using UnityEngine;
 
-namespace DefaultNamespace.CraftingSystem
+namespace SurviveTheWild.CraftingSystem
 {
     public class Container : Obj<ObjSo>
     {

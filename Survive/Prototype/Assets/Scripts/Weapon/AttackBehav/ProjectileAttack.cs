@@ -2,7 +2,7 @@
 using UnityEngine;
 
 
-namespace DefaultNamespace.Weapon
+namespace SurviveTheWild.Weapon
 {
     public class ProjectileAttack : ProjectileParent
     {

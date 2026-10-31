@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using DefaultNamespace.CraftingSystem;
-using DefaultNamespace.EventBus;
+using SurviveTheWild.CraftingSystem;
+using SurviveTheWild.EventBus;
 using FoodSystem;
 using TMPro;
 using UnityEngine;

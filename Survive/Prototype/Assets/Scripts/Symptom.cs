@@ -87,7 +87,7 @@ public class Symptom : MonoBehaviour
         s.Initialize(vomitSpineMat, player);
         GameObject vp = Instantiate(vomitPuddle, Spline.transform.position, Quaternion.identity);
         vp.SetActive(false);
-        WaterShaderFx fx = vomitPuddle.GetComponent<WaterShaderFx>();
+        PuddleFx fx = vomitPuddle.GetComponent<PuddleFx>();
         s.puddleFx = fx;
         player.SetBending(true);
         s.gameObject.SetActive(true);
@@ -98,7 +98,7 @@ public class Symptom : MonoBehaviour
     {
         ExampleContortAlong s = Spline.GetComponentInChildren<ExampleContortAlong>();
         s.material = bloodSpineMat;
-        WaterShaderFx fx = bloodPuddle.GetComponent<WaterShaderFx>();
+        PuddleFx fx = bloodPuddle.GetComponent<PuddleFx>();
         s.puddleFx = fx;
         s.ActivateWaterMovement();
     }

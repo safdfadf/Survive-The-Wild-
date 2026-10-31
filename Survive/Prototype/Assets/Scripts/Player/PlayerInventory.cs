@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using DefaultNamespace.EventBus;
-using DefaultNamespace.ResourceSystem;
+using SurviveTheWild.EventBus;
+using SurviveTheWild.ResourceSystem;
 using FoodSystem;
 using Inventory;
 using UnityEngine;
@@ -73,6 +73,7 @@ public class PlayerInventory : MonoBehaviour
 
     public void AddWorldItem(GameObject worldObj)
     {
+        UIManager.instance.DisplayNotification("You Picked Up  "+worldObj.name);
         if (worldObj.TryGetComponent<HeavyObjs>(out var heavyObjs))
         {
             // if it is a heay objetc 

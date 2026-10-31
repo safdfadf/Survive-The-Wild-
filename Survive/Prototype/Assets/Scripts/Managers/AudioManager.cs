@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-namespace DefaultNamespace.Managers
+namespace SurviveTheWild.Managers
 {
     [RequireComponent(typeof(AudioSource))]
     public class AudioManager : MonoBehaviour

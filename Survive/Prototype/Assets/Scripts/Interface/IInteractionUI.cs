@@ -1,7 +1,7 @@
 ﻿using TMPro;
 using UnityEngine;
 
-namespace DefaultNamespace.Interface
+namespace SurviveTheWild.Interface
 {
     public interface IInteractionUI
     {

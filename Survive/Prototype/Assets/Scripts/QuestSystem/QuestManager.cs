@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using DefaultNamespace.EventBus;
+using SurviveTheWild.EventBus;
 using UnityEngine;
 
-namespace DefaultNamespace.QuestSystem
+namespace SurviveTheWild.QuestSystem
 {
     public class QuestManager : MonoBehaviour
     {

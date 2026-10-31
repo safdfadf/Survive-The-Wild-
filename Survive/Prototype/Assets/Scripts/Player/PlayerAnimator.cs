@@ -5,11 +5,13 @@ using UnityEngine;
 public class PlayerAnimator : MonoBehaviour
 {
     [SerializeField] private Animator animator;
+    private MovementHandler _playerController;
     private int upperBodyLayerIndex;
 
     private void Awake()
     {
         upperBodyLayerIndex = animator.GetLayerIndex("UpperBody");
+        _playerController = GetComponent<MovementHandler>();
     }
 
     public void MovePlayer(float forward, float starfe)
@@ -80,10 +82,7 @@ public class PlayerAnimator : MonoBehaviour
 
     public void ShowWatch(bool show)
     {
+        _playerController.LockCamera(show);
         animator.SetBool("Watch", show);
-    }
-    public void StopCarryAnim()
-    {
-        animator.SetBool("Carry", false);
     }
 }

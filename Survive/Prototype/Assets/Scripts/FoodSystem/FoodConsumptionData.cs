@@ -1,4 +1,4 @@
-﻿using DefaultNamespace;
+﻿using SurviveTheWild;
 
 namespace FoodSystem
 {

@@ -1,6 +1,6 @@
 using System;
 using System.Collections;
-using DefaultNamespace.EventBus;
+using SurviveTheWild.EventBus;
 using FoodSystem;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -51,6 +51,7 @@ public class PlayerVitalStats : MonoBehaviour
     [SerializeField] private float dangerThreshold = 0.1f; // 10% of max nutrients
     [SerializeField] private float maxSleepHours = 8f; // configurable
     private float _sleepStartTime;
+    public bool isOutOfBreath { get;private set; }
 
     private void Awake()
     {
@@ -137,10 +138,12 @@ public class PlayerVitalStats : MonoBehaviour
     {
         if (_currentStamina < -0)
         {
+            isOutOfBreath = true;
             OutOfBreath();
             return;
         }
 
+        isOutOfBreath = false;
         // based on player stamina level should get some benefits 
         _currentStamina -= staminaDrainRate * dt;
         _currentStamina = Mathf.Clamp(_currentStamina, 0f, _currentEnergy);

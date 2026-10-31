@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-namespace DefaultNamespace.ResourceSystem
+namespace SurviveTheWild.ResourceSystem
 {
     public class ResourceUI : MonoBehaviour
     {

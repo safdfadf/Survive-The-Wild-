@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using SurviveTheWild.EventBus;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -15,7 +16,7 @@ public class InputManager : MonoBehaviour
     private PlayerInputs _controls;
     private CraftingHandler _craftingHandler;
     private Camera _camera;
-    private PhoneScript _phone;
+    private WatchUI _phone;
     private PlayerAnimator _playerAnimator;
     private float scrollCooldown = 0.2f; // adjust to taste
     private float lastScrollTime = 0f;
@@ -37,6 +38,7 @@ public class InputManager : MonoBehaviour
     private Action<InputAction.CallbackContext> _toggleHuntetSenses;
     private Action<InputAction.CallbackContext> _toggleTarckMenu;
     private Action<InputAction.CallbackContext> _toggleRecipeBook;
+    private bool _miniGameOn;
 
     private void Awake()
     {
@@ -46,7 +48,7 @@ public class InputManager : MonoBehaviour
         _craftingHandler = GetComponent<CraftingHandler>();
         _playerUI = GetComponent<PlayerUI>();
         _controls = new PlayerInputs();
-        _phone = GetComponentInChildren<PhoneScript>();
+        _phone = GetComponentInChildren<WatchUI>();
         _playerAnimator = GetComponent<PlayerAnimator>();
 
         // Initialize all delegates
@@ -80,7 +82,16 @@ public class InputManager : MonoBehaviour
         };
 
 
-        _aimStarted = ctx => { UIManager.instance.ActivateSubMenu(); };
+        _aimStarted = ctx =>
+        {
+            if (_miniGameOn)
+            {
+                SceneRoot.Instance.MiniGameHandler.RightClick(ctx);
+                return;
+            }
+
+            UIManager.instance.ActivateSubMenu();
+        };
 
         _aimCanceled = ctx => { UIManager.instance.DeactivateSubMenu(); };
         _shootPerformed = ctx => // 
@@ -94,7 +105,7 @@ public class InputManager : MonoBehaviour
         };
         _inventoryToggle = ctx => { _playerUI.ToggleInventory(); };
         _resourceMenuToggle = ctx => ToggleCollectableMenu();
-        _toggleTarckMenu = ctx => ToggleTracksMenu();
+        _toggleTarckMenu = ctx => PressE();
     }
 
     private void OnEnable()
@@ -104,6 +115,7 @@ public class InputManager : MonoBehaviour
             _controls.Enable();
         }
 
+        SceneRoot.Instance.EventManager.MiniGamesEvents.onStartFireGame += ToggleMiniGameInput;
         _controls.PlayerMovement.Move.performed += _movePerformed;
         _controls.PlayerMovement.Move.canceled += _moveCanceled;
 
@@ -119,15 +131,15 @@ public class InputManager : MonoBehaviour
 
         _controls.PlayerInteract.Aim.started += _aimStarted;
         _controls.PlayerInteract.Aim.canceled += _aimCanceled;
-        _controls.PlayerInteract.Shoot.performed += OnInteract;
-        _controls.PlayerInteract.Shoot.canceled += OnInteract;
+        _controls.PlayerInteract.Shoot.performed += HandleLeftClick;
+        _controls.PlayerInteract.Shoot.canceled += HandleLeftClick;
 
         //    _controls.PlayerInteract.CursorOnOf.performed += _cursorToggle;
         _controls.PlayerInteract.Inventory.performed += _inventoryToggle;
         _controls.PlayerInteract.ResourceMenu.performed += _resourceMenuToggle;
         _controls.PlayerInteract.Interact.performed += _toggleTarckMenu;
-        _controls.PlayerInteract.Phone.started += ctx => _playerAnimator.ShowWatch(true);
-        _controls.PlayerInteract.Phone.canceled += ctx => _playerAnimator.ShowWatch(false);
+        _controls.PlayerInteract.Phone.started += ctx => ShowWatch(true);
+        _controls.PlayerInteract.Phone.canceled += ctx => ShowWatch(false);
         _controls.PlayerInteract.Scroll.performed += Scroll;
         _controls.PlayerInteract.Book.performed += _toggleRecipeBook;
     }
@@ -186,19 +198,32 @@ public class InputManager : MonoBehaviour
         }
     }
 
-    private void OnInteract(InputAction.CallbackContext ctx)
+    private void ToggleMiniGameInput()
     {
+        _miniGameOn = !_miniGameOn;
+    }
+
+    private void HandleLeftClick(InputAction.CallbackContext ctx)
+    {
+        // when minigame is on currentactive minigame will hande it 
+        if (_miniGameOn)
+        {
+            SceneRoot.Instance.MiniGameHandler.LeftClick(ctx);
+            return;
+        }
+
         BaseWeapon weapon = _player.CurrentWeapon;
         if (weapon == null) return;
         weapon.HandleWeapon(ctx);
     }
 
-    private void ToggleTracksMenu()
+    private void PressE()
     {
-        EventBus.OnToggleTracksMenu?.Invoke(); // interaction
+        EventBus.PressingE?.Invoke();
     }
 
-    public void Scroll(InputAction.CallbackContext ctx)
+
+    private void Scroll(InputAction.CallbackContext ctx)
     {
         if (_phone.IsPhoneActive)
         {
@@ -206,16 +231,22 @@ public class InputManager : MonoBehaviour
             return;
         }
 
-        // throttle scroll
         if (Time.time < lastScrollTime + scrollCooldown)
             return;
 
         lastScrollTime = Time.time;
 
-        Vector2 movement = ctx.ReadValue<Vector2>();
-        bool scrollUp = movement.y > 0;
+        var movement = ctx.ReadValue<Vector2>();
+        var scrollUp = movement.y > 0;
 
         _player.SwitchWeapon(scrollUp);
+    }
+
+    private void ShowWatch(bool show)
+    {
+        _phone.IsPhoneActive = show;
+
+        _playerAnimator.ShowWatch(show);
     }
 
     private void OnDestroy()

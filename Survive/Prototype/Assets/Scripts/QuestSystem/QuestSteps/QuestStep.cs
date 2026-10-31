@@ -1,8 +1,8 @@
 ﻿using System;
-using DefaultNamespace.EventBus;
+using SurviveTheWild.EventBus;
 using UnityEngine;
 
-namespace DefaultNamespace.QuestSystem
+namespace SurviveTheWild.QuestSystem
 {
     public class QuestStep : MonoBehaviour
     {

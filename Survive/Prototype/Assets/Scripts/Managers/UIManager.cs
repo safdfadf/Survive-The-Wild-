@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using DefaultNamespace.Interface;
-using DefaultNamespace.QuestSystem;
+using SurviveTheWild.Interface;
+using SurviveTheWild.QuestSystem;
 using Player;
 using TMPro;
 using UnityEngine;
@@ -55,9 +55,12 @@ public class UIManager : MonoBehaviour
     [SerializeField] private float questRemovePos;
 
     [Header("LoadingScreen")] [SerializeField]
-    private Slider loadingSlider;
+    public Slider loadingSlider;
 
+    [FormerlySerializedAs("colorImage")] public Image LoadingImg;
+    private Color originalColor;
     [SerializeField] private GameObject blurScreen;
+
     private QuestInfoSo currentMission;
     private QuestStep currentQuestStep;
     private RectTransform _missionParentRect;
@@ -84,6 +87,7 @@ public class UIManager : MonoBehaviour
         _activeButtons.Add(removeButton);
         _missionParentRect = missionUiParent.GetComponent<RectTransform>();
         _questStepRect = questStepText.GetComponent<RectTransform>();
+        originalColor = LoadingImg.color;
     }
 
     private void LateUpdate()
@@ -389,7 +393,7 @@ public class UIManager : MonoBehaviour
             rect.position = Vector2.Lerp(startPos, targetPos, t);
         }
     }
-    
+
     public void ShowLoadingScreen(float value)
     {
         blurScreen.SetActive(true);
@@ -415,5 +419,15 @@ public class UIManager : MonoBehaviour
         loadingSlider.value = 1f;
         blurScreen.SetActive(false);
         loadingSlider.gameObject.SetActive(false);
+    }
+
+    public void ChangeLoadSliderColor(Color color)
+    {
+        LoadingImg.color = color;
+    }
+
+    public void ChangeLoadColorToDefault()
+    {
+        LoadingImg.color = originalColor;
     }
 }

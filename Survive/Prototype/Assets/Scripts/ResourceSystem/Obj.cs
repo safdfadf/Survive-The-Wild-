@@ -1,6 +1,6 @@
-using DefaultNamespace.EventBus;
-using DefaultNamespace.Interface;
-using DefaultNamespace.ResourceSystem;
+using SurviveTheWild.EventBus;
+using SurviveTheWild.Interface;
+using SurviveTheWild.ResourceSystem;
 using Player;
 using UnityEngine;
 using UnityEngine.Serialization;

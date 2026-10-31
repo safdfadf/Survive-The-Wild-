@@ -191,7 +191,7 @@ public class ZoneManager : MonoBehaviour
 
     private Zone CreateRiverZone()
     {
-        print("Creating river zone");
+//        print("Creating river zone");
         float totalRivers = splines.Length;
         SplineContainer chosenSpline = splines[(int)Random.Range(0, totalRivers)];
         // now since we have 

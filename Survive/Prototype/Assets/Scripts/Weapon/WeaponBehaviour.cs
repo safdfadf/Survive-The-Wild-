@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Interactions;
 
-namespace DefaultNamespace.Weapon
+namespace SurviveTheWild.Weapon
 {
     // how do we control animator as we switch through weapon  
     public class WeaponBehaviour : MonoBehaviour

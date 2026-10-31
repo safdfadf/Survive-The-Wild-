@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace DefaultNamespace.QuestSystem
+namespace SurviveTheWild.QuestSystem
 {
     [CreateAssetMenu(fileName = "QuestInfoSo", menuName = "ScriptableObjects/QuestInfoSo", order = 1)]
     public class QuestInfoSo : ScriptableObject

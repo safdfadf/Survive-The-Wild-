@@ -1,4 +1,4 @@
-﻿using DefaultNamespace.EventBus;
+﻿using SurviveTheWild.EventBus;
 using UnityEngine;
 
 namespace FoodSystem

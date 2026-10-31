@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DefaultNamespace.EventBus
+namespace SurviveTheWild.EventBus
 {
     public class QuestEvent
     {

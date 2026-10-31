@@ -1,4 +1,4 @@
-﻿namespace DefaultNamespace.Interface
+﻿namespace SurviveTheWild.Interface
 {
     public interface IWeaponBehavior
     {

@@ -1,9 +1,9 @@
-﻿using DefaultNamespace.Weapon.WeaponAnims;
+﻿using SurviveTheWild.Weapon.WeaponAnims;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Interactions;
 
-namespace DefaultNamespace.Weapon
+namespace SurviveTheWild.Weapon
 {
     public class ProjectileParent : WeaponBehaviour
     {

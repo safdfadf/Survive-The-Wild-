@@ -2,7 +2,7 @@
 using Effect;
 using UnityEngine;
 
-namespace DefaultNamespace
+namespace SurviveTheWild
 {
     public class SelfAttack : IAttack
     {

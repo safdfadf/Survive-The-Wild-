@@ -32,7 +32,7 @@ public class EventBus// Todo: instead of keeping events like make separate class
  //Hunter Sense
  public static Action<bool> OnHunterSenseToggle;
  // Toggle Tracks Menu
- public static Action OnToggleTracksMenu;
+ public static Action PressingE;
  
  // Send Resource For Building 
  public static Action<ObjSo> OnResourceSubmit; //Invoker : inventory system // Subscriber : Base Structure  

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using DefaultNamespace.CraftingSystem;
+using SurviveTheWild.CraftingSystem;
 using JetBrains.Annotations;
 using Player;
 using UnityEngine;

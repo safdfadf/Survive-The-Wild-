@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using DefaultNamespace.EventBus;
+using SurviveTheWild.EventBus;
 using UnityEngine;
 
-namespace DefaultNamespace.QuestSystem.QuestSteps
+namespace SurviveTheWild.QuestSystem.QuestSteps
 {
     public class CollectionQuest : QuestStep
     {

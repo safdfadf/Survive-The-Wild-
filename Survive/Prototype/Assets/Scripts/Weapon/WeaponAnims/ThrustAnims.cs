@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace DefaultNamespace.Weapon.WeaponAnims
+namespace SurviveTheWild.Weapon.WeaponAnims
 {
     public class ThrustAnims : WeaponAnimations
     {

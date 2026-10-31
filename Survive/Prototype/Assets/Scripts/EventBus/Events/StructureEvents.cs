@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DefaultNamespace.EventBus.Events
+namespace SurviveTheWild.EventBus.Events
 {
     public class StructureEvents
     {

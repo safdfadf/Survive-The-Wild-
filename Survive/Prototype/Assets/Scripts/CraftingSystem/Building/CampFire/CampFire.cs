@@ -1,248 +1,258 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using DefaultNamespace;
-using DefaultNamespace.EventBus;
 using FoodSystem;
+using SurviveTheWild;
+using SurviveTheWild.MiniGames;
 using UnityEngine;
 
-
-public class CampFire : BaseStructure, ICook // this will be base class for all the fire 
+namespace SurviveTheWild.CraftingSystem.Building.CampFire
 {
-    [SerializeField] private Ingredient[] _combustibleIngredients;
-
-    [SerializeField] private List<Transform> cookingSpots;
-
-    [Header("Vfx")] [SerializeField] private GameObject _fireVfx;
-    [SerializeField] private float maxFireTime = 60;
-    [SerializeField] private float midThreshold = 30;
-    [SerializeField] private float minThreshold = 10;
-
-    private float _fireTime;
-    private bool _canIgnite;
-    private bool _isBurning;
-    private bool _canCook;
-    private List<ICookable> _foodInSpot = new();
-    private Transform[] fxObjects;
-
-    protected override void Awake()
+    public class CampFire : BaseStructure, ICook
     {
-        fxObjects = _fireVfx.GetComponentsInChildren<Transform>();
-        base.Awake();
-    }
+        [SerializeField] private Ingredient[] _combustibleIngredients;
 
-    private void OnEnable()
-    {
-        EventBus.OnToggleTracksMenu += Ignite;
-        SceneRoot.Instance.EventManager.reseourceEvent.onGatherResource += RemoveFood;
-    }
+        [SerializeField] private List<Transform> cookingSpots;
 
-    private void OnDisable()
-    {
-        EventBus.OnToggleTracksMenu -= Ignite;
-        SceneRoot.Instance.EventManager.reseourceEvent.onGatherResource -= RemoveFood;
-    }
+        [Header("Vfx")] [SerializeField] private GameObject _fireVfx;
 
-    private void RemoveFood(GameObject food)
-    {
-        // this is being triggered every time 
-        Food f = food.GetComponent<Food>();
+        [Header("Fire Settings")] [SerializeField]
+        private float maxFireTime = 60;
 
-        //f.canCookMe = false;
-        if (f != null && _foodInSpot.Contains(f))
+        [SerializeField] private float midThreshold = 30;
+        [SerializeField] private float minThreshold = 10;
+
+        [Header("MiniGame")] [SerializeField] private MiniGameBase fireMiniGame;
+        private float _fireTime;
+        private bool _canIgnite;
+        private bool _isBurning;
+        private bool _canCook;
+        private List<ICookable> _foodInSpot = new();
+        private Transform[] fxObjects;
+
+        protected override void Awake()
         {
-            UIManager.instance.DisplayCookingSpots(cookingSpots, gameObject);
-            _foodInSpot.Remove(f);
+            fxObjects = _fireVfx.GetComponentsInChildren<Transform>();
+            base.Awake();
         }
-    }
 
-    protected override void OnStructureAssembled()
-    {
-        _requiredIngredients = new Ingredient[_combustibleIngredients.Length];
-        for (int i = 0; i < _combustibleIngredients.Length; i++)
+        private void OnEnable()
         {
-            _requiredIngredients[i] = new Ingredient
+            //  EventBus.PressingE += Ignite;
+            SceneRoot.Instance.EventManager.reseourceEvent.onGatherResource += RemoveFood;
+        }
+
+        private void OnDisable()
+        {
+            //EventBus.PressingE -= Ignite;
+            SceneRoot.Instance.EventManager.reseourceEvent.onGatherResource -= RemoveFood;
+        }
+
+        private void RemoveFood(GameObject food)
+        {
+            // this is being triggered every time 
+            Food f = food.GetComponent<Food>();
+
+            //f.canCookMe = false;
+            if (f != null && _foodInSpot.Contains(f))
             {
-                objSo = _combustibleIngredients[i].objSo,
-                amount = _combustibleIngredients[i].amount
-            };
+                UIManager.instance.DisplayCookingSpots(cookingSpots, gameObject);
+                _foodInSpot.Remove(f);
+            }
         }
 
-        Debug.Log("Campfire assembled. Combustible phase started." + _requiredIngredients.Length);
-
-        _structureUI.SetDescription(_requiredIngredients[0].objSo.name, _requiredIngredients[0].amount);
-        Description = _requiredIngredients[0].objSo.name + _requiredIngredients[0].amount;
-    }
-
-    public override void SubmitResource(ObjSo objSo)
-    {
-        print("trying to submit resource");
-        if (!IsAssembled)
+        protected override void OnStructureAssembled()
         {
-            base.SubmitResource(objSo);
-            return;
-        }
-
-        Debug.Log("To ignite");
-        Ingredient ing = GetCombustibleIngredient(objSo);
-        if (ing == null)
-        {
-            print("ing is null");
-            return;
-        }
-
-        ing.amount--;
-
-        if (CheckCombustibleSubmitted())
-        {
-            _canIgnite = true;
-            //_structureUI.SetDescription("Press E to Ignite", 0);
-            Description = "Ignite";
-        }
-        else
-        {
-            GetNextRequiredResource();
-        }
-    }
-
-    private Ingredient GetCombustibleIngredient(ObjSo objSo)
-    {
-        foreach (var ing in _requiredIngredients)
-        {
-            if (ing.objSo == objSo)
-                return ing;
-        }
-
-        return null;
-    }
-
-    private bool CheckCombustibleSubmitted()
-    {
-        foreach (var ing in _requiredIngredients)
-        {
-            if (ing.amount > 0)
-                return false;
-        }
-
-        return true;
-    }
-
-    protected override void PlayerInRange(bool inRange)
-    {
-        if (inRange && IsAssembled)
-        {
-            UIManager.instance.DisplayCookingSpots(cookingSpots, gameObject);
-        }
-        else
-        {
-            UIManager.instance.ClearAllCookingSpots();
-        }
-    }
-
-    public override void ExecuteAction()
-    {
-        base.ExecuteAction();
-        if (!_canIgnite) return;
-        Ignite();
-    }
-
-    private void Ignite() // now how ignite function will be called, we can still call E  
-    {
-        if (!_canIgnite || _isBurning || IsPlayerInRange) return;
-
-        _isBurning = true;
-        Debug.Log("Campfire ignited!");
-        StartCoroutine(FireCoroutine());
-    }
-
-    private IEnumerator FireCoroutine()
-    {
-        _fireTime = maxFireTime;
-        float damageTimer = 0f;
-
-        _fireVfx.SetActive(true);
-
-        while (_fireTime > 0) // instead of while loop use 5 sec events
-        {
-            _fireTime -= Time.deltaTime / 60;
-            damageTimer += Time.deltaTime;
-            CookFoods(Time.deltaTime);
-            UpdateFire(_fireTime);
-
-            if (damageTimer >= 60f)
+            _requiredIngredients = new Ingredient[_combustibleIngredients.Length];
+            for (int i = 0; i < _combustibleIngredients.Length; i++)
             {
-                SelfAttack atk = new SelfAttack(5, Vector3.zero);
-                damageTimer = 0f;
-                base.TakeDamage(atk);
+                _requiredIngredients[i] = new Ingredient
+                {
+                    objSo = _combustibleIngredients[i].objSo,
+                    amount = _combustibleIngredients[i].amount
+                };
             }
 
-            yield return null;
+            Debug.Log("Campfire assembled. Combustible phase started." + _requiredIngredients.Length);
+
+            _structureUI.SetDescription(_requiredIngredients[0].objSo.name, _requiredIngredients[0].amount);
+            Description = _requiredIngredients[0].objSo.name + _requiredIngredients[0].amount;
         }
 
-        _fireVfx.SetActive(false);
-    }
-
-    private void UpdateFire(float currentTime)
-    {
-        while (true)
+        public override void SubmitResource(ObjSo objSo)
         {
-            if (currentTime > midThreshold)
+            print("trying to submit resource");
+            if (!IsAssembled)
             {
-                UpdateFxScale(.3f);
+                base.SubmitResource(objSo);
+                return;
             }
-            else if (currentTime > minThreshold)
+
+            Debug.Log("To ignite");
+            Ingredient ing = GetCombustibleIngredient(objSo);
+            if (ing == null)
             {
-                UpdateFxScale(.2f);
-                continue;
+                print("ing is null");
+                return;
+            }
+
+            ing.amount--;
+
+            if (CheckCombustibleSubmitted())
+            {
+                _canIgnite = true;
+                //_structureUI.SetDescription("Press E to Ignite", 0);
+                Description = "Ignite";
             }
             else
             {
-                UpdateFxScale(.13f);
-                continue;
+                GetNextRequiredResource();
+            }
+        }
+
+        private Ingredient GetCombustibleIngredient(ObjSo objSo)
+        {
+            foreach (var ing in _requiredIngredients)
+            {
+                if (ing.objSo == objSo)
+                    return ing;
             }
 
-            break;
-        }
-    }
-
-    protected override void Break()
-    {
-        Debug.Log("Campfire breaking");
-    }
-
-    private void UpdateFxScale(float scale)
-    {
-        foreach (var t in fxObjects)
-        {
-            t.localScale = new Vector3(scale, scale, scale);
-        }
-    }
-
-    public void StoreObjForCooking(Obj<ObjSo> obj)
-    {
-        print("Add stuff for cooking in campfire");
-        var cookable = obj.GetComponent<ICookable>();
-        if (cookable == null)
-        {
-            Debug.LogWarning("Cookable is null");
+            return null;
         }
 
-        _canCook = true;
-        _foodInSpot.Add(cookable);
-    }
-
-    private void CookFoods(float deltaTime)
-    {
-        if (!_canCook)
+        private bool CheckCombustibleSubmitted()
         {
-            Debug.Log("returning");
-            return;
+            foreach (var ing in _requiredIngredients)
+            {
+                if (ing.amount > 0)
+                    return false;
+            }
+
+            return true;
         }
 
-        foreach (var food in _foodInSpot)
+        protected override void PlayerInRange(bool inRange)
         {
-            if (food != null)
-                food.ExecuteCooking(deltaTime);
+            if (inRange && IsAssembled)
+            {
+                UIManager.instance.DisplayCookingSpots(cookingSpots, gameObject);
+            }
+            else
+            {
+                UIManager.instance.ClearAllCookingSpots();
+            }
+        }
+
+        public override void ExecuteAction()
+        {
+            base.ExecuteAction();
+            if (!_canIgnite) return;
+            SceneRoot.Instance.miniGameHandler.StartGame(fireMiniGame, this);
+        }
+
+        public void Ignite()
+        {
+            if (!_canIgnite || _isBurning || IsPlayerInRange) return;
+
+            _isBurning = true;
+            Debug.Log("Campfire ignited!");
+            StartCoroutine(FireCoroutine());
+        }
+
+        private IEnumerator FireCoroutine()
+        {
+            _fireTime = maxFireTime;
+            float damageTimer = 0f;
+
+            _fireVfx.SetActive(true);
+
+            while (_fireTime > 0) // instead of while loop use 5 sec events
+            {
+                _fireTime -= Time.deltaTime / 60;
+                damageTimer += Time.deltaTime;
+                CookFoods(Time.deltaTime);
+                UpdateFire(_fireTime);
+
+                if (damageTimer >= 60f)
+                {
+                    SelfAttack atk = new SelfAttack(5, Vector3.zero);
+                    damageTimer = 0f;
+                    base.TakeDamage(atk);
+                }
+
+                yield return null;
+            }
+
+            _fireVfx.SetActive(false);
+        }
+
+        private void UpdateFire(float currentTime)
+        {
+            while (true)
+            {
+                if (currentTime > midThreshold)
+                {
+                    UpdateFxScale(.3f);
+                }
+                else if (currentTime > minThreshold)
+                {
+                    UpdateFxScale(.2f);
+                    continue;
+                }
+                else
+                {
+                    UpdateFxScale(.13f);
+                    continue;
+                }
+
+                break;
+            }
+        }
+
+        protected override void Break()
+        {
+            Debug.Log("Campfire breaking");
+        }
+
+        private void UpdateFxScale(float scale)
+        {
+            foreach (var t in fxObjects)
+            {
+                t.localScale = new Vector3(scale, scale, scale);
+            }
+        }
+
+        public void StoreObjForCooking(Obj<ObjSo> obj)
+        {
+            print("Add stuff for cooking in campfire");
+            var cookable = obj.GetComponent<ICookable>();
+            if (cookable == null)
+            {
+                Debug.LogWarning("Cookable is null");
+            }
+
+            _canCook = true;
+            _foodInSpot.Add(cookable);
+        }
+
+        private void CookFoods(float deltaTime)
+        {
+            if (!_canCook)
+            {
+                Debug.Log("returning");
+                return;
+            }
+
+            foreach (var food in _foodInSpot)
+            {
+                if (food != null)
+                    food.ExecuteCooking(deltaTime);
+            }
+        }
+
+        public void UpdateFireFxScale(Vector3 scale)
+        {
+            _fireVfx.transform.localScale = scale;
         }
     }
 }

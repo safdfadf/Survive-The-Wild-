@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using DefaultNamespace.Weapon;
+using SurviveTheWild.Weapon;
 using FoodSystem;
 using Player;
 using UnityEngine;

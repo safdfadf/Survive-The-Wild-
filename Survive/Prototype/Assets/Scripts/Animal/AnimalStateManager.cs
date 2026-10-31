@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using Animal.States;
-using DefaultNamespace.EventBus;
-using DefaultNamespace.Helpers;
+using SurviveTheWild.EventBus;
+using SurviveTheWild.Helpers;
 using Player;
 using UnityEngine;
 

@@ -1,12 +1,12 @@
 ﻿using System;
-using DefaultNamespace.Interface;
-using DefaultNamespace.ResourceSystem;
+using SurviveTheWild.Interface;
+using SurviveTheWild.ResourceSystem;
 using Effect;
 using FoodSystem;
 using Player;
 using UnityEngine;
 
-namespace DefaultNamespace
+namespace SurviveTheWild
 {
     public class WaterBody : MonoBehaviour, IInteractable // this script will be explored later 
     {

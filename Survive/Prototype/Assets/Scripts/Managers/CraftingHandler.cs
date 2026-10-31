@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using DefaultNamespace.EventBus;
+using SurviveTheWild.EventBus;
 using Inventory;
 using UnityEngine;
 using UnityEngine.Serialization;

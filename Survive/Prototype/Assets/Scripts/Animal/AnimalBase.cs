@@ -1,9 +1,9 @@
 using System;
 using System.Collections;
 using Animal.States;
-using DefaultNamespace.EventBus;
-using DefaultNamespace.Interface;
-using DefaultNamespace.Weapon;
+using SurviveTheWild.EventBus;
+using SurviveTheWild.Interface;
+using SurviveTheWild.Weapon;
 using Player;
 using UnityEngine;
 using UnityEngine.AI;
@@ -44,7 +44,7 @@ public class AnimalBase : MonoBehaviour, IInteractable
     protected AnimalState AlertState;
     protected AnimalState AlarmState;
     protected AnimalState CurrentState;
-
+    [SerializeField] private PuddleFx _puddleFx;
     protected Bounds Bounds;
 
     public bool CanDisplay { get; set; }
@@ -75,6 +75,7 @@ public class AnimalBase : MonoBehaviour, IInteractable
         if (VfxProvider.Instance != null)
             _bloodVfx = VfxProvider.Instance.GetBloodParticle();
         hitBoxes = GetComponentsInChildren<HitBox>();
+        _puddleFx = GetComponentInChildren<PuddleFx>();
         foreach (HitBox h in hitBoxes)
         {
             h.Initialize(this);
@@ -99,7 +100,7 @@ public class AnimalBase : MonoBehaviour, IInteractable
 
     private void OnEnable()
     {
-        EventBus.On5SecondsPassed += UpdateCalmState;// in game 15 mins 
+        EventBus.On5SecondsPassed += UpdateCalmState; // in game 15 mins 
         SceneRoot.Instance.EventManager.TimeEvents.onOneSecondPass += IsPlayerAround;
     }
 
@@ -146,10 +147,7 @@ public class AnimalBase : MonoBehaviour, IInteractable
 
     private void PlayBloodVfx()
     {
-        GameObject obj = GlobalPool.instance.Get(_bloodVfx, transform.position);
-        ParticleSystem ps = obj.GetComponent<ParticleSystem>();
-        ps.Play();
-        StartCoroutine(ReturnAfter(1f, obj));
+        StartCoroutine(_puddleFx.ActivateFx());
     }
 
     private IEnumerator ReturnAfter(float delay, GameObject obj)
