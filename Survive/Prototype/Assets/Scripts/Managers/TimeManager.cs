@@ -65,7 +65,7 @@ public class TimeManager : MonoBehaviour
         _currentTimeInMinutes += Time.deltaTime * timeScale;
         _currentTimeInMinutes %= 1440f; // Wrap around 24 hours
 
-        int currentHour = CurrentHour;
+        var currentHour = CurrentHour;
         if (_lastHour != currentHour)
         {
             _lastHour = currentHour;

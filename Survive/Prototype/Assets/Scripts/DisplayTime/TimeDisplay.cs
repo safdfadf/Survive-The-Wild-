@@ -7,7 +7,7 @@ public class TimeDisplay : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        currenTime = GetComponent<TextMeshProUGUI>();
+        currenTime = GetComponentInChildren<TextMeshProUGUI>();
     }
 
     // Update is called once per frame

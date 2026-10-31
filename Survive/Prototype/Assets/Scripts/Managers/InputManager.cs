@@ -16,7 +16,7 @@ public class InputManager : MonoBehaviour
     private CraftingHandler _craftingHandler;
     private Camera _camera;
     private PhoneScript _phone;
-
+    private PlayerAnimator _playerAnimator;
     private float scrollCooldown = 0.2f; // adjust to taste
     private float lastScrollTime = 0f;
     private Action<InputAction.CallbackContext> _movePerformed;
@@ -47,7 +47,7 @@ public class InputManager : MonoBehaviour
         _playerUI = GetComponent<PlayerUI>();
         _controls = new PlayerInputs();
         _phone = GetComponentInChildren<PhoneScript>();
-
+        _playerAnimator = GetComponent<PlayerAnimator>();
 
         // Initialize all delegates
         _movePerformed = ctx =>
@@ -126,8 +126,8 @@ public class InputManager : MonoBehaviour
         _controls.PlayerInteract.Inventory.performed += _inventoryToggle;
         _controls.PlayerInteract.ResourceMenu.performed += _resourceMenuToggle;
         _controls.PlayerInteract.Interact.performed += _toggleTarckMenu;
-        _controls.PlayerInteract.Phone.started += ctx => _phone.MoveInPhone();
-        _controls.PlayerInteract.Phone.canceled += ctx => _phone.MoveOutPhone();
+        _controls.PlayerInteract.Phone.started += ctx => _playerAnimator.ShowWatch(true);
+        _controls.PlayerInteract.Phone.canceled += ctx => _playerAnimator.ShowWatch(false);
         _controls.PlayerInteract.Scroll.performed += Scroll;
         _controls.PlayerInteract.Book.performed += _toggleRecipeBook;
     }

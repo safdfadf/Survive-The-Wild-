@@ -78,6 +78,10 @@ public class PlayerAnimator : MonoBehaviour
         animator.SetBool("Carry", true);
     }
 
+    public void ShowWatch(bool show)
+    {
+        animator.SetBool("Watch", show);
+    }
     public void StopCarryAnim()
     {
         animator.SetBool("Carry", false);
