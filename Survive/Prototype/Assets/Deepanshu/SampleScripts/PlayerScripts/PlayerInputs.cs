@@ -209,7 +209,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Aim"",
+                    ""name"": ""Right"",
                     ""type"": ""Button"",
                     ""id"": ""d3726dd7-6fc4-40cc-b131-8c23c4f884cd"",
                     ""expectedControlType"": """",
@@ -218,7 +218,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Shoot"",
+                    ""name"": ""Left"",
                     ""type"": ""Button"",
                     ""id"": ""2e370804-d015-47e2-9721-6fc1edee50b8"",
                     ""expectedControlType"": """",
@@ -297,6 +297,15 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Escape"",
+                    ""type"": ""Button"",
+                    ""id"": ""edb794c5-47e9-482d-870c-4105bcbb0e04"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -318,7 +327,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Aim"",
+                    ""action"": ""Right"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -329,7 +338,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                     ""interactions"": ""Tap,Hold"",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Shoot"",
+                    ""action"": ""Left"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -420,6 +429,17 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                     ""action"": ""Book"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3887e7f3-1099-4c55-be57-3bbd7886b200"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Escape"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -437,8 +457,8 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         // PlayerInteract
         m_PlayerInteract = asset.FindActionMap("PlayerInteract", throwIfNotFound: true);
         m_PlayerInteract_Interact = m_PlayerInteract.FindAction("Interact", throwIfNotFound: true);
-        m_PlayerInteract_Aim = m_PlayerInteract.FindAction("Aim", throwIfNotFound: true);
-        m_PlayerInteract_Shoot = m_PlayerInteract.FindAction("Shoot", throwIfNotFound: true);
+        m_PlayerInteract_Right = m_PlayerInteract.FindAction("Right", throwIfNotFound: true);
+        m_PlayerInteract_Left = m_PlayerInteract.FindAction("Left", throwIfNotFound: true);
         m_PlayerInteract_CursorOnOf = m_PlayerInteract.FindAction("CursorOn/Of", throwIfNotFound: true);
         m_PlayerInteract_Inventory = m_PlayerInteract.FindAction("Inventory", throwIfNotFound: true);
         m_PlayerInteract_ResourceMenu = m_PlayerInteract.FindAction("ResourceMenu", throwIfNotFound: true);
@@ -447,6 +467,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         m_PlayerInteract_Scroll = m_PlayerInteract.FindAction("Scroll", throwIfNotFound: true);
         m_PlayerInteract_MainMenu = m_PlayerInteract.FindAction("MainMenu", throwIfNotFound: true);
         m_PlayerInteract_Book = m_PlayerInteract.FindAction("Book", throwIfNotFound: true);
+        m_PlayerInteract_Escape = m_PlayerInteract.FindAction("Escape", throwIfNotFound: true);
     }
 
     ~@PlayerInputs()
@@ -601,8 +622,8 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_PlayerInteract;
     private List<IPlayerInteractActions> m_PlayerInteractActionsCallbackInterfaces = new List<IPlayerInteractActions>();
     private readonly InputAction m_PlayerInteract_Interact;
-    private readonly InputAction m_PlayerInteract_Aim;
-    private readonly InputAction m_PlayerInteract_Shoot;
+    private readonly InputAction m_PlayerInteract_Right;
+    private readonly InputAction m_PlayerInteract_Left;
     private readonly InputAction m_PlayerInteract_CursorOnOf;
     private readonly InputAction m_PlayerInteract_Inventory;
     private readonly InputAction m_PlayerInteract_ResourceMenu;
@@ -611,13 +632,14 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerInteract_Scroll;
     private readonly InputAction m_PlayerInteract_MainMenu;
     private readonly InputAction m_PlayerInteract_Book;
+    private readonly InputAction m_PlayerInteract_Escape;
     public struct PlayerInteractActions
     {
         private @PlayerInputs m_Wrapper;
         public PlayerInteractActions(@PlayerInputs wrapper) { m_Wrapper = wrapper; }
         public InputAction @Interact => m_Wrapper.m_PlayerInteract_Interact;
-        public InputAction @Aim => m_Wrapper.m_PlayerInteract_Aim;
-        public InputAction @Shoot => m_Wrapper.m_PlayerInteract_Shoot;
+        public InputAction @Right => m_Wrapper.m_PlayerInteract_Right;
+        public InputAction @Left => m_Wrapper.m_PlayerInteract_Left;
         public InputAction @CursorOnOf => m_Wrapper.m_PlayerInteract_CursorOnOf;
         public InputAction @Inventory => m_Wrapper.m_PlayerInteract_Inventory;
         public InputAction @ResourceMenu => m_Wrapper.m_PlayerInteract_ResourceMenu;
@@ -626,6 +648,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         public InputAction @Scroll => m_Wrapper.m_PlayerInteract_Scroll;
         public InputAction @MainMenu => m_Wrapper.m_PlayerInteract_MainMenu;
         public InputAction @Book => m_Wrapper.m_PlayerInteract_Book;
+        public InputAction @Escape => m_Wrapper.m_PlayerInteract_Escape;
         public InputActionMap Get() { return m_Wrapper.m_PlayerInteract; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -638,12 +661,12 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
             @Interact.started += instance.OnInteract;
             @Interact.performed += instance.OnInteract;
             @Interact.canceled += instance.OnInteract;
-            @Aim.started += instance.OnAim;
-            @Aim.performed += instance.OnAim;
-            @Aim.canceled += instance.OnAim;
-            @Shoot.started += instance.OnShoot;
-            @Shoot.performed += instance.OnShoot;
-            @Shoot.canceled += instance.OnShoot;
+            @Right.started += instance.OnRight;
+            @Right.performed += instance.OnRight;
+            @Right.canceled += instance.OnRight;
+            @Left.started += instance.OnLeft;
+            @Left.performed += instance.OnLeft;
+            @Left.canceled += instance.OnLeft;
             @CursorOnOf.started += instance.OnCursorOnOf;
             @CursorOnOf.performed += instance.OnCursorOnOf;
             @CursorOnOf.canceled += instance.OnCursorOnOf;
@@ -668,6 +691,9 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
             @Book.started += instance.OnBook;
             @Book.performed += instance.OnBook;
             @Book.canceled += instance.OnBook;
+            @Escape.started += instance.OnEscape;
+            @Escape.performed += instance.OnEscape;
+            @Escape.canceled += instance.OnEscape;
         }
 
         private void UnregisterCallbacks(IPlayerInteractActions instance)
@@ -675,12 +701,12 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
             @Interact.started -= instance.OnInteract;
             @Interact.performed -= instance.OnInteract;
             @Interact.canceled -= instance.OnInteract;
-            @Aim.started -= instance.OnAim;
-            @Aim.performed -= instance.OnAim;
-            @Aim.canceled -= instance.OnAim;
-            @Shoot.started -= instance.OnShoot;
-            @Shoot.performed -= instance.OnShoot;
-            @Shoot.canceled -= instance.OnShoot;
+            @Right.started -= instance.OnRight;
+            @Right.performed -= instance.OnRight;
+            @Right.canceled -= instance.OnRight;
+            @Left.started -= instance.OnLeft;
+            @Left.performed -= instance.OnLeft;
+            @Left.canceled -= instance.OnLeft;
             @CursorOnOf.started -= instance.OnCursorOnOf;
             @CursorOnOf.performed -= instance.OnCursorOnOf;
             @CursorOnOf.canceled -= instance.OnCursorOnOf;
@@ -705,6 +731,9 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
             @Book.started -= instance.OnBook;
             @Book.performed -= instance.OnBook;
             @Book.canceled -= instance.OnBook;
+            @Escape.started -= instance.OnEscape;
+            @Escape.performed -= instance.OnEscape;
+            @Escape.canceled -= instance.OnEscape;
         }
 
         public void RemoveCallbacks(IPlayerInteractActions instance)
@@ -734,8 +763,8 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
     public interface IPlayerInteractActions
     {
         void OnInteract(InputAction.CallbackContext context);
-        void OnAim(InputAction.CallbackContext context);
-        void OnShoot(InputAction.CallbackContext context);
+        void OnRight(InputAction.CallbackContext context);
+        void OnLeft(InputAction.CallbackContext context);
         void OnCursorOnOf(InputAction.CallbackContext context);
         void OnInventory(InputAction.CallbackContext context);
         void OnResourceMenu(InputAction.CallbackContext context);
@@ -744,5 +773,6 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         void OnScroll(InputAction.CallbackContext context);
         void OnMainMenu(InputAction.CallbackContext context);
         void OnBook(InputAction.CallbackContext context);
+        void OnEscape(InputAction.CallbackContext context);
     }
 }

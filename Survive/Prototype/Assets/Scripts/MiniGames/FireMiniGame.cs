@@ -1,5 +1,7 @@
-﻿using SurviveTheWild.CraftingSystem.Building.CampFire;
+﻿using System;
+using SurviveTheWild.CraftingSystem.Building.CampFire;
 using SurviveTheWild.EventBus;
+using SurviveTheWild.Managers;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,17 +21,25 @@ namespace SurviveTheWild.MiniGames
 
 
         private bool lastClickWasLeft;
+        private MiniGameHandler _miniGameHandler;
         private bool OnGameStart { get; set; }
 
-        public override void Initialize(CampFire campFire)
+        public override void Initialize(CampFire campFire, MiniGameHandler miniGameHandler)
         {
             progress = 0f;
             _currentCampFire = campFire;
+            OnGameStart = true;
+            _miniGameHandler = miniGameHandler;
+        }
+
+        private void Update()
+        {
             UpdateGame();
         }
 
         public override void OnLeftClick()
         {
+            print("calling left click");
             if (!lastClickWasLeft)
             {
                 progress += progressPerClick;
@@ -40,6 +50,7 @@ namespace SurviveTheWild.MiniGames
 
         public override void OnRightClick()
         {
+            print("calling right click");
             if (lastClickWasLeft)
             {
                 progress += progressPerClick;
@@ -48,36 +59,34 @@ namespace SurviveTheWild.MiniGames
             }
         }
 
+        // i should give player a chance to get out of mini game 
         private void UpdateGame()
         {
             if (!OnGameStart) return;
+            // lock player 
+
             var slider = UIManager.instance.loadingSlider;
             slider.gameObject.SetActive(true);
             UIManager.instance.ChangeLoadSliderColor(Color.red);
-            while (OnGameStart)
+
+            progress -= drainRate * Time.deltaTime;
+            progress = Mathf.Max(0, progress);
+            UpdateFireVFX();
+            slider.value = progress / maxProgress;
+            UIManager.instance.loadingSlider.value = progress / maxProgress;
+            if (progress >= maxProgress)
             {
-                progress -= drainRate * Time.deltaTime;
-                progress = Mathf.Max(0, progress);
-                UpdateFireVFX();
-                slider.value = progress / maxProgress;
-                UIManager.instance.loadingSlider.value = progress / maxProgress;
-                if (progress >= maxProgress)
-                {
-                    _currentCampFire.Ignite();
-                    OnGameStart = false;
-                }
+                _currentCampFire.Ignite();
 
-                if (stamina <= 0)
-                {
-                    //    FireFailed();
-
-                    OnGameStart = false;
-                }
+                EndGame();
             }
 
-            UIManager.instance.ChangeLoadColorToDefault();
-            UIManager.instance.loadingSlider.gameObject.SetActive(false);
-            SceneRoot.Instance.EventManager.MiniGamesEvents.StartFireGame();
+            if (stamina <= 0)
+            {
+                //    FireFailed();
+                EndGame();
+                OnGameStart = false;
+            }
         }
 
         private void UpdateFireVFX()
@@ -89,6 +98,18 @@ namespace SurviveTheWild.MiniGames
             var flicker = Mathf.Sin(Time.time * 20f) * 0.02f;
 
             _currentCampFire.UpdateFireFxScale(Vector3.one * (baseScale + flicker));
+        }
+
+        public override void EndGame()
+        {
+            // unlock player 
+            print("EndGame");
+            OnGameStart = false;
+            UIManager.instance.ChangeLoadColorToDefault();
+            UIManager.instance.loadingSlider.gameObject.SetActive(false);
+            SceneRoot.Instance.EventManager.playerEvents.ResetRequestedInput();
+            SceneRoot.Instance.MiniGameHandler._currentMiniGame = null;
+            Destroy(gameObject);
         }
     }
 }

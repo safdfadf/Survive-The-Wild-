@@ -8,7 +8,7 @@ namespace SurviveTheWild.EventBus.Events
 
         public void RemoveMenu()
         {
-            onRemoveMenu();
+            onRemoveMenu?.Invoke();
         }
     }
 }

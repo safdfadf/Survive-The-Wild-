@@ -4,11 +4,11 @@ namespace SurviveTheWild.EventBus.Events
 {
     public class MiniGamesEvents
     {
-        public Action onStartFireGame;
+        public Action onToggleMiniGame;
 
         public void StartFireGame()
         {
-            onStartFireGame();
+            onToggleMiniGame();
         }
     }
 }

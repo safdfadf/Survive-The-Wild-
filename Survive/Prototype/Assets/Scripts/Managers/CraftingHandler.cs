@@ -266,7 +266,7 @@ public class CraftingHandler : MonoBehaviour
         _currentItems.Clear();
     }
 
-    private void SpawnStructure(CraftingSO so) // spawns structure and lets base builder handle placement 
+    private void SpawnStructure(CraftingSO so) 
     {
         _buildingHandler.SetGHostObject(so);
     }

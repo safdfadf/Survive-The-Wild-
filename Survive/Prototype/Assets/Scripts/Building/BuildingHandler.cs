@@ -1,6 +1,8 @@
+using SurviveTheWild.Interface;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
-public class BuildingHandler : MonoBehaviour
+public class BuildingHandler : MonoBehaviour, IRequestInput
 {
     [Header("Materials")] [SerializeField] private Material validMat; // Ghost
     [SerializeField] private Material invalidMat; // Red
@@ -25,20 +27,23 @@ public class BuildingHandler : MonoBehaviour
         cam = Camera.main;
     }
 
-    private void Update()// 
+    private void Update() // 
     {
         if (_currentStructure == null || !_canMove) return;
         UpdateGhostPosition();
         CheckPlacementValidity();
-        if (Input.GetMouseButtonDown(0) && canPlace)
-        {
-            FinalizeMovement();
-        }
+    }
+
+    public void PlaceStructure()
+    {
+        if (_currentStructure == null || !_canMove || !canPlace) return;
+        FinalizeMovement();
     }
 
     public void SetGHostObject(CraftingSO so)
     {
-        GameObject obj = Instantiate(so.resSo.prefab);
+        SceneRoot.Instance.EventManager.playerEvents.onDeliverRequestInput(this);
+        var obj = Instantiate(so.resSo.prefab);
         _currentStructure = obj.GetComponent<BaseStructure>();
         _currentStructure.InitializeStructure(so);
         _currentStructure.SetValidMat(validMat);
@@ -46,6 +51,14 @@ public class BuildingHandler : MonoBehaviour
         _currentStructure.ToggleMat(true);
         _currentStructure.DisabelAllColliders();
         _canMove = true;
+    }
+
+    public void DeconstructGhostObject()// only when we are in placement phase i want to 
+    {
+        if (_currentStructure == null) return;
+        _canMove = false;
+        Destroy(_currentStructure.gameObject);
+        _currentStructure = null;
     }
 
     private void UpdateGhostPosition()
@@ -127,6 +140,7 @@ public class BuildingHandler : MonoBehaviour
         {
             Debug.Log(hit.gameObject.name);
         }
+
         canPlace = hits.Length == 0;
         _currentStructure.ToggleMat(canPlace);
     }
@@ -139,8 +153,23 @@ public class BuildingHandler : MonoBehaviour
             FrameStructure parent = _targetSocket.GetComponentInParent<FrameStructure>();
             parent.RegisterChild(_currentStructure);
         }
+
         _currentStructure.EnableAllColliders();
         canPlace = false;
         _currentStructure = null;
+        SceneRoot.Instance.EventManager.playerEvents.ResetRequestedInput();
+    }
+
+    public void UseInput(InputAction.CallbackContext ctx)
+    {
+        if (ctx.action.name == "Left")
+        {
+            PlaceStructure();
+        }
+    }
+
+    public void ResetInput()
+    {
+        DeconstructGhostObject();
     }
 }

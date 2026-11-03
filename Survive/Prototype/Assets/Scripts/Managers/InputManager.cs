@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using SurviveTheWild.EventBus;
+using SurviveTheWild.Interface;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -30,7 +31,7 @@ public class InputManager : MonoBehaviour
     private Action<InputAction.CallbackContext> _crouchCanceled;
     private Action<InputAction.CallbackContext> _jumpPerformed;
     private Action<InputAction.CallbackContext> _aimStarted;
-    private Action<InputAction.CallbackContext> _aimCanceled;
+    private Action<InputAction.CallbackContext> _rightHoldCancel;
     private Action<InputAction.CallbackContext> _shootPerformed;
     private Action<InputAction.CallbackContext> _cursorToggle;
     private Action<InputAction.CallbackContext> _inventoryToggle;
@@ -39,6 +40,7 @@ public class InputManager : MonoBehaviour
     private Action<InputAction.CallbackContext> _toggleTarckMenu;
     private Action<InputAction.CallbackContext> _toggleRecipeBook;
     private bool _miniGameOn;
+    private IRequestInput _requestInput;
 
     private void Awake()
     {
@@ -82,18 +84,7 @@ public class InputManager : MonoBehaviour
         };
 
 
-        _aimStarted = ctx =>
-        {
-            if (_miniGameOn)
-            {
-                SceneRoot.Instance.MiniGameHandler.RightClick(ctx);
-                return;
-            }
-
-            UIManager.instance.ActivateSubMenu();
-        };
-
-        _aimCanceled = ctx => { UIManager.instance.DeactivateSubMenu(); };
+        _rightHoldCancel = ctx => { UIManager.instance.DeactivateSubMenu(); };
         _shootPerformed = ctx => // 
         {
             var weapon = _player.CurrentWeapon;
@@ -115,7 +106,15 @@ public class InputManager : MonoBehaviour
             _controls.Enable();
         }
 
-        SceneRoot.Instance.EventManager.MiniGamesEvents.onStartFireGame += ToggleMiniGameInput;
+        if (SceneRoot.Instance.EventManager == null)
+        {
+            print("scene root is null");
+        }
+
+        SceneRoot.Instance.EventManager.MiniGamesEvents.onToggleMiniGame += ToggleMiniGameInput;
+        SceneRoot.Instance.EventManager.playerEvents.onDeliverRequestInput += SetRequestedInput;
+        SceneRoot.Instance.EventManager.playerEvents.onRemoveRequestInput += ResetRequestedInput;
+
         _controls.PlayerMovement.Move.performed += _movePerformed;
         _controls.PlayerMovement.Move.canceled += _moveCanceled;
 
@@ -129,10 +128,10 @@ public class InputManager : MonoBehaviour
         _controls.PlayerMovement.Jump.performed += _jumpPerformed;
         _controls.PlayerMovement.HunerSense.performed += _toggleHuntetSenses;
 
-        _controls.PlayerInteract.Aim.started += _aimStarted;
-        _controls.PlayerInteract.Aim.canceled += _aimCanceled;
-        _controls.PlayerInteract.Shoot.performed += HandleLeftClick;
-        _controls.PlayerInteract.Shoot.canceled += HandleLeftClick;
+        _controls.PlayerInteract.Right.started += HandleRightClick;
+        _controls.PlayerInteract.Right.canceled += _rightHoldCancel;
+        _controls.PlayerInteract.Left.performed += HandleLeftClick;
+        _controls.PlayerInteract.Left.canceled += HandleLeftClick;
 
         //    _controls.PlayerInteract.CursorOnOf.performed += _cursorToggle;
         _controls.PlayerInteract.Inventory.performed += _inventoryToggle;
@@ -142,10 +141,14 @@ public class InputManager : MonoBehaviour
         _controls.PlayerInteract.Phone.canceled += ctx => ShowWatch(false);
         _controls.PlayerInteract.Scroll.performed += Scroll;
         _controls.PlayerInteract.Book.performed += _toggleRecipeBook;
+        _controls.PlayerInteract.Escape.performed += ctx => RemoveRequestedInput();
     }
 
     private void OnDisable()
     {
+        SceneRoot.Instance.EventManager.playerEvents.onDeliverRequestInput -= SetRequestedInput;
+        SceneRoot.Instance.EventManager.playerEvents.onRemoveRequestInput -= ResetRequestedInput;
+
         _controls.PlayerMovement.Move.performed -= _movePerformed;
         _controls.PlayerMovement.Move.canceled -= _moveCanceled;
 
@@ -157,10 +160,10 @@ public class InputManager : MonoBehaviour
 
         _controls.PlayerMovement.Jump.performed -= _jumpPerformed;
 
-        _controls.PlayerInteract.Aim.started -= _aimStarted;
-        _controls.PlayerInteract.Aim.canceled -= _aimCanceled;
-        _controls.PlayerInteract.Shoot.performed -= _shootPerformed;
-        _controls.PlayerInteract.Shoot.canceled -= _shootPerformed;
+        _controls.PlayerInteract.Right.started -= HandleRightClick;
+        _controls.PlayerInteract.Right.canceled -= _rightHoldCancel;
+        _controls.PlayerInteract.Left.performed -= HandleLeftClick;
+        _controls.PlayerInteract.Left.canceled -= HandleLeftClick;
         _controls.PlayerInteract.Scroll.canceled -= Scroll;
         //   _controls.PlayerInteract.CursorOnOf.performed -= _cursorToggle;
         _controls.PlayerInteract.Inventory.performed -= _inventoryToggle;
@@ -168,6 +171,7 @@ public class InputManager : MonoBehaviour
         _controls.PlayerMovement.HunerSense.performed -= _toggleHuntetSenses;
         _controls.PlayerInteract.Interact.performed -= _toggleTarckMenu;
         _controls.PlayerInteract.Book.performed -= _toggleRecipeBook;
+     
         _controls.Disable();
     }
 
@@ -203,18 +207,45 @@ public class InputManager : MonoBehaviour
         _miniGameOn = !_miniGameOn;
     }
 
+    public void SetRequestedInput(IRequestInput input)
+    {
+        _requestInput = input;
+    }
+
+    public void ResetRequestedInput()
+    {
+        _requestInput = null;
+    }
+
+    public void RemoveRequestedInput()
+    {
+        _requestInput.ResetInput();
+        _requestInput = null;
+    }
+
     private void HandleLeftClick(InputAction.CallbackContext ctx)
     {
-        // when minigame is on currentactive minigame will hande it 
-        if (_miniGameOn)
+        if (_requestInput != null)
         {
-            SceneRoot.Instance.MiniGameHandler.LeftClick(ctx);
+            _requestInput.UseInput(ctx);
             return;
         }
 
-        BaseWeapon weapon = _player.CurrentWeapon;
+
+        var weapon = _player.CurrentWeapon;
         if (weapon == null) return;
         weapon.HandleWeapon(ctx);
+    }
+
+    private void HandleRightClick(InputAction.CallbackContext ctx)
+    {
+        if (_requestInput != null)
+        {
+            _requestInput.UseInput(ctx);
+            return;
+        }
+
+        UIManager.instance.ActivateSubMenu();
     }
 
     private void PressE()

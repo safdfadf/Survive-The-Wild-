@@ -30,6 +30,7 @@ namespace SurviveTheWild.EventBus
             StructureEvents = new StructureEvents();
             UiEvents = new UIEvents();
             TimeEvents = new TimeEvents();
+            MiniGamesEvents = new MiniGamesEvents();
         }
     }
 }

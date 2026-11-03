@@ -1,4 +1,5 @@
 ﻿using System;
+using SurviveTheWild.Interface;
 
 namespace SurviveTheWild.EventBus
 {
@@ -8,6 +9,9 @@ namespace SurviveTheWild.EventBus
         public Action OnTriggerPlayerSleep;
         public Action OnDropObjFromHand;
         public Action<float> OnDrainStamina;
+        public Action<IRequestInput> onDeliverRequestInput;
+        public Action onRemoveRequestInput;
+
         public void AddExperience(int experience)
         {
             OnAddExperience(experience);
@@ -18,10 +22,15 @@ namespace SurviveTheWild.EventBus
             OnTriggerPlayerSleep();
         }
 
-     
+
         public void PayAttackCost(int cost)
         {
             OnDrainStamina(cost);
+        }
+
+        public void ResetRequestedInput()
+        {
+            onRemoveRequestInput();
         }
     }
 }
