@@ -90,7 +90,7 @@ public class Environment : MonoBehaviour, ItakeDamage, IsoInitializer<EnvironSo>
         IsPlayerInRange = inRange;
     }
 
-    public void TakeDamage(IAttack attack) // some of the environment like trees can only be cut by Ihatch
+    public virtual void TakeDamage(IAttack attack) // some of the environment like trees can only be cut by Ihatch
     {
         PlayerAttack atk = attack as PlayerAttack;
         if (requiredAbility != null && requiredAbility != atk.ability)

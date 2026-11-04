@@ -218,6 +218,12 @@ public class
         }
     }
 
+    public override void TakeDamage(IAttack attack)
+    {
+        if (!IsAssembled) return;
+        base.TakeDamage(attack);
+    }
+
     public void Craft()
     {
     }
