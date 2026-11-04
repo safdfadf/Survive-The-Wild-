@@ -1,10 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using DefaultNamespace;
-using DefaultNamespace.EventBus;
-using DefaultNamespace.Interface;
-using DefaultNamespace.ResourceSystem;
+using SurviveTheWild;
+using SurviveTheWild.EventBus;
+using SurviveTheWild.Interface;
+using SurviveTheWild.ResourceSystem;
 using FoodSystem;
 using NUnit.Framework;
 using Player;
@@ -144,14 +144,14 @@ public class MovementHandler : MonoBehaviour //TODo: Make a separate script for 
 
     private void OnEnable()
     {
-        EventBus.OnHourChanged += AddScentHourly;
-        EventManager.Instance.playerEvents.OnAddExperience += _playerStats.AddXp;
+        SceneRoot.Instance.EventManager.TimeEvents.onOneHourPass += AddScentHourly;
+        SceneRoot.Instance.EventManager.playerEvents.OnAddExperience += _playerStats.AddXp;
     }
 
     private void OnDisable()
     {
-        EventBus.OnHourChanged -= AddScentHourly;
-        EventManager.Instance.playerEvents.OnAddExperience -= _playerStats.AddXp;
+        SceneRoot.Instance.EventManager.TimeEvents.onOneHourPass -= AddScentHourly;
+        SceneRoot.Instance.EventManager.playerEvents.OnAddExperience -= _playerStats.AddXp;
     }
 
     public void ToggleHunterSense()
@@ -173,14 +173,14 @@ public class MovementHandler : MonoBehaviour //TODo: Make a separate script for 
     {
         if (_canMove && isMoving)
         {
-            Vector3 moveDirection = transform.right * MoveInput.x + transform.forward * MoveInput.y;
+            var moveDirection = transform.right * MoveInput.x + transform.forward * MoveInput.y;
 
             animator.MovePlayer(MoveInput.y, MoveInput.x);
             float speed = 0;
 
             if (_isSprinting)
             {
-                float dt = Time.deltaTime;
+                var dt = Time.deltaTime;
                 _isWalking = false;
                 _noiseEmitter.AddNoise(_noiseEmitter.sprintNoise, _isSprinting);
                 speed = sprintSpeed;
@@ -582,5 +582,19 @@ public class MovementHandler : MonoBehaviour //TODo: Make a separate script for 
         }
 
         inHandObjs.Clear();
+    }
+
+    public void LockCamera(bool LookAtwatch)//remove this
+    {
+        if (LookAtwatch)
+        {
+            _canMove = false;
+            var locPos = new Vector3(30, 0, 0);
+            playerCamera.transform.localRotation = Quaternion.Euler(locPos);
+        }
+        else
+        {
+            _canMove = true;
+        }
     }
 }
