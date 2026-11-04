@@ -102,7 +102,7 @@ public class ZoneManager : MonoBehaviour
             }
             else
             {
-                print(zone.HasAvailablePosition + " " + zone.IsAvailableForTime(species, startHour, endHour));
+//                print(zone.HasAvailablePosition + " " + zone.IsAvailableForTime(species, startHour, endHour));
             }
         }
 

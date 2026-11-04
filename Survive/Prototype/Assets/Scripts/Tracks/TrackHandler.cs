@@ -9,6 +9,7 @@ public class TrackHandler : MonoBehaviour // no need to be monobehaviour
     private ChunkManager chunkManager;
     private GameObject prefab;
     public static TrackHandler instance;
+
     private void Awake()
     {
         chunkManager = FindAnyObjectByType<ChunkManager>();
@@ -20,8 +21,8 @@ public class TrackHandler : MonoBehaviour // no need to be monobehaviour
         {
             Destroy(gameObject);
         }
-        
     }
+
     private void Start()
     {
         prefab = SoProvider.instance.GetTrack();
@@ -29,13 +30,15 @@ public class TrackHandler : MonoBehaviour // no need to be monobehaviour
 
     private void OnEnable()
     {
-        EventBus.OnHourChanged += AgeTrackData;
+        SceneRoot.Instance.EventManager.TimeEvents.onOneHourPass += AgeTrackData;
     }
+
     private void OnDisable()
     {
-        EventBus.OnHourChanged -= AgeTrackData;
+        SceneRoot.Instance.EventManager.TimeEvents.onOneHourPass -= AgeTrackData;
     }
-    public void CreateTracks(MovementSegment segment, AnimalState state,AnimalSo so)
+
+    public void CreateTracks(MovementSegment segment, AnimalState state, AnimalSo so)
     {
         // we need to make sure it does not creates unecessary tracks 
         float distance = Vector3.Distance(segment.StartPos, segment.EndPos);
@@ -49,20 +52,26 @@ public class TrackHandler : MonoBehaviour // no need to be monobehaviour
             Vector3 dir = (segment.EndPos - segment.StartPos).normalized;
             float angle = Mathf.Atan2(dir.x, dir.z) * Mathf.Rad2Deg;
             string Dir = GetCompassDirection(angle);
-            
+
             // Adjust to terrain height
             pos.y = Terrain.activeTerrain.SampleHeight(pos);
-            TrackData data = new TrackData(so,pos, so.id, 0,false,maxTrackAgeHours,Dir,angle ,state);
-           Chunk chunk =  chunkManager.GetChunkAtPos(pos);
-           if(chunk == null){Debug.Log("Could not find chunk");return;}
-           if(chunk.TrackData.Count >= maxtracksPerChunk) continue;
-           chunk.TrackData.Add(data);
-           if (chunk.isActive)
-           {
-               chunkManager.ActivateTracks(chunk);// activate the tracks if chunk is active
-           }
+            TrackData data = new TrackData(so, pos, so.id, 0, false, maxTrackAgeHours, Dir, angle, state);
+            Chunk chunk = chunkManager.GetChunkAtPos(pos);
+            if (chunk == null)
+            {
+                Debug.Log("Could not find chunk");
+                return;
+            }
+
+            if (chunk.TrackData.Count >= maxtracksPerChunk) continue;
+            chunk.TrackData.Add(data);
+            if (chunk.isActive)
+            {
+                chunkManager.ActivateTracks(chunk); // activate the tracks if chunk is active
+            }
         }
-    } 
+    }
+
     private void AgeTrackData(int hour)
     {
         // all the data in active tracks is being updated 
@@ -80,14 +89,17 @@ public class TrackHandler : MonoBehaviour // no need to be monobehaviour
             }
         }
     }
+
     public void ReturnTracks(Chunk chunk)
     {
         foreach (var track in chunk.activeTracks)
         {
             GlobalPool.instance.Return(prefab, track);
         }
+
         chunk.activeTracks.Clear();
     }
+
     private string GetCompassDirection(float angle)
     {
         if (angle < 0) angle += 360f;
@@ -102,7 +114,11 @@ public class TrackHandler : MonoBehaviour // no need to be monobehaviour
         return "North-West";
     }
 }
+
 public enum TrackAge
 {
-   VeryFresh, Fresh, Recent,Old
+    VeryFresh,
+    Fresh,
+    Recent,
+    Old
 }

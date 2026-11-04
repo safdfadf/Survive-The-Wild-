@@ -24,18 +24,18 @@ public class
 
     public void OnEnable()
     {
-        EventBus.OnHourChanged += UpdateAnimalPos; // update animal current position
+        SceneRoot.Instance.EventManager.TimeEvents.onOneHourPass += UpdateAnimalPos;
         EventBus.CreateAnimalData += CreateAnimalData; // Based on region create animal data
-        EventBus.OnChunkChanged += CheckAnimalToSpawn; // check if any animal lies in chunk bounds
-        EventBus.OnDeactiveChunk += CheckToDeactivate; // Deactivate animal
+        SceneRoot.Instance.EventManager.ChunkEvents.ActiveChunk += CheckAnimalToSpawn;
+        SceneRoot.Instance.EventManager.ChunkEvents.DeActiveChunk += CheckToDeactivate;
     }
 
     private void OnDisable()
     {
-        EventBus.OnHourChanged -= UpdateAnimalPos;
+        SceneRoot.Instance.EventManager.TimeEvents.onOneHourPass -= UpdateAnimalPos;
         EventBus.CreateAnimalData -= CreateAnimalData;
-        EventBus.OnChunkChanged -= CheckAnimalToSpawn;
-        EventBus.OnDeactiveChunk -= CheckToDeactivate;
+        SceneRoot.Instance.EventManager.ChunkEvents.ActiveChunk -= CheckAnimalToSpawn;
+        SceneRoot.Instance.EventManager.ChunkEvents.DeActiveChunk -= CheckToDeactivate;
     }
 
     private void Awake()

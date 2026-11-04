@@ -40,6 +40,6 @@ public abstract class AnimalState
         var volume = 1f - (distance / Radius);
         // what should be the distance 
         SceneRoot.Instance.AudioManager.AnimalSound(Clip, volume);
-        Debug.Log(Clip.name +volume);
+//        Debug.Log(Clip.name +volume);
     }
 }

@@ -20,12 +20,12 @@ namespace FoodSystem
 
         private void OnEnable()
         {
-            EventBus.OnHourChanged += Fall;
+            SceneRoot.Instance.EventManager.TimeEvents.onOneHourPass += Fall;
         }
 
         private void OnDisable()
         {
-            EventBus.OnHourChanged -= Fall;
+            SceneRoot.Instance.EventManager.TimeEvents.onOneHourPass -= Fall;
         }
 
         public override void Harvest()

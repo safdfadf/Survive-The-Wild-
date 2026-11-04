@@ -10,14 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e0138a2adee76104e9f4d77692b6855c, type: 3}
-  m_Name: FireRecipe
+  m_Name: StoneTrapRecipe
   m_EditorClassIdentifier: 
   ingredients:
-  - objSo: {fileID: 11400000, guid: b7215a070f1ca7b459087577a8b803e1, type: 2}
-    amount: 3
-  - objSo: {fileID: 11400000, guid: a139dfa28208d0842a55488f2a319a42, type: 2}
-    amount: 3
-  resSo: {fileID: 11400000, guid: 491fdbea3f370d84d88e6169b25468c1, type: 2}
+  - objSo: {fileID: 11400000, guid: 27e2c7e41bc250641915060a71bb3246, type: 2}
+    amount: 1
+  resSo: {fileID: 11400000, guid: 266c035d27f62464ba88ade1dd681b13, type: 2}
   hasUpgrades: 0
   upgrades: []
   structureType: 0

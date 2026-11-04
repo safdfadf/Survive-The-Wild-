@@ -12,7 +12,6 @@ public class
     public BuildingRecipe craftingRecipe { get; private set; }
 
     protected Ingredient[] _requiredIngredients = new Ingredient[0];
-    protected StructureUI _structureUI;
 
     private Material _originalMaterial;
     private Material _ghostMaterial;
@@ -40,11 +39,9 @@ public class
     protected override void Awake()
     {
         base.Awake();
-        _structureUI = GetComponent<StructureUI>();
         _meshRenderer = GetComponentInChildren<MeshRenderer>();
         _currentMaterial = _meshRenderer.material;
         _originalMaterial = _meshRenderer.material;
-        _structureUI.ToggleDescription(false);
         col = GetComponentsInChildren<Collider>();
         Gm = gameObject;
         SetBools();
@@ -64,7 +61,6 @@ public class
         IsAssembled = true;
         _currentMaterial = _originalMaterial;
         _meshRenderer.material = _currentMaterial;
-        _structureUI.ToggleDescription(false);
         _requiredIngredients = new Ingredient[0];
         OnStructureAssembled();
     }
@@ -223,17 +219,14 @@ public class
 
     public void Craft()
     {
-        throw new NotImplementedException();
     }
 
     public void Harvest()
     {
-        throw new NotImplementedException();
     }
 
     public void UseMe()
     {
-        throw new NotImplementedException();
     }
 
     private void SetBools()

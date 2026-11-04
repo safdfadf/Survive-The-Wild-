@@ -32,7 +32,6 @@ namespace Animal.States
             if (!canUpdate) return;
             if (data != null && data.isZoneTraveling || Animal == null)
             {
-                Debug.Log(data.isZoneTraveling);
                 return;
             }
 
@@ -45,8 +44,7 @@ namespace Animal.States
                 MoveToNextPosition();
 
             if (Random.value > 0.5f)
-                Debug.Log("updating Calm State ");
-            HandleAudioCall(CalmRadius, Animal.AnimalSo.calmClip[Random.Range(0, Animal.AnimalSo.calmClip.Count)]);
+                HandleAudioCall(CalmRadius, Animal.AnimalSo.calmClip[Random.Range(0, Animal.AnimalSo.calmClip.Count)]);
         }
 
         public override void ExitState()

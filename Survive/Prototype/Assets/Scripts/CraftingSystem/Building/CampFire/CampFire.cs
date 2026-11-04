@@ -37,22 +37,18 @@ namespace SurviveTheWild.CraftingSystem.Building.CampFire
 
         private void OnEnable()
         {
-            //  EventBus.PressingE += Ignite;
             SceneRoot.Instance.EventManager.reseourceEvent.onGatherResource += RemoveFood;
         }
 
         private void OnDisable()
         {
-            //EventBus.PressingE -= Ignite;
             SceneRoot.Instance.EventManager.reseourceEvent.onGatherResource -= RemoveFood;
         }
 
         private void RemoveFood(GameObject food)
         {
-            // this is being triggered every time 
             Food f = food.GetComponent<Food>();
 
-            //f.canCookMe = false;
             if (f != null && _foodInSpot.Contains(f))
             {
                 UIManager.instance.DisplayCookingSpots(cookingSpots, gameObject);
@@ -74,7 +70,7 @@ namespace SurviveTheWild.CraftingSystem.Building.CampFire
 
             Debug.Log("Campfire assembled. Combustible phase started." + _requiredIngredients.Length);
 
-            _structureUI.SetDescription(_requiredIngredients[0].objSo.name, _requiredIngredients[0].amount);
+            //_structureUI.SetDescription(_requiredIngredients[0].objSo.name, _requiredIngredients[0].amount);
             Description = _requiredIngredients[0].objSo.name + _requiredIngredients[0].amount;
         }
 
@@ -146,7 +142,11 @@ namespace SurviveTheWild.CraftingSystem.Building.CampFire
         public override void ExecuteAction()
         {
             base.ExecuteAction();
-            if (!_canIgnite) return;
+            if (!_canIgnite)
+            {
+                print("can't ignite so  return");
+                return;
+            }
             SceneRoot.Instance.miniGameHandler.StartGame(fireMiniGame, this);
         }
 
@@ -157,6 +157,7 @@ namespace SurviveTheWild.CraftingSystem.Building.CampFire
             _isBurning = true;
             Debug.Log("Campfire ignited!");
             StartCoroutine(FireCoroutine());
+            CanDisplay = false;
         }
 
         private IEnumerator FireCoroutine()
@@ -192,11 +193,11 @@ namespace SurviveTheWild.CraftingSystem.Building.CampFire
             {
                 if (currentTime > midThreshold)
                 {
-                    UpdateFxScale(.3f);
+                    UpdateFxScale(1);
                 }
                 else if (currentTime > minThreshold)
                 {
-                    UpdateFxScale(.2f);
+                    UpdateFxScale(.4f);
                     continue;
                 }
                 else
@@ -252,6 +253,8 @@ namespace SurviveTheWild.CraftingSystem.Building.CampFire
 
         public void UpdateFireFxScale(Vector3 scale)
         {
+            if(!_fireVfx.activeSelf)
+                _fireVfx.SetActive(true);
             _fireVfx.transform.localScale = scale;
         }
     }

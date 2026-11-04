@@ -69,7 +69,8 @@ public class TimeManager : MonoBehaviour
         if (_lastHour != currentHour)
         {
             _lastHour = currentHour;
-            EventBus.OnHourChanged?.Invoke(currentHour);
+           
+            SceneRoot.Instance.EventManager.TimeEvents.onOneHourPass(currentHour);
         }
 
         HandleRandomEvent();

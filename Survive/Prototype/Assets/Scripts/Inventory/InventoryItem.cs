@@ -112,6 +112,7 @@ public class InventoryItem : MonoBehaviour
 
     public void DeactivateMenu()
     {
+        print("Deactivated ");
         _isMenuOpen = false;
         _inventory.DeactivateSubMenu();
     }

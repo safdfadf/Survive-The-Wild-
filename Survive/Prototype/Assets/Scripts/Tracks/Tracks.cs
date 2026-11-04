@@ -45,7 +45,7 @@ public class Tracks : MonoBehaviour, IInteractable // tracks are not collectable
     {
         OutlineMe = true; // we are using Ienteractable to outline 
         cam = Camera.main;
-      
+
         _meshRenderer = GetComponentsInChildren<MeshRenderer>();
         _originalMaterial = GetComponentInChildren<MeshRenderer>().material;
         menu.SetActive(false);
@@ -81,12 +81,12 @@ public class Tracks : MonoBehaviour, IInteractable // tracks are not collectable
     private void OnEnable()
     {
         EventBus.PressingE += ActivateTrackMenu;
-        EventBus.OnHourChanged += OnHourChanged;
+        SceneRoot.Instance.EventManager.TimeEvents.onOneHourPass += OnHourChanged;
     }
 
     private void OnDisable()
     {
-        EventBus.OnHourChanged -= OnHourChanged;
+        SceneRoot.Instance.EventManager.TimeEvents.onOneHourPass -= OnHourChanged;
         EventBus.PressingE -= ActivateTrackMenu;
     }
 
@@ -196,5 +196,4 @@ public class Tracks : MonoBehaviour, IInteractable // tracks are not collectable
         CanHarvest = false;
         OutlineMe = true;
     }
-    
 }

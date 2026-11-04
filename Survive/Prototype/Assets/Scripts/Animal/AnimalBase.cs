@@ -12,7 +12,7 @@ public class AnimalBase : MonoBehaviour, IInteractable
 {
     [Header("Movement Info")] [SerializeField]
     protected float walkSpeed;
-
+    
     [SerializeField] protected float alertSpeed;
     [SerializeField] protected float runSpeed;
     [SerializeField] protected float fleeSpeed;
@@ -136,8 +136,7 @@ public class AnimalBase : MonoBehaviour, IInteractable
             atk.hitPoint = transform.position;
         }
 
-        //PlayBloodVfx(atk.hitPoint);
-        _currentHealth = atk.Damage;
+         _currentHealth = atk.Damage;
         print(_currentHealth);
         if (_currentHealth <= 0)
         {
@@ -168,6 +167,14 @@ public class AnimalBase : MonoBehaviour, IInteractable
         PlayBloodVfx();
     }
 
+    public void DeadAnimal()// when spawning already dead animal
+    {
+        ToggleCollider(true);
+        animator.SetBool("Death", true);
+        agent.enabled = false;
+        agent.speed = 0;
+        CanDisplay = true;
+    }
     private void DropResource()
     {
         ObjSo objSo = AnimalSo.collectable;

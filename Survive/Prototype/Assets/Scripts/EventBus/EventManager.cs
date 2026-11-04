@@ -15,6 +15,8 @@ namespace SurviveTheWild.EventBus
         public UIEvents UiEvents;
         public TimeEvents TimeEvents;
         public MiniGamesEvents MiniGamesEvents;
+        public ChunkEvents ChunkEvents;
+
         private void Awake()
         {
             InitializeEvents();
@@ -31,6 +33,7 @@ namespace SurviveTheWild.EventBus
             UiEvents = new UIEvents();
             TimeEvents = new TimeEvents();
             MiniGamesEvents = new MiniGamesEvents();
+            ChunkEvents = new ChunkEvents();
         }
     }
 }

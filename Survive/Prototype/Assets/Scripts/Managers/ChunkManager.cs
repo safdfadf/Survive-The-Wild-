@@ -119,12 +119,12 @@ public class ChunkManager : MonoBehaviour
             chunk.isActive = true;
 
             activeChunks.Add(chunk);
-            activeChunks.Add(chunk);
+
 
             SpawnChunk(chunk);
             ActivateTracks(chunk);
 
-            EventBus.OnChunkChanged?.Invoke(chunk);
+            SceneRoot.Instance.EventManager.ChunkEvents.ActiveChunk(chunk);
             EventBus.OnGpuDeactivateInChunk?.Invoke(chunk);
         }
 
@@ -279,7 +279,7 @@ public class ChunkManager : MonoBehaviour
                     activeChunks.Add(chunk);
                     SpawnChunk(chunk);
                     ActivateTracks(chunk);
-                    EventBus.OnChunkChanged?.Invoke(chunk);
+                    SceneRoot.Instance.EventManager.ChunkEvents.ActiveChunk(chunk);
                     EventBus.OnGpuDeactivateInChunk.Invoke(chunk);
                 }
             }
@@ -385,7 +385,7 @@ public class ChunkManager : MonoBehaviour
 
     private void DespawnChunk(Chunk chunk) // with current set up we need to deactivate individually 
     {
-        EventBus.OnDeactiveChunk?.Invoke(chunk); // Deactivate Animal 
+        SceneRoot.Instance.EventManager.ChunkEvents.DeActiveChunk(chunk);
         List<GameObject> environ = new();
         List<GameObject> resources = new();
         List<GameObject> food = new();
@@ -644,6 +644,7 @@ public class ChunkManager : MonoBehaviour
             obj.transform.localScale = new Vector3(1, 1, 1);
             return;
         }
+
         print("this lies no where ");
     }
 }
