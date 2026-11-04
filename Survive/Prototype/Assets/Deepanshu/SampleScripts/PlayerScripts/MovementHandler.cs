@@ -558,7 +558,7 @@ public class MovementHandler : MonoBehaviour //TODo: Make a separate script for 
     {
         inHandObjs.Add(obj);
         CurrentWeapon?.UnEquipMe();
-        animator.StartCarryAnim();
+        animator.CarryAnim(true);
         obj.transform.position = Vector3.zero;
         obj.gameObject.transform.SetParent(heavyObjsPos);
         obj.gameObject.transform.position = heavyObjsPos.position;
@@ -574,17 +574,11 @@ public class MovementHandler : MonoBehaviour //TODo: Make a separate script for 
             _playerInventory.RemoveResource(obj, false);
         }
 
-        for (int i = inHandObjs.Count - 1; i >= 0; i--)
-        {
-            Destroy(inHandObjs[i].InventoryItem);
-            _playerInventory.RemoveResource(inHandObjs[i], false);
-            Destroy(inHandObjs[i]);
-        }
-
+        animator.CarryAnim(false);
         inHandObjs.Clear();
     }
 
-    public void LockCamera(bool LookAtwatch)//remove this
+    public void LockCamera(bool LookAtwatch) //remove this
     {
         if (LookAtwatch)
         {
