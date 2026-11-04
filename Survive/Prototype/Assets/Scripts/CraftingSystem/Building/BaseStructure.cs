@@ -49,7 +49,7 @@ public class
 
     public virtual void ExecuteAction()
     {
-        ObjSo so = GetNextRequiredResource();
+        var so = GetNextRequiredResource();
         if (!IsAssembled || so != null)
         {
             SceneRoot.Instance.EventManager.StructureEvents.SubmitResource();
@@ -97,6 +97,7 @@ public class
 
     public virtual void SubmitResource(ObjSo objSo) // ingredient is a data type contains resource and amount 
     {
+        print("submitting resource " + objSo);
         if (!CheckSubmitResource(objSo))
         {
             return;

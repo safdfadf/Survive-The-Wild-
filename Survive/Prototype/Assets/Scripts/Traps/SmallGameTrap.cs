@@ -36,6 +36,7 @@ namespace SurviveTheWild.Traps
             spawnPos = transform;
         }
 
+        // what happens when on structure assembled 
         private void UpdateCurrentHour(int hour)
         {
             if (currentHour > 24)
@@ -67,13 +68,6 @@ namespace SurviveTheWild.Traps
             // after spawning animate trap to it original pos 
             CanDisplay = true;
             Description = "To Reset";
-        }
-
-
-        public override void ExecuteAction()
-        {
-            choosenHour = Random.Range(0f, 24f);
-            CanDisplay = false;
         }
     }
 }

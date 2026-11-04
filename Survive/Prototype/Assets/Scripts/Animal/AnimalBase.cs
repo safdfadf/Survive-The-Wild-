@@ -202,7 +202,6 @@ public class AnimalBase : MonoBehaviour, IInteractable
     {
         if (isMoving && !ovveride)
         {
-            Debug.Log("already moving" + gameObject.name);
             return;
         }
 

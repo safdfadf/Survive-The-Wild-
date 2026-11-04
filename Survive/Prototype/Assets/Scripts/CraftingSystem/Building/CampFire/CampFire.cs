@@ -82,8 +82,7 @@ namespace SurviveTheWild.CraftingSystem.Building.CampFire
                 base.SubmitResource(objSo);
                 return;
             }
-
-            Debug.Log("To ignite");
+            
             Ingredient ing = GetCombustibleIngredient(objSo);
             if (ing == null)
             {

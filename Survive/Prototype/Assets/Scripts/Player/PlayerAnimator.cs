@@ -75,9 +75,9 @@ public class PlayerAnimator : MonoBehaviour
         animator.SetTrigger("Stab");
     }
 
-    public void StartCarryAnim()
+    public void CarryAnim(bool isCarrying)
     {
-        animator.SetBool("Carry", true);
+        animator.SetBool("Carry", isCarrying);
     }
 
     public void ShowWatch(bool show)

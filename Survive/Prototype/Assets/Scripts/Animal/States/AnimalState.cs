@@ -33,7 +33,7 @@ public abstract class AnimalState
 
         if (distance > Radius)
         {
-            Debug.Log("I don't have enough radius");
+//            Debug.Log("I don't have enough radius");
             return;
         }
 

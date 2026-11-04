@@ -4,6 +4,7 @@ using System.Linq;
 using SurviveTheWild.EventBus;
 using SurviveTheWild.QuestSystem;
 using Player;
+using SurviveTheWild.Traps;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -27,7 +28,7 @@ public class RBookHandler : MonoBehaviour
     [Header("ParentObj")] [SerializeField] private GameObject parentObj;
 
     private List<RecipeData> _weaponRecipes;
-
+    private List<RecipeData> _trapRecipes;
     private List<RecipeData> _baseRecipes;
 
     // private List<CraftingSO> trapRecipes;
@@ -90,7 +91,7 @@ public class RBookHandler : MonoBehaviour
     {
         _craftingHandler = craftingHandler;
         _weaponRecipes = new List<RecipeData>();
-        //      trapRecipes = new List<CraftingSO>();
+        _trapRecipes = new List<RecipeData>();
         _baseRecipes = new List<RecipeData>();
 
         foreach (var r in data)
@@ -120,8 +121,8 @@ public class RBookHandler : MonoBehaviour
             {
                 _weaponRecipes.Add(r);
             }
-            //   else if (prefab.TryGetComponent<Trap>(out _))
-            //              trapRecipes.Add(so);
+            else if (prefab.TryGetComponent<SmallGameTrap>(out _))
+                _trapRecipes.Add(r);
             else if (prefab.TryGetComponent<BaseStructure>(out _))
                 _baseRecipes.Add(r);
         }
@@ -183,6 +184,9 @@ public class RBookHandler : MonoBehaviour
 
     private void ShowTrapsRecipe()
     {
+        activeList = _trapRecipes;
+        currentIndex = 0;
+        ShowRecipes();
     }
 
     private void ShowFireRecipe()
