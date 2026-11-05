@@ -32,6 +32,92 @@ Transform:
   - {fileID: 5103627787731680580}
   m_Father: {fileID: 3380831370506917286}
   m_LocalEulerAnglesHint: {x: 0.000025407982, y: 89.99966, z: -0.00000905433}
+--- !u!1 &100168959702594121
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 965917408643142151}
+  - component: {fileID: 6056559755874324071}
+  - component: {fileID: 1719071138722501657}
+  m_Layer: 0
+  m_Name: deer_body_LOD5
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &965917408643142151
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100168959702594121}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6072598048963914209}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!33 &6056559755874324071
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100168959702594121}
+  m_Mesh: {fileID: -5587804398382859329, guid: 480a924304198814ca0dd65633e88ecb, type: 3}
+--- !u!23 &1719071138722501657
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100168959702594121}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 25b2a185a0d0cbd41ae80d84a52c145a, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &313017832496063298
 GameObject:
   m_ObjectHideFlags: 0
@@ -1914,6 +2000,7 @@ GameObject:
   - component: {fileID: 6072598048963914209}
   - component: {fileID: 1908432665674836029}
   - component: {fileID: 1111393339059093989}
+  - component: {fileID: 5968089507003630946}
   m_Layer: 8
   m_Name: Deer
   m_TagString: Untagged
@@ -1936,6 +2023,8 @@ Transform:
   m_Children:
   - {fileID: 9217658696901490822}
   - {fileID: 8904068579265280486}
+  - {fileID: 7276756763647303746}
+  - {fileID: 965917408643142151}
   - {fileID: 3297366665808803483}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1963,6 +2052,7 @@ MonoBehaviour:
   animalAtkBehaviour: {fileID: 0}
   requiredAbility: {fileID: 11400000, guid: 704126e62b7d502428b912f629fb1b74, type: 2}
   AnimalSo: {fileID: 0}
+  _puddleFx: {fileID: 0}
   leftEye: {fileID: 0}
   rightEye: {fileID: 0}
   eyeSightDistance: 20
@@ -1984,7 +2074,7 @@ NavMeshAgent:
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
-  m_StoppingDistance: 0
+  m_StoppingDistance: 0.1
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -1992,6 +2082,33 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!205 &5968089507003630946
+LODGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8368043525601244960}
+  serializedVersion: 2
+  m_LocalReferencePoint: {x: 0.0000014007092, y: 0.760684, z: 0.21142137}
+  m_Size: 1.7830312
+  m_FadeMode: 0
+  m_AnimateCrossFading: 0
+  m_LastLODIsBillboard: 0
+  m_LODs:
+  - screenRelativeHeight: 0.45099998
+    fadeTransitionWidth: 0
+    renderers:
+    - renderer: {fileID: 4496847031845797015}
+  - screenRelativeHeight: 0.19569999
+    fadeTransitionWidth: 0
+    renderers:
+    - renderer: {fileID: 5222923837691036459}
+  - screenRelativeHeight: 0.0073
+    fadeTransitionWidth: 0
+    renderers:
+    - renderer: {fileID: 1719071138722501657}
+  m_Enabled: 1
 --- !u!1 &8374465719791167992
 GameObject:
   m_ObjectHideFlags: 0
@@ -2151,6 +2268,92 @@ Transform:
   - {fileID: 2342130305975017322}
   m_Father: {fileID: 6141145065908044534}
   m_LocalEulerAnglesHint: {x: -0.3683232, y: -67.36397, z: 1.42213}
+--- !u!1 &9192258516107249757
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7276756763647303746}
+  - component: {fileID: 1279211413210762357}
+  - component: {fileID: 5222923837691036459}
+  m_Layer: 0
+  m_Name: deer_body_LOD3
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7276756763647303746
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9192258516107249757}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6072598048963914209}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!33 &1279211413210762357
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9192258516107249757}
+  m_Mesh: {fileID: -4492799720618229713, guid: 480a924304198814ca0dd65633e88ecb, type: 3}
+--- !u!23 &5222923837691036459
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9192258516107249757}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 25b2a185a0d0cbd41ae80d84a52c145a, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1001 &8337567268483902550
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2170,6 +2373,10 @@ PrefabInstance:
     - target: {fileID: 5547318871777031357, guid: 7b6b9e1ac61ad954982c86fe683889c4, type: 3}
       propertyPath: m_Name
       value: BloodPuddle
+      objectReference: {fileID: 0}
+    - target: {fileID: 5547318871777031357, guid: 7b6b9e1ac61ad954982c86fe683889c4, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6806738673507719885, guid: 7b6b9e1ac61ad954982c86fe683889c4, type: 3}
       propertyPath: m_LocalPosition.x
