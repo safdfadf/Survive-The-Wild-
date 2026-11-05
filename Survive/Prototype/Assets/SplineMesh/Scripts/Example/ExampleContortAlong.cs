@@ -29,7 +29,7 @@ namespace SplineMesh
 
         public float DurationInSecond;
 
-        public WaterShaderFx puddleFx { get; set; }
+        public PuddleFx puddleFx { get; set; }
         private MovementHandler player;
 
         private void OnValidate()
@@ -82,8 +82,7 @@ namespace SplineMesh
                 Destroy(generated);
             }
 
-            if (puddleFx != null)
-                puddleFx.PauseFx();
+         
 
             yield return new WaitForSeconds(2f);
 
