@@ -68,6 +68,7 @@ public class MovementHandler : MonoBehaviour //TODo: Make a separate script for 
     public Vector2 LookInput { get; set; }
 
     public bool _isSprinting { get; set; }
+    public bool blockSprinting { get; set; }
     public bool _isWalking { get; set; }
     public bool IsCrouching { get; set; }
     private bool _isJumping;
@@ -178,7 +179,7 @@ public class MovementHandler : MonoBehaviour //TODo: Make a separate script for 
             animator.MovePlayer(MoveInput.y, MoveInput.x);
             float speed = 0;
 
-            if (_isSprinting)
+            if (_isSprinting && !blockSprinting)
             {
                 var dt = Time.deltaTime;
                 _isWalking = false;
