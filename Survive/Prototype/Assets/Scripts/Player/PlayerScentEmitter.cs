@@ -25,12 +25,12 @@ namespace Player
 
       private void OnEnable()
       {
-         EventBus.On5SecondsPassed += CheckScentLevel;
+         SceneRoot.Instance.EventManager.TimeEvents.onFiveSecondsPass  += CheckScentLevel;
       }
 
       private void OnDisable()
       {
-         EventBus.On5SecondsPassed -= CheckScentLevel;
+         SceneRoot.Instance.EventManager.TimeEvents.onFiveSecondsPass  -= CheckScentLevel;
       }
       private void CheckScentLevel()
       {

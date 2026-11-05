@@ -5,7 +5,9 @@ namespace Animal.States
     public class AlarmState : AnimalState
     {
         private float _attackCoolDown;
+
         private int AlarmRadius = 15;
+
         // what should be the radius for alarm state 
         public AlarmState(AnimalData animalData) : base(animalData)
         {
@@ -20,7 +22,6 @@ namespace Animal.States
             Animal = animal;
             if (data is { isLeader: true })
             {
-                Debug.Log("I am the lEader");
                 HandleAudioCall(AlarmRadius,
                     Animal.AnimalSo.AlarmClip[Random.Range(0, Animal.AnimalSo.AlarmClip.Count)]);
                 Animal.HerdCall();
@@ -46,7 +47,6 @@ namespace Animal.States
 
         public void RunOutOfActiveChunk()
         {
-            Debug.Log("Run out of active chunk");
             Vector3 pos = data.GetOutofActiveChunkPos();
             Animal.GetOutOfChunk();
         }

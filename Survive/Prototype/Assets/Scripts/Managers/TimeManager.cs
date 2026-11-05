@@ -69,7 +69,7 @@ public class TimeManager : MonoBehaviour
         if (_lastHour != currentHour)
         {
             _lastHour = currentHour;
-           
+
             SceneRoot.Instance.EventManager.TimeEvents.onOneHourPass(currentHour);
         }
 
@@ -120,7 +120,8 @@ public class TimeManager : MonoBehaviour
         if (currentGameSeconds - _lastFiveSecondCheck >= 300f)
         {
             _lastFiveSecondCheck = currentGameSeconds;
-            EventBus.On5SecondsPassed?.Invoke();
+           
+            SceneRoot.Instance.EventManager.TimeEvents.FiveSecondsPass();
         }
     }
 

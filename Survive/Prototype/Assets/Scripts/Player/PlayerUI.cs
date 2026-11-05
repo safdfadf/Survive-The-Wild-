@@ -21,6 +21,8 @@ public class PlayerUI : MonoBehaviour
 
     [SerializeField] private Slider energyBar;
     [SerializeField] private Slider staminaBar;
+    [SerializeField] private Image StaminaFill;
+  
     [Header("FoodStats")] [SerializeField] private Slider protienBar;
     [SerializeField] private Slider carbBar;
     [SerializeField] private Slider fatBar;
@@ -246,6 +248,14 @@ public class PlayerUI : MonoBehaviour
     public void StaminaSlider(float value)
     {
         staminaBar.value = value;
+        if (value < .3f)
+        {
+            StaminaFill.color = Color.red;
+        }
+        else
+        {
+            StaminaFill.color = Color.green;
+        }
     }
 
     public void UpdateFoodStats(float protien, float carb, float fat, float hydro)

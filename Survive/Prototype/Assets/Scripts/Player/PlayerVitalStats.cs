@@ -51,7 +51,7 @@ public class PlayerVitalStats : MonoBehaviour
     [SerializeField] private float dangerThreshold = 0.1f; // 10% of max nutrients
     [SerializeField] private float maxSleepHours = 8f; // configurable
     private float _sleepStartTime;
-    public bool isOutOfBreath { get;private set; }
+    public bool isOutOfBreath { get; private set; }
 
     private void Awake()
     {
@@ -69,16 +69,16 @@ public class PlayerVitalStats : MonoBehaviour
 
     private void OnEnable()
     {
-        EventBus.On5SecondsPassed += UpdateStats;
-        EventBus.On5SecondsPassed += UpdateHealth;
+        SceneRoot.Instance.EventManager.TimeEvents.onFiveSecondsPass += UpdateStats;
+        SceneRoot.Instance.EventManager.TimeEvents.onFiveSecondsPass  += UpdateHealth;
         SceneRoot.Instance.EventManager.playerEvents.OnTriggerPlayerSleep += Sleep;
         SceneRoot.Instance.EventManager.playerEvents.OnDrainStamina += DrainStamina;
     }
 
     private void OnDisable()
     {
-        EventBus.On5SecondsPassed -= UpdateStats;
-        EventBus.On5SecondsPassed -= UpdateHealth;
+        SceneRoot.Instance.EventManager.TimeEvents.onFiveSecondsPass  -= UpdateStats;
+        SceneRoot.Instance.EventManager.TimeEvents.onFiveSecondsPass  -= UpdateHealth;
         SceneRoot.Instance.EventManager.playerEvents.OnTriggerPlayerSleep -= Sleep;
     }
 
@@ -136,10 +136,15 @@ public class PlayerVitalStats : MonoBehaviour
 
     public void DrainStamina(float dt)
     {
-        if (_currentStamina < -0)
+        if (_currentStamina <= 20)
         {
-            isOutOfBreath = true;
-            OutOfBreath();
+            if (!isOutOfBreath)
+            {
+                isOutOfBreath = true;
+                SceneRoot.Instance.AudioManager.PlayerSound(SoundType.Winded);
+            }
+
+            _movementHandler.blockSprinting = true;
             return;
         }
 
@@ -148,15 +153,6 @@ public class PlayerVitalStats : MonoBehaviour
         _currentStamina -= staminaDrainRate * dt;
         _currentStamina = Mathf.Clamp(_currentStamina, 0f, _currentEnergy);
         _playerUI.StaminaSlider(_currentStamina / maxStamina);
-    }
-
-    private void OutOfBreath()
-    {
-        SceneRoot.Instance.AudioManager.PlayerSound(SoundType.Winded);
-        while (_currentStamina < maxStamina)
-        {
-            _movementHandler._isSprinting = false;
-        }
     }
 
     private void UpdateStamina()

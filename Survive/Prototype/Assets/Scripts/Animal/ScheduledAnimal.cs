@@ -31,7 +31,7 @@ public class ScheduledAnimal : AnimalBase
         AlarmState = animalData.GetAlarmState();
         currentZone = animalData.GetCurrentZone();
         currentPos = animalData.GetCurrentPosition();
-        ActivateState( animalData.GetCurrentState());
+        ActivateState(animalData.GetCurrentState());
     }
 
     protected override void IsPlayerAround()
@@ -71,7 +71,7 @@ public class ScheduledAnimal : AnimalBase
     {
         if (CurrentState != null && CurrentState == newState) return;
         if (CurrentState != null)
-            CurrentState.ExitState(); 
+            CurrentState.ExitState();
         CurrentState = newState;
         CurrentState.EnterState(this);
     }
@@ -91,9 +91,8 @@ public class ScheduledAnimal : AnimalBase
 
     protected override void RemoveAnimal()
     {
-        Vector3 pos = ChunkManager.Instance.GetClosestInactiveChunkPosition(transform.position);
-        MoveTo(pos, () => AnimalData.AnimalHandler.DeactivateAnimal(AnimalData)
-        );
+        print("remove animal");
+        AnimalData.AnimalHandler.DeactivateAnimal(AnimalData);
     }
 
     public override void HerdCall()

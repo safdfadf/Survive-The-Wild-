@@ -169,10 +169,8 @@ public class AnimalData
     private void HandleZoneTraveling()
     {
         ScheduledAnimal scheduledAnimal = AnimalInstance.GetComponent<ScheduledAnimal>();
-        // if new zone pos is out of active chunk got out of chunk and deactive 
         if (!ChunkManager.Instance.IsPosInPlayerChunk(CurrentPos.Value))
         {
-            
             scheduledAnimal.GetOutOfChunk();
         }
 

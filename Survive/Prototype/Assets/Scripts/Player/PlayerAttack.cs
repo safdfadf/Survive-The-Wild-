@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using SurviveTheWild.Weapon;
 using Effect;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Player
 {
@@ -20,14 +21,14 @@ namespace Player
 
         public EffectsSo Effects => effects;
         public WeaponAbility ability;
-        public Vector3 hitPoint;
+        [FormerlySerializedAs("hitPoint")] public DamageLocation HitLocation;
         public float BleedingProbab { get; set; }
-        public PlayerAttack(int damage, EffectsSo effects, WeaponAbility ability, Vector3 hitLoc)
+        public PlayerAttack(int damage, EffectsSo effects, WeaponAbility ability)
         {
             Damage = damage;
             this.effects = effects;
             this.ability = ability;
-            hitPoint = hitLoc;
+           
         }
     }
 }

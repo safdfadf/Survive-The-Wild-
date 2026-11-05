@@ -2,6 +2,7 @@ using System;
 using Player;
 using UnityEngine;
 
+// based on location damage will be reduced 
 public class HitBox : MonoBehaviour, ItakeDamage
 {
     [SerializeField] private DamageLocation dmgLoc;
@@ -9,7 +10,6 @@ public class HitBox : MonoBehaviour, ItakeDamage
     private AnimalBase _animal;
     private Collider _collider;
     public bool IsEnvironment { get; set; }
-  
 
 
     [SerializeField] private int damageMultiplayer;
@@ -28,19 +28,25 @@ public class HitBox : MonoBehaviour, ItakeDamage
             Debug.LogError(_animal.name + " is missing animal");
         }
     }
+
     public void TakeDamage(IAttack attack)
     {
-        attack.Damage *= damageMultiplayer;
-        _animal.TakeDamage(attack as PlayerAttack);
+        var atk = attack as PlayerAttack;
+        atk.Damage *= damageMultiplayer;
+        atk.HitLocation = dmgLoc;
+        _animal.TakeDamage(atk);
     }
+
     public void ToggleCollider(bool toggle)
     {
         _collider.enabled = toggle;
     }
-
 }
+
 [System.Serializable]
 public enum DamageLocation
 {
-    Head,BackBody,MiddleBody
+    Head,
+    BackBody,
+    MiddleBody
 }

@@ -85,7 +85,7 @@ namespace SurviveTheWild.Weapon
             ItakeDamage dmgObj = obj.GetComponent<ItakeDamage>();
             if (dmgObj != null)
             {
-                PlayerAttack attack = new PlayerAttack(data.weaponSo.damage, null, weapon.Ability, Vector3.zero);
+                PlayerAttack attack = new PlayerAttack(data.weaponSo.damage, null, weapon.Ability);
                 dmgObj.TakeDamage(attack);
             }
         }

@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2cee1ac6d1f451ea90efb5e688ac9ad, type: 3}
+  m_Name: Mission4
+  m_EditorClassIdentifier: 
+  <id>k__BackingField: Mission4
+  missionName: Hunt First Small Game
+  PlayerLevelRequired: 1
+  QuestSteps:
+  - {fileID: 8267339032128751719, guid: 5d542a97ca033614fa43bcbf499badc9, type: 3}
+  RewardData:
+    LevelExp: 20
+    RewardRecipe: {fileID: 11400000, guid: 1a298092ace585741a429f1f80d0e88d, type: 2}
+  missionSprite: {fileID: 0}

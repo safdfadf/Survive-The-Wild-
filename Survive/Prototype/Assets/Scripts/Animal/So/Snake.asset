@@ -25,5 +25,6 @@ MonoBehaviour:
   inZoneTravel: 0
   hurtClip: []
   AlarmClip: []
-  warningClip: []
+  warningClip:
+  - {fileID: 8300000, guid: 5a2c590beb9246f4e81419c244776be5, type: 3}
   calmClip: []

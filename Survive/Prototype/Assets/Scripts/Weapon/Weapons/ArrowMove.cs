@@ -47,7 +47,7 @@ public class ArrowMove : Obj<ObjSo>
         transform.rotation = Quaternion.LookRotation(-hit.normal);
 
         transform.SetParent(hit.collider.transform, true);
-        PlayerAttack atk = new PlayerAttack(_dmg, null, null, hitPos); //ToDo Add effects for player
+        PlayerAttack atk = new PlayerAttack(_dmg, null, null); //ToDo Add effects for player
 
         ItakeDamage combatant = hit.collider.GetComponent<ItakeDamage>();
         if (combatant != null && !combatant.IsEnvironment)

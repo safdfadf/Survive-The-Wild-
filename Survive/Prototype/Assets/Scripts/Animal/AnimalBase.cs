@@ -7,12 +7,13 @@ using SurviveTheWild.Weapon;
 using Player;
 using UnityEngine;
 using UnityEngine.AI;
+using Random = UnityEngine.Random;
 
 public class AnimalBase : MonoBehaviour, IInteractable
 {
     [Header("Movement Info")] [SerializeField]
     protected float walkSpeed;
-    
+
     [SerializeField] protected float alertSpeed;
     [SerializeField] protected float runSpeed;
     [SerializeField] protected float fleeSpeed;
@@ -66,6 +67,7 @@ public class AnimalBase : MonoBehaviour, IInteractable
 
     public bool IsAggresive { get; set; }
     private bool drawCircle;
+    private bool _canUpdateCalmState;
 
     protected virtual void Awake()
     {
@@ -100,14 +102,18 @@ public class AnimalBase : MonoBehaviour, IInteractable
 
     private void OnEnable()
     {
-        EventBus.On5SecondsPassed += UpdateCalmState; // in game 15 mins 
+        SceneRoot.Instance.EventManager.TimeEvents.onFiveSecondsPass += UpdateCalmState;
+        SceneRoot.Instance.EventManager.TimeEvents.onFiveSecondsPass += IsPlayerAround; // in game 15 mins 
         SceneRoot.Instance.EventManager.TimeEvents.onOneSecondPass += IsPlayerAround;
+        SceneRoot.Instance.EventManager.AnimalEvents.onUpdateLodLevel += UpdateLod;
     }
 
     private void OnDisable()
     {
-        EventBus.On5SecondsPassed -= UpdateCalmState;
+        SceneRoot.Instance.EventManager.TimeEvents.onFiveSecondsPass -= UpdateCalmState;
+        SceneRoot.Instance.EventManager.TimeEvents.onFiveSecondsPass -= IsPlayerAround;
         SceneRoot.Instance.EventManager.TimeEvents.onOneSecondPass -= IsPlayerAround;
+        SceneRoot.Instance.EventManager.AnimalEvents.onUpdateLodLevel -= UpdateLod;
     }
 
     private void LateUpdate()
@@ -116,9 +122,42 @@ public class AnimalBase : MonoBehaviour, IInteractable
             animator.SetFloat("Velocity", agent.velocity.magnitude);
     }
 
+    private void UpdateLod(LodLevel Level)
+    {
+        switch (Level)
+        {
+            case LodLevel.Lod0:
+                SetToLod0();
+                break;
+            case LodLevel.Lod1:
+                SetToLod1();
+                break;
+            case LodLevel.Lod2:
+                SetToLod2();
+                break;
+        }
+    }
+
+    private void SetToLod0()
+    {
+        animator.enabled = true;
+        _canUpdateCalmState = true;
+    }
+
+    private void SetToLod1()
+    {
+    }
+
+    private void SetToLod2()
+    {
+        animator.enabled = false;
+        _canUpdateCalmState = false;
+    }
+
     private void UpdateCalmState()
     {
-        if (CurrentState == null || CurrentState != CalmState) return;
+        // need to another condition if is  lod 0 ony then update this state 
+        if (CurrentState == null || CurrentState != CalmState || !_canUpdateCalmState) return;
         if (AnimalSo == null)
         {
             print("can't update calm state Animal So");
@@ -131,16 +170,34 @@ public class AnimalBase : MonoBehaviour, IInteractable
     public virtual void TakeDamage(PlayerAttack atk) // since attack is just no. how do we 
     {
         if (_currentHealth <= 0) return;
-        if (atk.hitPoint == Vector3.zero)
-        {
-            atk.hitPoint = transform.position;
-        }
-
-         _currentHealth = atk.Damage;
+        _currentHealth -= atk.Damage;
         print(_currentHealth);
         if (_currentHealth <= 0)
         {
-            Death();
+            DecideWayOfDeath(atk.HitLocation);
+        }
+    }
+
+    private void DecideWayOfDeath(DamageLocation location)
+    {
+        if (location == DamageLocation.Head)
+        {
+            InstantDeath();
+        }
+        else if (location == DamageLocation.MiddleBody)
+        {
+            if (Random.value < 0.5f)
+            {
+                RunDie();
+            }
+            else
+            {
+                InstantDeath();
+            }
+        }
+        else
+        {
+            RunDie();
         }
     }
 
@@ -155,7 +212,19 @@ public class AnimalBase : MonoBehaviour, IInteractable
         GlobalPool.instance.Return(_bloodVfx, obj);
     }
 
-    protected virtual void Death()
+    private int GetLocationBasedDamage(PlayerAttack atk)
+    {
+        switch (atk.HitLocation)
+        {
+            case DamageLocation.Head:
+                return 3;
+            case DamageLocation.MiddleBody:
+                return 2;
+            default: return 1;
+        }
+    }
+
+    protected virtual void InstantDeath()
     {
         Debug.Log("Death");
         SceneRoot.Instance.EventManager.AnimalEvents.AnimalDeath(this);
@@ -167,7 +236,14 @@ public class AnimalBase : MonoBehaviour, IInteractable
         PlayBloodVfx();
     }
 
-    public void DeadAnimal()// when spawning already dead animal
+    private void RunDie()
+    {
+        var presentChunk = ChunkManager.Instance.GetChunkAtPos(transform.position);
+        var destination = RetPosOnNv.ReturnRandomNavMeshPos(presentChunk.bounds);
+        MoveTo(destination, InstantDeath);
+    }
+
+    public void DeadAnimal() // when spawning already dead animal
     {
         ToggleCollider(true);
         animator.SetBool("Death", true);
@@ -175,6 +251,7 @@ public class AnimalBase : MonoBehaviour, IInteractable
         agent.speed = 0;
         CanDisplay = true;
     }
+
     private void DropResource()
     {
         ObjSo objSo = AnimalSo.collectable;
@@ -253,6 +330,7 @@ public class AnimalBase : MonoBehaviour, IInteractable
             }
 
             onArrived?.Invoke();
+            print("Arrived");
             isMoving = false;
             if (agent.isOnNavMesh)
                 agent.ResetPath();
@@ -383,13 +461,17 @@ public class AnimalBase : MonoBehaviour, IInteractable
 
     public void GetOutOfChunk()
     {
-        Vector3 pos = ChunkManager.Instance.GetClosestInactiveChunkPosition(transform.position);
+        print("get Out of Chunk");
+
+        var pos = ChunkManager.Instance.GetClosestInactiveChunkPosition(transform.position);
         RetPosOnNv.TryGetNavMeshPoint(pos, out Vector3 navMeshHit);
+        //  print(transform.position + " " + pos + " " + navMeshHit);
         MoveTo(navMeshHit, () => RemoveAnimal(), null, true);
     }
 
     protected virtual void RemoveAnimal()
     {
+        print("remove animal");
         GlobalPool.instance.Return(AnimalSo.prefab, gameObject);
     }
 

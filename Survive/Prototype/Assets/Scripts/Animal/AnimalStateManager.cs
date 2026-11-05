@@ -183,7 +183,6 @@ public class AnimalStateManager : MonoBehaviour //ToDo : Change script name to p
 
     private void ChangeToAlarmState(AnimalData data)
     {
-        Debug.Log("Changing State");
         AnimalState newState = data.GetAlarmState();
         if (_currentState != null && _currentState.Equals(newState)) return;
         _currentState = newState;

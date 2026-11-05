@@ -4,12 +4,6 @@ using UnityEngine;
 public class FrameStructure : BaseStructure
 {
     [SerializeField] protected List<Sockets> sockets = new();
-    protected override void OnStructureAssembled()
-    {
-        base.OnStructureAssembled();
-        // Show sockets or hint UI if needed
-        // e.g. UIManager.instance.ShowSockets(sockets);
-    }
 
     public Sockets GetClosestValidSocket(StructureType type, Vector3 fromPos, float maxDistance = 3f)
     {
@@ -30,6 +24,7 @@ public class FrameStructure : BaseStructure
 
         return best;
     }
+
     public void RegisterChild(BaseStructure child)
     {
         if (!childStructures.Contains(child))

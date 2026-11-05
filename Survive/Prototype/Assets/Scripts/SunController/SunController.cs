@@ -5,7 +5,12 @@ public class SunController : MonoBehaviour
 {
     private void OnEnable()
     {
-        EventBus.On5SecondsPassed += UpdateSun;
+        SceneRoot.Instance.EventManager.TimeEvents.onOneSecondPass += UpdateSun;
+    }
+
+    private void OnDisable()
+    {
+        SceneRoot.Instance.EventManager.TimeEvents.onOneSecondPass -= UpdateSun;
     }
 
     private void UpdateSun()

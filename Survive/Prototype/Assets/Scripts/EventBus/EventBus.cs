@@ -16,7 +16,7 @@ public class EventBus // Todo Remove This Class
 
 
     public static Action OnRndmTimePassed; // Invoker : Time Manager Subscriber : Wind System
-    public static Action On5SecondsPassed;
+    public static Action On5Secondsassed;
 
     public static Action<Vector3, float> OnWindChanged; // Invoker: Wind System  Subscriber : AnimalStateManager
 

@@ -73,7 +73,7 @@ public class PlayerInventory : MonoBehaviour
 
     public void AddWorldItem(GameObject worldObj)
     {
-        UIManager.instance.DisplayNotification("You Picked Up  "+worldObj.name);
+        UIManager.instance.DisplayNotification("You Picked Up  " + worldObj.name);
         if (worldObj.TryGetComponent<HeavyObjs>(out var heavyObjs))
         {
             // if it is a heay objetc 
