@@ -2042,8 +2042,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walkSpeed: 5
   alertSpeed: 7
-  runSpeed: 12
-  fleeSpeed: 14
+  runSpeed: 8
+  fleeSpeed: 10
   followPoint: {fileID: 4927684963539932423}
   _animalAttack:
     damage: 0

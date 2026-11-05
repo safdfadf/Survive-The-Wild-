@@ -68,7 +68,7 @@ public static class RetPosOnNv
             }
         }
 
-        //  Debug.Log($"Failed to find valid NavMesh position inside bounds: {regionBounds}");
+        Debug.Log($"Failed to find valid NavMesh position inside bounds: {regionBounds}");
         Debug.Log(regionBounds.center);
         return regionBounds.center;
     }

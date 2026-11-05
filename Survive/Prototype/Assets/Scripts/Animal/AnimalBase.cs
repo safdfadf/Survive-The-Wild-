@@ -67,7 +67,7 @@ public class AnimalBase : MonoBehaviour, IInteractable
 
     public bool IsAggresive { get; set; }
     private bool drawCircle;
-    private bool _canUpdateCalmState;
+    private bool _canUpdateCalmState = true;
 
     protected virtual void Awake()
     {
@@ -102,16 +102,14 @@ public class AnimalBase : MonoBehaviour, IInteractable
 
     private void OnEnable()
     {
-        SceneRoot.Instance.EventManager.TimeEvents.onFiveSecondsPass += UpdateCalmState;
-        SceneRoot.Instance.EventManager.TimeEvents.onFiveSecondsPass += IsPlayerAround; // in game 15 mins 
+        SceneRoot.Instance.EventManager.TimeEvents.onOneSecondPass += UpdateCalmState;
         SceneRoot.Instance.EventManager.TimeEvents.onOneSecondPass += IsPlayerAround;
         SceneRoot.Instance.EventManager.AnimalEvents.onUpdateLodLevel += UpdateLod;
     }
 
     private void OnDisable()
     {
-        SceneRoot.Instance.EventManager.TimeEvents.onFiveSecondsPass -= UpdateCalmState;
-        SceneRoot.Instance.EventManager.TimeEvents.onFiveSecondsPass -= IsPlayerAround;
+        SceneRoot.Instance.EventManager.TimeEvents.onOneSecondPass -= UpdateCalmState;
         SceneRoot.Instance.EventManager.TimeEvents.onOneSecondPass -= IsPlayerAround;
         SceneRoot.Instance.EventManager.AnimalEvents.onUpdateLodLevel -= UpdateLod;
     }
@@ -140,12 +138,16 @@ public class AnimalBase : MonoBehaviour, IInteractable
 
     private void SetToLod0()
     {
+        print("enabling lod0" + gameObject.name);
         animator.enabled = true;
         _canUpdateCalmState = true;
     }
 
     private void SetToLod1()
     {
+        print("enabling lod1" + gameObject.name);
+        animator.enabled = true;
+        _canUpdateCalmState = true;
     }
 
     private void SetToLod2()
@@ -296,6 +298,7 @@ public class AnimalBase : MonoBehaviour, IInteractable
             destination = navMeshHit;
         }
 
+        print(gameObject.name + " is moving" + agent.isOnNavMesh + " " + agent.enabled + "" + gameObject.activeSelf);
         agent.SetDestination(destination);
         isMoving = true;
         animator.SetFloat("Velocity", agent.desiredVelocity.magnitude);

@@ -47,7 +47,6 @@ namespace Animal.States
 
         public void RunOutOfActiveChunk()
         {
-            Vector3 pos = data.GetOutofActiveChunkPos();
             Animal.GetOutOfChunk();
         }
 

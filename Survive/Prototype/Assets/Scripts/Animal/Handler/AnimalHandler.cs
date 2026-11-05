@@ -5,6 +5,7 @@ using System.Linq;
 using Player;
 using SurviveTheWild.Helpers;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
@@ -133,8 +134,10 @@ public class
             }
         }
 
-        if (ChunkManager.Instance.IsPlayerInChunk(chunk))
+        if (ChunkHelper.IsInChunkXZ(PlayerRepository.instance.GetPlayerTransform().position, chunk.bounds))
+        {
             SpawnUnScheduledAnimal(chunk); // only spawn animals in which player is currently present
+        }
     }
 
     private void SpawnUnScheduledAnimal(Chunk chunk)
@@ -143,18 +146,12 @@ public class
         {
             if (Random.value <= animalSo.spawnProbability && !animalSo.isScheduled)
             {
-                PosInChunk pos = chunk.cashedPos.FirstOrDefault(p => p.IsAvailable);
-
-                if (pos == null)
-                    continue;
-
-                pos.IsAvailable = false;
-
-                GameObject obj = GlobalPool.instance.Get(animalSo.prefab, pos.Position);
-
-
-                UnScheduleAnimal unScheduleAnimal = obj.GetComponent<UnScheduleAnimal>();
+                var FinalPos = RetPosOnNv.ReturnRandomNavMeshPos(chunk.bounds);
+                //   var obj = Instantiate(animalSo.prefab, FinalPos, Quaternion.identity);
+                var obj = GlobalPool.instance.Get(animalSo.prefab, FinalPos);
+                var unScheduleAnimal = obj.GetComponent<UnScheduleAnimal>();
                 unScheduleAnimal.Initialize(animalSo, chunk.bounds);
+
                 _spawnedAnimals.Add(unScheduleAnimal);
                 chunk.objectInChunk.Add(obj); // recheck this 
             }
@@ -263,9 +260,9 @@ public class
         {
             var playerPos = PlayerRepository.instance.GetPlayerTransform().position;
             var AnimalPos = a.transform.position;
-            float distance = Vector3.Distance(playerPos, AnimalPos);
+            var distance = Vector3.Distance(playerPos, AnimalPos);
             var level = GetLOD(distance);
-            SceneRoot.Instance.EventManager.AnimalEvents.onUpdateLodLevel(level);
+            //    SceneRoot.Instance.EventManager.AnimalEvents.UpdateLodLevel(level);
         }
     }
 

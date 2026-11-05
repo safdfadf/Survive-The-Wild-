@@ -61,10 +61,10 @@ public class GlobalPool : MonoBehaviour
         }
         else
         {
-            obj = Instantiate(prefab);
+            obj = Instantiate(prefab, pos, Quaternion.identity);
         }
 
-        obj.transform.SetPositionAndRotation(pos, Quaternion.identity);
+       // obj.transform.SetPositionAndRotation(pos, Quaternion.identity);
         if (obj.TryGetComponent<Environment>(out _))
         {
             obj.transform.SetParent(environmentParent, false);

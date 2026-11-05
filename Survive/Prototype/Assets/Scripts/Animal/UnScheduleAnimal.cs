@@ -15,6 +15,7 @@ public class UnScheduleAnimal : AnimalBase // these animals do not have a schedu
     {
         IsUnscheduled = true;
         base.Awake();
+       
     }
 
     public void Initialize(AnimalSo so, Bounds bounds)
@@ -24,20 +25,22 @@ public class UnScheduleAnimal : AnimalBase // these animals do not have a schedu
         IsAggresive = AnimalSo.isAggresive;
         CreateNewState();
         CalmState.EnterState(this);
+   
     }
 
     protected override void IsPlayerAround()
     {
-        
         Collider[] hits = Physics.OverlapSphere(transform.position, alertRadius, playerMask);
 
         if (hits.Length == 0)
+        {
             return;
+        }
 
-        Transform player = hits[0].transform;
+        var player = hits[0].transform;
 
-        Vector3 dir = (player.position - transform.position).normalized;
-        float dist = Vector3.Distance(transform.position, player.position);
+        var dir = (player.position - transform.position).normalized;
+        var dist = Vector3.Distance(transform.position, player.position);
 
         if (Physics.Raycast(transform.position, dir, dist, obstructionMask))
         {
@@ -69,8 +72,6 @@ public class UnScheduleAnimal : AnimalBase // these animals do not have a schedu
 
         return;
     }
-
-  
 
 
     private void OnDrawGizmosSelected()

@@ -344,6 +344,7 @@ MonoBehaviour:
   animalAtkBehaviour: {fileID: 11400000, guid: 297906e6cdb32c643b37482b5d53c8ce, type: 2}
   requiredAbility: {fileID: 11400000, guid: 704126e62b7d502428b912f629fb1b74, type: 2}
   AnimalSo: {fileID: 0}
+  _puddleFx: {fileID: 0}
   alertRadius: 1.5
   playerMask:
     serializedVersion: 2
