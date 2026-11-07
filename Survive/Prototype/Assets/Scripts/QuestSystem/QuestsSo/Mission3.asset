@@ -19,5 +19,5 @@ MonoBehaviour:
   - {fileID: 8267339032128751719, guid: 4a8c6fe4577409544a67527d5cfd2122, type: 3}
   RewardData:
     LevelExp: 20
-    RewardRecipe: {fileID: 11400000, guid: 1a298092ace585741a429f1f80d0e88d, type: 2}
+    RewardRecipe: {fileID: 11400000, guid: ccb2213f788f42b479ecb71dfa840264, type: 2}
   missionSprite: {fileID: 0}

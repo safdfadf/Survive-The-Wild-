@@ -17,6 +17,7 @@ namespace Player
         private PlayerBody _playerBody;
         private CraftingHandler _craftingHandler;
         public GameObject ContactWithWater => _movementHandler.ContactWithWater;
+        public ResourceInventory resourceInventory;
 
         private void Awake()
         {
@@ -36,6 +37,7 @@ namespace Player
             _playerVitalStats = GetComponent<PlayerVitalStats>();
             _playerBody = GetComponent<PlayerBody>();
             _craftingHandler = GetComponent<CraftingHandler>();
+            resourceInventory = FindAnyObjectByType<ResourceInventory>();
         }
 
         public float GetScentIntensity(Vector3 position)
@@ -111,7 +113,7 @@ namespace Player
 
         public void CraftWorldItem(GameObject obj)
         {
-            Obj<ObjSo> o = obj.GetComponent<Obj<ObjSo>>();
+            var o = obj.GetComponent<Obj<ObjSo>>();
             _playerInventory.MakeItemAndCraft(o);
         }
 

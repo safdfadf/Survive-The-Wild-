@@ -95,6 +95,7 @@ public abstract class Obj<TSo> : MonoBehaviour, IsoInitializer<TSo>, IInteractab
 
     public virtual void Remove()
     {
+        // inventory item 
     }
 
     public void ExecuteAction()

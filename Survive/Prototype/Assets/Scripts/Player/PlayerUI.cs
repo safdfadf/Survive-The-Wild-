@@ -22,7 +22,7 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] private Slider energyBar;
     [SerializeField] private Slider staminaBar;
     [SerializeField] private Image StaminaFill;
-  
+
     [Header("FoodStats")] [SerializeField] private Slider protienBar;
     [SerializeField] private Slider carbBar;
     [SerializeField] private Slider fatBar;
@@ -79,6 +79,7 @@ public class PlayerUI : MonoBehaviour
 
     private List<GameObject> _activeWoundsUI = new();
     private PlayerVitalStats _playerVitalStats;
+    public bool isInventoryOpen { get; private set; }
 
     private void Awake()
     {
@@ -94,6 +95,15 @@ public class PlayerUI : MonoBehaviour
         InitSliders();
     }
 
+    private void OnEnable()
+    {
+        SceneRoot.Instance.EventManager.UiEvents.onToggleInventory += Inventory;
+    }
+
+    private void OnDisable()
+    {
+        SceneRoot.Instance.EventManager.UiEvents.onToggleInventory -= Inventory;
+    }
 
     private void Start()
     {
@@ -114,24 +124,24 @@ public class PlayerUI : MonoBehaviour
     {
         if (invParent.gameObject.activeInHierarchy)
         {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-            SetUIVisible(false);
-            _movementHandler.CanMove(true);
-            if (_movementHandler.CurrentWeapon)
-                _movementHandler.CurrentWeapon.RestrictUse = false;
+            Inventory(false);
         }
         else
         {
-            SetUIVisible(true);
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-            _movementHandler.CanMove(false);
-            ShowRscInv();
-            EnableCraftingUI();
-            if (_movementHandler.CurrentWeapon)
-                _movementHandler.CurrentWeapon.RestrictUse = true;
+            Inventory(true);
         }
+    }
+
+    public void Inventory(bool value)
+    {
+        isInventoryOpen = value;
+        Cursor.lockState = value ? CursorLockMode.None : CursorLockMode.Locked;
+
+        Cursor.visible = value;
+        SetUIVisible(value);
+        _movementHandler.CanMove(!value);
+        if (_movementHandler.CurrentWeapon)
+            _movementHandler.CurrentWeapon.RestrictUse = value;
     }
 
     private void SetUIVisible(bool visible)

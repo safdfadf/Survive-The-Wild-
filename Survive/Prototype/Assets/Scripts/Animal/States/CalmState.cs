@@ -43,8 +43,8 @@ namespace Animal.States
             if (Random.value > 0.5f && Animal.AnimalSo.inZoneTravel)
                 MoveToNextPosition();
 
-            if (Random.value > 0.5f)
-                HandleAudioCall(CalmRadius, Animal.AnimalSo.calmClip[Random.Range(0, Animal.AnimalSo.calmClip.Count)]);
+            //   if (Random.value > 0.5f)
+//                HandleAudioCall(CalmRadius, Animal.AnimalSo.calmClip[Random.Range(0, Animal.AnimalSo.calmClip.Count)]);
         }
 
         public override void ExitState()
@@ -58,7 +58,6 @@ namespace Animal.States
 
         private void MoveToNextPosition()
         {
-            Debug.Log("in zone travel");
             Chunk chunk = ChunkManager.Instance.GetChunkAtPos(Animal.transform.position);
             Vector3 pos = RetPosOnNv.ReturnRandomNavMeshPos(chunk.bounds);
             Animal.MoveTo(pos);

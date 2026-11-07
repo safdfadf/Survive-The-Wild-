@@ -1,11 +1,6 @@
-using System;
 using System.Collections.Generic;
-using SurviveTheWild.EventBus;
-using SurviveTheWild.ResourceSystem;
 using Player;
-using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class InventoryItem : MonoBehaviour
@@ -34,9 +29,13 @@ public class InventoryItem : MonoBehaviour
     [SerializeField] private Transform parentTransform;
     private ResourceInventory _inventory;
     private bool _isMenuOpen;
+    public Slot slot;
 
     private void Awake()
     {
+        slot = gameObject.GetComponentInParent<Slot>();
+
+
         rect = GetComponent<RectTransform>();
         icon = GetComponent<Image>();
         if (rect != null)
@@ -72,17 +71,29 @@ public class InventoryItem : MonoBehaviour
         IsInCraftingList = true;
         SceneRoot.Instance.EventManager.UiEvents.RemoveMenu();
         EventBus.OnCraftResource.Invoke(so, this);
+        SceneRoot.Instance.EventManager.CraftEvents.PlaceInCraftMenu(this);
         SetMenuPos();
+        _currentObj.CanCraft = false;
+        
     }
 
     private void Remove() // only this will call to go back to the inventory 
     {
+        if (isIsolated)
+        {
+            // Drop Game oBjetc in real world 
+            Destroy(gameObject);
+            return;
+        }
+
         if (IsInCraftingList)
         {
             IsInCraftingList = false;
-            // set position menu pos 
+            _currentObj.CanCraft = true;
             SetMenuPos();
             EventBus.OnUnCraftResource.Invoke(so, this);
+            SceneRoot.Instance.EventManager.CraftEvents.onRemoveFromCraftMenu(so, this);
+            SceneRoot.Instance.EventManager.UiEvents.RemoveMenu();
         }
         else
         {
@@ -112,26 +123,14 @@ public class InventoryItem : MonoBehaviour
 
     public void DeactivateMenu()
     {
-        print("Deactivated ");
         _isMenuOpen = false;
         _inventory.DeactivateSubMenu();
     }
 
     public void SetMenuPos()
     {
-        Slot slot = gameObject.GetComponentInParent<Slot>();
-        RectTransform slotRect = slot.GetComponent<RectTransform>();
-        Vector3 finalPos;
-        if (IsInCraftingList)
-        {
-            print("set menu pos");
-            finalPos = rect.transform.position + new Vector3(100, 0, 0);
-            _inventory.SetMenuPos(finalPos);
-        }
-        else
-        {
-            finalPos = slotRect.position + new Vector3(100, 0, 0);
-            _inventory.SetMenuPos(finalPos);
-        }
+        var slotRect = slot.GetComponent<RectTransform>();
+        var finalPos = slotRect.position + new Vector3(100, 0, 0);
+        _inventory.SetMenuPos(finalPos);
     }
 }

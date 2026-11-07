@@ -171,7 +171,7 @@ public class InputManager : MonoBehaviour
         _controls.PlayerMovement.HunerSense.performed -= _toggleHuntetSenses;
         _controls.PlayerInteract.Interact.performed -= _toggleTarckMenu;
         _controls.PlayerInteract.Book.performed -= _toggleRecipeBook;
-     
+
         _controls.Disable();
     }
 
@@ -184,22 +184,41 @@ public class InputManager : MonoBehaviour
 
         graphicRaycaster.Raycast(eventData, results);
 
+        var slot = results[0].gameObject.GetComponent<Slot>();
+        if (slot == null)
+        {
+            print("slot is null");
+            return;
+        }
+
+        var item = slot.occupiedItem;
+        if (item != null)
+        {
+            item.Toggle();
+        }
+        else
+        {
+            print("ocusdada");
+        }
+
+/*
         foreach (var result in results)
         {
-            Slot slot = result.gameObject.GetComponent<Slot>();
+            var slot = result.gameObject.GetComponent<Slot>();
             if (slot == null)
             {
-                print("slot us byk");
+                print(result.gameObject.name);
                 return;
             }
 
-            InventoryItem item = slot.occupiedItem;
+            var item = slot.occupiedItem;
             if (item != null)
             {
                 item.Toggle();
                 return;
             }
         }
+        */
     }
 
     private void ToggleMiniGameInput()

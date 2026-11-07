@@ -1,10 +1,13 @@
 using System;
+using SurviveTheWild.CraftingSystem;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class Slot : MonoBehaviour, IPointerClickHandler
 {
+    [SerializeField] private SlotType slotType;
+    [HideInInspector] public Transform parent;
     public Vector2Int gridPosition { get; set; }
     public bool isOccupied { get; set; }
     private Transform itemAnchor;
@@ -18,6 +21,7 @@ public class Slot : MonoBehaviour, IPointerClickHandler
 
     //ToDo : Function for valid and invalid spots 
     public Vector3 worldPosition { get; set; }
+    [SerializeField] public SlotType SlotType { get; set; }
     public CookingData cookingData { get; set; }
     public int cookingSpotIndex = -1; // index in CampFire.cookingSpots
     public float spacingX { get; set; }
@@ -32,11 +36,12 @@ public class Slot : MonoBehaviour, IPointerClickHandler
         ToggleAlpha(false);
     }
 
-    public void InitializeSlot(Vector2Int GridPosition, float X, float Y)
+    public void InitializeSlot(Vector2Int GridPosition, float X, float Y, Transform parent)
     {
         gridPosition = GridPosition;
         spacingX = X;
         spacingY = Y;
+        this.parent = parent;
     }
 
     public void Valid()
@@ -59,15 +64,25 @@ public class Slot : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        Debug.Log("OnPointerClick");
         if (eventData.button != PointerEventData.InputButton.Left) return;
-        ResourceInventory inventory = GetComponentInParent<ResourceInventory>();
-        if (inventory == null)
+        print("OnPointerClick");
+        if (SlotType == SlotType.Inventory)
         {
-            inventory = FindAnyObjectByType<ResourceInventory>();
-        }
+            ResourceInventory inventory = GetComponentInParent<ResourceInventory>();
 
-        inventory.OnSlotClicked(this);
+
+            inventory.OnSlotClicked(this);
+        }
+        else if (SlotType == SlotType.CraftingSLot)
+        {
+            CraftingUi ui = FindAnyObjectByType<CraftingUi>();
+            ui.OnClick(this);
+        }
+        else if(slotType == SlotType.EmptySpace)
+        {
+            
+            // drop object in real worl 
+        }
     }
 
     public void ToggleAlpha(bool isOn)
@@ -81,12 +96,23 @@ public class Slot : MonoBehaviour, IPointerClickHandler
     {
         ToggleAlpha(false);
     }
+
+    public void SetOriginalPos()
+    {
+        rect.transform.SetParent(parent);
+        rect.anchoredPosition = new Vector2(
+            gridPosition.x * spacingX,
+            gridPosition.y * spacingY);
+    }
 }
 
+[System.Serializable]
 public enum SlotType
 {
     Inventory,
-    CookingSpot
+    CookingSpot,
+    EmptySpace,
+    CraftingSLot
 }
 
 public class CookingData

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using SurviveTheWild.EventBus;
 using Inventory;
+using SurviveTheWild.CraftingSystem;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -9,6 +10,7 @@ using UnityEngine.UI;
 public class CraftingHandler : MonoBehaviour
 {
     [SerializeField] private List<CraftingSO> craftingSo;
+    [SerializeField] private CraftingUi craftingUi;
 
     [FormerlySerializedAs("craftingUI")] [SerializeField]
     private RectTransform craftingUITransform;
@@ -129,7 +131,7 @@ public class CraftingHandler : MonoBehaviour
     {
         if (!_ingredientVisuals.ContainsKey(So))
             _ingredientVisuals[So] = new List<GameObject>();
-
+        print("adding ingredient");
 
         var existing = _currentIngredients.Find(i => i.objSo == So);
         if (existing != null)
@@ -141,11 +143,10 @@ public class CraftingHandler : MonoBehaviour
             _currentIngredients.Add(new Ingredient { objSo = So, amount = 1 });
         }
 
-        RectTransform rectTransform = uiPrefab.GetComponent<RectTransform>();
-        rectTransform.position = craftingUITransform.position;
         _currentItems.Add(uiPrefab);
         CheckForRecipe(_currentIngredients);
     }
+
 
     private void RemoveResource(ObjSo So, InventoryItem item)
     {
@@ -161,8 +162,8 @@ public class CraftingHandler : MonoBehaviour
                 _currentIngredients.RemoveAt(i);
             }
         }
-
-        _resourceInventory.TryPlaceItem(So, item);
+        
+        CheckForRecipe(_currentIngredients);
     }
 
     public void CheckForRecipe(List<Ingredient> ingredients)
@@ -241,6 +242,7 @@ public class CraftingHandler : MonoBehaviour
         UIManager.instance.ShowLoadingScreen(2f);
     }
 
+
     private void ConsumeIngredients() // in consume ingredient we need 
     {
         foreach (var req in _currentSo.ingredients)
@@ -266,7 +268,7 @@ public class CraftingHandler : MonoBehaviour
         _currentItems.Clear();
     }
 
-    private void SpawnStructure(CraftingSO so) 
+    private void SpawnStructure(CraftingSO so)
     {
         _buildingHandler.SetGHostObject(so);
     }

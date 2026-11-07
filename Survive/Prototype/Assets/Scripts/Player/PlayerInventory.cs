@@ -238,9 +238,25 @@ public class PlayerInventory : MonoBehaviour
 
     public void MakeItemAndCraft(Obj<ObjSo> obj)
     {
-        AddWorldItem(obj.gameObject); // add to inventory and create inventory item
-        InventoryItem item = _resourceInventory.GetInventoryItem(obj.InventoryItem);
+        if (obj.IsIsolated)
+        {
+            CraftLargeItem(obj);
+            return;
+        }
+
+        AddWorldItem(obj.gameObject); // in this situation i have added objetc in inventory but i am not removing them 
+        
+        _resourceInventory.GetInventoryItem(obj.InventoryItem);
         obj.InventoryItem.Craft();
-        // open inventory  
+    }
+
+    private void CraftLargeItem(Obj<ObjSo> obj)
+    {
+        MoveTo(obj.gameObject);
+        var uiObj = Instantiate(uiItemPrefab);
+        var item = uiObj.GetComponent<InventoryItem>();
+        SetInventoryItem(obj, obj.So, item);
+        SceneRoot.Instance.EventManager.UiEvents.ToggleInventory(true);// open inventory
+        obj.InventoryItem.Craft();
     }
 }

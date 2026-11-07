@@ -7,5 +7,8 @@
             base.Awake();
             Gm = this.gameObject;
         }
+
+       
     }
+
 }

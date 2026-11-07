@@ -4,6 +4,7 @@ using System.Linq;
 using SurviveTheWild.CraftingSystem;
 using SurviveTheWild.EventBus;
 using FoodSystem;
+using Player;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -24,9 +25,15 @@ public class ResourceInventory : MonoBehaviour
 
     private InventoryItem heldItem = null;
 
+    public InventoryItem HeldItem
+    {
+        get => heldItem;
+        set => heldItem = value;
+    }
+
     [SerializeField] private Slot slotPrefab;
 
-    [SerializeField] private GameObject parent;
+    [SerializeField] public GameObject parent;
     private Slot[,] slots;
     private Dictionary<ObjSo, List<InventoryItem>> resources = new();
 
@@ -52,12 +59,13 @@ public class ResourceInventory : MonoBehaviour
                     return;
                 }
 
-                slot.InitializeSlot(new Vector2Int(x, y), spacingBtwSlotsX, spacingBtwSlotsY);
+                slot.InitializeSlot(new Vector2Int(x, y), spacingBtwSlotsX, spacingBtwSlotsY, parent.transform);
                 slot.rect = slot.gameObject.GetComponent<RectTransform>();
                 slot.rect.anchoredPosition = new Vector2(
                     x * spacingBtwSlotsX,
                     y * spacingBtwSlotsY
                 );
+                slot.SlotType = SlotType.Inventory;
                 slot.cookingData = null;
                 slots[x, y] = slot;
             }
@@ -69,6 +77,7 @@ public class ResourceInventory : MonoBehaviour
     private void OnEnable()
     {
         SceneRoot.Instance.EventManager.reseourceEvent.onMenuToggle += ToggleRaycastTarget;
+        SceneRoot.Instance.EventManager.CraftEvents.onRemoveFromCraftMenu += TryPlaceItem;
     }
 
     private void OnDisable()
@@ -149,7 +158,6 @@ public class ResourceInventory : MonoBehaviour
         {
             for (int y = 0; y < height; y++)
             {
-                var slot = slots[x, y];
                 if (IsAreaFree(x, y, size))
                 {
                     PlaceItemAt(itemPrefab, new Vector2Int(x, y), size);
@@ -185,7 +193,7 @@ public class ResourceInventory : MonoBehaviour
         item.rect.SetParent(slots[position.x, position.y].rect);
         item.rect.anchoredPosition = Vector2.zero;
         item.rect.localRotation = Quaternion.identity;
-
+        item.slot = slots[position.x, position.y];
         item.origin = position;
 
         for (int x = 0; x < size.x; x++)
@@ -238,7 +246,11 @@ public class ResourceInventory : MonoBehaviour
         if (heldItem == null)
         {
             heldItem = PickUpItem(pos);
-            if (heldItem == null) return;
+            if (heldItem == null)
+            {
+                return;
+            }
+
             foreach (var img in heldItem.GetComponentsInChildren<Image>())
                 img.raycastTarget = false;
             heldItem.rect.SetParent(inventoryRect);
@@ -246,9 +258,9 @@ public class ResourceInventory : MonoBehaviour
             heldItem.DeactivateMenu();
             return;
         }
-
         if (CanPlaceItem(heldItem, slot))
         {
+            if (heldItem.isIsolated) return;
             PlaceItemAt(heldItem, pos, heldItem.size);
             heldItem.SetMenuPos(); // place menu at new pos 
             heldItem.origin = pos;
@@ -282,6 +294,12 @@ public class ResourceInventory : MonoBehaviour
         {
             Debug.Log("Cannot place item here");
         }
+    }
+
+    private void DropObjetInRealWorld()
+    {
+        Destroy(heldItem);
+        PlayerRepository.instance.RemoveResourceFromInventory(heldItem._currentObj, false);
     }
 
     public void ToggleRaycastTarget()
@@ -382,6 +400,12 @@ public class ResourceInventory : MonoBehaviour
         }
 
         menuParent.gameObject.SetActive(false);
+    }
+
+    public Slot CreateExtraSlot()
+    {
+        var slot = Instantiate(slotPrefab, parent.transform);
+        return slot;
     }
 
     public void SetMenuPos(Vector3 position)
