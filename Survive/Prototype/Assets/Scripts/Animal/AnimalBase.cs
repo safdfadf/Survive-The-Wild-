@@ -158,7 +158,6 @@ public class AnimalBase : MonoBehaviour, IInteractable
 
     private void UpdateCalmState()
     {
-        // need to another condition if is  lod 0 ony then update this state 
         if (CurrentState == null || CurrentState != CalmState || !_canUpdateCalmState) return;
         if (AnimalSo == null)
         {
@@ -214,19 +213,7 @@ public class AnimalBase : MonoBehaviour, IInteractable
         GlobalPool.instance.Return(_bloodVfx, obj);
     }
 
-    private int GetLocationBasedDamage(PlayerAttack atk)
-    {
-        switch (atk.HitLocation)
-        {
-            case DamageLocation.Head:
-                return 3;
-            case DamageLocation.MiddleBody:
-                return 2;
-            default: return 1;
-        }
-    }
-
-    protected virtual void InstantDeath()
+    public virtual void InstantDeath()
     {
         Debug.Log("Death");
         SceneRoot.Instance.EventManager.AnimalEvents.AnimalDeath(this);
@@ -235,6 +222,7 @@ public class AnimalBase : MonoBehaviour, IInteractable
         agent.enabled = false;
         agent.speed = 0;
         CanDisplay = true;
+        _canUpdateCalmState = false;
         PlayBloodVfx();
     }
 
@@ -243,15 +231,6 @@ public class AnimalBase : MonoBehaviour, IInteractable
         var presentChunk = ChunkManager.Instance.GetChunkAtPos(transform.position);
         var destination = RetPosOnNv.ReturnRandomNavMeshPos(presentChunk.bounds);
         MoveTo(destination, InstantDeath);
-    }
-
-    public void DeadAnimal() // when spawning already dead animal
-    {
-        ToggleCollider(true);
-        animator.SetBool("Death", true);
-        agent.enabled = false;
-        agent.speed = 0;
-        CanDisplay = true;
     }
 
     private void DropResource()

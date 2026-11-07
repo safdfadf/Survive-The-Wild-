@@ -459,7 +459,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -494,6 +494,7 @@ MonoBehaviour:
   useMe: {fileID: 8269586118966388877}
   ItemGm: {fileID: 0}
   parentTransform: {fileID: 963697348900484495}
+  slot: {fileID: 0}
 --- !u!1 &5970677341338355630
 GameObject:
   m_ObjectHideFlags: 0
@@ -819,7 +820,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1994092550047731139
 RectTransform:
   m_ObjectHideFlags: 0

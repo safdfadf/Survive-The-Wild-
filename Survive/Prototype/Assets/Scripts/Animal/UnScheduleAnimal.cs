@@ -10,12 +10,12 @@ public class UnScheduleAnimal : AnimalBase // these animals do not have a schedu
     [SerializeField] private LayerMask obstructionMask;
 
     [SerializeField] private float alarmRadius = .8f;
+    [SerializeField] private bool isDeadAnimal;
 
     protected override void Awake()
     {
         IsUnscheduled = true;
         base.Awake();
-       
     }
 
     public void Initialize(AnimalSo so, Bounds bounds)
@@ -25,7 +25,8 @@ public class UnScheduleAnimal : AnimalBase // these animals do not have a schedu
         IsAggresive = AnimalSo.isAggresive;
         CreateNewState();
         CalmState.EnterState(this);
-   
+        if (isDeadAnimal)
+            InstantDeath();
     }
 
     protected override void IsPlayerAround()

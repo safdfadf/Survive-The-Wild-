@@ -64,7 +64,7 @@ namespace SurviveTheWild.Traps
             var count = Random.Range(0, animalSos.Count);
             var obj = GlobalPool.instance.Get(animalSos[count].prefab, spawnPos.position);
             selectedAnimal = obj.GetComponent<AnimalBase>();
-            selectedAnimal.DeadAnimal();
+            selectedAnimal.InstantDeath();
             // after spawning animate trap to it original pos 
             CanDisplay = true;
             Description = "To Reset";

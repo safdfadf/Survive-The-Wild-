@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3446d969a603b9741bd8db43b6e9bc7b, type: 3}
+  m_Name: Bird
+  m_EditorClassIdentifier: 
+  <id>k__BackingField: Bird
+  isScheduled: 0
+  prefab: {fileID: 8661033431382578246, guid: 6e6602463a753ca4a864ccb593472219, type: 3}
+  regionType: 0
+  minAmount: 1
+  maxAmount: 1
+  collectable: {fileID: 0}
+  TrackMesh: []
+  spawnProbability: 6
+  isAggresive: 1
+  inZoneTravel: 1
+  hurtClip: []
+  AlarmClip: []
+  warningClip:
+  - {fileID: 8300000, guid: 5a2c590beb9246f4e81419c244776be5, type: 3}
+  calmClip: []

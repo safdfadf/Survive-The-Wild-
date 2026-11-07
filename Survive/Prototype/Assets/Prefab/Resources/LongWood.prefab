@@ -127,8 +127,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cc54137d460498ab4310ca3d5462eab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  craft: 0
-  harvest: 0
+  craft: 1
+  harvest: 1
   useMe: 0
   isIsolated: 1
 --- !u!1 &1404969489892646714

@@ -49,7 +49,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   resourceDropCount: 0
   dropOffset: {x: 0, y: 0, z: 0}
-  objSos: []
+  objSos:
+  - {fileID: 11400000, guid: c86ed73cf5fd37c419c3c3ee52c1dd4c, type: 2}
   pos:
   - pos: {fileID: 1676476500782610470}
     isAvailable: 1
