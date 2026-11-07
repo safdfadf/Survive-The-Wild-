@@ -221,15 +221,27 @@ public class ResourceInventory : MonoBehaviour
 
     private InventoryItem PickUpItem(Vector2Int gridPos)
     {
-        Slot slot = slots[gridPos.x, gridPos.y];
+        var slot = slots[gridPos.x, gridPos.y];
         if (!slot.isOccupied || slot.occupiedItem == null)
             return null;
 
-        InventoryItem item = slot.occupiedItem;
-
+        var item = slot.occupiedItem;
+        RemoveItem(item);
         ClearArea(item.origin, item.size, item);
 
         return item;
+    }
+
+    public void RemoveItem(InventoryItem itemPrefab)
+    {
+        if (resources.TryGetValue(itemPrefab._currentObj.So, out var items))
+        {
+            items.Remove(itemPrefab);
+            if (items.Count == 0)
+            {
+                resources.Remove(itemPrefab._currentObj.So);
+            }
+        }
     }
 
     private bool CanPlaceItem(InventoryItem item, Slot slot)
@@ -258,6 +270,7 @@ public class ResourceInventory : MonoBehaviour
             heldItem.DeactivateMenu();
             return;
         }
+
         if (CanPlaceItem(heldItem, slot))
         {
             if (heldItem.isIsolated) return;

@@ -63,7 +63,6 @@ public class UnScheduleAnimal : AnimalBase // these animals do not have a schedu
             return;
         }
 
-        // ALERT ZONE
         if (CurrentState != AlertState)
         {
             CurrentState = AlertState;

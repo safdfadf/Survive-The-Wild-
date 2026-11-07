@@ -1,4 +1,5 @@
 using System;
+using Player;
 using SurviveTheWild.CraftingSystem;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -21,7 +22,14 @@ public class Slot : MonoBehaviour, IPointerClickHandler
 
     //ToDo : Function for valid and invalid spots 
     public Vector3 worldPosition { get; set; }
-    [SerializeField] public SlotType SlotType { get; set; }
+
+    [SerializeField]
+    public SlotType SlotType
+    {
+        get => slotType;
+        set => slotType = value;
+    }
+
     public CookingData cookingData { get; set; }
     public int cookingSpotIndex = -1; // index in CampFire.cookingSpots
     public float spacingX { get; set; }
@@ -65,23 +73,34 @@ public class Slot : MonoBehaviour, IPointerClickHandler
     public void OnPointerClick(PointerEventData eventData)
     {
         if (eventData.button != PointerEventData.InputButton.Left) return;
-        print("OnPointerClick");
-        if (SlotType == SlotType.Inventory)
+        switch (SlotType)
         {
-            ResourceInventory inventory = GetComponentInParent<ResourceInventory>();
+            case SlotType.Inventory:
+            {
+                var inventory = GetComponentInParent<ResourceInventory>();
+                inventory.OnSlotClicked(this);
+                break;
+            }
+            case SlotType.CraftingSLot:
+            {
+                var ui = FindAnyObjectByType<CraftingUi>();
+                ui.OnClick(this);
+                break;
+            }
+            default:
+            {
+                if (slotType == SlotType.EmptySpace && PlayerRepository.instance.resourceInventory.HeldItem != null)
+                {
+                    InventoryItem item = PlayerRepository.instance.resourceInventory.HeldItem;
+                    // now fire an event to remove it from resource and player inventory 
+                    PlayerRepository.instance.RemoveResourceFromInventory(
+                      item._currentObj, false);
+                    Destroy(item.gameObject);
+                    PlayerRepository.instance.resourceInventory.HeldItem = null;
+                }
 
-
-            inventory.OnSlotClicked(this);
-        }
-        else if (SlotType == SlotType.CraftingSLot)
-        {
-            CraftingUi ui = FindAnyObjectByType<CraftingUi>();
-            ui.OnClick(this);
-        }
-        else if(slotType == SlotType.EmptySpace)
-        {
-            
-            // drop object in real worl 
+                break;
+            }
         }
     }
 

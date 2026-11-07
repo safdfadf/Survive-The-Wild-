@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d05360676185cb47b7b6275576162c5, type: 3}
+  m_Name: PoisonBandage
+  m_EditorClassIdentifier: 
+  ingredients:
+  - objSo: {fileID: 11400000, guid: 99b4fa9569c655b4ba09a5d674e287d4, type: 2}
+    amount: 1
+  - objSo: {fileID: 11400000, guid: 9a14c71a57fc54649a7e3b147f2aad8a, type: 2}
+    amount: 1
+  resSo: {fileID: 11400000, guid: 8615c1a8c1093bd44a2f274781e8640f, type: 2}
+  hasUpgrades: 0
+  upgrades: []

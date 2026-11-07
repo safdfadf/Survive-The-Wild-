@@ -215,7 +215,6 @@ public class AnimalBase : MonoBehaviour, IInteractable
 
     public virtual void InstantDeath()
     {
-        Debug.Log("Death");
         SceneRoot.Instance.EventManager.AnimalEvents.AnimalDeath(this);
         ToggleCollider(true);
         animator.SetBool("Death", true);
