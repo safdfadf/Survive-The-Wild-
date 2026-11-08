@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Player;
 using SurviveTheWild.CraftingSystem;
 using UnityEngine;
@@ -12,8 +13,8 @@ public class Slot : MonoBehaviour, IPointerClickHandler
     public Vector2Int gridPosition { get; set; }
     public bool isOccupied { get; set; }
     private Transform itemAnchor;
-    public InventoryItem occupiedItem { get; set; }
-
+    public List<InventoryItem> occupiedItem { get; set; }
+    public float storeCapacity { get; set; }
     private Image _img;
     private Color _regularColor;
     public RectTransform rect { get; set; }
@@ -41,6 +42,7 @@ public class Slot : MonoBehaviour, IPointerClickHandler
         isOccupied = false;
         _img = GetComponentInChildren<Image>();
         _regularColor = _img.color;
+        occupiedItem = new List<InventoryItem>();
         ToggleAlpha(false);
     }
 
@@ -92,9 +94,8 @@ public class Slot : MonoBehaviour, IPointerClickHandler
                 if (slotType == SlotType.EmptySpace && PlayerRepository.instance.resourceInventory.HeldItem != null)
                 {
                     InventoryItem item = PlayerRepository.instance.resourceInventory.HeldItem;
-                    // now fire an event to remove it from resource and player inventory 
                     PlayerRepository.instance.RemoveResourceFromInventory(
-                      item._currentObj, false);
+                        item._currentObj, false);
                     Destroy(item.gameObject);
                     PlayerRepository.instance.resourceInventory.HeldItem = null;
                 }
@@ -122,6 +123,11 @@ public class Slot : MonoBehaviour, IPointerClickHandler
         rect.anchoredPosition = new Vector2(
             gridPosition.x * spacingX,
             gridPosition.y * spacingY);
+    }
+
+    public bool CanOccupy()
+    {
+        return occupiedItem.Count < storeCapacity;
     }
 }
 

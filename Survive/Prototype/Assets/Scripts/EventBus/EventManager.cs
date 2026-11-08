@@ -7,7 +7,7 @@ namespace SurviveTheWild.EventBus
     public class EventManager : MonoBehaviour
     {
         public QuestEvent questEvent;
-        public ResourceEvents reseourceEvent;
+        public InventoryEvents inventoryEvents;
         public PlayerEvents playerEvents;
         public CraftEvents CraftEvents;
         public AnimalEvents AnimalEvents;
@@ -25,7 +25,7 @@ namespace SurviveTheWild.EventBus
         private void InitializeEvents()
         {
             questEvent = new QuestEvent();
-            reseourceEvent = new ResourceEvents();
+            inventoryEvents = new InventoryEvents();
             playerEvents = new PlayerEvents();
             CraftEvents = new CraftEvents();
             AnimalEvents = new AnimalEvents();

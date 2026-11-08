@@ -30,13 +30,13 @@ public class PlayerInventory : MonoBehaviour
 
     private void OnEnable()
     {
-        SceneRoot.Instance.EventManager.reseourceEvent.onGatherResource += AddWorldItem;
+        SceneRoot.Instance.EventManager.inventoryEvents.onGatherResource += AddWorldItem;
         SceneRoot.Instance.EventManager.StructureEvents.OnSubmitResource += SubmitResource;
     }
 
     private void OnDisable()
     {
-        SceneRoot.Instance.EventManager.reseourceEvent.onGatherResource -= AddWorldItem;
+        SceneRoot.Instance.EventManager.inventoryEvents.onGatherResource -= AddWorldItem;
         SceneRoot.Instance.EventManager.StructureEvents.OnSubmitResource -= SubmitResource;
     }
 
@@ -169,7 +169,7 @@ public class PlayerInventory : MonoBehaviour
 
     private void SetInventoryItem(Obj<ObjSo> res, ObjSo So, InventoryItem item)
     {
-        item.size = So.size;
+        item.originalSize = So.size;
         RectTransform rect = item.GetComponent<RectTransform>();
         item.rect = rect;
         Image image = item.GetComponent<Image>();

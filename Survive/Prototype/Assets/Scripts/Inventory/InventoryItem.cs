@@ -99,6 +99,7 @@ public class InventoryItem : MonoBehaviour
         {
             SetMenuPos();
             PlayerRepository.instance.RemoveResourceFromInventory(_currentObj, true);
+            // remove it from resource pool aswell
         }
     }
 

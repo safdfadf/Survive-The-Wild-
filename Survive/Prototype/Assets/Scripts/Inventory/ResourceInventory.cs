@@ -128,7 +128,7 @@ public class ResourceInventory : MonoBehaviour
     {
         Vector2Int size = item.size;
 
-        bool canPlace = IsAreaFree(origin.x, origin.y, size);
+        bool canPlace = IsAreaFree(origin.x, origin.y, size, item);
 
         for (int x = 0; x < size.x; x++)
         {
@@ -158,7 +158,7 @@ public class ResourceInventory : MonoBehaviour
         {
             for (int y = 0; y < height; y++)
             {
-                if (IsAreaFree(x, y, size))
+                if (IsAreaFree(x, y, size, itemPrefab))
                 {
                     PlaceItemAt(itemPrefab, new Vector2Int(x, y), size);
                     if (!resources.ContainsKey(So))
@@ -171,8 +171,9 @@ public class ResourceInventory : MonoBehaviour
         }
     }
 
-    private bool IsAreaFree(int startX, int startY, Vector2Int size)
+    private bool IsAreaFree(int startX, int startY, Vector2Int size, InventoryItem item)
     {
+        // in this fnction we check if slot + its size neighbours 
         if (startX + size.x > width) return false;
         if (startY + size.y > height) return false;
 
@@ -180,8 +181,11 @@ public class ResourceInventory : MonoBehaviour
         {
             for (int y = 0; y < size.y; y++)
             {
-                if (slots[startX + x, startY + y].isOccupied)
-                    return false;
+                var s = slots[startX + x, startY + y];
+                if (s.isOccupied)
+                {
+                    if (s.occupiedItem[0]._currentObj.So != item._currentObj.So || !s.CanOccupy()) return false;
+                }
             }
         }
 
@@ -199,22 +203,34 @@ public class ResourceInventory : MonoBehaviour
         for (int x = 0; x < size.x; x++)
         for (int y = 0; y < size.y; y++)
         {
-            slots[position.x + x, position.y + y].isOccupied = true;
-            slots[position.x + x, position.y + y].occupiedItem = item;
+            // so when placing in an item i need to check if this was already occupied 
+            var s = slots[position.x + x, position.y + y];
+            if (s.isOccupied) // if slot was already occupied 
+            {
+                s.occupiedItem.Add(item);
+            }
+            else
+            {
+                s.isOccupied = true;
+                s.storeCapacity = item._currentObj.So.storeCapacity;
+                s.occupiedItem.Add(item);
+            }
         }
     }
 
 
-    private void ClearArea(Vector2Int origin, Vector2Int size, InventoryItem item)
+    private void ClearSlot(Vector2Int origin, Vector2Int size, InventoryItem item)
     {
+        // no need for this anymore 
         for (int x = 0; x < size.x; x++)
         for (int y = 0; y < size.y; y++)
         {
             var s = slots[origin.x + x, origin.y + y];
-            if (s.occupiedItem == item) // only clear if it's the same item
+            if (s.occupiedItem.Contains(item)) // only clear if it's the same item
             {
-                s.isOccupied = false;
-                s.occupiedItem = null;
+                s.occupiedItem.Remove(item);
+                if (s.occupiedItem.Count == 0)
+                    s.isOccupied = false;
             }
         }
     }
@@ -222,12 +238,14 @@ public class ResourceInventory : MonoBehaviour
     private InventoryItem PickUpItem(Vector2Int gridPos)
     {
         var slot = slots[gridPos.x, gridPos.y];
-        if (!slot.isOccupied || slot.occupiedItem == null)
+
+        if (!slot.isOccupied || slot.occupiedItem.Count == 0)
             return null;
 
-        var item = slot.occupiedItem;
+        var item = slot.occupiedItem[0];
+
         RemoveItem(item);
-        ClearArea(item.origin, item.size, item);
+        ClearSlot(item.origin, item.size, item);
 
         return item;
     }
@@ -246,7 +264,7 @@ public class ResourceInventory : MonoBehaviour
 
     private bool CanPlaceItem(InventoryItem item, Slot slot)
     {
-        if (!IsAreaFree(slot.gridPosition.x, slot.gridPosition.y, item.size) || slot.cookingData != null)
+        if (!IsAreaFree(slot.gridPosition.x, slot.gridPosition.y, item.size, item) || slot.cookingData != null)
             return false;
 
         return true;
@@ -275,9 +293,14 @@ public class ResourceInventory : MonoBehaviour
         {
             if (heldItem.isIsolated) return;
             PlaceItemAt(heldItem, pos, heldItem.size);
+            if (!resources.ContainsKey(heldItem._currentObj.So))
+                resources[heldItem._currentObj.So] = new List<InventoryItem>();
+
+            resources[heldItem._currentObj.So].Add(heldItem);
             heldItem.SetMenuPos(); // place menu at new pos 
             heldItem.origin = pos;
             heldItem = null;
+
             ClearPreviewColors();
         }
 
@@ -354,7 +377,12 @@ public class ResourceInventory : MonoBehaviour
         if (resources[obj.So].Contains(obj.InventoryItem))
         {
             resources[obj.So].Remove(obj.InventoryItem);
+            ClearSlot(
+                obj.InventoryItem.origin,
+                obj.InventoryItem.size,
+                obj.InventoryItem);
             Destroy(obj.InventoryItem.gameObject);
+
             return;
         }
 
@@ -414,13 +442,6 @@ public class ResourceInventory : MonoBehaviour
 
         menuParent.gameObject.SetActive(false);
     }
-
-    public Slot CreateExtraSlot()
-    {
-        var slot = Instantiate(slotPrefab, parent.transform);
-        return slot;
-    }
-
     public void SetMenuPos(Vector3 position)
     {
         RectTransform rect = menuParent.GetComponent<RectTransform>();

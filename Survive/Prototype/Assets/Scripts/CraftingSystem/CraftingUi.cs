@@ -21,6 +21,7 @@ namespace SurviveTheWild.CraftingSystem
                 var slot = Instantiate(slotPrefab, parent);
                 slot.SlotType = SlotType.CraftingSLot;
                 craftingSlots.Add(slot);
+                slot.storeCapacity = 1;
             }
         }
 
@@ -41,39 +42,46 @@ namespace SurviveTheWild.CraftingSystem
 
         public void OnClick(Slot slot)
         {
-            if (resourceInventory.HeldItem == null)
+            if (resourceInventory.HeldItem == null) // pick up 
             {
-//                print("pick up item from  slot");
-                resourceInventory.HeldItem = slot.occupiedItem;
+                PickUp(slot);
+            }
+            else // drop
+            {
+                Drop(slot);
+            }
+        }
 
-                slot.occupiedItem.rect.SetParent(resourceInventory.transform);
-                slot.occupiedItem.rect.SetAsLastSibling();
-                global::EventBus.OnUnCraftResource.Invoke(slot.occupiedItem.so, slot.occupiedItem);
-                slot.occupiedItem.IsInCraftingList = false;
-                slot.occupiedItem = null;
-                // tell crafting handler to remove this from ingredient 
-            }
-            else
-            {
-                //              print("drop item in slot");
-                var item = resourceInventory.HeldItem;
-                resourceInventory.HeldItem = null;
-                global::EventBus.OnCraftResource.Invoke(item.so, item);
-                slot.occupiedItem = item;
-                item.IsInCraftingList = true;
-                item.rect.SetParent(slot.rect);
-                item.rect.localPosition = Vector3.zero;
-                item.rect.localRotation = Quaternion.identity;
-                item.slot = slot;
-            }
+        private void PickUp(Slot slot)
+        {
+            InventoryItem item = slot.occupiedItem[0];
+            resourceInventory.HeldItem = item;
+            item.rect.SetParent(resourceInventory.transform);
+            item.rect.SetAsLastSibling();
+            global::EventBus.OnUnCraftResource.Invoke(slot.occupiedItem[0].so, item);
+            item.IsInCraftingList = false;
+            slot.occupiedItem = null;
+        }
+
+        private void Drop(Slot slot)
+        {
+            var item = resourceInventory.HeldItem;
+            resourceInventory.HeldItem = null;
+            global::EventBus.OnCraftResource.Invoke(item.so, item);
+            slot.occupiedItem.Add(item);
+            item.IsInCraftingList = true;
+            item.rect.SetParent(slot.rect);
+            item.rect.localPosition = Vector3.zero;
+            item.rect.localRotation = Quaternion.identity;
+            item.slot = slot;
         }
 
         public void PlaceItemInSlot(InventoryItem item)
         {
             foreach (var slot in craftingSlots)
             {
-                if (slot.occupiedItem != null) continue;
-                slot.occupiedItem = item;
+                if (!slot.CanOccupy()) continue;
+                slot.occupiedItem.Add(item);
                 item.rect.SetParent(slot.rect);
                 item.rect.localPosition = Vector3.zero;
                 item.rect.localRotation = Quaternion.identity;

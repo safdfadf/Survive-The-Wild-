@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Effect;
 using Player;
+using SurviveTheWild.Helpers;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -79,7 +80,6 @@ public class PlayerUI : MonoBehaviour
 
     private List<GameObject> _activeWoundsUI = new();
     private PlayerVitalStats _playerVitalStats;
-    public bool isInventoryOpen { get; private set; }
 
     private void Awake()
     {
@@ -120,21 +120,9 @@ public class PlayerUI : MonoBehaviour
         UpdateFoodStats(1, 1, 1, 1);
     }
 
-    public void ToggleInventory()
+    private void Inventory(bool value)
     {
-        if (invParent.gameObject.activeInHierarchy)
-        {
-            Inventory(false);
-        }
-        else
-        {
-            Inventory(true);
-        }
-    }
-
-    public void Inventory(bool value)
-    {
-        isInventoryOpen = value;
+        PlayerHelper.IsInventoryOpen = value;
         Cursor.lockState = value ? CursorLockMode.None : CursorLockMode.Locked;
 
         Cursor.visible = value;
@@ -190,16 +178,6 @@ public class PlayerUI : MonoBehaviour
     public GameObject GetCrosshair()
     {
         return crosshair;
-    }
-
-    public bool IsInventoryOpen()
-    {
-        if (invParent.gameObject.activeInHierarchy)
-        {
-            return true;
-        }
-
-        return false;
     }
 
     private void ShowRscInv()
