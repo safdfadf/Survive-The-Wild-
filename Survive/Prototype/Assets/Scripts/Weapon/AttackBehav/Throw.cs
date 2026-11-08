@@ -16,11 +16,6 @@ namespace SurviveTheWild.Weapon
             base.Awake();
         }
 
-        // how can i make sure weapon pointing correctly  
-        protected override void LateUpdate()
-        {
-            base.LateUpdate();
-        }
 
         protected override void Update()
         {
@@ -31,6 +26,7 @@ namespace SurviveTheWild.Weapon
 
         protected override void StartAiming()
         {
+            if (!canAttack) return;
             isAiming = true;
             weapon.crosshair.SetActive(true);
             _animator.ToggleAiming(true);
@@ -38,6 +34,7 @@ namespace SurviveTheWild.Weapon
 
         protected override void StopAiming()
         {
+            if (!canAttack) return;
             Debug.Log("stop aiming");
             isAiming = false;
             weapon.crosshair.SetActive(false);
@@ -60,6 +57,7 @@ namespace SurviveTheWild.Weapon
 
         protected override void Shoot()
         {
+            if (!canAttack) return;
             Vector3 dir = (aimTarget.position - weapon.transform.position).normalized;
             RestPoint = gameObject.transform;
             ArrowMove spear = weapon.gameObject.GetComponent<ArrowMove>();

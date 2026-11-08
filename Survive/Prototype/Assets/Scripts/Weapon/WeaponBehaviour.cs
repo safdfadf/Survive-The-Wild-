@@ -16,6 +16,7 @@ namespace SurviveTheWild.Weapon
 
         protected Transform cameraTransform;
         protected MovementHandler Player;
+        protected bool canAttack = true;
 
         public virtual void Initialize(WeaponData data, PlayerAnimator animator, BaseWeapon weapon,
             MovementHandler player)
@@ -26,6 +27,22 @@ namespace SurviveTheWild.Weapon
             aimTarget = data.aimTarget;
             cameraTransform = Camera.main.transform;
             Player = player;
+        }
+
+        private void OnEnable()
+        {
+            SceneRoot.Instance.EventManager.playerEvents.onOutOfBreath += ToggleCanAtk;
+        }
+
+        private void OnDisable()
+        {
+            SceneRoot.Instance.EventManager.playerEvents.onOutOfBreath -= ToggleCanAtk;
+        }
+
+        private void ToggleCanAtk(bool atk)
+        {
+            canAttack = !atk;
+            print(canAttack);
         }
 
         public virtual void OnEquip()

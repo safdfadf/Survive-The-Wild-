@@ -40,6 +40,7 @@ namespace SurviveTheWild.Weapon
 
         protected override void Attack()
         {
+            if (!canAttack) return;
             Debug.Log("attack");
             _thrustAnims.ThrustAnim();
             StartCoroutine(StartAttacking());

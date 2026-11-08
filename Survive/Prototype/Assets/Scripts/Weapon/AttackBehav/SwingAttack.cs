@@ -13,7 +13,7 @@ namespace SurviveTheWild.Weapon
 
         protected override void Attack()
         {
-            if (isHolding) return;
+            if (isHolding || !canAttack) return;
             animator.SwordAttack(); //ToDo: make it a trigger 
             SceneRoot.Instance.AudioManager.PlayerSound(SoundType.Attack);
             SceneRoot.Instance.EventManager.playerEvents.OnDrainStamina(data.weaponSo.staminaCost);

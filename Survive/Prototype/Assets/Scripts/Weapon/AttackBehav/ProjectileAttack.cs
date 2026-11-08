@@ -1,10 +1,11 @@
-﻿using Player;
+﻿using System;
+using Player;
 using UnityEngine;
 
 
 namespace SurviveTheWild.Weapon
 {
-    public class ProjectileAttack : ProjectileParent
+    public class ProjectileAttack : ProjectileParent//ToDo: Hook Audio , De stabalize when stamina goes less then threshold  
     {
         protected float drawTime;
         [SerializeField] protected float maxDrawTime = 1f;
@@ -26,13 +27,20 @@ namespace SurviveTheWild.Weapon
             UpdateRestRotation();
         }
 
-
+       
         private void PullArrow()
         {
+            if (!canAttack)
+            {
+                print("returning cause can attack is false");
+                return;
+            }
+
             drawTime += Time.deltaTime;
             drawTime = Mathf.Clamp(drawTime, 0f, maxDrawTime);
-            float drawPercent = Mathf.Clamp01(drawTime / maxDrawTime);
-            float drawOffset = Mathf.Lerp(0f, -0.5f, drawPercent);
+            var drawPercent = Mathf.Clamp01(drawTime / maxDrawTime);
+            var drawOffset = Mathf.Lerp(0f, -0.5f, drawPercent);
+            SceneRoot.Instance.EventManager.playerEvents.OnDrainStamina(.02f);
             CurrentArrow.transform.localPosition = new Vector3(0f, 0f, drawOffset);
         }
 
@@ -86,6 +94,7 @@ namespace SurviveTheWild.Weapon
 
         protected override void Shoot() // this might be a littile different 
         {
+            if (!canAttack) return;
             if (CurrentArrow == null)
             {
                 return;

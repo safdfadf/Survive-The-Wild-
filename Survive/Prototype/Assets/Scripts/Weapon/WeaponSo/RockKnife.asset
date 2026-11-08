@@ -19,6 +19,7 @@ MonoBehaviour:
   size: {x: 1, y: 3}
   appearanceProb: 0
   Weight: 0
+  storeCapacity: 0
   damage: 20
   block: 20
   staminaCost: 0
