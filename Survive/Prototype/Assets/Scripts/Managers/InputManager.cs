@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using SurviveTheWild.EventBus;
+using SurviveTheWild.Helpers;
 using SurviveTheWild.Interface;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -21,6 +22,7 @@ public class InputManager : MonoBehaviour
     private PlayerAnimator _playerAnimator;
     private float scrollCooldown = 0.2f; // adjust to taste
     private float lastScrollTime = 0f;
+    private bool toggleInventory = false;
     private Action<InputAction.CallbackContext> _movePerformed;
     private Action<InputAction.CallbackContext> _moveCanceled;
     private Action<InputAction.CallbackContext> _lookPerformed;
@@ -39,7 +41,6 @@ public class InputManager : MonoBehaviour
     private Action<InputAction.CallbackContext> _toggleHuntetSenses;
     private Action<InputAction.CallbackContext> _toggleTarckMenu;
     private Action<InputAction.CallbackContext> _toggleRecipeBook;
-    private bool _miniGameOn;
     private IRequestInput _requestInput;
 
     private void Awake()
@@ -94,7 +95,7 @@ public class InputManager : MonoBehaviour
                 EventBus.onAttack.Invoke();
             }
         };
-        _inventoryToggle = ctx => { _playerUI.ToggleInventory(); };
+        _inventoryToggle = ctx => { ToggleInventory(); };
         _resourceMenuToggle = ctx => ToggleCollectableMenu();
         _toggleTarckMenu = ctx => PressE();
     }
@@ -111,7 +112,6 @@ public class InputManager : MonoBehaviour
             print("scene root is null");
         }
 
-        SceneRoot.Instance.EventManager.MiniGamesEvents.onToggleMiniGame += ToggleMiniGameInput;
         SceneRoot.Instance.EventManager.playerEvents.onDeliverRequestInput += SetRequestedInput;
         SceneRoot.Instance.EventManager.playerEvents.onRemoveRequestInput += ResetRequestedInput;
 
@@ -134,7 +134,7 @@ public class InputManager : MonoBehaviour
         _controls.PlayerInteract.Left.canceled += HandleLeftClick;
 
         //    _controls.PlayerInteract.CursorOnOf.performed += _cursorToggle;
-        _controls.PlayerInteract.Inventory.performed += _inventoryToggle;
+        _controls.PlayerInteract.Inventory.performed += ctx => ToggleInventory();
         _controls.PlayerInteract.ResourceMenu.performed += _resourceMenuToggle;
         _controls.PlayerInteract.Interact.performed += _toggleTarckMenu;
         _controls.PlayerInteract.Phone.started += ctx => ShowWatch(true);
@@ -166,7 +166,7 @@ public class InputManager : MonoBehaviour
         _controls.PlayerInteract.Left.canceled -= HandleLeftClick;
         _controls.PlayerInteract.Scroll.canceled -= Scroll;
         //   _controls.PlayerInteract.CursorOnOf.performed -= _cursorToggle;
-        _controls.PlayerInteract.Inventory.performed -= _inventoryToggle;
+        //   _controls.PlayerInteract.Inventory.performed -= ToggleInventory();
         _controls.PlayerInteract.ResourceMenu.performed -= _resourceMenuToggle;
         _controls.PlayerMovement.HunerSense.performed -= _toggleHuntetSenses;
         _controls.PlayerInteract.Interact.performed -= _toggleTarckMenu;
@@ -177,7 +177,7 @@ public class InputManager : MonoBehaviour
 
     private void ToggleCollectableMenu()
     {
-        PointerEventData eventData = new PointerEventData(EventSystem.current);
+        var eventData = new PointerEventData(EventSystem.current);
         eventData.position = Mouse.current.position.ReadValue();
 
         List<RaycastResult> results = new List<RaycastResult>();
@@ -191,7 +191,7 @@ public class InputManager : MonoBehaviour
             return;
         }
 
-        var item = slot.occupiedItem;
+        var item = slot.occupiedItem[0];
         if (item != null)
         {
             item.Toggle();
@@ -219,11 +219,6 @@ public class InputManager : MonoBehaviour
             }
         }
         */
-    }
-
-    private void ToggleMiniGameInput()
-    {
-        _miniGameOn = !_miniGameOn;
     }
 
     public void SetRequestedInput(IRequestInput input)
@@ -290,6 +285,12 @@ public class InputManager : MonoBehaviour
         var scrollUp = movement.y > 0;
 
         _player.SwitchWeapon(scrollUp);
+    }
+
+    private void ToggleInventory()
+    {
+        toggleInventory = !toggleInventory;
+        SceneRoot.Instance.EventManager.UiEvents.ToggleInventory(toggleInventory);
     }
 
     private void ShowWatch(bool show)

@@ -3,6 +3,7 @@ using System.Collections;
 using SurviveTheWild.EventBus;
 using FoodSystem;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 
 public class PlayerVitalStats : MonoBehaviour
@@ -70,16 +71,17 @@ public class PlayerVitalStats : MonoBehaviour
     private void OnEnable()
     {
         SceneRoot.Instance.EventManager.TimeEvents.onFiveSecondsPass += UpdateStats;
-        SceneRoot.Instance.EventManager.TimeEvents.onFiveSecondsPass  += UpdateHealth;
+        SceneRoot.Instance.EventManager.TimeEvents.onFiveSecondsPass += UpdateHealth;
         SceneRoot.Instance.EventManager.playerEvents.OnTriggerPlayerSleep += Sleep;
         SceneRoot.Instance.EventManager.playerEvents.OnDrainStamina += DrainStamina;
     }
 
     private void OnDisable()
     {
-        SceneRoot.Instance.EventManager.TimeEvents.onFiveSecondsPass  -= UpdateStats;
-        SceneRoot.Instance.EventManager.TimeEvents.onFiveSecondsPass  -= UpdateHealth;
+        SceneRoot.Instance.EventManager.TimeEvents.onFiveSecondsPass -= UpdateStats;
+        SceneRoot.Instance.EventManager.TimeEvents.onFiveSecondsPass -= UpdateHealth;
         SceneRoot.Instance.EventManager.playerEvents.OnTriggerPlayerSleep -= Sleep;
+        SceneRoot.Instance.EventManager.playerEvents.OnDrainStamina -= DrainStamina;
     }
 
     private void LateUpdate()
@@ -141,6 +143,8 @@ public class PlayerVitalStats : MonoBehaviour
             if (!isOutOfBreath)
             {
                 isOutOfBreath = true;
+                print(_currentStamina);
+                SceneRoot.Instance.EventManager.playerEvents.PlayerOutOfBreath(isOutOfBreath);
                 SceneRoot.Instance.AudioManager.PlayerSound(SoundType.Winded);
             }
 
@@ -148,8 +152,6 @@ public class PlayerVitalStats : MonoBehaviour
             return;
         }
 
-        isOutOfBreath = false;
-        // based on player stamina level should get some benefits 
         _currentStamina -= staminaDrainRate * dt;
         _currentStamina = Mathf.Clamp(_currentStamina, 0f, _currentEnergy);
         _playerUI.StaminaSlider(_currentStamina / maxStamina);
@@ -162,6 +164,11 @@ public class PlayerVitalStats : MonoBehaviour
             _currentStamina += staminaRegenRate;
             _currentStamina = Mathf.Clamp(_currentStamina, 0f, _currentEnergy);
             _playerUI.StaminaSlider(_currentStamina / maxStamina);
+            if (_currentStamina > 20)
+            {
+                isOutOfBreath = false;
+                SceneRoot.Instance.EventManager.playerEvents.PlayerOutOfBreath(isOutOfBreath);
+            }
         }
     }
 

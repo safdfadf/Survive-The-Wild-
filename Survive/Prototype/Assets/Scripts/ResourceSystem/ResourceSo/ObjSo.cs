@@ -10,6 +10,7 @@ public class ObjSo : ScriptableObject, ISpawnedItem
     public Vector2Int size;
     public float appearanceProb;
     public float Weight;
+    public float storeCapacity;
     public GameObject Prefab => prefab;
     public int Amount => amount;
     public float SpawningProbability => appearanceProb;

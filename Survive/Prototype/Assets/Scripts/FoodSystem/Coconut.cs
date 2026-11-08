@@ -43,7 +43,7 @@ namespace FoodSystem
             food.Initialize(peeledCoco);
             if (InventoryItem != null)
                 Destroy(InventoryItem.gameObject);
-            SceneRoot.Instance.EventManager.reseourceEvent.GatherResource(o);
+            SceneRoot.Instance.EventManager.inventoryEvents.GatherResource(o);
             Gm = null;
             base.Harvest();
             Destroy(gameObject);

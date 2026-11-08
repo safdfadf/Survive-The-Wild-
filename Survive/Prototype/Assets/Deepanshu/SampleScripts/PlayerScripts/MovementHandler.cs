@@ -8,6 +8,7 @@ using SurviveTheWild.ResourceSystem;
 using FoodSystem;
 using NUnit.Framework;
 using Player;
+using SurviveTheWild.Helpers;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 using UnityEngine.Serialization;
@@ -442,9 +443,9 @@ public class MovementHandler : MonoBehaviour //TODo: Make a separate script for 
         return null;
     }
 
-    public void CanMove(bool isLocked)
+    public void CanMove(bool canMove)
     {
-        _canMove = isLocked;
+        _canMove = canMove;
     }
 
     public void InitializeWeapon(BaseWeapon weapon)
@@ -454,6 +455,7 @@ public class MovementHandler : MonoBehaviour //TODo: Make a separate script for 
 
     public void SwitchWeapon(bool scrollUp)
     {
+        if (PlayerHelper.IsInventoryOpen) return;
         if (CurrentWeapon != null)
         {
             CurrentWeapon.UnEquipMe();

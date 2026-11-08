@@ -168,7 +168,7 @@ public class AnimalBase : MonoBehaviour, IInteractable
         CurrentState.UpdateState();
     }
 
-    public virtual void TakeDamage(PlayerAttack atk) // since attack is just no. how do we 
+    public virtual void TakeDamage(PlayerAttack atk) 
     {
         if (_currentHealth <= 0) return;
         _currentHealth -= atk.Damage;
@@ -251,7 +251,7 @@ public class AnimalBase : MonoBehaviour, IInteractable
         }
 
         GlobalPool.instance.Return(AnimalSo.prefab, gameObject);
-        SceneRoot.Instance.EventManager.reseourceEvent.GatherResource(baseObj.gameObject); //Todo:  remove this 
+        SceneRoot.Instance.EventManager.inventoryEvents.GatherResource(baseObj.gameObject); //Todo:  remove this 
     }
 
     public void MoveTo(Vector3 destination, Action onArrived = null, float? speedOverride = null,

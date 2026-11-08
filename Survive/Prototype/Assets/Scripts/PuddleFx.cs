@@ -4,37 +4,24 @@ using UnityEngine;
 
 public class PuddleFx : MonoBehaviour
 {
-    private ParticleSystem[] _waterFx;
+    private ParticleSystem _bloodFx;
 
     private void Awake()
     {
-        _waterFx = gameObject.GetComponentsInChildren<ParticleSystem>();
+        _bloodFx = gameObject.GetComponentInChildren<ParticleSystem>();
     }
 
     public IEnumerator ActivateFx()
     {
-        foreach (var fx in _waterFx)
-        {
-            fx.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
-            fx.Play();
-        }
+        _bloodFx.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+        _bloodFx.Play();
 
         yield return new WaitForSeconds(0.5f);
+        _bloodFx.Pause();
+        yield return new WaitForSeconds(12);
+        _bloodFx.Stop();
     }
 
-    public void PauseFx()
-    {
-        _waterFx[0].Pause();
-    }
 
-    public IEnumerator DeactivateFx()
-    {
-        yield return new WaitForSeconds(2f);
-        var renderer = _waterFx[0].GetComponent<ParticleSystemRenderer>();
-        Material mat = renderer.material;
-
-        mat.SetFloat("_Alpha", 0f);
-        yield return new WaitForSeconds(2f);
-        // gameObject.SetActive(false);
-    }
+   
 }

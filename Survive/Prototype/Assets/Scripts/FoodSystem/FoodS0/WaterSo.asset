@@ -19,6 +19,7 @@ MonoBehaviour:
   size: {x: 0, y: 0}
   appearanceProb: 0
   Weight: 0
+  storeCapacity: 0
   nutrientsCount:
     calories: 0
     protien: 0

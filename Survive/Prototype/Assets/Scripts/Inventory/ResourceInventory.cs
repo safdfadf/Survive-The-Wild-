@@ -5,14 +5,16 @@ using SurviveTheWild.CraftingSystem;
 using SurviveTheWild.EventBus;
 using FoodSystem;
 using Player;
+using SurviveTheWild.Interface;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 
-public class ResourceInventory : MonoBehaviour
+public class ResourceInventory : MonoBehaviour, IRequestInput
 {
     [SerializeField] private int width = 8;
     [SerializeField] private int height = 8;
@@ -42,6 +44,7 @@ public class ResourceInventory : MonoBehaviour
     [SerializeField] private Button HarvestButton;
     [SerializeField] private Button UseMeButton;
     [SerializeField] private Button RemoveButton;
+    private bool canRotate;
 
     private void Awake()
     {
@@ -76,13 +79,14 @@ public class ResourceInventory : MonoBehaviour
 
     private void OnEnable()
     {
-        SceneRoot.Instance.EventManager.reseourceEvent.onMenuToggle += ToggleRaycastTarget;
+        SceneRoot.Instance.EventManager.inventoryEvents.onMenuToggle += ToggleRaycastTarget;
         SceneRoot.Instance.EventManager.CraftEvents.onRemoveFromCraftMenu += TryPlaceItem;
+        SceneRoot.Instance.EventManager.UiEvents.onToggleInventory += InventoryOpen;
     }
 
     private void OnDisable()
     {
-        SceneRoot.Instance.EventManager.reseourceEvent.onMenuToggle -= ToggleRaycastTarget;
+        SceneRoot.Instance.EventManager.inventoryEvents.onMenuToggle -= ToggleRaycastTarget;
     }
 
     private void LateUpdate()
@@ -126,7 +130,7 @@ public class ResourceInventory : MonoBehaviour
 
     private void PreviewPlacement(InventoryItem item, Vector2Int origin)
     {
-        Vector2Int size = item.size;
+        Vector2Int size = item.Size;
 
         bool canPlace = IsAreaFree(origin.x, origin.y, size, item);
 
@@ -173,7 +177,6 @@ public class ResourceInventory : MonoBehaviour
 
     private bool IsAreaFree(int startX, int startY, Vector2Int size, InventoryItem item)
     {
-        // in this fnction we check if slot + its size neighbours 
         if (startX + size.x > width) return false;
         if (startY + size.y > height) return false;
 
@@ -245,7 +248,7 @@ public class ResourceInventory : MonoBehaviour
         var item = slot.occupiedItem[0];
 
         RemoveItem(item);
-        ClearSlot(item.origin, item.size, item);
+        ClearSlot(item.origin, item.Size, item);
 
         return item;
     }
@@ -264,7 +267,7 @@ public class ResourceInventory : MonoBehaviour
 
     private bool CanPlaceItem(InventoryItem item, Slot slot)
     {
-        if (!IsAreaFree(slot.gridPosition.x, slot.gridPosition.y, item.size, item) || slot.cookingData != null)
+        if (!IsAreaFree(slot.gridPosition.x, slot.gridPosition.y, item.Size, item) || slot.cookingData != null)
             return false;
 
         return true;
@@ -292,7 +295,7 @@ public class ResourceInventory : MonoBehaviour
         if (CanPlaceItem(heldItem, slot))
         {
             if (heldItem.isIsolated) return;
-            PlaceItemAt(heldItem, pos, heldItem.size);
+            PlaceItemAt(heldItem, pos, heldItem.Size);
             if (!resources.ContainsKey(heldItem._currentObj.So))
                 resources[heldItem._currentObj.So] = new List<InventoryItem>();
 
@@ -379,7 +382,7 @@ public class ResourceInventory : MonoBehaviour
             resources[obj.So].Remove(obj.InventoryItem);
             ClearSlot(
                 obj.InventoryItem.origin,
-                obj.InventoryItem.size,
+                obj.InventoryItem.Size,
                 obj.InventoryItem);
             Destroy(obj.InventoryItem.gameObject);
 
@@ -442,9 +445,34 @@ public class ResourceInventory : MonoBehaviour
 
         menuParent.gameObject.SetActive(false);
     }
+
     public void SetMenuPos(Vector3 position)
     {
         RectTransform rect = menuParent.GetComponent<RectTransform>();
         rect.position = position;
+    }
+
+    private void InventoryOpen(bool value)
+    {
+        if (!value)
+        {
+            SceneRoot.Instance.EventManager.playerEvents.ResetRequestedInput();
+        }
+        else
+        {
+            SceneRoot.Instance.EventManager.playerEvents.DeliverRequestInput(this);
+        }
+    }
+
+    public void UseInput(InputAction.CallbackContext ctx)
+    {
+        if (ctx.action.name == "Right" && heldItem != null)
+        {
+            heldItem.Rotate();
+        }
+    }
+
+    public void ResetInput()
+    {
     }
 }

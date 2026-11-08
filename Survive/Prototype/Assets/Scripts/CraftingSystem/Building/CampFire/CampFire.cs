@@ -37,12 +37,12 @@ namespace SurviveTheWild.CraftingSystem.Building.CampFire
 
         private void OnEnable()
         {
-            SceneRoot.Instance.EventManager.reseourceEvent.onGatherResource += RemoveFood;
+            SceneRoot.Instance.EventManager.inventoryEvents.onGatherResource += RemoveFood;
         }
 
         private void OnDisable()
         {
-            SceneRoot.Instance.EventManager.reseourceEvent.onGatherResource -= RemoveFood;
+            SceneRoot.Instance.EventManager.inventoryEvents.onGatherResource -= RemoveFood;
         }
 
         private void RemoveFood(GameObject food)

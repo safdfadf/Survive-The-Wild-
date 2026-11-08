@@ -5,9 +5,11 @@ using UnityEngine.UI;
 
 public class InventoryItem : MonoBehaviour
 {
+    public Vector2Int originalSize;
+
     // in ths inventory item how can i make it call toggle menu 
     public Vector2Int origin { get; set; }
-    public Vector2Int size { get; set; }
+
     public RectTransform rect { get; set; }
     public Image icon { get; set; }
     public ObjSo so { get; set; }
@@ -30,6 +32,16 @@ public class InventoryItem : MonoBehaviour
     private ResourceInventory _inventory;
     private bool _isMenuOpen;
     public Slot slot;
+    public bool IsRotated { get; set; }
+
+    public Vector2Int Size
+    {
+        get =>
+            IsRotated
+                ? new Vector2Int(originalSize.y, originalSize.x)
+                : originalSize;
+        set => value = originalSize;
+    }
 
     private void Awake()
     {
@@ -74,7 +86,6 @@ public class InventoryItem : MonoBehaviour
         SceneRoot.Instance.EventManager.CraftEvents.PlaceInCraftMenu(this);
         SetMenuPos();
         _currentObj.CanCraft = false;
-        
     }
 
     private void Remove() // only this will call to go back to the inventory 
@@ -133,5 +144,20 @@ public class InventoryItem : MonoBehaviour
         var slotRect = slot.GetComponent<RectTransform>();
         var finalPos = slotRect.position + new Vector3(100, 0, 0);
         _inventory.SetMenuPos(finalPos);
+    }
+
+    // now lets talk about input 
+    public void Rotate()
+    {
+        IsRotated = !IsRotated;
+        Size = new Vector2Int(Size.y, Size.x);
+
+        Vector2 currentSize = rect.sizeDelta;
+
+        rect.sizeDelta = new Vector2(
+            currentSize.y,
+            currentSize.x);
+        rect.localRotation =
+            Quaternion.Euler(0, 0, IsRotated ? 90f : 0f);
     }
 }

@@ -105,7 +105,7 @@ public abstract class Obj<TSo> : MonoBehaviour, IsoInitializer<TSo>, IInteractab
 
     protected virtual void HandleAction()
     {
-        SceneRoot.Instance.EventManager.reseourceEvent.GatherResource(gameObject);
+        SceneRoot.Instance.EventManager.inventoryEvents.GatherResource(gameObject);
     }
 
     protected virtual void SetUiBools() // ToDo: show this in inspector instead of script 

@@ -18,7 +18,7 @@ namespace FoodSystem
             var obj = GlobalPool.instance.Get(Bowl.prefab, transform.position);
             Obj<ObjSo> res = obj.GetComponent<Obj<ObjSo>>();
             res.So = Bowl;
-            SceneRoot.Instance.EventManager.reseourceEvent.GatherResource(obj);
+            SceneRoot.Instance.EventManager.inventoryEvents.GatherResource(obj);
             base.UseMe();
         }
     }

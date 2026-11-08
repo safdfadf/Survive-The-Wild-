@@ -42,7 +42,7 @@ public class BuildingHandler : MonoBehaviour, IRequestInput
 
     public void SetGHostObject(CraftingSO so)
     {
-        SceneRoot.Instance.EventManager.playerEvents.onDeliverRequestInput(this);
+        SceneRoot.Instance.EventManager.playerEvents.DeliverRequestInput(this);
         var obj = Instantiate(so.resSo.prefab);
         _currentStructure = obj.GetComponent<BaseStructure>();
         _currentStructure.InitializeStructure(so);
@@ -53,7 +53,7 @@ public class BuildingHandler : MonoBehaviour, IRequestInput
         _canMove = true;
     }
 
-    public void DeconstructGhostObject()// only when we are in placement phase i want to 
+    public void DeconstructGhostObject() // only when we are in placement phase i want to 
     {
         if (_currentStructure == null) return;
         _canMove = false;

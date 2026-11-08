@@ -27,12 +27,12 @@ namespace SurviveTheWild.QuestSystem.QuestSteps
 
         private void OnEnable()
         {
-            SceneRoot.Instance.EventManager.reseourceEvent.onGatherResource += CheckSubmitResource;
+            SceneRoot.Instance.EventManager.inventoryEvents.onGatherResource += CheckSubmitResource;
         }
 
         private void OnDisable()
         {
-            SceneRoot.Instance.EventManager.reseourceEvent.onGatherResource -= CheckSubmitResource;
+            SceneRoot.Instance.EventManager.inventoryEvents.onGatherResource -= CheckSubmitResource;
         }
 
 

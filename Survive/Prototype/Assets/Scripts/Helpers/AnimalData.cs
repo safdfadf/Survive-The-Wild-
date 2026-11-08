@@ -58,7 +58,7 @@ public class AnimalData
         int hour = TimeManager.Instance.GetCurrentHour();
         currentSchedule = _dailySchedule.FirstOrDefault(s =>
             IsHourInRange(hour, s.startHour, s.endHour));
-        // here we need last schedule, 
+      
 
         if (currentSchedule == null)
         {
@@ -85,7 +85,6 @@ public class AnimalData
         currentState = calmState;
     }
 
-    // spawning solly depends on chunk activation however when schedule changes and if current pos lies in active zone spawn it if animal is not already spawned 
     public void OnHourChanged(int hour)
     {
         if (currentState == alarmState) return;
