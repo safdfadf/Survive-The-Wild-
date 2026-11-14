@@ -14,7 +14,7 @@ public class BuildingHandler : MonoBehaviour, IRequestInput
     private GameObject ghostObject;
     private BaseStructure _currentStructure;
     private MeshRenderer[] ghostRenderers;
-    [SerializeField] private float socketSearchRadius = 2f;
+    [SerializeField] protected float socketSearchRadius = 2f;
     [SerializeField] private LayerMask structureMask;
     private Sockets _targetSocket;
     private bool _canMove = false;
@@ -80,80 +80,13 @@ public class BuildingHandler : MonoBehaviour, IRequestInput
 
     private void CheckPlacementValidity()
     {
-        if (_currentStructure.craftingRecipe.isChildStructure)
-        {
-            TrySocketPlacement();
-            return;
-        }
-
-        TryFreePlacement();
-    }
-
-    private void TrySocketPlacement()
-    {
-        Debug.Log("hit with Frame structure");
-        _targetSocket = null;
-
-        Collider[] hits = Physics.OverlapSphere(
-            _currentStructure.transform.position,
-            socketSearchRadius,
-            collisionMask
-        );
-
-        foreach (var col in hits)
-        {
-            FrameStructure frame = col.GetComponentInParent<FrameStructure>();
-            if (frame == null) continue;
-
-            Sockets socket = frame.GetClosestValidSocket(
-                _currentStructure.craftingRecipe.structureType,
-                _currentStructure.transform.position
-            );
-
-            if (socket != null)
-            {
-                _targetSocket = socket;
-
-                _currentStructure.transform.position = socket.transform.position;
-                _currentStructure.transform.rotation = socket.transform.rotation;
-
-                canPlace = true;
-                _currentStructure.ToggleMat(true);
-                return;
-            }
-        }
-
-        // No socket found → cannot place child structure
-        canPlace = false;
-        _currentStructure.ToggleMat(false);
-    }
-
-    private void TryFreePlacement()
-    {
-        Collider[] hits = Physics.OverlapBox(
-            _currentStructure.transform.position,
-            _currentStructure.transform.localScale,
-            _currentStructure.transform.rotation,
-            collisionMask
-        );
-        foreach (var hit in hits)
-        {
-            Debug.Log(hit.gameObject.name);
-        }
-
-        canPlace = hits.Length == 0;
+        canPlace = _currentStructure.CheckPlacement();
         _currentStructure.ToggleMat(canPlace);
     }
-
+    
     private void FinalizeMovement()
     {
-        if (_targetSocket != null)
-        {
-            _targetSocket.Attach(_currentStructure);
-            FrameStructure parent = _targetSocket.GetComponentInParent<FrameStructure>();
-            parent.RegisterChild(_currentStructure);
-        }
-
+        _currentStructure.FinalizeMovement();
         _currentStructure.EnableAllColliders();
         canPlace = false;
         _currentStructure = null;

@@ -916,12 +916,12 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.4686814, y: 1.0337706, z: 0.71130073}
-  m_Center: {x: 0.26565972, y: 0.52432984, z: 0.30307102}
+  m_Size: {x: 0.4686814, y: 1.0661048, z: 0.6980715}
+  m_Center: {x: 0.26565972, y: 0.13567536, z: 0.003025695}
 --- !u!114 &3946828838599904139
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -943,6 +943,10 @@ MonoBehaviour:
   damageStage2: 60
   damageStage3: 90
   requiredAbility: {fileID: 0}
+  socketSearchRadius: 2
+  collisionMask:
+    serializedVersion: 2
+    m_Bits: 1014
 --- !u!114 &8423405095265375007
 MonoBehaviour:
   m_ObjectHideFlags: 0

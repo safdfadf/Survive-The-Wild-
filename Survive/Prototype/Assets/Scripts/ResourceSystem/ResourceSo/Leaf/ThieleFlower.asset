@@ -12,10 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14a65b5c5010fd148872814fb6b3e439, type: 3}
   m_Name: ThieleFlower
   m_EditorClassIdentifier: 
-  <itemName>k__BackingField: TabacoLeaf
-  prefab: {fileID: 0}
+  <itemName>k__BackingField: ThieleFlower
+  prefab: {fileID: 6229971676113088448, guid: 6a7108d612a78514d9e441de113af814, type: 3}
   sprite: {fileID: 0}
   amount: 0
   size: {x: 0, y: 0}
   appearanceProb: 0
   Weight: 0
+  storeCapacity: 0

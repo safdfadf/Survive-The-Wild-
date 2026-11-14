@@ -206,6 +206,10 @@ MonoBehaviour:
   damageStage2: 60
   damageStage3: 90
   requiredAbility: {fileID: 0}
+  socketSearchRadius: 2
+  collisionMask:
+    serializedVersion: 2
+    m_Bits: 1014
   _combustibleIngredients:
   - objSo: {fileID: 11400000, guid: b7215a070f1ca7b459087577a8b803e1, type: 2}
     amount: 1

@@ -162,3 +162,7 @@ MonoBehaviour:
   damageStage2: 60
   damageStage3: 90
   requiredAbility: {fileID: 0}
+  socketSearchRadius: 2
+  collisionMask:
+    serializedVersion: 2
+    m_Bits: 1015

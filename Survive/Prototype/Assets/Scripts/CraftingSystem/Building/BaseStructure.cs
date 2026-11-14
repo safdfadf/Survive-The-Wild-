@@ -36,6 +36,12 @@ public class
     public bool CanHarvest { get; set; }
     public bool CanCraft { get; set; }
 
+    public bool isChild { get; set; }
+
+    [SerializeField] protected float socketSearchRadius = 2f;
+    [SerializeField] protected LayerMask collisionMask;
+    protected Sockets _targetSocket;
+
     protected override void Awake()
     {
         base.Awake();
@@ -244,8 +250,83 @@ public class
         CanUse = false;
         OutlineMe = false;
     }
-}
 
+    public virtual bool CheckPlacement()
+    {
+        if (isChild)
+        {
+            return SocketPlacement();
+        }
+
+        return TryFreePlacement();
+    }
+
+    private bool SocketPlacement()
+    {
+        Debug.Log("hit with Frame structure");
+        _targetSocket = null;
+
+        Collider[] hits = Physics.OverlapSphere(
+            transform.position,
+            socketSearchRadius,
+            collisionMask
+        );
+
+        foreach (var col in hits)
+        {
+            var frame = col.GetComponentInParent<FrameStructure>();
+            if (frame == null) continue;
+
+            Sockets socket = frame.GetClosestValidSocket(
+                craftingRecipe.structureType,
+                transform.position
+            );
+
+            if (socket != null)
+            {
+                _targetSocket = socket;
+
+                transform.position = socket.transform.position;
+                transform.rotation = socket.transform.rotation;
+
+                // canPlace = true;
+                return true;
+            }
+        }
+
+        //canPlace = false;
+        return false;
+    }
+
+    protected bool TryFreePlacement()
+    {
+        Collider[] hits = Physics.OverlapBox(
+            transform.position,
+            transform.localScale,
+            transform.rotation,
+            collisionMask
+        );
+        foreach (var hit in hits)
+        {
+            Debug.Log(hit.gameObject.name);
+        }
+
+        return hits.Length == 0;
+        //ToggleMat(canPlace);
+    }
+
+    public void FinalizeMovement()
+    {
+        if (_targetSocket != null)
+        {
+            _targetSocket.Attach(this);
+            var parent = _targetSocket.GetComponentInParent<FrameStructure>();
+            parent.RegisterChild(this);
+        }
+
+        EnableAllColliders();
+    }
+}
 
 public enum StructureType
 {
@@ -256,5 +337,5 @@ public enum StructureType
     Floor,
     Roof,
     Stairs,
-    Pillar
+    Barricade
 }

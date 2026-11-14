@@ -9,7 +9,9 @@ namespace Player
         private PlayerUI _ui;
         public int strengthLvl;
         public int staminaLvl;
-        public float[] carryingCapacity =  new float[] { 60f, 65f, 70f , 75f,80f};
+        public float[] carryingCapacity = new float[] { 60f, 65f, 70f, 75f, 80f };
+        public int daySurvived;
+
         public PlayerStats(PlayerUI ui)
         {
             _ui = ui;
@@ -25,6 +27,12 @@ namespace Player
             }
 
             _ui.UpdateLevel(currentXP, currentlevel);
+        }
+
+        public void UpdateDaySurvived()
+        {
+            daySurvived++;
+            // update ui 
         }
     }
 }

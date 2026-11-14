@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1559213902150579613}
   - component: {fileID: 2742400133152186251}
-  - component: {fileID: -3990183962151736044}
   - component: {fileID: 4576428329850226056}
   - component: {fileID: 4995217847064702819}
   m_Layer: 6
@@ -57,25 +56,14 @@ MonoBehaviour:
   damageStage2: 60
   damageStage3: 90
   requiredAbility: {fileID: 0}
+  socketSearchRadius: 2
+  collisionMask:
+    serializedVersion: 2
+    m_Bits: 1014
   animalSos:
   - {fileID: 11400000, guid: 0b5cf96133444984da32e9fe7e5755a7, type: 2}
   - {fileID: 11400000, guid: 106987c4aae703c4ea38fe5be5a4fc3b, type: 2}
   spawnPos: {fileID: 0}
---- !u!114 &-3990183962151736044
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9006497161159918729}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e5e932c2588c74949977a3a988b6e835, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  resourceName: {fileID: 0}
-  amount: {fileID: 0}
-  parent: {fileID: 0}
 --- !u!205 &4576428329850226056
 LODGroup:
   m_ObjectHideFlags: 0

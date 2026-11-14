@@ -948,12 +948,18 @@ MonoBehaviour:
   damageStage2: 60
   damageStage3: 90
   requiredAbility: {fileID: 0}
-  sockets:
+  socketSearchRadius: 2
+  collisionMask:
+    serializedVersion: 2
+    m_Bits: 1014
+  childSockets:
   - {fileID: 977973880351889299}
   - {fileID: 1644267199325299648}
   - {fileID: 3973892978520560373}
   - {fileID: 2812363385054588916}
   - {fileID: 5245886697927066433}
+  FrameSockets: []
+  allowedType: 0
 --- !u!114 &6509592016444136997
 MonoBehaviour:
   m_ObjectHideFlags: 0
