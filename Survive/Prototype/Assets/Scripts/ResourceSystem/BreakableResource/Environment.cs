@@ -4,6 +4,7 @@ using System.Linq;
 using SurviveTheWild.Weapon;
 using FoodSystem;
 using Player;
+using SurviveTheWild;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
@@ -36,11 +37,12 @@ public class Environment : MonoBehaviour, ItakeDamage, IsoInitializer<EnvironSo>
     private LODGroup _lodGroup;
     public bool IsEnvironment { get; set; }
     public bool IsPlayerInRange { get; set; }
-
+    private FallHandler fallHandler;
 
     protected virtual void Awake()
     {
         _lodGroup = GetComponent<LODGroup>();
+        fallHandler = GetComponentInChildren<FallHandler>();
     }
 
     public void Initialize(EnvironSo so)
@@ -123,11 +125,21 @@ public class Environment : MonoBehaviour, ItakeDamage, IsoInitializer<EnvironSo>
 
     protected virtual void Break()
     {
+        if (fallHandler != null)
+        {
+            fallHandler.ExecuteFall(DropObjects);
+        }
+        else
+        {
+            DropObjects();
+        }
+    }
+
+    private void DropObjects()
+    {
         for (int i = 0; i < resourceDropCount; i++)
         {
-            Debug.Log("i am breaking");
-            // call spawner
-            GameObject result = Instantiate(environSo.breakableData.objSo.prefab,
+            var result = Instantiate(environSo.breakableData.objSo.prefab,
                 transform.position + Random.insideUnitSphere * 0.5f + dropOffset, Quaternion.identity);
             Obj<ObjSo> baseObj = result.GetComponent<Obj<ObjSo>>();
             if (baseObj != null)
@@ -147,9 +159,9 @@ public class Environment : MonoBehaviour, ItakeDamage, IsoInitializer<EnvironSo>
 
                 rb.isKinematic = false;
             }
-        }
 
-        Destroy(gameObject);
+            Destroy(gameObject);
+        }
     }
 
     protected virtual void UpdateDamagedMeshes(int damage)

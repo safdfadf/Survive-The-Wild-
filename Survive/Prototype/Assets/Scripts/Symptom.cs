@@ -39,6 +39,7 @@ public class Symptom : MonoBehaviour
 
     public void ExecuteSympton(ActiveEffect activeEffect)
     {
+        print("Execute symptom");
         switch (activeEffect.data.damageType)
         {
             case DamageType.Poison:

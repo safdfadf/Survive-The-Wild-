@@ -15,7 +15,7 @@ MonoBehaviour:
   ingredients:
   - objSo: {fileID: 11400000, guid: 99b4fa9569c655b4ba09a5d674e287d4, type: 2}
     amount: 1
-  - objSo: {fileID: 11400000, guid: 9a14c71a57fc54649a7e3b147f2aad8a, type: 2}
+  - objSo: {fileID: 11400000, guid: 260706d7bf11e0b47a895831f1aabe77, type: 2}
     amount: 1
   resSo: {fileID: 11400000, guid: 8615c1a8c1093bd44a2f274781e8640f, type: 2}
   hasUpgrades: 0

@@ -19,7 +19,7 @@ public class AnimalBase : MonoBehaviour, IInteractable
     [SerializeField] protected float fleeSpeed;
     [SerializeField] public GameObject followPoint;
 
-    [Header("ChooseAttack")] [Header("Choose Attack Behavior")] [SerializeField]
+    [Header("ChooseAttack")] [SerializeField]
     protected AnimalAttack _animalAttack;
 
     [SerializeField] private AnimalAtkBehaviour animalAtkBehaviour;
@@ -168,7 +168,7 @@ public class AnimalBase : MonoBehaviour, IInteractable
         CurrentState.UpdateState();
     }
 
-    public virtual void TakeDamage(PlayerAttack atk) 
+    public virtual void TakeDamage(PlayerAttack atk)
     {
         if (_currentHealth <= 0) return;
         _currentHealth -= atk.Damage;

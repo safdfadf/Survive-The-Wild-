@@ -29,12 +29,12 @@ public class PlayerBody : MonoBehaviour
         _playerUI = GetComponent<PlayerUI>();
         _playerVitalStats = GetComponent<PlayerVitalStats>();
         _damageScreen = GetComponentInChildren<DamageScreen>();
+        _symptom = GetComponent<Symptom>();
     }
 
 
     public void HealPlayer(EffectsSo effectsSo)
     {
-        Debug.Log("heal player");
         foreach (var effect in _activeEffects)
         {
             if (!effect.data == effectsSo) continue;
@@ -46,7 +46,7 @@ public class PlayerBody : MonoBehaviour
     {
         _playerVitalStats.DamageToHealth(attack.Damage);
         _damageScreen.TriggerDamageEffect();
-        DOtEffects dot = attack.Effects as DOtEffects;
+        var dot = attack.Effects as DOtEffects;
         if (CheckForActiveEffects(dot, out ActiveEffect existing))
         {
             existing.elapsedTime = 0; // reset
@@ -56,9 +56,10 @@ public class PlayerBody : MonoBehaviour
 
         if (dot != null)
         {
-            ActiveEffect activeEffect = new ActiveEffect(dot);
+            print("dot active");
+            var activeEffect = new ActiveEffect(dot);
             _activeEffects.Add(activeEffect);
-            StopCoroutine(HandleEffectDamage(activeEffect));
+            StartCoroutine(HandleEffectDamage(activeEffect));
         }
         else // Regular damage 
         {
@@ -68,7 +69,7 @@ public class PlayerBody : MonoBehaviour
                 !CheckForActiveEffects(BleedingEffect, out ActiveEffect activeEffect))
             {
                 Debug.Log("Bleeding effect");
-                ActiveEffect woundEffect = new ActiveEffect(BleedingEffect);
+                var woundEffect = new ActiveEffect(BleedingEffect);
                 woundEffect.woundTimerRoutine = StartCoroutine(HandleEffectDamage(woundEffect));
                 _activeEffects.Add(woundEffect);
             }
@@ -115,15 +116,14 @@ public class PlayerBody : MonoBehaviour
 
     private IEnumerator HandleEffectDamage(ActiveEffect active)
     {
-        DOtEffects data = active.data;
+        var data = active.data;
         WoundUI ui = _playerUI.SetWoundUI(data);
         active.WoundUI = ui;
-        while (active.elapsedTime < data.MaxTime)
+        while (_activeEffects.Contains(active)) // if we are talking about 
         {
-            yield return new WaitForSeconds(data.timeFrame * 60f);
+            yield return new WaitForSeconds(2f); //data.timeFrame * 60f
             active.elapsedTime += data.timeFrame;
             ui.UpdateSlider(active.elapsedTime, data.MaxTime);
-            // trigger symptom 
             _symptom.ExecuteSympton(active);
             // stamina depletion 
         }
@@ -133,6 +133,7 @@ public class PlayerBody : MonoBehaviour
 
     private void RemoveEffect(ActiveEffect active)
     {
+        print("remove effect");
         if (active.damageRoutine != null)
             StopCoroutine(active.damageRoutine);
 

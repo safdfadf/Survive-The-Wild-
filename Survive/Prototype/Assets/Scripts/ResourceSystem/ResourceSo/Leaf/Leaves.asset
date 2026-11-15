@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 14a65b5c5010fd148872814fb6b3e439, type: 3}
-  m_Name: ThieleFlower
+  m_Name: Leaves
   m_EditorClassIdentifier: 
-  <itemName>k__BackingField: ThieleFlower
-  prefab: {fileID: 6229971676113088448, guid: 6a7108d612a78514d9e441de113af814, type: 3}
-  sprite: {fileID: 0}
-  amount: 0
-  size: {x: 0, y: 0}
+  <itemName>k__BackingField: Leaves
+  prefab: {fileID: 3917173363642665981, guid: 35f680fddcc7e93439376dea7564914f, type: 3}
+  sprite: {fileID: 21300000, guid: 4aa580a12b7e66b448a090878b1c8abf, type: 3}
+  amount: 2
+  size: {x: 2, y: 2}
   appearanceProb: 0
   Weight: 0
   storeCapacity: 0
