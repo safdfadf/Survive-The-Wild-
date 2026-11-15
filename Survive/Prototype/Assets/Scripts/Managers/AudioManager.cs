@@ -65,6 +65,11 @@ namespace SurviveTheWild.Managers
 
             _audioSource.PlayOneShot(randomClip, volumeConstant);
         }
+
+        public void PlaySound(AudioClip clip)
+        {
+            _audioSource.PlayOneShot(clip, volumeConstant);
+        }
     }
 }
 

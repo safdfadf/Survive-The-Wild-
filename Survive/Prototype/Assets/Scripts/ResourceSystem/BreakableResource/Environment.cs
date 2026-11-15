@@ -33,7 +33,8 @@ public class Environment : MonoBehaviour, ItakeDamage, IsoInitializer<EnvironSo>
 
     [Header("Requirement")] [SerializeField]
     private WeaponAbility requiredAbility;
-
+    [Header("Audio")]
+    [SerializeField] private List<AudioClip> damageClips;
     private LODGroup _lodGroup;
     public bool IsEnvironment { get; set; }
     public bool IsPlayerInRange { get; set; }
@@ -43,6 +44,10 @@ public class Environment : MonoBehaviour, ItakeDamage, IsoInitializer<EnvironSo>
     {
         _lodGroup = GetComponent<LODGroup>();
         fallHandler = GetComponentInChildren<FallHandler>();
+        if (gameObject.name == "TreeR(Clone)" && fallHandler == null)
+        {
+            print("fall handler is null");
+        }
     }
 
     public void Initialize(EnvironSo so)
@@ -98,11 +103,12 @@ public class Environment : MonoBehaviour, ItakeDamage, IsoInitializer<EnvironSo>
         if (requiredAbility != null && requiredAbility != atk.ability)
         {
             //Show Notification
+            UIManager.instance.DisplayNotification("You do not have required Tool");
             return;
         }
 
-        Debug.Log(gameObject.name + " taking damage " + attack.Damage);
         currentHealth -= attack.Damage;
+        PlayDamageSound();
         UpdateDamagedMeshes(attack.Damage);
         if (currentHealth <= 0)
         {
@@ -110,6 +116,11 @@ public class Environment : MonoBehaviour, ItakeDamage, IsoInitializer<EnvironSo>
         }
     }
 
+    private void PlayDamageSound()
+    {
+        var clip = damageClips[Random.Range(0, damageClips.Count)];
+        SceneRoot.Instance.AudioManager.PlaySound(clip);
+    }
     private Vector3 GetPosition()
     {
         PosInEnvironment available = pos.FirstOrDefault(p => p.isAvailable);
@@ -127,7 +138,7 @@ public class Environment : MonoBehaviour, ItakeDamage, IsoInitializer<EnvironSo>
     {
         if (fallHandler != null)
         {
-            fallHandler.ExecuteFall(DropObjects);
+            fallHandler.ExecuteFall(DropObjects,gameObject);
         }
         else
         {
@@ -137,6 +148,7 @@ public class Environment : MonoBehaviour, ItakeDamage, IsoInitializer<EnvironSo>
 
     private void DropObjects()
     {
+        print("dropping objects");
         for (int i = 0; i < resourceDropCount; i++)
         {
             var result = Instantiate(environSo.breakableData.objSo.prefab,

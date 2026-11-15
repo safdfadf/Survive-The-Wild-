@@ -7,23 +7,20 @@ namespace SurviveTheWild
     public class FallHandler : MonoBehaviour
     {
         [SerializeField] private Collider fallDetector;
-        [SerializeField] private float rotationDuration = 1f;
-        private bool _onComplete;
+        [SerializeField] private float rotationDuration = 5;
+        private GameObject currentGameObject;
 
-        public void ExecuteFall(UnityAction onComplete)
+        public void ExecuteFall(UnityAction onComplete, GameObject obj)
         {
-            StartCoroutine(RotateTo90(RotationComplete));
+            print("executing Fall");
+            currentGameObject = obj;
+            StartCoroutine(RotateTo90(onComplete));
         }
 
-        private void RotationComplete()
-        {
-            _onComplete = true;
-            // fire an event to deactivate this game object and drop resources 
-        }
 
         private IEnumerator RotateTo90(UnityAction Action)
         {
-            Quaternion startRotation = transform.rotation;
+            Quaternion startRotation = currentGameObject.transform.rotation;
             Quaternion targetRotation = Quaternion.Euler(90f, 0f, 0f);
 
             float elapsedTime = 0f;
@@ -34,7 +31,7 @@ namespace SurviveTheWild
 
                 var t = elapsedTime / rotationDuration;
 
-                transform.rotation = Quaternion.Slerp(
+                currentGameObject.transform.rotation = Quaternion.Slerp(
                     startRotation,
                     targetRotation,
                     t
@@ -42,10 +39,9 @@ namespace SurviveTheWild
 
                 yield return null;
             }
-
-            transform.rotation = targetRotation;
+            yield return new WaitForSeconds(.5f);
+            currentGameObject.transform.rotation = targetRotation;
             Action?.Invoke();
-            // after this replace the object with dropables 
         }
     }
 }
