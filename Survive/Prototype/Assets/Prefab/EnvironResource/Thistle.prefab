@@ -74,7 +74,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   resourceDropCount: 0
   dropOffset: {x: 0, y: 0, z: 0}
-  objSos: []
+  objSos:
+  - {fileID: 11400000, guid: 260706d7bf11e0b47a895831f1aabe77, type: 2}
+  - {fileID: 11400000, guid: 9a14c71a57fc54649a7e3b147f2aad8a, type: 2}
   pos: []
   damagedVersions: []
   damageStage1: 25

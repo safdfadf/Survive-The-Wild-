@@ -343,12 +343,12 @@ MonoBehaviour:
   followPoint: {fileID: 0}
   _animalAttack:
     damage: 0
-    effects: {fileID: 0}
+    effects: {fileID: 11400000, guid: 8da14ff072eddd14da365420c417d922, type: 2}
     bleedingProbability: 0
   animalAtkBehaviour: {fileID: 11400000, guid: 297906e6cdb32c643b37482b5d53c8ce, type: 2}
   requiredAbility: {fileID: 11400000, guid: 704126e62b7d502428b912f629fb1b74, type: 2}
   AnimalSo: {fileID: 0}
-  _puddleFx: {fileID: 0}
+  _puddleFx: {fileID: 8827055481031190545}
   alertRadius: 1.5
   playerMask:
     serializedVersion: 2
@@ -1781,3 +1781,14 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6806738673507719885, guid: 7b6b9e1ac61ad954982c86fe683889c4, type: 3}
   m_PrefabInstance: {fileID: 8471569638475116321}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8827055481031190545 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1085666038756689712, guid: 7b6b9e1ac61ad954982c86fe683889c4, type: 3}
+  m_PrefabInstance: {fileID: 8471569638475116321}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: faa2a83f34444b647a51f2dfd3da81c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
