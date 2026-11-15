@@ -83,6 +83,8 @@ public class MovementHandler : MonoBehaviour //TODo: Make a separate script for 
 
     [SerializeField] private Material outlineMaterial;
     [SerializeField] private GameObject SpineController;
+    [SerializeField] private GameObject Neck;
+    [SerializeField] private Transform cameraParent;
     private Material[] _originalMaterials;
 
     public BaseWeapon CurrentWeapon { get; private set; }
@@ -115,18 +117,35 @@ public class MovementHandler : MonoBehaviour //TODo: Make a separate script for 
         SetSpineControl(false);
     }
 
-    public void SetSpineControl(bool isAiming, bool rotateX = false)
+    public void SetSpineControl(bool isAiming, bool rotateX = false, bool lockCameraInHead = false)
     {
+        // when we do spine control 
         if (!isAiming) return;
 
 
         float pitch = Camera.main.transform.localEulerAngles.x;
         if (pitch > 180) pitch -= 360;
 
-        pitch = Mathf.Clamp(pitch, -30, 30);
+        pitch = Mathf.Clamp(pitch, -55, 55);
 
         SpineController.transform.localRotation =
             !rotateX ? Quaternion.Euler(0f, 0, pitch) : Quaternion.Euler(pitch, 0, 0);
+        SetCameraParent(lockCameraInHead);
+    }
+
+    public void SetCameraParent(bool value)
+    {
+        if (value)
+        {
+            playerCamera.transform.SetParent(Neck.transform, false);
+        }
+        else
+        {
+            playerCamera.transform.SetParent(cameraParent, false);
+
+            playerCamera.transform.localPosition = Vector3.zero;
+            playerCamera.transform.localRotation = Quaternion.identity;
+        }
     }
 
     private void Start()
@@ -581,7 +600,7 @@ public class MovementHandler : MonoBehaviour //TODo: Make a separate script for 
         inHandObjs.Clear();
     }
 
-    public void LockCamera(bool LookAtwatch) //remove this
+    public void LockCamera(bool LookAtwatch) // do not lock player's 
     {
         if (LookAtwatch)
         {
