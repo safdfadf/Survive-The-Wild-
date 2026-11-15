@@ -21,7 +21,7 @@ public class CompassSystem : MonoBehaviour
         EventBus.OnWindChanged += UpdateArcDirection;
     }
 
-    public void Update() // update this every second or even less  
+    public void Update()
     {
         UpdateCompass();
     }

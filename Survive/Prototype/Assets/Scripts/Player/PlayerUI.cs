@@ -5,6 +5,7 @@ using Player;
 using SurviveTheWild.Helpers;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
@@ -73,6 +74,10 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI sleepEnd;
 
     [SerializeField] private Transform StatusParent;
+    [Header("Craft")] [SerializeField] private Button craftButton;
+    [SerializeField] private TextMeshProUGUI recipeName;
+
+
     private PlayerNoiseEmitter _playerNoiseEmitter;
     private MovementHandler _movementHandler;
     private float currentScale;
@@ -128,8 +133,27 @@ public class PlayerUI : MonoBehaviour
         Cursor.visible = value;
         SetUIVisible(value);
         _movementHandler.CanMove(!value);
+        if (!value)
+        {
+            RemoveCraftingUI();
+        }
+
         if (_movementHandler.CurrentWeapon)
             _movementHandler.CurrentWeapon.RestrictUse = value;
+    }
+
+    public void SetCraftingUI(string text, UnityAction craftButtonAction)
+    {
+        craftButton.onClick.RemoveAllListeners();
+        craftButton.onClick.AddListener(craftButtonAction);
+        recipeName.text = text;
+        craftButton.gameObject.SetActive(true);
+    }
+
+    public void RemoveCraftingUI()
+    {
+        craftButton.onClick.RemoveAllListeners();
+        craftButton.gameObject.SetActive(false);
     }
 
     private void SetUIVisible(bool visible)

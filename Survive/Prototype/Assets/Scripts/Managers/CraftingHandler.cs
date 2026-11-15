@@ -24,7 +24,7 @@ public class CraftingHandler : MonoBehaviour
     private ResourceInventory _resourceInventory;
     [SerializeField] private Vector3 tableOffset;
 
-    [SerializeField] private Button craftButton;
+    [SerializeField] private Button craftutton;
 
     [Header("Recipe Book")] [SerializeField]
     private RBookHandler recipeBook;
@@ -42,6 +42,7 @@ public class CraftingHandler : MonoBehaviour
     private List<InventoryItem> _currentItems = new();
     private List<RecipeData> _recipeData = new(); // all base recipes
     [SerializeField] private bool isTesting = false;
+    private PlayerUI _playerUI;
 
     private void OnEnable()
     {
@@ -60,11 +61,12 @@ public class CraftingHandler : MonoBehaviour
     private void Awake()
     {
         InitRecipeData();
-        craftButton.gameObject.SetActive(false);
+
         _playerInventory = GetComponent<PlayerInventory>();
         _resourceInventory = FindAnyObjectByType<ResourceInventory>();
         _buildingHandler = GetComponent<BuildingHandler>();
         recipeBook.CategorizeRecipes(_recipeData, this);
+        _playerUI = GetComponent<PlayerUI>();
     }
 
     private void Start()
@@ -162,7 +164,7 @@ public class CraftingHandler : MonoBehaviour
                 _currentIngredients.RemoveAt(i);
             }
         }
-        
+
         CheckForRecipe(_currentIngredients);
     }
 
@@ -173,15 +175,13 @@ public class CraftingHandler : MonoBehaviour
             if (Matches(So.ingredients, ingredients))
             {
                 _currentSo = So;
-                craftButton.gameObject.SetActive(true);
-                craftButton.onClick.RemoveAllListeners();
-                craftButton.onClick.AddListener(() => Craft(_currentSo));
+                _playerUI.SetCraftingUI(_currentSo.resSo.itemName, () => Craft(_currentSo));
                 return;
             }
         }
 
         _currentSo = null;
-        craftButton.gameObject.SetActive(false);
+        _playerUI.RemoveCraftingUI();
     }
 
     private bool Matches(Ingredient[] recipeIngredient, List<Ingredient> current)
@@ -236,7 +236,7 @@ public class CraftingHandler : MonoBehaviour
         obj.So = so.resSo;
         SceneRoot.Instance.EventManager.CraftEvents.ObjectCraft(obj.So);
         _playerInventory.AddWorldItem(result);
-        craftButton.gameObject.SetActive(false);
+        _playerUI.RemoveCraftingUI();
         if (isTesting) return;
         ConsumeIngredients(); // enable this 
         UIManager.instance.ShowLoadingScreen(2f);

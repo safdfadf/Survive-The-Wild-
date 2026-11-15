@@ -33,16 +33,15 @@ public class Environment : MonoBehaviour, ItakeDamage, IsoInitializer<EnvironSo>
 
     [Header("Requirement")] [SerializeField]
     private WeaponAbility requiredAbility;
-    [Header("Audio")]
-    [SerializeField] private List<AudioClip> damageClips;
-    private LODGroup _lodGroup;
+
+    [Header("Audio")] [SerializeField] private List<AudioClip> damageClips;
+    [SerializeField] private AudioClip fallClip;
     public bool IsEnvironment { get; set; }
     public bool IsPlayerInRange { get; set; }
     private FallHandler fallHandler;
 
     protected virtual void Awake()
     {
-        _lodGroup = GetComponent<LODGroup>();
         fallHandler = GetComponentInChildren<FallHandler>();
         if (gameObject.name == "TreeR(Clone)" && fallHandler == null)
         {
@@ -121,6 +120,7 @@ public class Environment : MonoBehaviour, ItakeDamage, IsoInitializer<EnvironSo>
         var clip = damageClips[Random.Range(0, damageClips.Count)];
         SceneRoot.Instance.AudioManager.PlaySound(clip);
     }
+
     private Vector3 GetPosition()
     {
         PosInEnvironment available = pos.FirstOrDefault(p => p.isAvailable);
@@ -138,7 +138,8 @@ public class Environment : MonoBehaviour, ItakeDamage, IsoInitializer<EnvironSo>
     {
         if (fallHandler != null)
         {
-            fallHandler.ExecuteFall(DropObjects,gameObject);
+            SceneRoot.Instance.AudioManager.PlaySound(fallClip);
+            fallHandler.ExecuteFall(DropObjects, gameObject);
         }
         else
         {
@@ -196,7 +197,6 @@ public class Environment : MonoBehaviour, ItakeDamage, IsoInitializer<EnvironSo>
 
         LOD[] lods = lodGroup.GetLODs();
 
-        // Replace renderer in LOD0 (highest detail)
         Renderer newRenderer = damagedMesh.GetComponent<Renderer>();
         if (newRenderer == null)
             return;
