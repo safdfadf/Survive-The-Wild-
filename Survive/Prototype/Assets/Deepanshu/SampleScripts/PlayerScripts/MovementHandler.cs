@@ -114,22 +114,22 @@ public class MovementHandler : MonoBehaviour //TODo: Make a separate script for 
         _noiseEmitter = GetComponent<PlayerNoiseEmitter>();
         _playerVitalStats = GetComponent<PlayerVitalStats>();
         _playerStats = new PlayerStats(_ui);
-        SetSpineControl(false);
+        SetSpineControl(false, 0, 0);
     }
 
-    public void SetSpineControl(bool isAiming, bool rotateX = false, bool lockCameraInHead = false)
+    public void SetSpineControl(bool isAiming, float min, float max, bool rotateX = false,
+        bool lockCameraInHead = false)
     {
-        // when we do spine control 
         if (!isAiming) return;
 
 
-        float pitch = Camera.main.transform.localEulerAngles.x;
+        var pitch = Camera.main.transform.localEulerAngles.x;
         if (pitch > 180) pitch -= 360;
 
-        pitch = Mathf.Clamp(pitch, -55, 55);
+        pitch = Mathf.Clamp(pitch, min, max);
 
         SpineController.transform.localRotation =
-            !rotateX ? Quaternion.Euler(0f, 0, pitch) : Quaternion.Euler(pitch, 0, 0);
+            !rotateX ? Quaternion.Euler(-4.85f, 0, pitch) : Quaternion.Euler(pitch, 0, 0);
         SetCameraParent(lockCameraInHead);
     }
 
@@ -143,8 +143,8 @@ public class MovementHandler : MonoBehaviour //TODo: Make a separate script for 
         {
             playerCamera.transform.SetParent(cameraParent, false);
 
-            playerCamera.transform.localPosition = Vector3.zero;
-            playerCamera.transform.localRotation = Quaternion.identity;
+            // playerCamera.transform.localPosition = Vector3.zero;
+            //  playerCamera.transform.localRotation = Quaternion.identity;
         }
     }
 
