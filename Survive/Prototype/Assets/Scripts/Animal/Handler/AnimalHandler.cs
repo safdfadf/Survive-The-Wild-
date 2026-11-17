@@ -1,13 +1,8 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using Player;
 using SurviveTheWild.Animal.Handler;
 using SurviveTheWild.Helpers;
 using UnityEngine;
-using UnityEngine.AI;
-using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class
@@ -70,6 +65,8 @@ public class
     {
         _animalSo = SoProvider.instance.GetAnimalSo();
         _scheduleManager.GenerateSchedule(_animalSo);
+        var Testso = _animalSo.Find(a => a.isPredator);
+        StartAttack(Testso);
     }
 
     private void CreateAnimalData(RegionType regionType, Bounds regionBounds)
@@ -299,6 +296,8 @@ public class
 
     private void CheckScheduledAttacks(int currentHour)
     {
+      
+
         var currentDay =
             SceneRoot.Instance.TimeManager.CurrentDay;
 

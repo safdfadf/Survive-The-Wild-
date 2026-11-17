@@ -55,8 +55,8 @@ public class TrackHandler : MonoBehaviour // no need to be monobehaviour
 
             // Adjust to terrain height
             pos.y = Terrain.activeTerrain.SampleHeight(pos);
-            TrackData data = new TrackData(so, pos, so.id, 0, false, maxTrackAgeHours, Dir, angle, state);
-            Chunk chunk = chunkManager.GetChunkAtPos(pos);
+            var data = new TrackData(so, pos, so.id, 0, false, maxTrackAgeHours, Dir, angle, state);
+            var chunk = chunkManager.GetChunkAtPos(pos);
             if (chunk == null)
             {
                 Debug.Log("Could not find chunk");

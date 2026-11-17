@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using FoodSystem;
 using NUnit.Framework;
+using SurviveTheWild.Helpers;
 using Unity.Jobs;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -416,7 +417,7 @@ public class ChunkManager : MonoBehaviour
         var track = obj.GetComponent<Tracks>();
         track.Initialize(data);
         chunk.activeTracks.Add(obj);
-        Debug.Log(chunk.activeTracks.Count);
+//        Debug.Log(chunk.activeTracks.Count);
     }
 
     public Vector3 GetClosestInactiveChunkPosition(Vector3 animalPos) // returns a pos from closest inactive chunk
@@ -471,11 +472,11 @@ public class ChunkManager : MonoBehaviour
         }
     }
 
-    public Vector3 GetPos(Vector3 pos) // 
+    public Vector3 GetPos(Vector3 pos) 
     {
         foreach (var chunks in AllChunks.Values)
         {
-            if (chunks.bounds.Contains(pos))
+            if (ChunkHelper.IsInChunkXZ( pos,chunks.bounds))
             {
                 RetPosOnNv.TryGetNavMeshPoint(GetCahedPos(chunks), out Vector3 hit);
                 return hit;

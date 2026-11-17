@@ -283,7 +283,6 @@ public class AnimalBase : MonoBehaviour, IInteractable
             destination = navMeshHit;
         }
 
-        print(gameObject.name + " is moving" + agent.isOnNavMesh + " " + agent.enabled + "" + gameObject.activeSelf);
         agent.SetDestination(destination);
         isMoving = true;
         animator.SetFloat("Velocity", agent.desiredVelocity.magnitude);
@@ -318,7 +317,6 @@ public class AnimalBase : MonoBehaviour, IInteractable
             }
 
             onArrived?.Invoke();
-            print("Arrived");
             isMoving = false;
             if (agent.isOnNavMesh)
                 agent.ResetPath();

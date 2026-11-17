@@ -7,7 +7,7 @@ namespace SurviveTheWild.Animal.Handler
     // this will be handle by the who handles when predetor attack is happening 
     public class PredatorAtk : MonoBehaviour
     {
-        private float predictionTime;
+        private float predictionTime = 2f;
         private Vector3? candidatePosition;
         private Vector3 _lastValidationPos;
         private float validChecks;
@@ -29,13 +29,19 @@ namespace SurviveTheWild.Animal.Handler
         public void Initialize(AnimalSo so)
         {
             animalSo = so;
+            _lastPlayerPos = PlayerRepository.instance.GetPlayerTransform().position;
             canStart = true;
         }
 
         private void EvaluateAmbushLocation() // this being called every second 
         {
-            if (!canStart) return;
-            Vector3 predictedPos = PredictPlayerPosition();
+            if (!canStart)
+            {
+                print("can start was false");
+                return;
+            }
+
+            var predictedPos = PredictPlayerPosition();
 
             if (candidatePosition == null)
             {
@@ -43,18 +49,22 @@ namespace SurviveTheWild.Animal.Handler
 
                 if (candidatePosition != null)
                     validChecks = 1;
-
+                print("candidate was null");
                 return;
             }
 
             if (ValidateLocation(candidatePosition.Value))
             {
                 validChecks++;
-
+                print("valid");
                 if (validChecks >= requiredValidChecks)
                 {
                     SpawnPredator(candidatePosition.Value);
                 }
+            }
+            else
+            {
+                print("not valid");
             }
         }
 
@@ -89,10 +99,10 @@ namespace SurviveTheWild.Animal.Handler
             return Vector3.zero;
         }
 
-        private bool ValidateLocation(Vector3 bushPos)
+        private bool ValidateLocation(Vector3 bushPos)//
         {
-            Vector3 playerPos = PlayerRepository.instance.GetPlayerTransform().position;
-            Vector3 playerVelocity =
+            var playerPos = PlayerRepository.instance.GetPlayerTransform().position;
+            var playerVelocity =
                 (playerPos - _lastValidationPos).normalized;
 
             _lastValidationPos = playerPos;
@@ -110,7 +120,7 @@ namespace SurviveTheWild.Animal.Handler
                 Vector3.Distance(
                     playerPos,
                     bushPos) < 50f;
-
+            print(stillMovingTowardAmbush + "" + reasonableDistance + " " + bushPos);
             return
                 stillMovingTowardAmbush &&
                 reasonableDistance;
@@ -119,8 +129,8 @@ namespace SurviveTheWild.Animal.Handler
         private void SpawnPredator(Vector3? position)
         {
             print("spawning predator");
-            // spawn predator  on the position 
-            // after spawning what do we say to the animal animal.Attack 
+           GameObject obj =  GameObject.CreatePrimitive(PrimitiveType.Capsule);
+           obj.transform.position = position.Value;
         }
     }
 }
