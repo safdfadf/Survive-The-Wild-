@@ -220,7 +220,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fallDetector: {fileID: 4666245263833653264}
-  rotationDuration: 1
+  rotationDuration: 3
 --- !u!1 &3574581587348026599
 GameObject:
   m_ObjectHideFlags: 0
@@ -396,6 +396,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: b40cc3e4a57d327498784ff53996aa96, type: 3}
   - {fileID: 8300000, guid: 67330c45044dedb418ff28aac3968b04, type: 3}
   - {fileID: 8300000, guid: 81b856f710c79dc43b90f9b35bc0d122, type: 3}
+  fallClip: {fileID: 8300000, guid: 77b01020b77eac74c85b6ef1c383266d, type: 3}
 --- !u!1 &4274152857710668044
 GameObject:
   m_ObjectHideFlags: 0

@@ -216,8 +216,8 @@ public class PlayerVitalStats : MonoBehaviour
 
         _isSleeping = true;
 
-        _originalTimeScale = TimeManager.Instance.timeScale;
-        TimeManager.Instance.timeScale = (int)sleepTimeScale;
+        _originalTimeScale = SceneRoot.Instance.TimeManager.timeScale;
+        SceneRoot.Instance.TimeManager.timeScale = (int)sleepTimeScale;
         StartCoroutine(SleepRoutine());
     }
 
@@ -257,7 +257,7 @@ public class PlayerVitalStats : MonoBehaviour
             }
 
             // Check max sleep duration
-            float currentTime = TimeManager.Instance.GetTimeInMinutes();
+            float currentTime = SceneRoot.Instance.TimeManager.CurrentMinute;
             float sleptMinutes = (currentTime - _sleepStartTime + 1440f) % 1440f;
             _playerUI.SleepSlider.value = sleptMinutes;
             if (sleptMinutes >= maxSleepMinutes)
@@ -290,7 +290,7 @@ public class PlayerVitalStats : MonoBehaviour
         _isSleeping = false;
 
 
-        TimeManager.Instance.timeScale = (int)_originalTimeScale;
+        SceneRoot.Instance.TimeManager.timeScale = (int)_originalTimeScale;
 
         _playerUI.EnergySlider(_currentEnergy / maxEnergy);
         _playerUI.StaminaSlider(_currentStamina / maxStamina);

@@ -14,6 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <id>k__BackingField: WildBoar
   isScheduled: 1
+  isAggresive: 1
+  isPredator: 0
+  inZoneTravel: 0
   prefab: {fileID: 4970729551493521049, guid: 87b7635260b802a4d9cff6dded095899, type: 3}
   regionType: 0
   minAmount: 1
@@ -22,8 +25,6 @@ MonoBehaviour:
   TrackMesh:
   - {fileID: 6128482553316515338, guid: 8cb10271f3165da44b531f6fef55711b, type: 3}
   spawnProbability: 0
-  isAggresive: 1
-  inZoneTravel: 0
   hurtClip:
   - {fileID: 8300000, guid: 007b48108eb91664198e12acc1833c1d, type: 3}
   - {fileID: 8300000, guid: 00a46615b7d3e674d9d020663f83d51d, type: 3}

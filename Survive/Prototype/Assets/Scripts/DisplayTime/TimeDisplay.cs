@@ -4,6 +4,7 @@ using UnityEngine;
 public class TimeDisplay : MonoBehaviour
 {
     private TextMeshProUGUI currenTime;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -11,9 +12,9 @@ public class TimeDisplay : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()// instead of updating every frame update it when phone is active 
+    void Update() // instead of updating every frame update it when phone is active 
     {
-       if(gameObject.activeInHierarchy)
-        currenTime.text = TimeManager.Instance.GetTimeString();
+        if (gameObject.activeInHierarchy)
+            currenTime.text = SceneRoot.Instance.TimeManager.GetTimeString();
     }
 }

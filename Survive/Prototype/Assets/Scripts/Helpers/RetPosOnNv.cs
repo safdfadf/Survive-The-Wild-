@@ -48,8 +48,7 @@ public static class RetPosOnNv
             float x = Random.Range(regionBounds.min.x, regionBounds.max.x);
             float z = Random.Range(regionBounds.min.z, regionBounds.max.z);
             Terrain selectedTerrain = GetCurrentTerrain(x, z);
-            // start above the world, then sample nearest navmesh
-            //    float y = selectedTerrain.SampleHeight(new Vector3(x, 0, z));
+         
             var y = selectedTerrain != null
                 ? selectedTerrain.terrainData.size.y + selectedTerrain.transform.position.y
                 : 200f;

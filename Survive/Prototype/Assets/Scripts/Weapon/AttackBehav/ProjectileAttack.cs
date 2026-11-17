@@ -5,7 +5,8 @@ using UnityEngine;
 
 namespace SurviveTheWild.Weapon
 {
-    public class ProjectileAttack : ProjectileParent//ToDo: Hook Audio , De stabalize when stamina goes less then threshold  
+    public class
+        ProjectileAttack : ProjectileParent //ToDo: Hook Audio , De stabalize when stamina goes less then threshold  
     {
         protected float drawTime;
         [SerializeField] protected float maxDrawTime = 1f;
@@ -27,7 +28,7 @@ namespace SurviveTheWild.Weapon
             UpdateRestRotation();
         }
 
-       
+
         private void PullArrow()
         {
             if (!canAttack)
@@ -47,11 +48,16 @@ namespace SurviveTheWild.Weapon
         private void PrepareNextArrow()
         {
             CurrentArrow = PlayerRepository.instance.GetResource(shootables);
-            if (CurrentArrow == null) return;
-            ArrowMove Arrow = CurrentArrow.GetComponent<ArrowMove>();
+            if (CurrentArrow == null)
+            {
+                canAttack = false;
+                return;
+            }
+
+            var Arrow = CurrentArrow.GetComponent<ArrowMove>();
             if (Arrow == null)
             {
-                Debug.Log("no arrow found");
+                UIManager.instance.DisplayNotification("You are out of arrows");
             }
 
             Arrow.CanBeCollected = false;
@@ -63,14 +69,17 @@ namespace SurviveTheWild.Weapon
 
         protected override void StartAiming()
         {
-            drawTime = 0;
-            weapon.crosshair.SetActive(true);
-            isAiming = true;
-            _animator.ToggleAiming(isAiming);
             if (CurrentArrow == null)
             {
                 PrepareNextArrow();
             }
+
+            if (CurrentArrow == null) return;
+            drawTime = 0;
+            weapon.crosshair.SetActive(true);
+            isAiming = true;
+            _animator.ToggleAiming(isAiming);
+            // pull arrow should be direcly linked to pull arrow 
         }
 
         protected override void StopAiming()

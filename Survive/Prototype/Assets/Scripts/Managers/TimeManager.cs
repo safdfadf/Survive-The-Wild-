@@ -4,44 +4,80 @@ using SurviveTheWild.EventBus;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
 
 public class TimeManager : MonoBehaviour
 {
-    public static TimeManager Instance;
-    public int timeScale { get; set; } = 2;
+    [Header("Time Scale")] [SerializeField]
+    public float timeScale = 2f;
 
-    private int _startHour = 4;
+    [Header("Starting Date")] [SerializeField]
+    private int startYear = 1;
 
-    private float _currentTimeInMinutes;
-    private int _lastHour;
+    [SerializeField] private int startMonth = 1;
+    [SerializeField] private int startDay = 1;
+    [SerializeField] private int startHour = 4;
+    [SerializeField] private int startMinute = 0;
 
+    [Header("Calendar")] [SerializeField] private int daysPerMonth = 30;
+    [SerializeField] private int monthsPerYear = 12;
 
-    private int CurrentHour => Mathf.FloorToInt(_currentTimeInMinutes / 60f) % 24;
-    public int CurrentMinute => Mathf.FloorToInt(_currentTimeInMinutes) % 60;
-
-    public float CurrentTime => _currentTimeInMinutes;
-
-    // here create a function that invokes an event after every randon duration of time 
-    [Header("Random Event Interval (minutes)")] [SerializeField]
+    [Header("Random Event Interval (Minutes)")] [SerializeField]
     private int minRandomIntervalMinutes = 2;
 
     [SerializeField] private int maxRandomIntervalMinutes = 10;
 
-    private float _nextRandomEventTime;
-    private float _lastFiveSecondCheck;
+    private float totalWorldMinutes;
+    private float nextRandomEventTime;
+
+    private int lastHour = -1;
+    private int lastDay = -1;
+    private int lastMonth = -1;
+    private int lastYear = -1;
+
+    #region Time Properties
+
+    public int CurrentMinute =>
+        Mathf.FloorToInt(totalWorldMinutes) % 60;
+
+    public int CurrentHour =>
+        Mathf.FloorToInt(totalWorldMinutes / 60f) % 24;
+
+    public int CurrentDay =>
+        (Mathf.FloorToInt(totalWorldMinutes / (60f * 24f)) %
+         daysPerMonth) + 1;
+
+    public int CurrentMonth =>
+        (Mathf.FloorToInt(totalWorldMinutes /
+                          (60f * 24f * daysPerMonth))
+         % monthsPerYear) + 1;
+
+    public int CurrentYear =>
+        Mathf.FloorToInt(totalWorldMinutes /
+                         (60f * 24f * daysPerMonth * monthsPerYear))
+        + 1;
+
+    #endregion
+
+    public int TotalDaysPassed =>
+        (CurrentYear - 1) * monthsPerYear * daysPerMonth +
+        (CurrentMonth - 1) * daysPerMonth +
+        CurrentDay;
 
     private void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
+        totalWorldMinutes =
+            ((startYear - 1) * monthsPerYear * daysPerMonth * 24 * 60) +
+            ((startMonth - 1) * daysPerMonth * 24 * 60) +
+            ((startDay - 1) * 24 * 60) +
+            (startHour * 60) +
+            startMinute;
 
-        _currentTimeInMinutes = _startHour * 60;
+        lastHour = CurrentHour;
+        lastDay = CurrentDay;
+        lastMonth = CurrentMonth;
+        lastYear = CurrentYear;
+
         ScheduleNextRandomEvent();
     }
 
@@ -50,79 +86,53 @@ public class TimeManager : MonoBehaviour
         StartCoroutine(OneSecondCheck());
     }
 
-    public int GetCurrentHour()
+    private void Update()
     {
-        return CurrentHour;
+        totalWorldMinutes += Time.deltaTime * timeScale;
+
+        HandleHourChanged();
+        HandleRandomEvent();
     }
 
-    void Update()
+    private void HandleHourChanged()
     {
-        UpdateTime();
-    }
-
-    private void UpdateTime()
-    {
-        _currentTimeInMinutes += Time.deltaTime * timeScale;
-        _currentTimeInMinutes %= 1440f; // Wrap around 24 hours
-
-        var currentHour = CurrentHour;
-        if (_lastHour != currentHour)
+        if (CurrentHour != lastHour)
         {
-            _lastHour = currentHour;
+            lastHour = CurrentHour;
 
-            SceneRoot.Instance.EventManager.TimeEvents.onOneHourPass(currentHour);
+            SceneRoot.Instance.EventManager
+                .TimeEvents
+                .onOneHourPass(CurrentHour);
         }
 
-        HandleRandomEvent();
-        HandleFiveSecondEvent();
-    }
+        if (CurrentDay != lastDay)
+        {
+            lastDay = CurrentDay;
 
-    public float GetTimeInMinutes()
-    {
-        return _currentTimeInMinutes;
-    }
-
-    public string GetTimeString()
-    {
-        return $"{CurrentHour:D2}:{CurrentMinute:D2}";
+            SceneRoot.Instance.EventManager
+                .TimeEvents
+                .onDayPassed?.Invoke(CurrentDay);
+        }
     }
 
     private void HandleRandomEvent()
     {
-        if (HasPassedTime(_currentTimeInMinutes, _nextRandomEventTime))
+        if (totalWorldMinutes >= nextRandomEventTime)
         {
             EventBus.OnRndmTimePassed?.Invoke();
+
             ScheduleNextRandomEvent();
         }
     }
 
     private void ScheduleNextRandomEvent()
     {
-        int interval = UnityEngine.Random.Range(minRandomIntervalMinutes, maxRandomIntervalMinutes + 1);
+        int interval = Random.Range(
+            minRandomIntervalMinutes,
+            maxRandomIntervalMinutes + 1);
 
-        // schedule from NOW
-        _nextRandomEventTime = (_currentTimeInMinutes + interval) % 1440f;
-    }
-
-
-    private bool HasPassedTime(float current, float target)
-    {
-        float forwardToTarget = (target - current + 1440f) % 1440f;
-        // if forward distance is very small, we're at/after target in this frame
-        return forwardToTarget <= (Time.deltaTime * timeScale + 0.01f);
-    }
-
-    private void HandleFiveSecondEvent()
-    {
-        // Convert in‑game minutes to seconds
-        float currentGameSeconds = _currentTimeInMinutes * 60f;
-
-        if (currentGameSeconds - _lastFiveSecondCheck >= 300f)
-        {
-            _lastFiveSecondCheck = currentGameSeconds;
-           
-            SceneRoot.Instance.EventManager.TimeEvents.FiveSecondsPass();
-        }
+        nextRandomEventTime =
+            totalWorldMinutes + interval;
     }
 
     private IEnumerator OneSecondCheck()
@@ -130,7 +140,26 @@ public class TimeManager : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(1);
-            SceneRoot.Instance.EventManager.TimeEvents.oneSecondPass();
+
+            SceneRoot.Instance
+                .EventManager
+                .TimeEvents
+                .oneSecondPass();
         }
+    }
+
+    public string GetTimeString()
+    {
+        return $"{CurrentHour:D2}:{CurrentMinute:D2}";
+    }
+
+    public string GetDateString()
+    {
+        return $"Day {CurrentDay} Month {CurrentMonth} Year {CurrentYear}";
+    }
+
+    public float GetTotalWorldMinutes()
+    {
+        return totalWorldMinutes;
     }
 }

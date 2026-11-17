@@ -143,6 +143,11 @@ namespace Player
             return _movementHandler.uiPos.position;
         }
 
+        public float GetCurrentSpeed()
+        {
+            return _movementHandler.CurrentSpeed;
+        }
+
         public CraftingSO CheckForRecipeMatch(List<Ingredient> ingredients)
         {
             return _craftingHandler.MatchForRecipe(ingredients);

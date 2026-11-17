@@ -37,7 +37,12 @@ public class AnimalBase : MonoBehaviour, IInteractable
     public bool isMoving { get; private set; }
     private GameObject _bloodVfx;
     private bool _isAttackComplete;
+
+    [Header("Death Choice")] [SerializeField]
+    private bool _instantDeath;
+
     [HideInInspector] public AnimalSo AnimalSo;
+
 
     //Todo: State manager should handle the states 
     private AnimalStateManager _stateManager;
@@ -181,7 +186,7 @@ public class AnimalBase : MonoBehaviour, IInteractable
 
     private void DecideWayOfDeath(DamageLocation location)
     {
-        if (location == DamageLocation.Head)
+        if (location == DamageLocation.Head || _instantDeath)
         {
             InstantDeath();
         }
@@ -215,6 +220,7 @@ public class AnimalBase : MonoBehaviour, IInteractable
 
     public virtual void InstantDeath()
     {
+        print("instant death");
         SceneRoot.Instance.EventManager.AnimalEvents.AnimalDeath(this);
         ToggleCollider(true);
         animator.SetBool("Death", true);
@@ -227,6 +233,7 @@ public class AnimalBase : MonoBehaviour, IInteractable
 
     private void RunDie()
     {
+        print("run die ");
         var presentChunk = ChunkManager.Instance.GetChunkAtPos(transform.position);
         var destination = RetPosOnNv.ReturnRandomNavMeshPos(presentChunk.bounds);
         MoveTo(destination, InstantDeath);
@@ -421,6 +428,11 @@ public class AnimalBase : MonoBehaviour, IInteractable
         }
     }
 
+    public void AmbushAtk()
+    {
+        // animal is spawned at ambush pos and the moment its gets alarmed hit the target 
+    }
+
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;
@@ -435,7 +447,6 @@ public class AnimalBase : MonoBehaviour, IInteractable
     public IEnumerator LookAttack()
     {
         // this is specifically for animals that only attack when their radius is breached 
-        LookAttack();
         DoDamage();
         yield break;
     }

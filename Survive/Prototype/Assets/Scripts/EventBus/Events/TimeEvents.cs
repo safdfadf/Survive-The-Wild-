@@ -7,7 +7,8 @@ namespace SurviveTheWild.EventBus.Events
         public Action onOneSecondPass;
         public Action<int> onOneHourPass;
         public Action onFiveSecondsPass;
-
+        public Action<int> onDayPassed;
+        
         public void oneSecondPass()
         {
             onOneSecondPass?.Invoke();

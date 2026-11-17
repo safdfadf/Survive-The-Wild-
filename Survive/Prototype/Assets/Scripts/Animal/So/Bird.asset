@@ -14,6 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <id>k__BackingField: Bird
   isScheduled: 0
+  isAggresive: 1
+  isPredator: 0
+  inZoneTravel: 1
   prefab: {fileID: 8661033431382578246, guid: 6e6602463a753ca4a864ccb593472219, type: 3}
   regionType: 0
   minAmount: 1
@@ -21,8 +24,6 @@ MonoBehaviour:
   collectable: {fileID: 0}
   TrackMesh: []
   spawnProbability: 6
-  isAggresive: 1
-  inZoneTravel: 1
   hurtClip: []
   AlarmClip: []
   warningClip:

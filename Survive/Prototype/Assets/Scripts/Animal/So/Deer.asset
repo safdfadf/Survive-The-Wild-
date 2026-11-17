@@ -14,6 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <id>k__BackingField: Deer
   isScheduled: 1
+  isAggresive: 0
+  isPredator: 0
+  inZoneTravel: 1
   prefab: {fileID: 8368043525601244960, guid: 3dc3e4ae75503f84d8da4b1de1c1adcf, type: 3}
   regionType: 0
   minAmount: 2
@@ -23,8 +26,6 @@ MonoBehaviour:
   - {fileID: 6128482553316515338, guid: 8cb10271f3165da44b531f6fef55711b, type: 3}
   - {fileID: 3294912275451329300, guid: 1c83f54ce3bf6e64b85db36037cc7075, type: 3}
   spawnProbability: 0
-  isAggresive: 0
-  inZoneTravel: 1
   hurtClip: []
   AlarmClip:
   - {fileID: 0}

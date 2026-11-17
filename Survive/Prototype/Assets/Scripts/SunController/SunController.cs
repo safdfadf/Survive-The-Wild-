@@ -15,7 +15,7 @@ public class SunController : MonoBehaviour
 
     private void UpdateSun()
     {
-        var timePrecent = TimeManager.Instance.CurrentTime / 1440f;
+        var timePrecent = SceneRoot.Instance.TimeManager.CurrentMinute / 1440f;
         transform.rotation = Quaternion.Euler(new Vector3((timePrecent * 360f) - 90f, 0f, 0f));
     }
 }

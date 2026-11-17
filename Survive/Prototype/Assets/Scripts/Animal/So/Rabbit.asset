@@ -14,6 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <id>k__BackingField: Rabbit
   isScheduled: 0
+  isAggresive: 0
+  isPredator: 0
+  inZoneTravel: 1
   prefab: {fileID: 7570953989789132748, guid: b89edc040dd6043419c5ef1fe07c3aef, type: 3}
   regionType: 0
   minAmount: 0
@@ -21,8 +24,6 @@ MonoBehaviour:
   collectable: {fileID: 11400000, guid: 27c789396ea0e234f9d51213578af493, type: 2}
   TrackMesh: []
   spawnProbability: 8
-  isAggresive: 0
-  inZoneTravel: 1
   hurtClip: []
   AlarmClip: []
   warningClip: []

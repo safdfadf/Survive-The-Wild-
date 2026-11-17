@@ -20,15 +20,14 @@ namespace SurviveTheWild.Weapon
 
         protected virtual void Update()
         {
-            if(!isAiming)return;
+            if (!isAiming) return;
             UpdateAimTarget();
             UpdateCrosshair();
-           
         }
 
         protected virtual void LateUpdate()
         {
-            Player.SetSpineControl(isAiming);
+            Player.SetSpineControl(isAiming, -30, 30);
         }
 
         private void UpdateAimTarget()
@@ -69,7 +68,7 @@ namespace SurviveTheWild.Weapon
 
         private void UpdateCrosshair()
         {
-            Vector3 screenPos = Camera.main.WorldToScreenPoint(crossHairPoint);
+            var screenPos = Camera.main.WorldToScreenPoint(crossHairPoint);
             weapon.crosshair.transform.position = screenPos;
         }
 

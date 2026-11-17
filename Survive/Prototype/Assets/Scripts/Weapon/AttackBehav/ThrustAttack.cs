@@ -22,7 +22,7 @@ namespace SurviveTheWild.Weapon
 
         private void LateUpdate()
         {
-            Player.SetSpineControl(true, true);
+            Player.SetSpineControl(true, -30, 30, true);
             rotation = Quaternion.Euler(0f, 0f, 70);
             // weapon.gameObject.transform.rotation = rotation;
         }

@@ -28,7 +28,7 @@ public class ScheduleManager
         };
 
         int blockCount = activities.Count;
-        
+
         List<Schedule> schedule = new List<Schedule>();
         schedule.Add(new Schedule
         {
@@ -113,5 +113,24 @@ public class ScheduleManager
         }
 
         return schedule;
+    }
+
+    public List<AttackSchedule> GenerateAttackSchedule()
+    {
+        List<AttackSchedule> attacks = new();
+        var numberOfAttacks =
+            UnityEngine.Random.Range(0, 4);
+
+        for (int i = 0; i < numberOfAttacks; i++)
+        {
+            attacks.Add(new AttackSchedule
+            {
+                Day = UnityEngine.Random.Range(1, 8),
+                Hour = UnityEngine.Random.Range(0, 24),
+                Triggered = false
+            });
+        }
+
+        return attacks;
     }
 }

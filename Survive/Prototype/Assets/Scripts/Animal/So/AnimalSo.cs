@@ -7,6 +7,9 @@ public class AnimalSo : ScriptableObject
 {
     [field: SerializeField] public string id { get; private set; }
     public bool isScheduled;
+    public bool isAggresive;
+    public bool isPredator;
+    public bool inZoneTravel;
     public GameObject prefab;
     public RegionType regionType;
     public int minAmount;
@@ -14,8 +17,7 @@ public class AnimalSo : ScriptableObject
     public ObjSo collectable;
     public List<GameObject> TrackMesh;
     public float spawnProbability;
-    public bool isAggresive;
-    public bool inZoneTravel;
+   
     [Header("AudioClip")] public List<AudioClip> hurtClip;
     [FormerlySerializedAs("chargeClip")] public List<AudioClip> AlarmClip;
     public List<AudioClip> warningClip;

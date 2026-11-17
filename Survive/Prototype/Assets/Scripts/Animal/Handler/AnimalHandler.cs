@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Player;
+using SurviveTheWild.Animal.Handler;
 using SurviveTheWild.Helpers;
 using UnityEngine;
 using UnityEngine.AI;
@@ -22,22 +23,36 @@ public class
     private readonly Dictionary<AnimalData, GameObject> _soundUI = new();
     private AnimalStateManager _animalStateManager;
     private List<AnimalBase> _spawnedAnimals = new();
+    private List<AttackSchedule> attackSchedules = new();
     public AnimalBase Attacker { get; set; }
+
     [SerializeField] private int Lod0;
     [SerializeField] private int Lod1;
+
+    private float predictionTime;
+    private Vector3? candidatePosition;
+    private Vector3 _lastValidationPos;
+    private float validChecks;
+    private float requiredValidChecks;
+    private Vector3 _lastPlayerPos;
+    [SerializeField] private PredatorAtk predatorAtkPrefab;
 
     public void OnEnable()
     {
         SceneRoot.Instance.EventManager.TimeEvents.onOneHourPass += UpdateAnimalPos;
+        SceneRoot.Instance.EventManager.TimeEvents.onOneHourPass += CheckScheduledAttacks;
+
+        SceneRoot.Instance.EventManager.TimeEvents.onOneSecondPass += HandleLodOfActives;
+
         EventBus.CreateAnimalData += CreateAnimalData; // Based on region create animal data
         SceneRoot.Instance.EventManager.ChunkEvents.ActiveChunk += CheckAnimalToSpawn;
         SceneRoot.Instance.EventManager.ChunkEvents.DeActiveChunk += CheckToDeactivate;
-        SceneRoot.Instance.EventManager.TimeEvents.onOneSecondPass += HandleLodOfActives;
     }
 
     private void OnDisable()
     {
         SceneRoot.Instance.EventManager.TimeEvents.onOneHourPass -= UpdateAnimalPos;
+        SceneRoot.Instance.EventManager.TimeEvents.onOneHourPass -= CheckScheduledAttacks;
         EventBus.CreateAnimalData -= CreateAnimalData;
         SceneRoot.Instance.EventManager.ChunkEvents.ActiveChunk -= CheckAnimalToSpawn;
         SceneRoot.Instance.EventManager.ChunkEvents.DeActiveChunk -= CheckToDeactivate;
@@ -48,6 +63,7 @@ public class
     {
         _animalStateManager = GetComponent<AnimalStateManager>();
         _scheduleManager = new ScheduleManager();
+        attackSchedules = _scheduleManager.GenerateAttackSchedule();
     }
 
     private void Start()
@@ -279,6 +295,33 @@ public class
     {
         if (!_activeData.Contains(data)) return;
         _activeData.Remove(data);
+    }
+
+    private void CheckScheduledAttacks(int currentHour)
+    {
+        var currentDay =
+            SceneRoot.Instance.TimeManager.CurrentDay;
+
+        foreach (var attack in attackSchedules)
+        {
+            if (attack.Triggered)
+                continue;
+
+            if (attack.Day == currentDay &&
+                attack.Hour == currentHour)
+            {
+                attack.Triggered = true;
+                var so = _animalSo.Find(a => a.isPredator);
+                StartAttack(so);
+            }
+        }
+    }
+
+    private void StartAttack(AnimalSo so)
+    {
+        var obj = GlobalPool.instance.Get(predatorAtkPrefab.gameObject, Vector3.zero);
+        var predatorAtk = obj.GetComponent<PredatorAtk>();
+        predatorAtk.Initialize(so);
     }
 }
 

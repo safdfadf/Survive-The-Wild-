@@ -9,7 +9,7 @@ namespace SurviveTheWild.EventBus.Events
 
         public void AnimalDeath(AnimalBase value)
         {
-            onAnimalDeath(value);
+            onAnimalDeath?.Invoke(value);
         }
 
         public void UpdateLodLevel(LodLevel value)

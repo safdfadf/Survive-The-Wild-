@@ -20,4 +20,4 @@ MonoBehaviour:
     Health: 0
     objSo: {fileID: 0}
   regionType: 0
-  spawnProb: 0.2
+  spawnProb: 0.1

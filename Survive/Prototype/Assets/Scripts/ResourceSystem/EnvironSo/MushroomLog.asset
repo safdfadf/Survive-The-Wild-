@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: MushroomLog
   prefab: {fileID: 40843603368111300, guid: 1b80fc38643e13945aa28d2118fd4b42, type: 3}
-  amount: 3
+  amount: 1
   canBreak: 0
   breakableData:
     Health: 0
     objSo: {fileID: 0}
   regionType: 0
-  spawnProb: 10
+  spawnProb: 0.4

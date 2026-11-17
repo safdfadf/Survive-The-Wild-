@@ -55,7 +55,7 @@ public class AnimalData
             }
         }
 
-        int hour = TimeManager.Instance.GetCurrentHour();
+        int hour = SceneRoot.Instance.TimeManager.CurrentHour;
         currentSchedule = _dailySchedule.FirstOrDefault(s =>
             IsHourInRange(hour, s.startHour, s.endHour));
       

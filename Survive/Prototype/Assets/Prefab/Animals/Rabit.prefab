@@ -1603,8 +1603,9 @@ MonoBehaviour:
     bleedingProbability: 0
   animalAtkBehaviour: {fileID: 0}
   requiredAbility: {fileID: 11400000, guid: 704126e62b7d502428b912f629fb1b74, type: 2}
+  _instantDeath: 1
   AnimalSo: {fileID: 0}
-  _puddleFx: {fileID: 0}
+  _puddleFx: {fileID: 1942766752248629972}
   alertRadius: 1
   playerMask:
     serializedVersion: 2
@@ -2143,6 +2144,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7b6b9e1ac61ad954982c86fe683889c4, type: 3}
+--- !u!114 &1942766752248629972 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1085666038756689712, guid: 7b6b9e1ac61ad954982c86fe683889c4, type: 3}
+  m_PrefabInstance: {fileID: 1578256118804925924}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: faa2a83f34444b647a51f2dfd3da81c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &5445260218154030889 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6806738673507719885, guid: 7b6b9e1ac61ad954982c86fe683889c4, type: 3}

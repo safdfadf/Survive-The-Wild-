@@ -7,11 +7,18 @@ public class PlayerAnimator : MonoBehaviour
     [SerializeField] private Animator animator;
     private MovementHandler _playerController;
     private int upperBodyLayerIndex;
+    private bool _isWatchOn;
 
     private void Awake()
     {
         upperBodyLayerIndex = animator.GetLayerIndex("UpperBody");
         _playerController = GetComponent<MovementHandler>();
+    }
+
+    private void LateUpdate()
+    {
+        if (!_isWatchOn) return;
+        _playerController.SetSpineControl(_isWatchOn, -30, 30, true, true);
     }
 
     public void MovePlayer(float forward, float starfe)
@@ -82,7 +89,9 @@ public class PlayerAnimator : MonoBehaviour
 
     public void ShowWatch(bool show)
     {
-        _playerController.LockCamera(show);
+        _isWatchOn = show;
+        if (!_isWatchOn)
+            _playerController.SetCameraParent(_isWatchOn);
         animator.SetBool("Watch", show);
     }
 }

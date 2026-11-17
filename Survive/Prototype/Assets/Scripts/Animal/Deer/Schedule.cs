@@ -25,3 +25,14 @@ public class Schedule
     public Activity zoneType;
     public Zone assignedZone;
 }
+
+[System.Serializable]
+public class AttackSchedule
+{
+    public int Day;
+    public int Hour;
+
+    public GameObject PredatorPrefab;
+
+    public bool Triggered;
+}

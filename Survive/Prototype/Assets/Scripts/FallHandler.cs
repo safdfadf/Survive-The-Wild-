@@ -7,7 +7,7 @@ namespace SurviveTheWild
     public class FallHandler : MonoBehaviour
     {
         [SerializeField] private Collider fallDetector;
-        [SerializeField] private float rotationDuration ;
+        [SerializeField] private float rotationDuration;
         private GameObject currentGameObject;
 
         public void ExecuteFall(UnityAction onComplete, GameObject obj)
@@ -39,6 +39,7 @@ namespace SurviveTheWild
 
                 yield return null;
             }
+
             yield return new WaitForSeconds(2);
             currentGameObject.transform.rotation = targetRotation;
             Action?.Invoke();

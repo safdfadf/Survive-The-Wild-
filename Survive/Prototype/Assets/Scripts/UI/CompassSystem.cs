@@ -8,6 +8,7 @@ public class CompassSystem : MonoBehaviour
 
     private void Awake()
     {
+        print(gameObject.name);
         _playerRepository = FindAnyObjectByType<PlayerRepository>();
     }
 
@@ -21,7 +22,7 @@ public class CompassSystem : MonoBehaviour
         EventBus.OnWindChanged += UpdateArcDirection;
     }
 
-    public void Update()
+    public void LateUpdate()
     {
         UpdateCompass();
     }

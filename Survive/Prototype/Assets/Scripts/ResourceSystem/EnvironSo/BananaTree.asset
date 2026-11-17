@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: BananaTree
   prefab: {fileID: 9101267996860703775, guid: 59cb809e756769a46ba7197fc767c724, type: 3}
-  amount: 10
+  amount: 5
   canBreak: 1
   breakableData:
     Health: 30

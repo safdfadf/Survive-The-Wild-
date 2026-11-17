@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3446d969a603b9741bd8db43b6e9bc7b, type: 3}
+  m_Name: Leopard
+  m_EditorClassIdentifier: 
+  <id>k__BackingField: Leopard
+  isScheduled: 1
+  isAggresive: 1
+  isPredator: 1
+  inZoneTravel: 0
+  prefab: {fileID: 7570953989789132748, guid: 04682465c807ae94787d91f7e10eacad, type: 3}
+  regionType: 0
+  minAmount: 1
+  maxAmount: 3
+  collectable: {fileID: 11400000, guid: 27c789396ea0e234f9d51213578af493, type: 2}
+  TrackMesh:
+  - {fileID: 6128482553316515338, guid: 8cb10271f3165da44b531f6fef55711b, type: 3}
+  spawnProbability: 0
+  hurtClip:
+  - {fileID: 8300000, guid: 007b48108eb91664198e12acc1833c1d, type: 3}
+  - {fileID: 8300000, guid: 00a46615b7d3e674d9d020663f83d51d, type: 3}
+  AlarmClip:
+  - {fileID: 8300000, guid: c955ab9ea9747c244929d15415cc3b51, type: 3}
+  - {fileID: 8300000, guid: c955ab9ea9747c244929d15415cc3b51, type: 3}
+  warningClip: []
+  calmClip:
+  - {fileID: 8300000, guid: 193c567a38329294aa877e55f763d428, type: 3}
+  - {fileID: 8300000, guid: ee64e64d662767647af021e2bfa46a33, type: 3}

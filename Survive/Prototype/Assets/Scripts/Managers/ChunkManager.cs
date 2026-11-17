@@ -245,61 +245,6 @@ public class ChunkManager : MonoBehaviour
         return false;
     }
 
-    private void ActivateNearbyChunks()
-    {
-        List<Chunk> chunksToActivate = new List<Chunk>();
-
-        foreach (var kvp in AllChunks)
-        {
-            var chunk = kvp.Value;
-            int dx = Mathf.Abs(chunk.index.x - _playerPos.x);
-            int dz = Mathf.Abs(chunk.index.y - _playerPos.y);
-
-            if (dx <= radius && dz <= radius)
-            {
-                chunksToActivate.Add(chunk);
-            }
-        }
-
-        chunksToActivate = chunksToActivate
-            .OrderBy(c => Vector3.Distance(player.transform.position, c.bounds.center))
-            .ToList();
-
-        int allowed = 6;
-
-        for (int i = 0; i < chunksToActivate.Count; i++)
-        {
-            Chunk chunk = chunksToActivate[i];
-
-            if (i < allowed)
-            {
-                // Should be active
-                if (!chunk.isActive)
-                {
-                    chunk.isActive = true;
-                    activeChunks.Add(chunk);
-                    SpawnChunk(chunk);
-                    ActivateTracks(chunk);
-                    SceneRoot.Instance.EventManager.ChunkEvents.ActiveChunk(chunk);
-                    EventBus.OnGpuDeactivateInChunk.Invoke(chunk);
-                }
-            }
-            else
-            {
-                // Should be deactivated
-                if (chunk.isActive)
-                {
-                    chunk.isActive = false;
-                    activeChunks.Remove(chunk);
-                    DespawnChunk(chunk);
-                }
-            }
-        }
-
-        GpuInstancing();
-        UpdateCurrentBounds();
-    }
-
     private void UpdateCurrentBounds()
     {
         Bounds mergedBounds = new Bounds();
@@ -319,17 +264,6 @@ public class ChunkManager : MonoBehaviour
         }
 
         CurrentBounds = mergedBounds;
-    }
-
-    private void GpuInstancing()
-    {
-        foreach (var chunks in AllChunks.Values)
-        {
-            if (!chunks.isActive) // all the chunks that are in active are 
-            {
-                //  EventBus.OnGpuActivateInChunk?.Invoke(chunks);
-            }
-        }
     }
 
     private void SpawnChunk(Chunk chunk)
@@ -377,11 +311,6 @@ public class ChunkManager : MonoBehaviour
                 regionBounds[chunk.regionType] = current;
             }
         }
-    }
-
-    private Bounds GetRegionBound(RegionType regionType)
-    {
-        return regionBounds[regionType];
     }
 
     private void DespawnChunk(Chunk chunk) // with current set up we need to deactivate individually 
@@ -456,31 +385,11 @@ public class ChunkManager : MonoBehaviour
         return null;
     }
 
-    public Bounds GetActiveChunkBounds()
-    {
-        return CurrentBounds;
-    }
-
     public bool IsPosInPlayerChunk(Vector3 pos)
     {
         Chunk chunk = GetChunkAtPos(player.transform.position);
         if (chunk.bounds.Contains(pos))
             return true;
-        return false;
-    }
-
-    public bool IsPlayerInChunk(Chunk chunk)
-    {
-        return chunk.bounds.Contains(player.transform.position);
-    }
-
-    public bool ObjectLiesInActiveChunk(Vector3 pos)
-    {
-        foreach (var chunk in activeChunks)
-        {
-            if (chunk.bounds.Contains(pos)) return true;
-        }
-
         return false;
     }
 
@@ -492,7 +401,7 @@ public class ChunkManager : MonoBehaviour
         {
             GameObject so = data.soAnimal.TrackMesh[Random.Range(0, data.soAnimal.TrackMesh.Count)];
             data.prefab = so;
-            SpawnTracksWithDelay(so, data, chunk);
+            StartCoroutine(SpawnTracksWithDelay(so, data, chunk));
             GameObject obj = GlobalPool.instance.Get(so, data.pos);
             Tracks track = obj.GetComponent<Tracks>();
             track.Initialize(data);
@@ -539,79 +448,6 @@ public class ChunkManager : MonoBehaviour
         return animalPos;
     }
 
-/*
-    private void OnDrawGizmos()
-    {
-        if (AllChunks == null || AllChunks.Count == 0)
-            return;
-
-        foreach (var kvp in AllChunks)
-        {
-            Chunk chunk = kvp.Value;
-
-            Gizmos.color = chunk.isActive ? Color.red : Color.gray;
-
-            Gizmos.DrawWireCube(
-                chunk.bounds.center,
-                new Vector3(chunk.bounds.size.x, 1, chunk.bounds.size.z)
-            );
-        }
-
-        foreach (var chunk in emptyChunks)
-        {
-            Gizmos.color =  Color.green;
-
-            Gizmos.DrawWireCube(
-                chunk.bounds.center,
-                new Vector3(chunk.bounds.size.x, 1f, chunk.bounds.size.z)
-            );
-        }
-
-        if (regionBounds == null || regionBounds.Count == 0)
-            return;
-
-        DrawRegions();
-    }
-    */
-
-    private void DrawRegions()
-    {
-        foreach (var kvp in regionBounds)
-        {
-            RegionType region = kvp.Key;
-            Bounds bounds = kvp.Value;
-
-            Gizmos.color = GetRegionColor(region);
-
-            Gizmos.DrawWireCube(
-                bounds.center,
-                new Vector3(bounds.size.x, 2f, bounds.size.z)
-            );
-        }
-    }
-
-    public Vector3 GetAvailablePosinChunk(Chunk chunk)
-    {
-        foreach (var pos in chunk.cashedPos)
-        {
-            if (pos.IsAvailable)
-                return pos.Position;
-        }
-
-        return new Vector3(0, 0, 0);
-    }
-
-    private Color GetRegionColor(RegionType region)
-    {
-        return region switch
-        {
-            RegionType.Forest => Color.green,
-            RegionType.Swamp => Color.cyan,
-            RegionType.Sawana => Color.yellow,
-            _ => Color.white
-        };
-    }
-
     private Bounds GetTestBounds() // used to spawn animal and its zone in limited space in a 
     {
         Collider col = objTestBounds.GetComponent<Collider>();
@@ -635,17 +471,30 @@ public class ChunkManager : MonoBehaviour
         }
     }
 
-    public void CheckINChunkPOsLies(Vector3 pos)
+    public Vector3 GetPos(Vector3 pos) // 
     {
-        foreach (var chunk in AllChunks.Values)
+        foreach (var chunks in AllChunks.Values)
         {
-            if (!chunk.bounds.Contains(pos)) continue;
-            GameObject obj = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            obj.transform.position = chunk.bounds.center;
-            obj.transform.localScale = new Vector3(1, 1, 1);
-            return;
+            if (chunks.bounds.Contains(pos))
+            {
+                RetPosOnNv.TryGetNavMeshPoint(GetCahedPos(chunks), out Vector3 hit);
+                return hit;
+            }
         }
 
-        print("this lies no where ");
+        return Vector3.zero;
+    }
+
+    private Vector3 GetCahedPos(Chunk chunk)
+    {
+        foreach (var cashed in chunk.cashedPos)
+        {
+            if (!cashed.IsAvailable)
+            {
+                return cashed.Position;
+            }
+        }
+
+        return Vector3.zero;
     }
 }

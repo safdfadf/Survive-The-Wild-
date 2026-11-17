@@ -296,7 +296,6 @@ public class InputManager : MonoBehaviour
     private void ShowWatch(bool show)
     {
         _phone.IsPhoneActive = show;
-
         _playerAnimator.ShowWatch(show);
     }
 

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: Tree
   prefab: {fileID: 3905233918672894876, guid: c8a61c65cdc03f040814c3a095f3646b, type: 3}
-  amount: 30
+  amount: 50
   canBreak: 1
   breakableData:
     Health: 30

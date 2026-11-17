@@ -14,6 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <id>k__BackingField: Snake
   isScheduled: 0
+  isAggresive: 1
+  isPredator: 0
+  inZoneTravel: 0
   prefab: {fileID: 3253494446645128198, guid: 6fda65b5306004540a22f2ed6e420d9b, type: 3}
   regionType: 0
   minAmount: 1
@@ -21,8 +24,6 @@ MonoBehaviour:
   collectable: {fileID: 11400000, guid: 27c789396ea0e234f9d51213578af493, type: 2}
   TrackMesh: []
   spawnProbability: 6
-  isAggresive: 1
-  inZoneTravel: 0
   hurtClip: []
   AlarmClip: []
   warningClip:
