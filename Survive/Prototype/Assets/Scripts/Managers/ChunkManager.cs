@@ -472,13 +472,16 @@ public class ChunkManager : MonoBehaviour
         }
     }
 
-    public Vector3 GetPos(Vector3 pos) 
+    public Vector3 GetPos(Vector3 pos)
     {
         foreach (var chunks in AllChunks.Values)
         {
-            if (ChunkHelper.IsInChunkXZ( pos,chunks.bounds))
+            if (ChunkHelper.IsInChunkXZ(pos, chunks.bounds))
             {
-                RetPosOnNv.TryGetNavMeshPoint(GetCahedPos(chunks), out Vector3 hit);
+                Vector3 cashedPos = GetCahedPos(chunks);
+                // this is zero why 
+                RetPosOnNv.TryGetNavMeshPoint(cashedPos, out Vector3 hit);
+                // print(hit);
                 return hit;
             }
         }
@@ -488,9 +491,20 @@ public class ChunkManager : MonoBehaviour
 
     private Vector3 GetCahedPos(Chunk chunk)
     {
+        int value = 0;
+        foreach (var pos in chunk.cashedPos)
+        {
+            if (!pos.IsAvailable)
+            {
+                value++;
+            }
+        }
+
+        print(value);
+
         foreach (var cashed in chunk.cashedPos)
         {
-            if (!cashed.IsAvailable)
+            if (cashed.IsAvailable)
             {
                 return cashed.Position;
             }
