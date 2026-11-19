@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5796701215567592885}
-  - component: {fileID: 8429723508683712202}
   - component: {fileID: 8731085512660135307}
   - component: {fileID: 2230112608024213040}
+  - component: {fileID: 7045970959189797539}
   m_Layer: 8
   m_Name: Leopard
   m_TagString: Untagged
@@ -36,41 +36,6 @@ Transform:
   - {fileID: 3442623550923118588}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8429723508683712202
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7570953989789132748}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d4209d4fea4b8d04ab9dfbcf0f354849, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  walkSpeed: 5
-  alertSpeed: 7
-  runSpeed: 7
-  fleeSpeed: 8
-  followPoint: {fileID: 0}
-  _animalAttack:
-    damage: 0
-    effects: {fileID: 11400000, guid: bfb4635ec51e80740b219eb1fc2fdf9d, type: 2}
-    bleedingProbability: 0
-  animalAtkBehaviour: {fileID: 11400000, guid: 297906e6cdb32c643b37482b5d53c8ce, type: 2}
-  requiredAbility: {fileID: 11400000, guid: 704126e62b7d502428b912f629fb1b74, type: 2}
-  _instantDeath: 1
-  AnimalSo: {fileID: 0}
-  _puddleFx: {fileID: 1942766752248629972}
-  alertRadius: 1
-  playerMask:
-    serializedVersion: 2
-    m_Bits: 64
-  obstructionMask:
-    serializedVersion: 2
-    m_Bits: 0
-  alarmRadius: 0.8
-  isDeadAnimal: 0
 --- !u!195 &8731085512660135307
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -120,6 +85,38 @@ LODGroup:
     renderers:
     - renderer: {fileID: 0}
   m_Enabled: 1
+--- !u!114 &7045970959189797539
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7570953989789132748}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1f62d5917d649aaa8b4f336ed02c5ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  walkSpeed: 0
+  alertSpeed: 4
+  runSpeed: 10
+  fleeSpeed: 10
+  followPoint: {fileID: 0}
+  atkPrefab: {fileID: 3878955928014222051, guid: 7c3f41d331bf2d042b54c7e969f0dbd8, type: 3}
+  requiredAbility: {fileID: 11400000, guid: 704126e62b7d502428b912f629fb1b74, type: 2}
+  agent: {fileID: 0}
+  _instantDeath: 0
+  AnimalSo: {fileID: 0}
+  _puddleFx: {fileID: 1942766752248629972}
+  alertRadius: 80
+  playerMask:
+    serializedVersion: 2
+    m_Bits: 64
+  obstructionMask:
+    serializedVersion: 2
+    m_Bits: 0
+  alarmRadius: 10
+  isDeadAnimal: 0
 --- !u!1001 &1578256118804925924
 PrefabInstance:
   m_ObjectHideFlags: 0

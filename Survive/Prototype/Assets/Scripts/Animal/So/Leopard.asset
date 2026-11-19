@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Leopard
   m_EditorClassIdentifier: 
   <id>k__BackingField: Leopard
-  isScheduled: 1
+  isScheduled: 0
   isAggresive: 1
   isPredator: 1
   inZoneTravel: 0

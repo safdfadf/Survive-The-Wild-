@@ -2,10 +2,10 @@ using System.Collections;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "RamAttackBehavior", menuName = "Scriptable Objects/Attacks/RamAttackBehavior")]
-public class RamAttackBehaviour : AnimalAtkBehaviour
+public class RamAttackBehaviourSo : AnimalAtkBehaviourSo
 {
     public override IEnumerator Execute(AnimalBase animal)
     {
-        return animal.RamAttack();
+    yield return null;    
     }
 }

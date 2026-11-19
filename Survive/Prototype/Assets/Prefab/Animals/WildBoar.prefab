@@ -242,14 +242,12 @@ MonoBehaviour:
   runSpeed: 12
   fleeSpeed: 15
   followPoint: {fileID: 2259642533415108932}
-  _animalAttack:
-    damage: 10
-    effects: {fileID: 0}
-    bleedingProbability: 1
-  animalAtkBehaviour: {fileID: 11400000, guid: e765e500050310048a5f1f8b30c7408c, type: 2}
+  atkPrefab: {fileID: 3326199555808905091, guid: fd5909e01e20e43458fc57dfe64ebdca, type: 3}
   requiredAbility: {fileID: 11400000, guid: 704126e62b7d502428b912f629fb1b74, type: 2}
+  agent: {fileID: 0}
+  _instantDeath: 0
   AnimalSo: {fileID: 0}
-  _puddleFx: {fileID: 0}
+  _puddleFx: {fileID: 985410181287731002}
   leftEye: {fileID: 5138556661773915582}
   rightEye: {fileID: 7774264339398966666}
   eyeSightDistance: 20
@@ -2506,6 +2504,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7b6b9e1ac61ad954982c86fe683889c4, type: 3}
+--- !u!114 &985410181287731002 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1085666038756689712, guid: 7b6b9e1ac61ad954982c86fe683889c4, type: 3}
+  m_PrefabInstance: {fileID: 197576554542864394}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: faa2a83f34444b647a51f2dfd3da81c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &6686589902415348423 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6806738673507719885, guid: 7b6b9e1ac61ad954982c86fe683889c4, type: 3}

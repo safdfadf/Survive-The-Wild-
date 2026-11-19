@@ -26,6 +26,7 @@ namespace Animal.States
 
         public override void UpdateState()
         {
+            Animal.AlertBehavior();
         }
 
         public override void ExitState()
@@ -39,7 +40,7 @@ namespace Animal.States
 
         private void AnimalAlert()
         {
-            Animal.TriggerAlertAnim();
+          
             if (Animal.AnimalSo.warningClip.Count == 0) return;
             HandleAudioCall(AlarmRadius,
                 Animal.AnimalSo.warningClip[Random.Range(0, Animal.AnimalSo.warningClip.Count)]);

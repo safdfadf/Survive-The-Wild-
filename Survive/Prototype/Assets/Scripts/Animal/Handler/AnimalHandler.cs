@@ -3,6 +3,7 @@ using Player;
 using SurviveTheWild.Animal.Handler;
 using SurviveTheWild.Helpers;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class
@@ -30,7 +31,7 @@ public class
     private float validChecks;
     private float requiredValidChecks;
     private Vector3 _lastPlayerPos;
-    [SerializeField] private PredatorAtk predatorAtkPrefab;
+    [FormerlySerializedAs("predatorAtkPrefab")] [SerializeField] private PredatorSpawn predatorSpawnPrefab;
 
     public void OnEnable()
     {
@@ -163,7 +164,7 @@ public class
                 //   var obj = Instantiate(animalSo.prefab, FinalPos, Quaternion.identity);
                 var obj = GlobalPool.instance.Get(animalSo.prefab, FinalPos);
                 var unScheduleAnimal = obj.GetComponent<UnScheduleAnimal>();
-                unScheduleAnimal.Initialize(animalSo, chunk.bounds);
+                unScheduleAnimal.Initialize(animalSo);
 
                 _spawnedAnimals.Add(unScheduleAnimal);
                 chunk.objectInChunk.Add(obj); // recheck this 
@@ -318,8 +319,8 @@ public class
 
     private void StartAttack(AnimalSo so)
     {
-        var obj = GlobalPool.instance.Get(predatorAtkPrefab.gameObject, Vector3.zero);
-        var predatorAtk = obj.GetComponent<PredatorAtk>();
+        var obj = GlobalPool.instance.Get(predatorSpawnPrefab.gameObject, Vector3.zero);
+        var predatorAtk = obj.GetComponent<PredatorSpawn>();
         predatorAtk.Initialize(so);
     }
 }

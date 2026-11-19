@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace Animal.States
 {
+    // should i make a function 
     public class CalmState : AnimalState
     {
         private float nextActionTime;
@@ -58,9 +59,7 @@ namespace Animal.States
 
         private void MoveToNextPosition()
         {
-            Chunk chunk = ChunkManager.Instance.GetChunkAtPos(Animal.transform.position);
-            Vector3 pos = RetPosOnNv.ReturnRandomNavMeshPos(chunk.bounds);
-            Animal.MoveTo(pos);
+            Animal.CamlBehavior();
             ScheduleNextAction();
         }
     }

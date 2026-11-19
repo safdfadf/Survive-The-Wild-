@@ -500,7 +500,6 @@ public class ChunkManager : MonoBehaviour
             }
         }
 
-        print(value);
 
         foreach (var cashed in chunk.cashedPos)
         {

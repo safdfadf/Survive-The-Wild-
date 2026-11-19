@@ -341,15 +341,13 @@ MonoBehaviour:
   runSpeed: 10
   fleeSpeed: 11
   followPoint: {fileID: 0}
-  _animalAttack:
-    damage: 0
-    effects: {fileID: 11400000, guid: 8da14ff072eddd14da365420c417d922, type: 2}
-    bleedingProbability: 0
-  animalAtkBehaviour: {fileID: 11400000, guid: 297906e6cdb32c643b37482b5d53c8ce, type: 2}
+  atkPrefab: {fileID: 0}
   requiredAbility: {fileID: 11400000, guid: 704126e62b7d502428b912f629fb1b74, type: 2}
+  agent: {fileID: 0}
+  _instantDeath: 1
   AnimalSo: {fileID: 0}
   _puddleFx: {fileID: 8827055481031190545}
-  alertRadius: 1.5
+  alertRadius: 30
   playerMask:
     serializedVersion: 2
     m_Bits: 64

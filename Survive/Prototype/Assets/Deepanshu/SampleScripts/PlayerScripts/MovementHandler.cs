@@ -22,7 +22,7 @@ public class MovementHandler : MonoBehaviour //TODo: Make a separate script for 
     [SerializeField] private float sprintSpeed = 8f;
     [SerializeField] private float crouchSpeed = 1.5f;
     [SerializeField] private float jumpForce = 5f;
-
+    public float CurrentSpeed { get; private set; }
 
     [SerializeField] private float mouseSensitivity = 100f;
 
@@ -197,29 +197,28 @@ public class MovementHandler : MonoBehaviour //TODo: Make a separate script for 
             var moveDirection = transform.right * MoveInput.x + transform.forward * MoveInput.y;
 
             animator.MovePlayer(MoveInput.y, MoveInput.x);
-            float speed = 0;
 
             if (_isSprinting && !blockSprinting)
             {
                 var dt = Time.deltaTime;
                 _isWalking = false;
                 _noiseEmitter.AddNoise(_noiseEmitter.sprintNoise, _isSprinting);
-                speed = sprintSpeed;
+                CurrentSpeed = sprintSpeed;
                 _playerVitalStats.DrainStamina(dt);
             }
             else if (IsCrouching)
             {
                 _isWalking = false;
-                speed = crouchSpeed;
+                CurrentSpeed = crouchSpeed;
             }
             else
             {
                 _isWalking = true;
-                speed = walkSpeed;
+                CurrentSpeed = walkSpeed;
                 _noiseEmitter.AddNoise(_noiseEmitter.walkNoise, !_isSprinting);
             }
 
-            characterController.Move(moveDirection * (speed * Time.deltaTime));
+            characterController.Move(moveDirection * (CurrentSpeed * Time.deltaTime));
             animator.TriggerSprint(_isSprinting);
         }
         else

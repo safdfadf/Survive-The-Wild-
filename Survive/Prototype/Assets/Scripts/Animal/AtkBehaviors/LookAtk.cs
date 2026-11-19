@@ -3,12 +3,17 @@ using UnityEngine;
 
 namespace SurviveTheWild.Animal.AtkBehaviors
 {
-    [CreateAssetMenu(fileName = "RamAttackBehavior", menuName = "Scriptable Objects/Attacks/LookAtkBehavior")]
-    public class LookAtk : AnimalAtkBehaviour
+    public class LookAtk : Attacks
     {
-        public override IEnumerator Execute(AnimalBase animal)
+        public override void Execute()
         {
-            return animal.LookAttack();
+            LookAttack();
+        }
+
+        private void LookAttack()
+        {
+            print("doing look attack damage ");
+            animal.DoDamage(attack);
         }
     }
 }

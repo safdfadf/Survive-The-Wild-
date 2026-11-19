@@ -6,7 +6,7 @@ using UnityEngine;
 namespace SurviveTheWild.Animal.Handler
 {
     // this will be handle by the who handles when predetor attack is happening 
-    public class PredatorAtk : MonoBehaviour
+    public class PredatorSpawn : MonoBehaviour
     {
         [SerializeField] private float predictionTime = 3f;
         [SerializeField] private float ambushRadius = 30f;
@@ -68,14 +68,12 @@ namespace SurviveTheWild.Animal.Handler
         {
             if (!canStart)
                 return;
-            print("evaluating ambush position");
             if (ambushPositions.Count == 0)
             {
                 GenerateAmbushPositions();
 
                 if (ambushPositions.Count == 0)
                 {
-                    print("No ambush positions found");
                     return;
                 }
             }
@@ -84,7 +82,6 @@ namespace SurviveTheWild.Animal.Handler
 
             if (bestPosition == Vector3.zero)
             {
-                print("best position is zerp");
                 return;
             }
 
@@ -93,7 +90,6 @@ namespace SurviveTheWild.Animal.Handler
                 currentBestPosition = bestPosition;
                 hasBestPosition = true;
                 validChecks = 1;
-                print("returning");
                 return;
             }
 
@@ -111,7 +107,6 @@ namespace SurviveTheWild.Animal.Handler
             {
                 currentBestPosition = bestPosition;
                 validChecks = 1;
-                print("new valid check");
             }
 
             if (validChecks >= requiredValidChecks)
@@ -188,7 +183,6 @@ namespace SurviveTheWild.Animal.Handler
 
             if (velocity.sqrMagnitude < 0.01f)
             {
-                print("returning zero");
                 return Vector3.zero;
             }
 
@@ -222,7 +216,6 @@ namespace SurviveTheWild.Animal.Handler
                 }
             }
 
-            print(bestPosition);
             return bestPosition;
         }
 
@@ -231,11 +224,10 @@ namespace SurviveTheWild.Animal.Handler
             Debug.Log(
                 $"Spawning Predator at {position}");
 
-            GameObject obj =
-                GameObject.CreatePrimitive(
-                    PrimitiveType.Capsule);
-
-            obj.transform.position = position;
+            GameObject obj = GlobalPool.instance.Get(animalSo.prefab, position);
+            UnScheduleAnimal animal = obj.GetComponent<UnScheduleAnimal>();
+            animal.Initialize(animalSo);
+            Destroy(gameObject);
         }
     }
 }

@@ -11,16 +11,16 @@ public class UnScheduleAnimal : AnimalBase // these animals do not have a schedu
 
     [SerializeField] private float alarmRadius = .8f;
     [SerializeField] private bool isDeadAnimal;
-
+// the only addition i want in this is move towards the player if the distance is more then 15
     protected override void Awake()
     {
         IsUnscheduled = true;
         base.Awake();
     }
 
-    public void Initialize(AnimalSo so, Bounds bounds)
+    public void Initialize(AnimalSo so)
     {
-        Bounds = bounds;
+       
         AnimalSo = so;
         IsAggresive = AnimalSo.isAggresive;
         CreateNewState();
