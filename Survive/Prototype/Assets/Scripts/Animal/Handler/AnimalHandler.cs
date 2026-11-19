@@ -67,7 +67,6 @@ public class
         _animalSo = SoProvider.instance.GetAnimalSo();
         _scheduleManager.GenerateSchedule(_animalSo);
         var Testso = _animalSo.Find(a => a.isPredator);
-        StartAttack(Testso);
     }
 
     private void CreateAnimalData(RegionType regionType, Bounds regionBounds)

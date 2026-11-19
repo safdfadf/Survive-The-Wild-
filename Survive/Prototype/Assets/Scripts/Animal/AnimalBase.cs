@@ -77,6 +77,7 @@ public class AnimalBase : MonoBehaviour, IInteractable
     public bool IsAggresive { get; set; }
     private bool drawCircle;
     private bool _canUpdateCalmState = true;
+    private float _currentSpeed;
 
     protected virtual void Awake()
     {
@@ -126,7 +127,7 @@ public class AnimalBase : MonoBehaviour, IInteractable
     private void LateUpdate()
     {
         if (isMoving)
-            animator.SetFloat("Velocity", agent.velocity.magnitude);
+            animator.SetFloat("Velocity", agent.velocity.magnitude/_currentSpeed);
     }
 
     private void UpdateLod(LodLevel Level)
@@ -273,12 +274,9 @@ public class AnimalBase : MonoBehaviour, IInteractable
         }
 
         agent.stoppingDistance = .1f;
+        agent.speed = speedOverride ?? runSpeed;
 
-        if (speedOverride > 14 || speedOverride == null)
-        {
-            speedOverride = runSpeed;
-            agent.speed = speedOverride.Value;
-        }
+        _currentSpeed = agent.speed;
 
         if (!IsValidNavMeshPosition(destination))
         {
